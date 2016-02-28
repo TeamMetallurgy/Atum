@@ -46,9 +46,9 @@ public class AtumConfig {
     	SAND_HILLS(202, "Sand Hills", 0.75F),
     	LIMESTONE_MOUNTAINS(203, "Limestone Mountains", 0.75F),
     	LIMESTONE_CRAGS(204, "Limestone Crags", 0.5F),
-    	OASIS(205, "Oasis", 0.25F),
+    	//OASIS(205, "Oasis", 0.25F),
     	DRIED_RIVER(206, "Dried River", -1F),
-    	DEAD_OASIS(207, "Dead Oasis", 0.25F),
+    	//DEAD_OASIS(207, "Dead Oasis", 0.25F),
     	RUINED_CITY(208, "Ruined City", 0.5F);
     	    	
     	private final String friendlyName;

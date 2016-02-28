@@ -1,6 +1,7 @@
 package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.items.AtumLoot;
+import com.teammetallurgy.atum.utils.Constants;
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
 import com.teammetallurgy.atum.items.AtumItems;
@@ -63,6 +64,9 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         linkedX = x;
         linkedY = y;
         linkedZ = z;
+        dataWatcher.updateObject(21, linkedX);
+        dataWatcher.updateObject(22, linkedY);
+        dataWatcher.updateObject(23, linkedZ);
     }
 
     /**
@@ -86,14 +90,22 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
             }
         }
 
-        if (linkedX != 0 && linkedY != 0 && linkedZ != 0) {
-            TileEntity te = worldObj.getTileEntity(linkedX, linkedY, linkedZ);
+        Integer chestX = dataWatcher.getWatchableObjectInt(21);
+        Integer chestY = dataWatcher.getWatchableObjectInt(22);
+        Integer chestZ = dataWatcher.getWatchableObjectInt(23);
+        
+        if (chestX != null && chestY != null && chestZ != null) {
+            TileEntity te = worldObj.getTileEntity(chestX, chestY, chestZ);
             if (te != null) {
                 if (te instanceof TileEntityPharaohChest) {
                     TileEntityPharaohChest tepc = (TileEntityPharaohChest) te;
                     tepc.setOpenable();
                 }
+            } else {
+                Constants.LOG.error("Unable to find chest coords for "  + this.getCommandSenderName() + " on " +  chestX + ", " + chestY + ", " + chestZ);
             }
+        } else {
+            Constants.LOG.error("Unable to get chest coords for "  + this.getCommandSenderName());
         }
     }
 
@@ -292,6 +304,9 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         par1NBTTagCompound.setInteger("suffix", dataWatcher.getWatchableObjectInt(18));
         par1NBTTagCompound.setInteger("prefix", dataWatcher.getWatchableObjectInt(19));
         par1NBTTagCompound.setInteger("numeral", dataWatcher.getWatchableObjectInt(20));
+        par1NBTTagCompound.setInteger("chestX", dataWatcher.getWatchableObjectInt(21));
+        par1NBTTagCompound.setInteger("chestY", dataWatcher.getWatchableObjectInt(22));
+        par1NBTTagCompound.setInteger("chestZ", dataWatcher.getWatchableObjectInt(23));
     }
 
     /**
@@ -304,9 +319,15 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         suffixID = par1NBTTagCompound.getInteger("suffix");
         prefixID = par1NBTTagCompound.getInteger("prefix");
         numID = par1NBTTagCompound.getInteger("numeral");
+        linkedX = par1NBTTagCompound.getInteger("chestX");
+        linkedY = par1NBTTagCompound.getInteger("chestY");
+        linkedZ = par1NBTTagCompound.getInteger("chestZ");
         this.dataWatcher.updateObject(18, new Integer(suffixID));
         this.dataWatcher.updateObject(19, new Integer(prefixID));
         this.dataWatcher.updateObject(20, new Integer(numID));
+        this.dataWatcher.updateObject(21, new Integer(linkedX));
+        this.dataWatcher.updateObject(22, new Integer(linkedY));
+        this.dataWatcher.updateObject(23, new Integer(linkedZ));
     }
 
     @Override
@@ -321,6 +342,9 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         this.dataWatcher.addObject(18, new Integer(suffixID));
         this.dataWatcher.addObject(19, new Integer(prefixID));
         this.dataWatcher.addObject(20, new Integer(numID));
+        this.dataWatcher.addObject(21, new Integer(0));
+        this.dataWatcher.addObject(22, new Integer(0));
+        this.dataWatcher.addObject(23, new Integer(0));
     }
 
     /**

@@ -14,7 +14,7 @@ public class BiomeGenSandDunes extends AtumBiomeGenBase {
         super.fillerBlock = AtumBlocks.BLOCK_SAND;
         
         super.palmRarity *= 2;
-        // TODO: dead trees
+        super.deadwoodRarity = -1;
         
         super.addDefaultSpawns();
     }

@@ -25,7 +25,7 @@ public class AtumItems {
     public static Item ITEM_SCARAB = new ItemScarab().setUnlocalizedName("scarab");
     public static Item ITEM_LOOT = new ItemLoot().setUnlocalizedName("loot");
     public static Item ITEM_DATE = new ItemFood(4, 0.3F, false).setTextureName("atum:Date").setUnlocalizedName("date");
-    public static Item ITEM_GOLDEN_DATE = new ItemAppleGold(5, 1.5F, false).setTextureName("atum:GoldenDate").setUnlocalizedName("goldenDate");
+    public static Item ITEM_GOLDEN_DATE = new ItemAtumGoldenDate(5, 1.5F, false).setTextureName("atum:GoldenDate").setUnlocalizedName("goldenDate");
     public static Item ITEM_SCIMITAR = new ItemScimitar(ToolMaterial.IRON).setUnlocalizedName("scimitar");
     public static Item ITEM_GREATSWORD = new ItemGreatsword(ToolMaterial.IRON).setUnlocalizedName("greatsword").setTextureName("atum:Greatsword");
     public static Item ITEM_BOW = new ItemAtumBow().setUnlocalizedName("bow");
@@ -87,6 +87,10 @@ public class AtumItems {
     public static Item ITEM_FLAXSEED = new ItemSeeds(AtumBlocks.BLOCK_FLAX, Blocks.farmland).setUnlocalizedName("flaxSeeds").setTextureName("atum:FlaxSeeds");
     public static Item ITEM_FISH = new ItemFish().setUnlocalizedName("fish");
     public static Item neithsAudacity = new ItemNeithsAudacity().setUnlocalizedName("neithsAudacity");
+    public static Item ITEM_PALM_DOOR = new ItemAtumDoor().setUnlocalizedName("palmDoor").setTextureName("atum:palm_door");
+    public static Item ITEM_DEADWOOD_DOOR = new ItemAtumDoor().setUnlocalizedName("deadwoodDoor").setTextureName("atum:deadwood_door");
+    public static Item ITEM_STICK = new ItemAtumStick();
+    public static Item ITEM_DEADWOOD_BEETLE = new ItemDeadwoodBeetle();
 
     public AtumItems() {
         registerItems();
@@ -160,6 +164,10 @@ public class AtumItems {
         this.register(ITEM_FLAXSEED);
         this.register(ITEM_FISH);
         this.register(neithsAudacity);
+        this.register(ITEM_PALM_DOOR);
+        this.register(ITEM_DEADWOOD_DOOR);
+        this.register(ITEM_STICK);
+        this.register(ITEM_DEADWOOD_BEETLE);
     }
 
     private void register(Item item) {

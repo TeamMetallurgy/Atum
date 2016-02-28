@@ -12,7 +12,7 @@ public class BiomeGenSandHills extends AtumBiomeGenBase {
         
         super.palmRarity *= 4;
         super.pyramidRarity = -1;
-        // TODO: dead trees
+        super.deadwoodRarity = -1;
         
         super.addDefaultSpawns();
     }

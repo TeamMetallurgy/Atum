@@ -21,6 +21,7 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
         
         super.palmRarity = -1;
         super.pyramidRarity = -1;
+        super.deadwoodRarity = 2; 
         
         this.genSpikes = new WorldGenLimestoneSpike();
         

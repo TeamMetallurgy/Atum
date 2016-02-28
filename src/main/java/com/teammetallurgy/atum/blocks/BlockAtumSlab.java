@@ -52,9 +52,12 @@ public class BlockAtumSlab extends BlockSlab {
 
     @Override
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void getSubBlocks(Item par1, CreativeTabs tab, List subItems) {
-        for (int i = 0; i < 4; i++)
-            subItems.add(new ItemStack(this, 1, i));
+        if (this != AtumBlocks.BLOCK_DOUBLESLAB) {
+            for (int i = 0; i < 4; i++)
+                subItems.add(new ItemStack(this, 1, i));
+        }
     }
 
     @Override

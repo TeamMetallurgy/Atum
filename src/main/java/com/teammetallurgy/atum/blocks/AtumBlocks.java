@@ -4,14 +4,17 @@ import com.teammetallurgy.atum.Atum;
 import com.teammetallurgy.atum.blocks.tileentity.TileEntityBurningTrap;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityChestSpawner;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
+import com.teammetallurgy.atum.blocks.tileentity.crate.TileEntityCrate;
 import com.teammetallurgy.atum.blocks.tileentity.furnace.TileEntityLimestoneFurnace;
 import com.teammetallurgy.atum.items.ItemBlockBricks;
+import com.teammetallurgy.atum.items.ItemBlockCrate;
 import com.teammetallurgy.atum.items.ItemBlockStainedGlass;
 import com.teammetallurgy.atum.utils.Constants;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -53,6 +56,11 @@ public class AtumBlocks {
     public static Block BLOCK_LOG = new BlockPalmLog();
     public static Block BLOCK_LEAVES = new BlockLeave();
     public static Block BLOCK_PLANKS = new BlockAtumPlank();
+    public static Block BLOCK_PALM_DOOR = new BlockAtumDoor().setHardness(3.0F).setStepSound(Block.soundTypeWood).setBlockName("palmDoor").setBlockTextureName("atum:palm_door");
+    public static Block BLOCK_PALM_FENCE = new BlockAtumFence("atum:Planks", Material.wood).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood).setBlockName("palmFence");
+    public static Block BLOCK_PALM_FENCE_GATE = new BlockAtumFenceGate(BLOCK_PALM_FENCE).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood).setBlockName("palmFenceGate");;
+    public static Block BLOCK_PALM_HATCH = new BlockAtumTrapDoor(Material.wood).setBlockName("palmHatch").setHardness(3.0F).setBlockTextureName("atum:palm_hatch").setStepSound(Block.soundTypeWood);
+    public static Block BLOCK_PALM_LADDER = new BlockAtumLadder().setBlockName("palmLadder").setHardness(0.4F).setBlockTextureName("atum:palm_ladder").setStepSound(Block.soundTypeLadder);
     public static Block BLOCK_THINCRYSTALGLASS = new BlockAtumPane("atum:AtumCrystalGlass", "atum:thinglass_top").setBlockName("thinCrystalGlass");
     public static Block BLOCK_THINCRYSTALSTAINEDGLASS = new BlockAtumPaneStained("atum:AtumCrystalGlass", "atum:thinglass_top").setBlockName("thinCrystalStainedGlass");
     public static Block BLOCK_THINFRAMEDGLASS = new BlockAtumPane("atum:AtumFramedGlass", "atum:thinglass_top").setBlockName("thinFramedGlass");
@@ -68,6 +76,17 @@ public class AtumBlocks {
     public static Block BLOCK_FURNACEIDLE = new BlockLimeStoneFurnace(false).setBlockName("furnaceIdle");
     public static Block BLOCK_FURNACEBURNING = new BlockLimeStoneFurnace(true).setBlockName("furnaceBurning");
     public static Block BLOCK_DEADWOOD_LOG = new BlockDeadwoodLog();
+    public static Block BLOCK_DEADWOOD_PLANK = new BlockAtumPlank().setBlockName("deadwoodPlank").setBlockTextureName("atum:deadwood_plank");
+    public static Block BLOCK_DEADWOOD_DOOR = new BlockAtumDoor().setHardness(3.0F).setStepSound(Block.soundTypeWood).setBlockName("deadwoodDoor").setBlockTextureName("atum:deadwood_door");
+    public static Block BLOCK_DEADWOOD_FENCE = new BlockAtumFence("atum:deadwood_plank", Material.wood).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood).setBlockName("deadwoodFence");
+    public static Block BLOCK_DEADWOOD_FENCE_GATE = new BlockAtumFenceGate(BLOCK_DEADWOOD_FENCE).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood).setBlockName("deadwoodFenceGate");;
+    public static Block BLOCK_DEADWOOD_HATCH = new BlockAtumTrapDoor(Material.wood).setBlockName("deadwoodHatch").setHardness(3.0F).setBlockTextureName("atum:deadwood_hatch").setStepSound(Block.soundTypeWood);
+    public static Block BLOCK_DEADWOOD_LADDER = new BlockAtumLadder().setBlockName("deadwoodLadder").setHardness(0.4F).setBlockTextureName("atum:deadwood_ladder").setStepSound(Block.soundTypeLadder);
+    public static BlockAtumWoodSlab BLOCK_WOOD_SLAB = new BlockAtumWoodSlab(false);
+    public static BlockAtumWoodSlab BLOCK_WOOD_DOUBLESLAB = new BlockAtumWoodSlab(true);
+    public static Block BLOCK_PALM_STAIRS = new  BlockAtumStairs(BLOCK_PLANKS, 0).setBlockName("palmStairs");
+    public static Block BLOCK_DEADWOOD_STAIRS = new  BlockAtumStairs(BLOCK_DEADWOOD_PLANK, 0).setBlockName("deadwoodStairs");
+    public static Block BLOCK_CRATE = new BlockCrate();
 
     public AtumBlocks() {
         registerBlocks();
@@ -102,6 +121,11 @@ public class AtumBlocks {
         this.register(BLOCK_LOG);
         this.register(BLOCK_LEAVES);
         this.register(BLOCK_PLANKS);
+        this.register(BLOCK_PALM_DOOR);
+        this.register(BLOCK_PALM_FENCE);
+        this.register(BLOCK_PALM_FENCE_GATE);
+        this.register(BLOCK_PALM_HATCH);
+        this.register(BLOCK_PALM_LADDER);
         this.register(BLOCK_THINCRYSTALGLASS);
         this.register(BLOCK_THINFRAMEDGLASS);
         this.register(BLOCK_TRAPARROW);
@@ -115,6 +139,14 @@ public class AtumBlocks {
         this.register(BLOCK_FURNACEIDLE);
         this.register(BLOCK_FURNACEBURNING);
         this.register(BLOCK_DEADWOOD_LOG);
+        this.register(BLOCK_DEADWOOD_PLANK);
+        this.register(BLOCK_DEADWOOD_DOOR);
+        this.register(BLOCK_DEADWOOD_FENCE);
+        this.register(BLOCK_DEADWOOD_FENCE_GATE);
+        this.register(BLOCK_DEADWOOD_HATCH);
+        this.register(BLOCK_DEADWOOD_LADDER);
+        this.register(BLOCK_PALM_STAIRS);
+        this.register(BLOCK_DEADWOOD_STAIRS);
 
         GameRegistry.registerBlock(BLOCK_LARGEBRICK, ItemBlockBricks.class, BLOCK_LARGEBRICK.getUnlocalizedName());
         
@@ -129,6 +161,11 @@ public class AtumBlocks {
 
         GameRegistry.registerBlock(BLOCK_WALL, ItemBlockWall.class, BLOCK_WALL.getUnlocalizedName());
 
+        GameRegistry.registerBlock(BLOCK_WOOD_SLAB, ItemBlockWoodSlabs.class, "wood_slab", BLOCK_WOOD_SLAB, BLOCK_WOOD_DOUBLESLAB, false);
+        GameRegistry.registerBlock(BLOCK_WOOD_DOUBLESLAB, ItemBlockWoodSlabs.class, "wood_double_slab", BLOCK_WOOD_SLAB, BLOCK_WOOD_DOUBLESLAB, true);
+        
+        GameRegistry.registerBlock(BLOCK_CRATE, ItemBlockCrate.class, "crate");
+
         ForgeHooks.canToolHarvestBlock(BLOCK_SAND, 0, new ItemStack(Items.iron_shovel));
         BLOCK_SAND.setHarvestLevel("shovel", 0);
         BLOCK_COALORE.setHarvestLevel("pickaxe", 0);
@@ -142,16 +179,24 @@ public class AtumBlocks {
         Blocks.fire.setFireInfo(BLOCK_LEAVES, 30, 60);
         Blocks.fire.setFireInfo(BLOCK_LOG, 5, 5);
         Blocks.fire.setFireInfo(BLOCK_DEADWOOD_LOG, 5, 5);
+        Blocks.fire.setFireInfo(BLOCK_PALM_FENCE, 5, 20);
+        Blocks.fire.setFireInfo(BLOCK_DEADWOOD_PLANK, 5, 20);
+        Blocks.fire.setFireInfo(BLOCK_DEADWOOD_FENCE, 5, 20);
+        Blocks.fire.setFireInfo(BLOCK_WOOD_SLAB, 5, 20);
+        Blocks.fire.setFireInfo(BLOCK_WOOD_DOUBLESLAB, 5, 20);
 
         GameRegistry.registerTileEntity(TileEntityChestSpawner.class, "CursedChest");
         GameRegistry.registerTileEntity(TileEntityPharaohChest.class, "PharaohChest");
         GameRegistry.registerTileEntity(TileEntityBurningTrap.class, "BurningTrap");
         GameRegistry.registerTileEntity(TileEntityLimestoneFurnace.class, "LimestoneFurnace");
+        GameRegistry.registerTileEntity(TileEntityCrate.class, "atum:crate");
 
         OreDictionary.registerOre("blockLimestone", BLOCK_STONE);
 
         OreDictionary.registerOre("logWood", BLOCK_LOG);
+        OreDictionary.registerOre("logWood", BLOCK_DEADWOOD_LOG);
         OreDictionary.registerOre("plankWood", BLOCK_PLANKS);
+        OreDictionary.registerOre("plankWood", BLOCK_DEADWOOD_PLANK);
         OreDictionary.registerOre("treeSapling", BLOCK_PALMSAPLING);
         OreDictionary.registerOre("treeLeaves",  BLOCK_LEAVES);
 
@@ -188,7 +233,8 @@ public class AtumBlocks {
     }
 
     private void register(Block block) {
-        if (!(block instanceof BlockDate) && !(block instanceof BlockFlax) && !(block instanceof BlockPapyrus) && !(block instanceof BlockPortal)) {
+        if (!(block instanceof BlockDate) && !(block instanceof BlockFlax) && !(block instanceof BlockPapyrus) && !(block instanceof BlockPortal) && 
+                !(block instanceof BlockAtumDoor)) {
             block.setCreativeTab(Atum.creativeTab);
         }
         GameRegistry.registerBlock(block, block.getUnlocalizedName());

@@ -96,7 +96,8 @@ public class AtumEventListener {
 
     @SubscribeEvent
     public void onPickup(EntityItemPickupEvent pickupEvent) {
-        if (pickupEvent.item.getEntityItem().isItemEqual(new ItemStack(AtumBlocks.BLOCK_LOG))) {
+        if (pickupEvent.item.getEntityItem().isItemEqual(new ItemStack(AtumBlocks.BLOCK_LOG)) ||
+                pickupEvent.item.getEntityItem().isItemEqual(new ItemStack(AtumBlocks.BLOCK_DEADWOOD_LOG))) {
             pickupEvent.entityPlayer.triggerAchievement(AchievementList.mineWood);
         }
     }

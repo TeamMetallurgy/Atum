@@ -55,6 +55,24 @@ tile.diamondOre.name=Diamond Ore
 tile.furnaceIdle.name=Limestone Furnace
 tile.furnaceBurning.name=Limestone Furnace
 tile.deadwoodLog.name=Deadwood Log
+tile.palmDoor.name=Palm Door
+tile.palmFence.name=Palm Fence
+tile.palmFenceGate.name=Palm Fence Gate
+tile.palmHatch.name=Palm Hatch
+tile.palmLadder.name=Palm Ladder
+tile.deadwoodPlank.name=Deadwood Plank
+tile.deadwoodDoor.name=Deadwood Door
+tile.deadwoodFence.name=Deadwood Fence
+tile.deadwoodFenceGate.name=Deadwood Fence Gate
+tile.deadwoodHatch.name=Deadwood Hatch
+tile.deadwoodLadder.name=Deadwood Ladder
+tile.woodSlab.palm.name=Palm Wood Slab
+tile.woodSlab.deadwood.name=Deadwood Slab
+tile.palmStairs.name=Palm Stairs
+tile.deadwoodStairs.name=Deadwood Stairs
+tile.crate.palm.name=Palm Crate
+tile.crate.deadwood.name=Deadwood Crate
+
 
 # Stained Glass
 tile.crystalStainedGlassBlack.name=Black Stained Crystal Glass
@@ -127,6 +145,8 @@ tile.thinFramedStainedGlassWhite.name=White Stained Thin Framed Glass
 
 # Containers
 container.limestoneFurnace=Limestone Furnace
+container.crate.palm=Palm Crate
+container.crate.deadwood=Deadwood Crate
 
 # Item
 item.scarab.name=Scarab
@@ -162,9 +182,10 @@ item.scroll.name=Scroll
 item.wolfPelt.name=Wolf Pelt
 item.date.name=Date
 item.goldenDate.name=Golden Date
+item.goldenDateEnchanted.name=Enchanted Golden Date
 item.linen.name=Linen
 item.flax.name=Flax
-item.flaxSeeds.name=Flax Seed
+item.flaxSeeds.name=Flax Seeds
 item.fish.0.name=Forsaken Fish
 item.fish.1.name=Mummified Fish
 item.fish.2.name=Jeweled Fish
@@ -201,10 +222,18 @@ item.amunetsHomecoming.name=Amunet's Homecoming
 item.anubisMercy.name=Anubis's Mercy
 item.neithsAudacity.name=Neith's Audacity
 
+item.deadwoodDoor.name=Deadwood Door
+item.palmDoor.name=Palm Door
+
+item.stick.palm.name=Palm Stick
+item.stick.deadwood.name=Deadwood Stick
+
+item.deadwoodBeetle.name=Deadwood Beetle
+
 
 # Item Information
 item.akersToil.line1=Performance I: Faster, does
-item.akersToil.line2=not consume fatique
+item.akersToil.line2=not consume fatigue
 item.akersToil.line3=Performance I
 
 item.amunetsHomecoming.line1=Return I: Teleports you back

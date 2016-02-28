@@ -74,7 +74,7 @@ public class WorldGenDeadwood extends WorldGenAbstractTree {
                     
                     Block currentBlock = world.getBlock(logX, logY, logZ);
                     if(currentBlock.isAir(world, logX, logY, logZ) || currentBlock.isLeaves(world, logX, logY, logZ)){
-                        setBlockAndNotifyAdequately(world, logX, logY, logZ, AtumBlocks.BLOCK_DEADWOOD_LOG, 0);
+                        setBlockAndNotifyAdequately(world, logX, logY, logZ, AtumBlocks.BLOCK_DEADWOOD_LOG, 3);
                     }
                     
                     // Trunk base
@@ -88,7 +88,7 @@ public class WorldGenDeadwood extends WorldGenAbstractTree {
                             Block currentBaseBlock = world.getBlock(baseX, logY, baseZ);
                             Block lowerBaseBlock = world.getBlock(baseX, logY - 1, baseZ);
                             if ((currentBaseBlock.isAir(world, logX, logY, logZ) || currentBaseBlock.isLeaves(world, logX, logY, logZ)) && lowerBaseBlock == AtumBlocks.BLOCK_SAND) {
-                                setBlockAndNotifyAdequately(world, baseX, logY, baseZ, AtumBlocks.BLOCK_DEADWOOD_LOG, 0);
+                                setBlockAndNotifyAdequately(world, baseX, logY, baseZ, AtumBlocks.BLOCK_DEADWOOD_LOG, 3);
                             }
                         }
                     }
@@ -111,7 +111,7 @@ public class WorldGenDeadwood extends WorldGenAbstractTree {
                             
                             Block currentBlock = world.getBlock(logX, logY, logZ);
                             if(currentBlock.isAir(world, logX, logY, logZ) || currentBlock.isLeaves(world, logX, logY, logZ)){
-                                setBlockAndNotifyAdequately(world, logX, logY, logZ, AtumBlocks.BLOCK_DEADWOOD_LOG, 0);
+                                setBlockAndNotifyAdequately(world, logX, logY, logZ, AtumBlocks.BLOCK_DEADWOOD_LOG, 3);
                             }
                         }
                         

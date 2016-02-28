@@ -26,6 +26,7 @@ public class BiomeGenDeadOasis extends AtumBiomeGenBase {
         
         super.palmRarity = 9;
         super.pyramidRarity = -1;
+        super.deadwoodRarity = -1;
     }
     
 }

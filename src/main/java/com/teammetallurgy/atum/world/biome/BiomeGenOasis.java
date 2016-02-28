@@ -25,7 +25,6 @@ public class BiomeGenOasis extends AtumBiomeGenBase {
         super.setHeight(height_ShallowWaters);
         
         super.setTemperatureRainfall(0.8F, 0.9F);
-        super.enableRain = true;
         
         // no hostile spawns here
         
@@ -35,6 +34,7 @@ public class BiomeGenOasis extends AtumBiomeGenBase {
         
         super.palmRarity = 3;
         super.pyramidRarity = -1;
+        super.deadwoodRarity = -1;
     }
     
     @Override

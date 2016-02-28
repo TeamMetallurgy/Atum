@@ -287,6 +287,7 @@ public class TileEntityPharaohChest extends TileEntityChest implements IInventor
 
     public void setOpenable() {
         this.isOpenable = true;
+        this.markDirty();
     }
 
     public boolean hasSpawned() {

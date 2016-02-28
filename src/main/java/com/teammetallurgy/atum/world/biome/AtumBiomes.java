@@ -16,8 +16,9 @@ public class AtumBiomes {
 		registerBiome(new BiomeGenSandHills(AtumConfig.BiomeConfig.SAND_HILLS));
 		registerBiome(new BiomeGenLimestoneCrags(AtumConfig.BiomeConfig.LIMESTONE_CRAGS));
 		registerBiome(new BiomeGenLimestoneMountains(AtumConfig.BiomeConfig.LIMESTONE_MOUNTAINS));
-		registerBiome(new BiomeGenOasis(AtumConfig.BiomeConfig.OASIS));
-		registerBiome(new BiomeGenDeadOasis(AtumConfig.BiomeConfig.DEAD_OASIS));
+		// TODO: Disabled until fixed
+		// registerBiome(new BiomeGenOasis(AtumConfig.BiomeConfig.OASIS));
+		// registerBiome(new BiomeGenDeadOasis(AtumConfig.BiomeConfig.DEAD_OASIS));
 		registerBiome(new BiomeGenRuinedCity(AtumConfig.BiomeConfig.RUINED_CITY));
 		
 		riverBiome = new BiomeGenDriedRiver(AtumConfig.BiomeConfig.DRIED_RIVER);

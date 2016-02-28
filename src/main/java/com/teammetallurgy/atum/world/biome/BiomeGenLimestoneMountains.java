@@ -19,7 +19,7 @@ public class BiomeGenLimestoneMountains extends AtumBiomeGenBase {
         
         super.palmRarity = -1;
         super.pyramidRarity = -1;
-        // TODO: dead trees
+        super.deadwoodRarity *= 2;
         
         super.addDefaultSpawns();
     }

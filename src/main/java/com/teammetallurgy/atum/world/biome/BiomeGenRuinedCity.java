@@ -21,6 +21,8 @@ public class BiomeGenRuinedCity extends AtumBiomeGenBase {
         
         super.setHeight(height_LowPlains);
         
+        super.deadwoodRarity = -1;
+        
         super.addDefaultSpawns();
     }
     

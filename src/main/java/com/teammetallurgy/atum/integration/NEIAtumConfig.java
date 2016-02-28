@@ -29,5 +29,9 @@ public class NEIAtumConfig implements IConfigureNEI {
         API.hideItem(new ItemStack(AtumBlocks.BLOCK_PAPYRUS, 1, OreDictionary.WILDCARD_VALUE));
         API.hideItem(new ItemStack(AtumBlocks.BLOCK_PORTAL, 1, OreDictionary.WILDCARD_VALUE));
         API.hideItem(new ItemStack(AtumBlocks.BLOCK_FURNACEBURNING));
+        API.hideItem(new ItemStack(AtumBlocks.BLOCK_DOUBLESLAB,1, OreDictionary.WILDCARD_VALUE));
+        API.hideItem(new ItemStack(AtumBlocks.BLOCK_PALM_DOOR));
+        API.hideItem(new ItemStack(AtumBlocks.BLOCK_DEADWOOD_DOOR));
+        API.hideItem(new ItemStack(AtumBlocks.BLOCK_WOOD_DOUBLESLAB, 1, OreDictionary.WILDCARD_VALUE));
     }
 }

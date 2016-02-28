@@ -9,6 +9,8 @@ public class BiomeGenSandPlains extends AtumBiomeGenBase {
         
         super.setHeight(height_LowPlains.attenuate());
         
+        super.deadwoodRarity = -1;
+        
         super.addDefaultSpawns();
     }
 
