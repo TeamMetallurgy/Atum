@@ -8,20 +8,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.Vec3;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityBurningTrap extends TileEntity {
-
-    protected String field_94050_c;
-    private ItemStack[] dispenserContents = new ItemStack[9];
-    private Random dispenserRandom = new Random();
+public class TileEntityBurningTrap extends TileEntity implements ITickable {
 
     @Override
-    public void updateEntity() {
+    public void update() {
         EntityPlayer p = super.worldObj.getClosestPlayer((double) super.xCoord, (double) super.yCoord, (double) super.zCoord, 4.0D);
         byte range = 1;
         int xMin = super.xCoord;

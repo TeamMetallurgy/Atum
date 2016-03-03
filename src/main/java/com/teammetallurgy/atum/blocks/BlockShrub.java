@@ -2,12 +2,15 @@ package com.teammetallurgy.atum.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDeadBush;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class BlockShrub extends BlockDeadBush {
@@ -19,24 +22,17 @@ public class BlockShrub extends BlockDeadBush {
     }
 
     @Override
-    public boolean canPlaceBlockOn(Block par1) {
-        return par1 == AtumBlocks.BLOCK_SAND;
+    public boolean canPlaceBlockOn(Block ground) {
+        return ground == AtumBlocks.SAND;
     }
 
     @Override
-    public Item getItemDropped(int par1, Random par2Random, int par3) {
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) { //TODO Figure out if Shrubs should drop sticks like dead bushes in 1.9
         return null;
     }
 
     @Override
-    public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {
-        if (!par1World.isRemote && par2EntityPlayer.getCurrentEquippedItem() != null && par2EntityPlayer.getCurrentEquippedItem().getItem() == Items.shears) {
-            //par2EntityPlayer.addStat(StatList.mineBlockStatArray[this], 1);
-            this.dropBlockAsItem(par1World, par3, par4, par5, new ItemStack(AtumBlocks.BLOCK_SHRUB, 1, par6));
-        } else {
-            super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
-        }
-
+    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+        return new ArrayList<ItemStack>(Arrays.asList(new ItemStack(AtumBlocks.SHRUB)));
     }
-
 }

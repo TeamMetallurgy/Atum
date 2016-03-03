@@ -1,19 +1,7 @@
 package com.teammetallurgy.atum.blocks.tileentity.furnace;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntity;
-
-public class ContainerLimestoneFurnace extends Container {
-    private TileEntityLimestoneFurnace furnace;
+public class ContainerLimestoneFurnace /*extends Container*/ { //TODO Even nedded?
+    /*private TileEntityLimestoneFurnace furnace;
     private int lastCookTime = 0;
     private int lastBurnTime = 0;
     private int lastItemBurnTime = 0;
@@ -22,7 +10,7 @@ public class ContainerLimestoneFurnace extends Container {
         this.furnace = (TileEntityLimestoneFurnace) par2TileEntityLimestoneFurnace;
         this.addSlotToContainer(new Slot(furnace, 0, 56, 17));
         this.addSlotToContainer(new Slot(furnace, 1, 56, 53));
-        this.addSlotToContainer(new SlotFurnace(par1InventoryPlayer.player, furnace, 2, 116, 35));
+        this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, furnace, 2, 116, 35));
         int i;
 
         for (i = 0; i < 3; ++i) {
@@ -44,9 +32,6 @@ public class ContainerLimestoneFurnace extends Container {
         par1ICrafting.sendProgressBarUpdate(this, 2, this.furnace.currentItemBurnTime);
     }
 
-    /**
-     * Looks for changes made in the container, sends them to every listener.
-     */
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
@@ -93,9 +78,6 @@ public class ContainerLimestoneFurnace extends Container {
         return this.furnace.isUseableByPlayer(par1EntityPlayer);
     }
 
-    /**
-     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-     */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
         ItemStack itemstack = null;
@@ -112,7 +94,7 @@ public class ContainerLimestoneFurnace extends Container {
 
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (par2 != 1 && par2 != 0) {
-                if (FurnaceRecipes.smelting().getSmeltingResult(itemstack1) != null) {
+                if (FurnaceRecipes.instance().getSmeltingResult(itemstack1) != null) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return null;
                     }
@@ -146,4 +128,5 @@ public class ContainerLimestoneFurnace extends Container {
 
         return itemstack;
     }
+    */
 }

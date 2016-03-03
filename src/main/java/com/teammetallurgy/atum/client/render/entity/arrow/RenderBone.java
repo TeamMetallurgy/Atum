@@ -2,65 +2,57 @@ package com.teammetallurgy.atum.client.render.entity.arrow;
 
 import com.teammetallurgy.atum.entity.projectile.EntityBone;
 import com.teammetallurgy.atum.items.AtumItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.IIcon;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderBone extends Render {
-    private float size;
+public class RenderBone extends Render<EntityBone> {
+    private float scale;
 
-    public RenderBone(float size) {
-        this.size = size;
+    public RenderBone(RenderManager renderManager, float scale) {
+        super(renderManager);
+        this.scale = scale;
     }
 
-    public void doRender(EntityBone entityBone, double d, double d1, double d2, float f, float f1) {
-        GL11.glPushMatrix();
+    @Override
+    public void doRender(EntityBone entityBone, double x, double y, double z, float entityYaw, float partialTicks) {
+        GlStateManager.pushMatrix();
         this.bindEntityTexture(entityBone);
-        GL11.glTranslatef((float) d, (float) d1, (float) d2);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        float f2 = this.size;
-        GL11.glScalef(f2 / 1.0F, f2 / 1.0F, f2 / 1.0F);
-        IIcon iicon = AtumItems.ITEM_DUSTYBONE.getIconFromDamage(0);
-        Tessellator tessellator = Tessellator.instance;
-        float f3 = iicon.getMinU();
-        float f4 = iicon.getMaxU();
-        float f5 = iicon.getMinV();
-        float f6 = iicon.getMaxV();
-        float f7 = 1.0F;
-        float f8 = 0.5F;
-        float f9 = 0.25F;
-        GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-        tessellator.startDrawingQuads();
-        tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        tessellator.addVertexWithUV((double) (0.0F - f8), (double) (0.0F - f9), 0.0D, (double) f3, (double) f6);
-        tessellator.addVertexWithUV((double) (f7 - f8), (double) (0.0F - f9), 0.0D, (double) f4, (double) f6);
-        tessellator.addVertexWithUV((double) (f7 - f8), (double) (1.0F - f9), 0.0D, (double) f4, (double) f5);
-        tessellator.addVertexWithUV((double) (0.0F - f8), (double) (1.0F - f9), 0.0D, (double) f3, (double) f5);
+        GlStateManager.translate((float) x, (float) y, (float) z);
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.scale(this.scale, this.scale, this.scale);
+        TextureAtlasSprite textureatlassprite = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(AtumItems.DUSTY_BONE);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        float f = textureatlassprite.getMinU();
+        float f1 = textureatlassprite.getMaxU();
+        float f2 = textureatlassprite.getMinV();
+        float f3 = textureatlassprite.getMaxV();
+        GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        worldrenderer.pos(-0.5D, -0.25D, 0.0D).tex((double) f, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(0.5D, -0.25D, 0.0D).tex((double) f1, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(0.5D, 0.75D, 0.0D).tex((double) f1, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
+        worldrenderer.pos(-0.5D, 0.75D, 0.0D).tex((double) f, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
         tessellator.draw();
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
+        super.doRender(entityBone, x, y, z, entityYaw, partialTicks);
     }
 
+    @Override
     protected ResourceLocation getEntityTexture(EntityBone entityBone) {
-        return TextureMap.locationItemsTexture;
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return this.getEntityTexture((EntityBone) entity);
-    }
-
-    @Override
-    public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
-        this.doRender((EntityBone) entity, d, d1, d2, f, f1);
+        return TextureMap.locationBlocksTexture;
     }
 }

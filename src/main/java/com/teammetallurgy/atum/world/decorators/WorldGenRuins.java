@@ -1,5 +1,6 @@
 package com.teammetallurgy.atum.world.decorators;
 
+import com.teammetallurgy.atum.blocks.BlockAtumBricks;
 import com.teammetallurgy.atum.items.AtumLoot;
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import net.minecraft.inventory.IInventory;
@@ -65,15 +66,15 @@ public class WorldGenRuins extends WorldGenerator {
                         world.setBlockToAir(chestX, chestY + height, chestZ);
                     } else if (chestY < wallHeight) {
                         if ((double) random.nextFloat() > 0.1D) {
-                            world.setBlock(chestX, chestY + height, chestZ, AtumBlocks.BLOCK_LARGEBRICK);
+                            world.setBlockState(chestX, chestY + height, chestZ, AtumBlocks.LIMESTONE_BRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE));
                         } else {
-                            world.setBlock(chestX, chestY + height, chestZ, AtumBlocks.BLOCK_SMALLBRICK);
+                            world.setBlockState(chestX, chestY + height, chestZ, AtumBlocks.LIMESTONE_BRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.SMALL));
                         }
                     } else if (chestY == wallHeight && (double) random.nextFloat() > 0.7D) {
                         if ((double) random.nextFloat() > 0.1D) {
-                            world.setBlock(chestX, chestY + height, chestZ, AtumBlocks.BLOCK_SLABS, 2, 0);
+                            world.setBlockState(chestX, chestY + height, chestZ, AtumBlocks.SLABS, 2, 0);
                         } else {
-                            world.setBlock(chestX, chestY + height, chestZ, AtumBlocks.BLOCK_SLABS, 3, 0);
+                            world.setBlockState(chestX, chestY + height, chestZ, AtumBlocks.SLABS, 3, 0);
                         }
                     }
                 }
@@ -105,7 +106,7 @@ public class WorldGenRuins extends WorldGenerator {
 	        }
 	
 	        chestY = world.getHeightValue(chestX, chestZ);
-	        world.setBlock(chestX, chestY, chestZ, AtumBlocks.BLOCK_CURSEDCHEST, 0, 2);
+	        world.setBlock(chestX, chestY, chestZ, AtumBlocks.CURSEDCHEST, 0, 2);
 	        IInventory chest = (IInventory) world.getTileEntity(chestX, chestY, chestZ);
 	        AtumLoot.fillChest(chest, 5, 0.5F);
         }

@@ -1,8 +1,5 @@
 package com.teammetallurgy.atum.entity.arrow;
 
-import cpw.mods.fml.common.registry.IThrowableEntity;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -18,21 +15,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IThrowableEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
 public class EntityNutsCall extends CustomArrow implements IProjectile, IThrowableEntity {
-    /**
-     * 1 if the player can pick up the arrow
-     */
     public int canBePickedUp = 0;
-    /**
-     * Seems to be some sort of timer for animating an arrow.
-     */
     public int arrowShake = 0;
-    /**
-     * The owner of this arrow.
-     */
     public Entity shootingEntity;
     public ItemStack stack;
     private int xTile = -1;
@@ -62,7 +53,6 @@ public class EntityNutsCall extends CustomArrow implements IProjectile, IThrowab
         isImmuneToFire = true;
         this.setSize(1.5F, 0.5F);
         this.setPosition(par2, par4, par6);
-        this.yOffset = 0.0F;
     }
 
     public EntityNutsCall(World par1World, EntityLivingBase par2EntityLiving, EntityLiving par3EntityLiving, float par4, float par5) {
@@ -77,7 +67,7 @@ public class EntityNutsCall extends CustomArrow implements IProjectile, IThrowab
 
         this.posY = par2EntityLiving.posY + (double) par2EntityLiving.getEyeHeight() - 0.10000000149011612D;
         double d0 = par3EntityLiving.posX - par2EntityLiving.posX;
-        double d1 = par3EntityLiving.boundingBox.minY + (double) (par3EntityLiving.height / 3.0F) - this.posY;
+        double d1 = par3EntityLiving.getEntityBoundingBox().minY + (double) (par3EntityLiving.height / 3.0F) - this.posY;
         double d2 = par3EntityLiving.posZ - par2EntityLiving.posZ;
         double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
 
@@ -87,7 +77,6 @@ public class EntityNutsCall extends CustomArrow implements IProjectile, IThrowab
             double d4 = d0 / d3;
             double d5 = d2 / d3;
             this.setLocationAndAngles(par2EntityLiving.posX + d4, this.posY, par2EntityLiving.posZ + d5, f2, f3);
-            this.yOffset = 0.0F;
             float f4 = (float) d3 * 0.2F;
             this.setThrowableHeading(d0, d1 + (double) f4, d2, par4, par5);
         }
@@ -109,7 +98,6 @@ public class EntityNutsCall extends CustomArrow implements IProjectile, IThrowab
         this.posY -= 0.10000000149011612D;
         this.posZ -= (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.yOffset = 0.0F;
         this.motionX = (double) (-MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
         this.motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
         this.motionY = (double) (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
@@ -148,20 +136,15 @@ public class EntityNutsCall extends CustomArrow implements IProjectile, IThrowab
         this.ticksInGround = 0;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    /**
-     * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
-     * posY, posZ, yaw, pitch
-     */
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
+    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9, boolean b) {
         this.setPosition(par1, par3, par5);
         this.setRotation(par7, par8);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    /**
-     * Sets the velocity to the args. Args: x, y, z
-     */
     public void setVelocity(double par1, double par3, double par5) {
         this.motionX = par1;
         this.motionY = par3;

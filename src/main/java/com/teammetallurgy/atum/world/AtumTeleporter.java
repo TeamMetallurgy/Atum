@@ -4,6 +4,7 @@ import com.teammetallurgy.atum.blocks.AtumBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.Direction;
 import net.minecraft.util.LongHashMap;
 import net.minecraft.util.MathHelper;
@@ -31,46 +32,45 @@ public class AtumTeleporter extends Teleporter {
     }
 
     @Override
-    public void placeInPortal(Entity entityPlayer, double par2, double par4, double par6, float par8) {
-        if (this.worldServerInstance.provider.dimensionId != 1) {
-            if (!this.placeInExistingPortal(entityPlayer, par2, par4, par6, par8)) {
-                this.makePortal(entityPlayer);
-                this.placeInExistingPortal(entityPlayer, par2, par4, par6, par8);
+    public void placeInPortal(Entity entity, float rotationYaw) {
+        if (this.worldServerInstance.provider.getDimensionId() != 1) {
+            if (!this.placeInExistingPortal(entity, rotationYaw)) {
+                this.makePortal(entity);
+                this.placeInExistingPortal(entity, rotationYaw);
             }
         } else {
-            int x = MathHelper.floor_double(entityPlayer.posX);
-            int y = MathHelper.floor_double(entityPlayer.posY) - 1;
-            int z = MathHelper.floor_double(entityPlayer.posZ);
-            byte b0 = 1;
-            byte b1 = 0;
+            int x = MathHelper.floor_double(entity.posX);
+            int y = MathHelper.floor_double(entity.posY) - 1;
+            int z = MathHelper.floor_double(entity.posZ);
+            int l = 1;
+            int i1 = 0;
 
-            for (int l = -2; l <= 2; ++l) {
-                for (int i1 = -2; i1 <= 2; ++i1) {
-                    for (int j1 = -1; j1 < 3; ++j1) {
-                        int k1 = x + i1 * b0 + l * b1;
-                        int l1 = y + j1;
-                        int i2 = z + i1 * b1 - l * b0;
-                        boolean flag = j1 < 0;
-                        this.worldServerInstance.setBlock(k1, l1, i2, flag ? Blocks.sandstone : Blocks.air);
+            for (int j1 = -2; j1 <= 2; ++j1) {
+                for (int k1 = -2; k1 <= 2; ++k1) {
+                    for (int l1 = -1; l1 < 3; ++l1) {
+                        int i2 = x + k1 * l + j1 * i1;
+                        int j2 = y + l1;
+                        int k2 = z + k1 * i1 - j1 * l;
+                        boolean flag = l1 < 0;
+                        this.worldServerInstance.setBlockState(new BlockPos(i2, j2, k2), flag ? Blocks.sandstone.getDefaultState() : Blocks.air.getDefaultState());
                     }
                 }
             }
 
-            entityPlayer.setLocationAndAngles((double) x, (double) y, (double) z, entityPlayer.rotationYaw, 0.0F);
-            entityPlayer.motionX = entityPlayer.motionY = entityPlayer.motionZ = 0.0D;
+            entity.setLocationAndAngles((double) x, (double) y, (double) z, entity.rotationYaw, 0.0F);
+            entity.motionX = entity.motionY = entity.motionZ = 0.0D;
         }
-
     }
 
     @Override
-    public boolean placeInExistingPortal(Entity par1Entity, double posX, double posY, double posZ, float par8) {
+    public boolean placeInExistingPortal(Entity entity, float rotationYaw) {
         short short1 = 128;
         double d3 = -1.0D;
         int x = 0;
         int y = 0;
         int z = 0;
-        int l = MathHelper.floor_double(par1Entity.posX);
-        int i1 = MathHelper.floor_double(par1Entity.posZ);
+        int l = MathHelper.floor_double(entity.posX);
+        int i1 = MathHelper.floor_double(entity.posZ);
         long j1 = ChunkCoordIntPair.chunkXZ2Int(l, i1);
         boolean flag = true;
         double d4;
@@ -87,17 +87,17 @@ public class AtumTeleporter extends Teleporter {
             flag = false;
         } else {
             for (k1 = l - short1; k1 <= l + short1; ++k1) {
-                var46 = (double) k1 + 0.5D - par1Entity.posX;
+                var46 = (double) k1 + 0.5D - entity.posX;
                 for (int d9 = i1 - short1; d9 <= i1 + short1; ++d9) {
-                    double d6 = (double) d9 + 0.5D - par1Entity.posZ;
+                    double d6 = (double) d9 + 0.5D - entity.posZ;
 
                     for (k2 = this.worldServerInstance.getActualHeight() - 1; k2 >= 0; --k2) {
-                        if (this.worldServerInstance.getBlock(k1, k2, d9) == AtumBlocks.BLOCK_PORTAL) {
-                            while (this.worldServerInstance.getBlock(k1, k2 - 1, d9) == AtumBlocks.BLOCK_PORTAL) {
+                        if (this.worldServerInstance.getBlock(k1, k2, d9) == AtumBlocks.PORTAL) {
+                            while (this.worldServerInstance.getBlock(k1, k2 - 1, d9) == AtumBlocks.PORTAL) {
                                 --k2;
                             }
 
-                            d4 = (double) k2 + 0.5D - par1Entity.posY;
+                            d4 = (double) k2 + 0.5D - entity.posY;
                             double l2 = var46 * var46 + d4 * d4 + d6 * d6;
                             if (d3 < 0.0D || l2 < d3) {
                                 d3 = l2;
@@ -121,23 +121,23 @@ public class AtumTeleporter extends Teleporter {
             double var47 = (double) y + 0.5D;
             d4 = (double) z + 0.5D;
             int j2 = -1;
-            if (this.worldServerInstance.getBlock(x - 1, y, z) == AtumBlocks.BLOCK_PORTAL) {
+            if (this.worldServerInstance.getBlock(x - 1, y, z) == AtumBlocks.PORTAL) {
                 j2 = 2;
             }
 
-            if (this.worldServerInstance.getBlock(x + 1, y, z) == AtumBlocks.BLOCK_PORTAL) {
+            if (this.worldServerInstance.getBlock(x + 1, y, z) == AtumBlocks.PORTAL) {
                 j2 = 0;
             }
 
-            if (this.worldServerInstance.getBlock(x, y, z - 1) == AtumBlocks.BLOCK_PORTAL) {
+            if (this.worldServerInstance.getBlock(x, y, z - 1) == AtumBlocks.PORTAL) {
                 j2 = 3;
             }
 
-            if (this.worldServerInstance.getBlock(x, y, z + 1) == AtumBlocks.BLOCK_PORTAL) {
+            if (this.worldServerInstance.getBlock(x, y, z + 1) == AtumBlocks.PORTAL) {
                 j2 = 1;
             }
 
-            k2 = par1Entity.getTeleportDirection();
+            k2 = entity.getTeleportDirection();
             if (j2 > -1) {
                 int var48 = Direction.rotateLeft[j2];
                 int i3 = Direction.offsetX[j2];
@@ -191,16 +191,16 @@ public class AtumTeleporter extends Teleporter {
                     f6 = 1.0F;
                 }
 
-                double d10 = par1Entity.motionX;
-                double d11 = par1Entity.motionZ;
-                par1Entity.motionX = d10 * (double) f3 + d11 * (double) f6;
-                par1Entity.motionZ = d10 * (double) f5 + d11 * (double) f4;
-                par1Entity.rotationYaw = par8 - (float) (k2 * 90) + (float) (j2 * 90);
+                double d10 = entity.motionX;
+                double d11 = entity.motionZ;
+                entity.motionX = d10 * (double) f3 + d11 * (double) f6;
+                entity.motionZ = d10 * (double) f5 + d11 * (double) f4;
+                entity.rotationYaw = rotationYaw - (float) (k2 * 90) + (float) (j2 * 90);
             } else {
-                par1Entity.motionX = par1Entity.motionY = par1Entity.motionZ = 0.0D;
+                entity.motionX = entity.motionY = entity.motionZ = 0.0D;
             }
 
-            par1Entity.setLocationAndAngles(var46, var47, d4, par1Entity.rotationYaw, par1Entity.rotationPitch);
+            entity.setLocationAndAngles(var46, var47, d4, entity.rotationYaw, entity.rotationPitch);
             return true;
         } else {
             return false;
@@ -208,12 +208,12 @@ public class AtumTeleporter extends Teleporter {
     }
 
     @Override
-    public boolean makePortal(Entity par1Entity) {
+    public boolean makePortal(Entity entity) {
         byte b0 = 16;
         double d0 = -1.0D;
-        int entityX = MathHelper.floor_double(par1Entity.posX);
-        int entityY = MathHelper.floor_double(par1Entity.posY);
-        int entityZ = MathHelper.floor_double(par1Entity.posZ);
+        int entityX = MathHelper.floor_double(entity.posX);
+        int entityY = MathHelper.floor_double(entity.posY);
+        int entityZ = MathHelper.floor_double(entity.posZ);
         int l = entityX;
         int i1 = entityY;
         int j1 = entityZ;
@@ -228,10 +228,10 @@ public class AtumTeleporter extends Teleporter {
         double d4;
         int i5;
         for (i2 = entityX - b0; i2 <= entityX + b0; ++i2) {
-            d1 = (double) i2 + 0.5D - par1Entity.posX;
+            d1 = (double) i2 + 0.5D - entity.posX;
 
             for (j2 = entityZ - b0; j2 <= entityZ + b0; ++j2) {
-                d2 = (double) j2 + 0.5D - par1Entity.posZ;
+                d2 = (double) j2 + 0.5D - entity.posZ;
 
                 label272:
                 for (k2 = this.worldServerInstance.getActualHeight() - 1; k2 >= 0; --k2) {
@@ -261,7 +261,7 @@ public class AtumTeleporter extends Teleporter {
                                 }
                             }
 
-                            d4 = (double) k2 + 0.5D - par1Entity.posY;
+                            d4 = (double) k2 + 0.5D - entity.posY;
                             d3 = d1 * d1 + d4 * d4 + d2 * d2;
                             if (d0 < 0.0D || d3 < d0) {
                                 d0 = d3;
@@ -278,10 +278,10 @@ public class AtumTeleporter extends Teleporter {
 
         if (d0 < 0.0D) {
             for (i2 = entityX - b0; i2 <= entityX + b0; ++i2) {
-                d1 = (double) i2 + 0.5D - par1Entity.posX;
+                d1 = (double) i2 + 0.5D - entity.posX;
 
                 for (j2 = entityZ - b0; j2 <= entityZ + b0; ++j2) {
-                    d2 = (double) j2 + 0.5D - par1Entity.posZ;
+                    d2 = (double) j2 + 0.5D - entity.posZ;
 
                     label220:
                     for (k2 = this.worldServerInstance.getActualHeight() - 1; k2 >= 0; --k2) {
@@ -305,7 +305,7 @@ public class AtumTeleporter extends Teleporter {
                                     }
                                 }
 
-                                d4 = (double) k2 + 0.5D - par1Entity.posY;
+                                d4 = (double) k2 + 0.5D - entity.posY;
                                 d3 = d1 * d1 + d4 * d4 + d2 * d2;
                                 if (d0 < 0.0D || d3 < d0) {
                                     d0 = d3;
@@ -357,10 +357,10 @@ public class AtumTeleporter extends Teleporter {
         }
 
         Block block;
-        if (par1Entity.dimension == 0) {
+        if (entity.dimension == 0) {
             block = Blocks.sandstone;
         } else {
-            block = AtumBlocks.BLOCK_LARGEBRICK;
+            block = AtumBlocks.LARGEBRICK;
         }
         for (int x1 = -2; x1 < 3; x1++) {
             for (int z1 = -2; z1 < 3; z1++) {
@@ -387,7 +387,7 @@ public class AtumTeleporter extends Teleporter {
 
         for (int x1 = -1; x1 < 2; x1++) {
             for (int z1 = -1; z1 < 2; z1++) {
-                this.worldServerInstance.setBlock(l + x1 , i1 + 1, j1 + z1, AtumBlocks.BLOCK_PORTAL, 0, 2);
+                this.worldServerInstance.setBlock(l + x1, i1 + 1, j1 + z1, AtumBlocks.PORTAL, 0, 2);
             }
         }
         return true;

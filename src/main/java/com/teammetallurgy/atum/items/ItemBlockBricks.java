@@ -11,17 +11,17 @@ public class ItemBlockBricks extends ItemBlock {
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
     }
-    
+
     @Override
     public int getMetadata(int meta) {
         return meta;
     }
-    
+
     @Override
-    public String getUnlocalizedName(ItemStack itemStack) {
-        if (itemStack.getItemDamage() != 2)
-            return getUnlocalizedName() + "Unbreakable"; 
+    public String getUnlocalizedName(ItemStack stack) {
+        if (stack.getItemDamage() != 2) {
+            return getUnlocalizedName() + "Unbreakable";
+        }
         return getUnlocalizedName();
     }
-
 }

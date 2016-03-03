@@ -2,11 +2,6 @@ package com.teammetallurgy.atum.items.artifacts;
 
 import com.teammetallurgy.atum.items.AtumItems;
 import com.teammetallurgy.atum.items.ItemTexturedArmor;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
@@ -17,30 +12,33 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
-
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
 public class ItemHorusFlight extends ItemTexturedArmor {
 
-    public ItemHorusFlight(ArmorMaterial par2ArmorMaterial, int par3, int par4) {
-        super(par2ArmorMaterial, par3, par4);
+    public ItemHorusFlight(ArmorMaterial material, int renderIndex, int armorType) {
+        super(material, renderIndex, armorType);
     }
 
     @Override
-    public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack) {
         return true;
     }
-    
+
     @Override
-    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        super.onArmorTick(world, player, itemStack);
-        
-        if (world.isRemote || itemStack == null || itemStack.getItem() != this)
+    public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
+        super.onArmorTick(world, player, stack);
+
+        if (world.isRemote || stack == null || stack.getItem() != this) {
             return;
-        
-        player.addPotionEffect(new PotionEffect(8, 40, 1, true));
+        }
+        player.addPotionEffect(new PotionEffect(8, 40, 1, true, true)); //TODO Check showParticles boolean
     }
 
     @SubscribeEvent
@@ -50,12 +48,11 @@ public class ItemHorusFlight extends ItemTexturedArmor {
             event.entityLiving.motionX *= 1.2D;
             event.entityLiving.motionZ *= 1.2D;
         }
-
     }
 
     @SubscribeEvent
     public void onFallDamage(LivingFallEvent event) {
-        if (event.entityLiving.getEquipmentInSlot(1) != null && event.entityLiving.getEquipmentInSlot(1).getItem() == AtumItems.horusFlight) {
+        if (event.entityLiving.getEquipmentInSlot(1) != null && event.entityLiving.getEquipmentInSlot(1).getItem() == AtumItems.HORUS_FLIGHT) {
             event.distance = 0.0F;
         }
 
@@ -63,28 +60,23 @@ public class ItemHorusFlight extends ItemTexturedArmor {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack) {
-        return EnumRarity.rare;
+    public EnumRarity getRarity(ItemStack stack) {
+        return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            par3List.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
         }
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.getItem() == Items.diamond;
-    }
-
-    @Override
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.itemIcon = par1IIconRegister.registerIcon("atum:HorusFlight");
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return repair.getItem() == Items.diamond;
     }
 }

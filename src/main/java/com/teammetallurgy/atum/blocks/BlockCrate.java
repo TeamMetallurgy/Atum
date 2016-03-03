@@ -30,13 +30,10 @@ import java.util.Random;
 public class BlockCrate extends BlockContainer {
     
     private static final String[] TYPES = {"Palm", "Deadwood"};
-    private IIcon icons[];
     private Random random = new Random();
 
     protected BlockCrate() {
         super(Material.wood);
-        setCreativeTab(Atum.creativeTab);
-        setBlockName("crate");
         setHardness(3.0F);
         setStepSound(soundTypeWood);
     }

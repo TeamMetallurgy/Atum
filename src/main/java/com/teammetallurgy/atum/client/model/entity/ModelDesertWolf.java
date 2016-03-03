@@ -1,55 +1,24 @@
 package com.teammetallurgy.atum.client.model.entity;
 
 import com.teammetallurgy.atum.entity.EntityDesertWolf;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelDesertWolf extends ModelBase {
-    /**
-     * main box for the wolf head
-     */
     public ModelRenderer wolfHeadMain;
-
-    /**
-     * The wolf's body
-     */
     public ModelRenderer wolfBody;
-
-    /**
-     * Wolf'se first leg
-     */
     public ModelRenderer wolfLeg1;
-
-    /**
-     * Wolf's second leg
-     */
     public ModelRenderer wolfLeg2;
-
-    /**
-     * Wolf's third leg
-     */
     public ModelRenderer wolfLeg3;
-
-    /**
-     * Wolf's fourth leg
-     */
     public ModelRenderer wolfLeg4;
-
-    /**
-     * The wolf's tail
-     */
     ModelRenderer wolfTail;
-
-    /**
-     * The wolf's mane
-     */
     ModelRenderer wolfMane;
 
     public ModelDesertWolf() {
@@ -84,58 +53,51 @@ public class ModelDesertWolf extends ModelBase {
         this.wolfHeadMain.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -5.0F, 3, 3, 4, f);
     }
 
-    /**
-     * Sets the models various rotation angles then renders the model.
-     */
     @Override
-    public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-        super.render(par1Entity, par2, par3, par4, par5, par6, par7);
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
+    public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float scale) {
+        super.render(entity, par2, par3, par4, par5, par6, scale);
+        this.setRotationAngles(par2, par3, par4, par5, par6, scale, entity);
 
         if (this.isChild) {
-            float f6 = 2.0F;
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 5.0F * par7, 2.0F * par7);
-            this.wolfHeadMain.renderWithRotation(par7);
-            GL11.glPopMatrix();
-            GL11.glPushMatrix();
-            GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
-            GL11.glTranslatef(0.0F, 24.0F * par7, 0.0F);
-            this.wolfBody.render(par7);
-            this.wolfLeg1.render(par7);
-            this.wolfLeg2.render(par7);
-            this.wolfLeg3.render(par7);
-            this.wolfLeg4.render(par7);
-            this.wolfTail.renderWithRotation(par7);
-            this.wolfMane.render(par7);
-            GL11.glPopMatrix();
+            float f = 2.0F;
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0.0F, 5.0F * scale, 2.0F * scale);
+            this.wolfHeadMain.renderWithRotation(scale);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(1.0F / f, 1.0F / f, 1.0F / f);
+            GlStateManager.translate(0.0F, 24.0F * scale, 0.0F);
+            this.wolfBody.render(scale);
+            this.wolfLeg1.render(scale);
+            this.wolfLeg2.render(scale);
+            this.wolfLeg3.render(scale);
+            this.wolfLeg4.render(scale);
+            this.wolfTail.renderWithRotation(scale);
+            this.wolfMane.render(scale);
+            GlStateManager.popMatrix();
         } else {
-            this.wolfHeadMain.renderWithRotation(par7);
-            this.wolfBody.render(par7);
-            this.wolfLeg1.render(par7);
-            this.wolfLeg2.render(par7);
-            this.wolfLeg3.render(par7);
-            this.wolfLeg4.render(par7);
-            this.wolfTail.renderWithRotation(par7);
-            this.wolfMane.render(par7);
+            this.wolfHeadMain.renderWithRotation(scale);
+            this.wolfBody.render(scale);
+            this.wolfLeg1.render(scale);
+            this.wolfLeg2.render(scale);
+            this.wolfLeg3.render(scale);
+            this.wolfLeg4.render(scale);
+            this.wolfTail.renderWithRotation(scale);
+            this.wolfMane.render(scale);
         }
     }
 
-    /**
-     * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-     * and third as in the setRotationAngles method.
-     */
     @Override
-    public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float par4) {
-        EntityDesertWolf entitywolf = (EntityDesertWolf) par1EntityLiving;
+    public void setLivingAnimations(EntityLivingBase entityLivingBase, float par2, float par3, float partialTickTime) {
+        EntityDesertWolf entityDesertWolf = (EntityDesertWolf) entityLivingBase;
 
-        if (entitywolf.isAngry()) {
+        if (entityDesertWolf.isAngry()) {
             this.wolfTail.rotateAngleY = 0.0F;
         } else {
             this.wolfTail.rotateAngleY = MathHelper.cos(par2 * 0.6662F) * 1.4F * par3;
         }
 
-        if (entitywolf.isSitting()) {
+        if (entityDesertWolf.isSitting()) {
             this.wolfMane.setRotationPoint(-1.0F, 16.0F, -3.0F);
             this.wolfMane.rotateAngleX = ((float) Math.PI * 2F / 5F);
             this.wolfMane.rotateAngleY = 0.0F;
@@ -166,17 +128,12 @@ public class ModelDesertWolf extends ModelBase {
             this.wolfLeg4.rotateAngleX = MathHelper.cos(par2 * 0.6662F) * 1.4F * par3;
         }
 
-        this.wolfHeadMain.rotateAngleZ = entitywolf.getInterestedAngle(par4) + entitywolf.getShakeAngle(par4, 0.0F);
-        this.wolfMane.rotateAngleZ = entitywolf.getShakeAngle(par4, -0.08F);
-        this.wolfBody.rotateAngleZ = entitywolf.getShakeAngle(par4, -0.16F);
-        this.wolfTail.rotateAngleZ = entitywolf.getShakeAngle(par4, -0.2F);
+        this.wolfHeadMain.rotateAngleZ = entityDesertWolf.getInterestedAngle(partialTickTime) + entityDesertWolf.getShakeAngle(partialTickTime, 0.0F);
+        this.wolfMane.rotateAngleZ = entityDesertWolf.getShakeAngle(partialTickTime, -0.08F);
+        this.wolfBody.rotateAngleZ = entityDesertWolf.getShakeAngle(partialTickTime, -0.16F);
+        this.wolfTail.rotateAngleZ = entityDesertWolf.getShakeAngle(partialTickTime, -0.2F);
     }
 
-    /**
-     * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-     * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
-     * "far" arms and legs can swing at most.
-     */
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
         super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);

@@ -2,15 +2,12 @@ package com.teammetallurgy.atum.world;
 
 import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.world.biome.AtumWorldChunkManager;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.biome.WorldChunkManagerHell;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AtumWorldProvider extends WorldProvider {
     @Override
@@ -19,9 +16,14 @@ public class AtumWorldProvider extends WorldProvider {
     }
 
     @Override
+    public String getInternalNameSuffix() {
+        return "_atum";
+    }
+
+    @Override
     protected void registerWorldChunkManager() {
-    	this.worldChunkMgr = new AtumWorldChunkManager(super.worldObj.getSeed());
-    	
+        this.worldChunkMgr = new AtumWorldChunkManager(super.worldObj.getSeed());
+
         this.dimensionId = AtumConfig.DIMENSION_ID;
     }
 
@@ -79,13 +81,10 @@ public class AtumWorldProvider extends WorldProvider {
         float f3 = 0.7529412F;
         float f4 = 0.84705883F;
         float f5 = 1.0F;
-        float var10000 = f3 * (f2 * 0.94F + 0.06F);
-        var10000 = f4 * (f2 * 0.94F + 0.06F);
-        var10000 = f5 * (f2 * 0.91F + 0.09F);
         f3 = 0.9F * f2;
         f4 = 0.75F * f2;
         f5 = 0.6F * f2;
-        return Vec3.createVectorHelper((double) f3, (double) f4, (double) f5);
+        return new Vec3((double) f3, (double) f4, (double) f5);
     }
 
     @Override

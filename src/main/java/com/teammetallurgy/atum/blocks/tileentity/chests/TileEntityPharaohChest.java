@@ -3,9 +3,9 @@ package com.teammetallurgy.atum.blocks.tileentity.chests;
 import com.teammetallurgy.atum.blocks.BlockPharaohChest;
 import com.teammetallurgy.atum.entity.EntityMummy;
 import com.teammetallurgy.atum.entity.EntityPharaoh;
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.Iterator;
 import java.util.List;
@@ -281,8 +282,8 @@ public class TileEntityPharaohChest extends TileEntityChest implements IInventor
     }
 
     @Override
-    public void func_145976_a(String p_145976_1_) {
-        this.field_94045_s = p_145976_1_;
+    public void setCustomName(String name) {
+        this.field_94045_s = name;
     }
 
     public void setOpenable() {
@@ -319,12 +320,12 @@ public class TileEntityPharaohChest extends TileEntityChest implements IInventor
 
         mummy2.spawnExplosionParticle();
         if (!super.worldObj.isRemote) {
-            List players = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList;
+            List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList;
             Iterator i = players.iterator();
 
             while (i.hasNext()) {
                 EntityPlayer p = (EntityPlayer) i.next();
-                p.addChatMessage(new ChatComponentText(pharaoh.getCommandSenderName() + " " + StatCollector.translateToLocal("chat.atum.summonPharaoh") + " " + player.getGameProfile().getName()));
+                p.addChatMessage(new ChatComponentText(pharaoh.getName() + " " + StatCollector.translateToLocal("chat.atum.summonPharaoh") + " " + player.getGameProfile().getName()));
             }
         }
 

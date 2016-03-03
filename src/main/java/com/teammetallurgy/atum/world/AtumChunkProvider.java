@@ -157,9 +157,9 @@ public class AtumChunkProvider implements IChunkProvider {
 
                             for (int k3 = 0; k3 < 4; ++k3) {
                                 if ((d15 += d16) > 0.0D) {
-                                    blocks[j3 += short1] = AtumBlocks.BLOCK_STONE;
+                                    blocks[j3 += short1] = AtumBlocks.STONE;
                                 } else if (k2 * 8 + l2 < seaLevel) {
-                                    blocks[j3 += short1] = AtumBlocks.BLOCK_STONE;
+                                    blocks[j3 += short1] = AtumBlocks.STONE;
                                 } else {
                                     blocks[j3 += short1] = null;
                                 }

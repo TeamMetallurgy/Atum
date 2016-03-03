@@ -1,8 +1,6 @@
 package com.teammetallurgy.atum.client.render.entity;
 
 import com.teammetallurgy.atum.entity.EntityGhost;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBase;
@@ -12,46 +10,34 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
-public class RenderGhost extends Render {
+public class RenderGhost extends Render<EntityGhost> {
     protected ModelBase mainModel;
-
-    /**
-     * The model to be used during the render passes.
-     */
     protected ModelBase renderPassModel;
 
-    public RenderGhost(ModelBase par1ModelBase, float par2) {
-        this.mainModel = par1ModelBase;
-        this.shadowSize = par2;
+    public RenderGhost(RenderManager renderManager, ModelBase modelBase, float shadowSize) {
+        super(renderManager);
+        this.mainModel = modelBase;
+        this.shadowSize = shadowSize;
     }
 
-    /**
-     * Sets the model to be used in the current render pass (the first render
-     * pass is done after the primary model is rendered) Args: model
-     */
-    public void setRenderPassModel(ModelBase par1ModelBase) {
-        this.renderPassModel = par1ModelBase;
+    public void setRenderPassModel(ModelBase modelBase) {
+        this.renderPassModel = modelBase;
     }
 
-    /**
-     * Returns a rotation angle that is inbetween two other rotation angles.
-     * par1 and par2 are the angles between which to interpolate, par3 is
-     * probably a float between 0.0 and 1.0 that tells us where "between" the
-     * two angles we are. Example: par1 = 30, par2 = 50, par3 = 0.5, then return
-     * = 40
-     */
     private float interpolateRotation(float par1, float par2, float par3) {
         float f3;
 
@@ -66,46 +52,47 @@ public class RenderGhost extends Render {
         return par1 + par3 * f3;
     }
 
-    public void doRenderLiving(EntityLivingBase par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
+    @Override
+    public void doRender(EntityGhost entityGhost, double par2, double par4, double par6, float par8, float par9) {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
 
-        par4 += ((EntityGhost) par1EntityLiving).getFloatingHeight();
+        par4 += (entityGhost).getFloatingHeight();
 
-        this.mainModel.onGround = this.renderSwingProgress(par1EntityLiving, par9);
+        this.mainModel.onGround = this.renderSwingProgress(entityGhost, par9);
 
         if (this.renderPassModel != null) {
             this.renderPassModel.onGround = this.mainModel.onGround;
         }
 
-        this.mainModel.isRiding = par1EntityLiving.isRiding();
+        this.mainModel.isRiding = entityGhost.isRiding();
 
         if (this.renderPassModel != null) {
             this.renderPassModel.isRiding = this.mainModel.isRiding;
         }
 
-        this.mainModel.isChild = par1EntityLiving.isChild();
+        this.mainModel.isChild = entityGhost.isChild();
 
         if (this.renderPassModel != null) {
             this.renderPassModel.isChild = this.mainModel.isChild;
         }
 
         try {
-            float f2 = this.interpolateRotation(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
-            float f3 = this.interpolateRotation(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
-            float f4 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
-            this.renderLivingAt(par1EntityLiving, par2, par4, par6);
-            float f5 = this.handleRotationFloat(par1EntityLiving, par9);
-            this.rotateCorpse(par1EntityLiving, f5, f2, par9);
+            float f2 = this.interpolateRotation(entityGhost.prevRenderYawOffset, entityGhost.renderYawOffset, par9);
+            float f3 = this.interpolateRotation(entityGhost.prevRotationYawHead, entityGhost.rotationYawHead, par9);
+            float f4 = entityGhost.prevRotationPitch + (entityGhost.rotationPitch - entityGhost.prevRotationPitch) * par9;
+            this.renderLivingAt(entityGhost, par2, par4, par6);
+            float f5 = this.handleRotationFloat(entityGhost, par9);
+            this.rotateCorpse(entityGhost, f5, f2, par9);
             float f6 = 0.0625F;
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(-1.0F, -1.0F, 1.0F);
-            this.preRenderCallback(par1EntityLiving, par9);
+            this.preRenderCallback(entityGhost, par9);
             GL11.glTranslatef(0.0F, -24.0F * f6 - 0.0078125F, 0.0F);
-            float f7 = par1EntityLiving.prevLimbSwingAmount + (par1EntityLiving.limbSwing - par1EntityLiving.prevLimbSwingAmount) * par9;
-            float f8 = par1EntityLiving.limbSwing - par1EntityLiving.limbSwing * (1.0F - par9);
+            float f7 = entityGhost.prevLimbSwingAmount + (entityGhost.limbSwing - entityGhost.prevLimbSwingAmount) * par9;
+            float f8 = entityGhost.limbSwing - entityGhost.limbSwing * (1.0F - par9);
 
-            if (par1EntityLiving.isChild()) {
+            if (entityGhost.isChild()) {
                 f8 *= 3.0F;
             }
 
@@ -114,27 +101,27 @@ public class RenderGhost extends Render {
             }
 
             GL11.glEnable(GL11.GL_ALPHA_TEST);
-            this.mainModel.setLivingAnimations(par1EntityLiving, f8, f7, par9);
-            this.renderModel(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+            this.mainModel.setLivingAnimations(entityGhost, f8, f7, par9);
+            this.renderModel(entityGhost, f8, f7, f5, f3 - f2, f4, f6);
             float f9;
             int i;
             float f10;
             float f11;
 
             for (int j = 0; j < 4; ++j) {
-                i = this.shouldRenderPass(par1EntityLiving, j, par9);
+                i = this.shouldRenderPass(entityGhost, j, par9);
 
                 if (i > 0) {
-                    this.renderPassModel.setLivingAnimations(par1EntityLiving, f8, f7, par9);
-                    this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+                    this.renderPassModel.setLivingAnimations(entityGhost, f8, f7, par9);
+                    this.renderPassModel.render(entityGhost, f8, f7, f5, f3 - f2, f4, f6);
 
                     if ((i & 240) == 16) {
-                        this.func_82408_c(par1EntityLiving, j, par9);
-                        this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+                        this.func_82408_c(entityGhost, j, par9);
+                        this.renderPassModel.render(entityGhost, f8, f7, f5, f3 - f2, f4, f6);
                     }
 
                     if ((i & 15) == 15) {
-                        f9 = (float) par1EntityLiving.ticksExisted + par9;
+                        f9 = (float) entityGhost.ticksExisted + par9;
                         GL11.glEnable(GL11.GL_BLEND);
                         f10 = 0.5F;
                         GL11.glColor4f(f10, f10, f10, 1.0F);
@@ -154,7 +141,7 @@ public class RenderGhost extends Render {
                             GL11.glRotatef(30.0F - (float) k * 60.0F, 0.0F, 0.0F, 1.0F);
                             GL11.glTranslatef(0.0F, f12, 0.0F);
                             GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                            this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+                            this.renderPassModel.render(entityGhost, f8, f7, f5, f3 - f2, f4, f6);
                         }
 
                         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -173,28 +160,28 @@ public class RenderGhost extends Render {
             }
 
             GL11.glDepthMask(true);
-            this.renderEquippedItems(par1EntityLiving, par9);
-            float f14 = par1EntityLiving.getBrightness(par9);
-            i = this.getColorMultiplier(par1EntityLiving, f14, par9);
+            this.renderEquippedItems(entityGhost, par9);
+            float f14 = entityGhost.getBrightness(par9);
+            i = this.getColorMultiplier(entityGhost, f14, par9);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
 
-            if ((i >> 24 & 255) > 0 || par1EntityLiving.hurtTime > 0 || par1EntityLiving.deathTime > 0) {
+            if ((i >> 24 & 255) > 0 || entityGhost.hurtTime > 0 || entityGhost.deathTime > 0) {
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GL11.glDepthFunc(GL11.GL_EQUAL);
 
-                if (par1EntityLiving.hurtTime > 0 || par1EntityLiving.deathTime > 0) {
+                if (entityGhost.hurtTime > 0 || entityGhost.deathTime > 0) {
                     GL11.glColor4f(f14, 0.0F, 0.0F, 0.4F);
-                    this.mainModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+                    this.mainModel.render(entityGhost, f8, f7, f5, f3 - f2, f4, f6);
 
                     for (int l = 0; l < 4; ++l) {
-                        if (this.inheritRenderPass(par1EntityLiving, l, par9) >= 0) {
+                        if (this.inheritRenderPass(entityGhost, l, par9) >= 0) {
                             GL11.glColor4f(f14, 0.0F, 0.0F, 0.4F);
-                            this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+                            this.renderPassModel.render(entityGhost, f8, f7, f5, f3 - f2, f4, f6);
                         }
                     }
                 }
@@ -205,12 +192,12 @@ public class RenderGhost extends Render {
                     float f15 = (float) (i & 255) / 255.0F;
                     f11 = (float) (i >> 24 & 255) / 255.0F;
                     GL11.glColor4f(f9, f10, f15, f11);
-                    this.mainModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+                    this.mainModel.render(entityGhost, f8, f7, f5, f3 - f2, f4, f6);
 
                     for (int i1 = 0; i1 < 4; ++i1) {
-                        if (this.inheritRenderPass(par1EntityLiving, i1, par9) >= 0) {
+                        if (this.inheritRenderPass(entityGhost, i1, par9) >= 0) {
                             GL11.glColor4f(f9, f10, f15, f11);
-                            this.renderPassModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+                            this.renderPassModel.render(entityGhost, f8, f7, f5, f3 - f2, f4, f6);
                         }
                     }
                 }
@@ -231,37 +218,31 @@ public class RenderGhost extends Render {
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
-        this.passSpecialRender(par1EntityLiving, par2, par4, par6);
+        this.passSpecialRender(entityGhost, par2, par4, par6);
     }
 
-    /**
-     * Renders the model in RenderLiving
-     */
-    protected void renderModel(EntityLivingBase par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7) {
-        this.bindEntityTexture(par1EntityLiving);
+    protected void renderModel(EntityGhost entityGhost, float par2, float par3, float par4, float par5, float par6, float par7) {
+        this.bindEntityTexture(entityGhost);
 
-        if (!par1EntityLiving.isInvisible()) {
-            this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
-        } else if (!par1EntityLiving.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) {
+        if (!entityGhost.isInvisible()) {
+            this.mainModel.render(entityGhost, par2, par3, par4, par5, par6, par7);
+        } else if (!entityGhost.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) {
             GL11.glPushMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
             GL11.glDepthMask(false);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-            this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+            this.mainModel.render(entityGhost, par2, par3, par4, par5, par6, par7);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
             GL11.glPopMatrix();
             GL11.glDepthMask(true);
         } else {
-            this.mainModel.setRotationAngles(par2, par3, par4, par5, par6, par7, par1EntityLiving);
+            this.mainModel.setRotationAngles(par2, par3, par4, par5, par6, par7, entityGhost);
         }
     }
 
-    /**
-     * Sets a simple glTranslate on a LivingEntity.
-     */
     protected void renderLivingAt(EntityLivingBase par1EntityLiving, double par2, double par4, double par6) {
         GL11.glTranslatef((float) par2, (float) par4, (float) par6);
     }
@@ -285,9 +266,6 @@ public class RenderGhost extends Render {
         return par1EntityLiving.getSwingProgress(par2);
     }
 
-    /**
-     * Defines what float the third param in setRotationAngles of ModelBase is
-     */
     protected float handleRotationFloat(EntityLivingBase par1EntityLiving, float par2) {
         return (float) par1EntityLiving.ticksExisted + par2;
     }
@@ -295,9 +273,6 @@ public class RenderGhost extends Render {
     protected void renderEquippedItems(EntityLivingBase par1EntityLiving, float par2) {
     }
 
-    /**
-     * renders arrows the Entity has been attacked with, attached to it
-     */
     protected void renderArrowsStuckInEntity(EntityLiving par1EntityLiving, float par2) {
         int i = par1EntityLiving.getArrowCountInEntity();
 
@@ -339,14 +314,13 @@ public class RenderGhost extends Render {
         }
     }
 
-    protected int inheritRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3) {
-        return this.shouldRenderPass(par1EntityLiving, par2, par3);
+    @Override
+    protected int inheritRenderPass(EntityGhost entityGhost, int par2, float par3) {
+        return this.shouldRenderPass(entityGhost, par2, par3);
     }
 
-    /**
-     * Queries whether should render the specified pass or not.
-     */
-    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3) {
+    @Override
+    protected int shouldRenderPass(EntityGhost entityGhost, int par2, float par3) {
         return -1;
     }
 
@@ -357,24 +331,13 @@ public class RenderGhost extends Render {
         return 90.0F;
     }
 
-    /**
-     * Returns an ARGB int color back. Args: entityLiving, lightBrightness,
-     * partialTickTime
-     */
     protected int getColorMultiplier(EntityLivingBase par1EntityLiving, float par2, float par3) {
         return 0;
     }
 
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before
-     * the model is rendered. Args: entityLiving, partialTickTime
-     */
     protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2) {
     }
 
-    /**
-     * Passes the specialRender and renders it
-     */
     protected void passSpecialRender(EntityLivingBase par1EntityLiving, double par2, double par4, double par6) {
         if (Minecraft.isGuiEnabled() && par1EntityLiving != this.renderManager.livingPlayer && !par1EntityLiving.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer) && (par1EntityLiving.getAlwaysRenderNameTagForRender() || ((EntityLiving) par1EntityLiving).hasCustomNameTag() && par1EntityLiving == this.renderManager.livingPlayer)) {
             float f = 1.6F;
@@ -383,7 +346,7 @@ public class RenderGhost extends Render {
             float f2 = par1EntityLiving.isSneaking() ? 32.0F : 64.0F;
 
             if (d3 < (double) (f2 * f2)) {
-                String s = par1EntityLiving.getCommandSenderName();
+                String s = par1EntityLiving.getName();
 
                 if (par1EntityLiving.isSneaking()) {
                     FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
@@ -430,9 +393,6 @@ public class RenderGhost extends Render {
         }
     }
 
-    /**
-     * Draws the debug or playername text above a living
-     */
     protected void renderLivingLabel(EntityLivingBase par1EntityLiving, String par2Str, double par3, double par5, double par7, int par9) {
         double d3 = par1EntityLiving.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
@@ -479,20 +439,8 @@ public class RenderGhost extends Render {
         }
     }
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method,
-     * always casting down its argument and then handing it off to a worker
-     * function which does the actual work. In all probabilty, the class Render
-     * is generic (Render<T extends Entity) and this method has signature public
-     * void doRender(T entity, double d, double d1, double d2, float f, float
-     * f1). But JAD is pre 1.5 so doesn't do that.
-     */
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.doRenderLiving((EntityLiving) par1Entity, par2, par4, par6, par8, par9);
-    }
-
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
+    protected ResourceLocation getEntityTexture(EntityGhost EntityGhost) {
         return new ResourceLocation("atum", "textures/entities/DesertGhost.png");
     }
 }

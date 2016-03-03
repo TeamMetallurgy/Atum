@@ -3,9 +3,9 @@ package com.teammetallurgy.atum.entity;
 import com.teammetallurgy.atum.Atum;
 import com.teammetallurgy.atum.entity.arrow.*;
 import com.teammetallurgy.atum.entity.projectile.EntitySmallBone;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class AtumEntities {
     public AtumEntity mummy;
@@ -58,7 +58,7 @@ public class AtumEntities {
 
         public AtumEntity setSpawnEgg(int backgroundEggColour, int foregroundEggColour) {
             int eggID = getUniqueEggId();
-            EntityList.IDtoClassMapping.put(Integer.valueOf(eggID), entityClass);
+            EntityList.idToClassMapping.put(Integer.valueOf(eggID), entityClass);
             EntityList.entityEggs.put(Integer.valueOf(eggID), new EntityList.EntityEggInfo(eggID, backgroundEggColour, foregroundEggColour));
             return this;
         }

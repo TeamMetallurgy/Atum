@@ -1,28 +1,19 @@
 package com.teammetallurgy.atum.world.biome;
 
-import java.util.Random;
-
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.entity.EntityBanditArcher;
-import com.teammetallurgy.atum.entity.EntityBanditWarrior;
-import com.teammetallurgy.atum.entity.EntityBarbarian;
-import com.teammetallurgy.atum.entity.EntityBonestorm;
-import com.teammetallurgy.atum.entity.EntityDesertWolf;
-import com.teammetallurgy.atum.entity.EntityDustySkeleton;
-import com.teammetallurgy.atum.entity.EntityGhost;
-import com.teammetallurgy.atum.entity.EntityMummy;
-import com.teammetallurgy.atum.entity.EntityStoneSoldier;
+import com.teammetallurgy.atum.entity.*;
 import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.world.decorators.WorldGenDeadwood;
 import com.teammetallurgy.atum.world.decorators.WorldGenPalm;
 import com.teammetallurgy.atum.world.decorators.WorldGenPyramid;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
+
+import java.util.Random;
 
 public class AtumBiomeGenBase extends BiomeGenBase {
 
@@ -43,8 +34,8 @@ public class AtumBiomeGenBase extends BiomeGenBase {
         
         this.setDisableRain();
         
-        this.topBlock = AtumBlocks.BLOCK_SAND;
-        this.fillerBlock = AtumBlocks.BLOCK_STONE;
+        this.topBlock = AtumBlocks.SAND.getDefaultState();
+        this.fillerBlock = AtumBlocks.LIMESTONE.getDefaultState();
 
         this.setColor(16421912);
         
@@ -140,13 +131,13 @@ public class AtumBiomeGenBase extends BiomeGenBase {
                 if (existingBlock != null && existingBlock.getMaterial() != Material.air) {
                 	
                 	// !!!!! SOMETHING WRONG HERE !!!!! ---------------------
-                    if (existingBlock == AtumBlocks.BLOCK_STONE) {
+                    if (existingBlock == AtumBlocks.LIMESTONE) {
                     	
                         if (flag == -1) {
                             if (elevation <= 0) {
                                 block = null;
                                 //b0 = 0;
-                                block1 = AtumBlocks.BLOCK_STONE;
+                                block1 = AtumBlocks.LIMESTONE;
                             } else if (yy >= 59 && yy <= 64) {
                                 block = this.topBlock;
                                 //b0 = (byte) (this.field_150604_aj & 255);
@@ -193,6 +184,4 @@ public class AtumBiomeGenBase extends BiomeGenBase {
             }
         }
     }
-
-
 }

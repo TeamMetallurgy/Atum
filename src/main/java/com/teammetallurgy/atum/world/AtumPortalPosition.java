@@ -1,19 +1,18 @@
 package com.teammetallurgy.atum.world;
 
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 
-public class AtumPortalPosition implements Comparable {
+public class AtumPortalPosition extends BlockPos /*implements Comparable*/ {
+    public long lastUpdateTime;
+
+    public AtumPortalPosition(BlockPos pos, long lastUpdate) {
+        super(pos.getX(), pos.getY(), pos.getZ());
+        this.lastUpdateTime = lastUpdate;
+    }
 
 
-    public int posX;
-    /**
-     * the y coordinate
-     */
-    public int posY;
-    /**
-     * the z coordinate
-     */
-    public int posZ;
+    //TODO Check - Isn't this just old 1.6 code ported?
+    /*public int posX, posY, posZ;
     public long lastUpdateTime;
 
     public AtumPortalPosition(int par2, int par3, int par4, long updateTime) {
@@ -28,14 +27,8 @@ public class AtumPortalPosition implements Comparable {
         this.posZ = z;
     }
 
-    private AtumPortalPosition(ChunkCoordinates chunkCoords) {
-        this.posX = chunkCoords.posX;
-        this.posY = chunkCoords.posY;
-        this.posZ = chunkCoords.posZ;
-    }
-
     public boolean equals(Object p_equals_1_) {
-        if (!(p_equals_1_ instanceof ChunkCoordinates)) {
+        if (!(p_equals_1_ instanceof BlockPos)) {
             return false;
         } else {
             ChunkCoordinates chunkcoordinates = (ChunkCoordinates) p_equals_1_;
@@ -43,6 +36,7 @@ public class AtumPortalPosition implements Comparable {
         }
     }
 
+    @Override
     public int hashCode() {
         return this.posX + this.posZ << 8 + this.posY << 16;
     }
@@ -57,9 +51,6 @@ public class AtumPortalPosition implements Comparable {
         this.posZ = z;
     }
 
-    /**
-     * Returns the squared distance between this coordinates and the coordinates given as argument.
-     */
     public float getDistanceSquared(int p_71569_1_, int p_71569_2_, int p_71569_3_) {
         float f = (float) (this.posX - p_71569_1_);
         float f1 = (float) (this.posY - p_71569_2_);
@@ -67,19 +58,17 @@ public class AtumPortalPosition implements Comparable {
         return f * f + f1 * f1 + f2 * f2;
     }
 
-    /**
-     * Return the squared distance between this coordinates and the ChunkCoordinates given as argument.
-     */
     public float getDistanceSquaredToChunkCoordinates(ChunkCoordinates chunkCoords) {
         return this.getDistanceSquared(chunkCoords.posX, chunkCoords.posY, chunkCoords.posZ);
     }
 
+    @Override
     public String toString() {
         return "Pos{x=" + this.posX + ", y=" + this.posY + ", z=" + this.posZ + '}';
     }
 
+    @Override
     public int compareTo(Object p_compareTo_1_) {
         return this.compareTo((ChunkCoordinates) p_compareTo_1_);
-    }
-
+    }*/
 }

@@ -20,7 +20,7 @@ public class EntityBarbarian extends EntityMob {
         super(par1World);
         this.experienceValue = 9;
 
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.ITEM_GREATSWORD));
+        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.GREATSWORD));
         this.enchantEquipment();
 
         for (int i = 0; i < this.equipmentDropChances.length; ++i) {
@@ -78,8 +78,8 @@ public class EntityBarbarian extends EntityMob {
     @Override
     protected void dropFewItems(boolean par1, int par2) {
         if (rand.nextInt(20) == 0) {
-            int damage = (int) (AtumItems.ITEM_GREATSWORD.getMaxDamage() - rand.nextInt(AtumItems.ITEM_GREATSWORD.getMaxDamage()) * 0.5 + 20);
-            this.entityDropItem(new ItemStack(AtumItems.ITEM_GREATSWORD, 1, damage), 0.0F);
+            int damage = (int) (AtumItems.GREATSWORD.getMaxDamage() - rand.nextInt(AtumItems.GREATSWORD.getMaxDamage()) * 0.5 + 20);
+            this.entityDropItem(new ItemStack(AtumItems.GREATSWORD, 1, damage), 0.0F);
         }
 
         if (rand.nextInt(4) == 0) {
@@ -90,7 +90,7 @@ public class EntityBarbarian extends EntityMob {
 
     @Override
     public boolean attackEntityAsMob(Entity entity) {
-        if (this.getEquipmentInSlot(0).getItem() == AtumItems.ITEM_GREATSWORD) {
+        if (this.getEquipmentInSlot(0).getItem() == AtumItems.GREATSWORD) {
             float f = (float) this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
             float i = 1.2F;
 

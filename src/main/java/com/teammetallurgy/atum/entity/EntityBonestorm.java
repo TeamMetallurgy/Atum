@@ -71,11 +71,6 @@ public class EntityBonestorm extends EntityMob {
             this.motionY *= 0.1D;
         }
 
-        /*for (int i = 0; i < 2; ++i) {
-            if (worldObj.isRemote) {
-                Minecraft.getMinecraft().effectRenderer.addEffect(new EntityDustFX(this.worldObj, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D, 2.3F));
-            }
-        }*/
         super.onLivingUpdate();
     }
 
@@ -133,7 +128,7 @@ public class EntityBonestorm extends EntityMob {
         if (recentlyHit) {
             int j = rand.nextInt(2) + 1 + rand.nextInt(1 + looting);
             for (int k = 0; k < j; ++k) {
-                this.dropItem(AtumItems.ITEM_DUSTYBONE, 1);
+                this.dropItem(AtumItems.DUSTY_BONE, 1);
             }
         }
     }
@@ -152,7 +147,7 @@ public class EntityBonestorm extends EntityMob {
 
     @Override
     public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.boundingBox.minY);
+        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
         if (i <= 62) {
             return false;
         } else {

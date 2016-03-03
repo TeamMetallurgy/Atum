@@ -2,23 +2,22 @@ package com.teammetallurgy.atum.items;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 
 public class LimestonePickaxe extends ItemPickaxe {
 
-    public LimestonePickaxe(ToolMaterial par2ToolMaterial) {
-        super(par2ToolMaterial);
+    public LimestonePickaxe(ToolMaterial material) {
+        super(material);
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return Block.getBlockFromItem(par2ItemStack.getItem()) == AtumBlocks.BLOCK_LIMESTONECOBBLE;
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return Block.getBlockFromItem(repair.getItem()) == AtumBlocks.LIMESTONECOBBLE;
     }
 
-    @Override
+    /*@Override
     public void registerIcons(IIconRegister par1IIconRegister) {
         this.itemIcon = par1IIconRegister.registerIcon("atum:LimestonePickaxe");
-    }
+    }*/
 }

@@ -5,11 +5,9 @@ import net.minecraft.block.material.Material;
 
 public class BlockAtum extends Block {
 
-    public BlockAtum(String unlocalisedName) {
+    public BlockAtum() {
         super(Material.rock);
-        this.setBlockName(unlocalisedName);
         this.setHardness(2.0F);
         this.setResistance(10.0F);
     }
-
 }

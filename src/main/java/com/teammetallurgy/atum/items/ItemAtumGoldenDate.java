@@ -5,15 +5,14 @@ import net.minecraft.item.ItemStack;
 
 public class ItemAtumGoldenDate extends ItemAppleGold {
 
-    public ItemAtumGoldenDate(int healAmount, float saturationModifier, boolean isWolfsFood) {
-        super(healAmount, saturationModifier, isWolfsFood);
+    public ItemAtumGoldenDate(int amount, float saturation, boolean isWolfFood) {
+        super(amount, saturation, isWolfFood);
     }
-    
+
     @Override
-    public String getUnlocalizedName(ItemStack itemStack) {
-        if (itemStack.getItemDamage() > 0)
+    public String getUnlocalizedName(ItemStack stack) {
+        if (stack.getItemDamage() > 0)
             return super.getUnlocalizedName() + "Enchanted";
         return super.getUnlocalizedName();
     }
-
 }

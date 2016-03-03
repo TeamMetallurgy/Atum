@@ -44,11 +44,11 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
      */
     public class WorldGenLimestoneSpike extends WorldGenerator {
 
-    	private final Block spikeBlock = AtumBlocks.BLOCK_STONE;
-    	private final Block groundBlock = AtumBlocks.BLOCK_SAND;
+    	private final Block spikeBlock = AtumBlocks.STONE;
+    	private final Block groundBlock = AtumBlocks.SAND;
     	
     	private boolean isBlockReplaceable(Block block) {
-    		return block.getMaterial() == Material.air || block == AtumBlocks.BLOCK_SAND || block == AtumBlocks.BLOCK_SANDLAYERED || block == Blocks.dirt;
+    		return block.getMaterial() == Material.air || block == AtumBlocks.SAND || block == AtumBlocks.SANDLAYERED || block == Blocks.dirt;
     	}
     	
 		@Override

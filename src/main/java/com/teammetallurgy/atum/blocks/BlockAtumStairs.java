@@ -1,13 +1,12 @@
 package com.teammetallurgy.atum.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
+import net.minecraft.block.state.IBlockState;
 
 public class BlockAtumStairs extends BlockStairs {
 
-    protected BlockAtumStairs(Block par2Block, int par3) {
-        super(par2Block, par3);
+    protected BlockAtumStairs(IBlockState modelState) {
+        super(modelState);
         this.useNeighborBrightness = true;
     }
-
 }

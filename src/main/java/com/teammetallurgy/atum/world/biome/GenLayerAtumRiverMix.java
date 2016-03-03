@@ -1,8 +1,6 @@
 package com.teammetallurgy.atum.world.biome;
 
 import com.teammetallurgy.atum.handler.AtumConfig;
-
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
@@ -22,12 +20,12 @@ public class GenLayerAtumRiverMix extends GenLayer {
         super.initWorldGenSeed(seed);
     }
 
-	@Override
-	public int[] getInts(int x, int z, int width, int length) {
+    @Override
+    public int[] getInts(int x, int z, int width, int length) {
         int[] bInts = this.biomePatternGeneratorChain.getInts(x, z, width, length);
         int[] rInts = this.riverPatternGeneratorChain.getInts(x, z, width, length);
         int[] cache = IntCache.getIntCache(width * length);
-        
+
         final int badId_1 = AtumConfig.BiomeConfig.SAND_DUNES.getID();
         final int badId_2 = AtumConfig.BiomeConfig.SAND_HILLS.getID();
         final int badId_3 = AtumConfig.BiomeConfig.LIMESTONE_MOUNTAINS.getID();
@@ -43,5 +41,4 @@ public class GenLayerAtumRiverMix extends GenLayer {
 
         return cache;
     }
-
 }

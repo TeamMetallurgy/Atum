@@ -1,19 +1,13 @@
 package com.teammetallurgy.atum.handler.event;
 
-import com.teammetallurgy.atum.items.AtumItems;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-public class ServerEvents {
+public class ServerEvents { //TODO Why is this here?
 
-    private boolean raining;
+    //private boolean raining; //TODO Why is this here?
 
     @SubscribeEvent
-    public void onServerTick(TickEvent.PlayerTickEvent event) {
-       
+    public void onServerTick(TickEvent.PlayerTickEvent event) { //TODO Why is this here?
     }
-
 }

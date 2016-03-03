@@ -1,5 +1,5 @@
 package com.teammetallurgy.atum.integration;
-
+/*
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -24,14 +24,14 @@ public class NEIAtumConfig implements IConfigureNEI {
     @Override
     public void loadConfig() {
         // Hide not need items from NEI
-        API.hideItem(new ItemStack(AtumBlocks.BLOCK_DATEBLOCK, 1, OreDictionary.WILDCARD_VALUE));
-        API.hideItem(new ItemStack(AtumBlocks.BLOCK_FLAX, 1, OreDictionary.WILDCARD_VALUE));
-        API.hideItem(new ItemStack(AtumBlocks.BLOCK_PAPYRUS, 1, OreDictionary.WILDCARD_VALUE));
-        API.hideItem(new ItemStack(AtumBlocks.BLOCK_PORTAL, 1, OreDictionary.WILDCARD_VALUE));
-        API.hideItem(new ItemStack(AtumBlocks.BLOCK_FURNACEBURNING));
-        API.hideItem(new ItemStack(AtumBlocks.BLOCK_DOUBLESLAB,1, OreDictionary.WILDCARD_VALUE));
-        API.hideItem(new ItemStack(AtumBlocks.BLOCK_PALM_DOOR));
-        API.hideItem(new ItemStack(AtumBlocks.BLOCK_DEADWOOD_DOOR));
-        API.hideItem(new ItemStack(AtumBlocks.BLOCK_WOOD_DOUBLESLAB, 1, OreDictionary.WILDCARD_VALUE));
+        API.hideItem(new ItemStack(AtumBlocks.DATEBLOCK, 1, OreDictionary.WILDCARD_VALUE));
+        API.hideItem(new ItemStack(AtumBlocks.FLAX, 1, OreDictionary.WILDCARD_VALUE));
+        API.hideItem(new ItemStack(AtumBlocks.PAPYRUS, 1, OreDictionary.WILDCARD_VALUE));
+        API.hideItem(new ItemStack(AtumBlocks.PORTAL, 1, OreDictionary.WILDCARD_VALUE));
+        API.hideItem(new ItemStack(AtumBlocks.FURNACEBURNING));
+        API.hideItem(new ItemStack(AtumBlocks.DOUBLESLAB,1, OreDictionary.WILDCARD_VALUE));
+        API.hideItem(new ItemStack(AtumBlocks.PALM_DOOR));
+        API.hideItem(new ItemStack(AtumBlocks.DEADWOOD_DOOR));
+        API.hideItem(new ItemStack(AtumBlocks.WOOD_DOUBLESLAB, 1, OreDictionary.WILDCARD_VALUE));
     }
-}
+}*/

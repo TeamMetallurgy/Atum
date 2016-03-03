@@ -22,8 +22,6 @@ public class BlockAtumSlab extends BlockSlab {
         super(isDoubleSlab, Material.rock);
         this.setHardness(2.0F);
         this.useNeighborBrightness = true;
-        this.setBlockName("slab");
-        this.setCreativeTab(Atum.creativeTab);
     }
 
     @Override
@@ -31,18 +29,18 @@ public class BlockAtumSlab extends BlockSlab {
     public IIcon getIcon(int par1, int par2) {
         par2 %= 4;
         if (par2 == 0)
-            return AtumBlocks.BLOCK_STONE.getIcon(par1, par2 & 0x7);
+            return AtumBlocks.STONE.getIcon(par1, par2 & 0x7);
         if (par2 == 1)
-            return AtumBlocks.BLOCK_LIMESTONECOBBLE.getIcon(par1, par2 & 0x7);
+            return AtumBlocks.LIMESTONECOBBLE.getIcon(par1, par2 & 0x7);
         if (par2 == 2) {
-            return AtumBlocks.BLOCK_LARGEBRICK.getIcon(par1, par2 & 0x7);
+            return AtumBlocks.LARGEBRICK.getIcon(par1, par2 & 0x7);
         }
-        return AtumBlocks.BLOCK_SMALLBRICK.getIcon(par1, par2 & 0x7);
+        return AtumBlocks.SMALLBRICK.getIcon(par1, par2 & 0x7);
     }
 
     @Override
     public Item getItemDropped(int par1, Random random, int par3) {
-        return Item.getItemFromBlock(AtumBlocks.BLOCK_SLABS);
+        return Item.getItemFromBlock(AtumBlocks.SLABS);
     }
 
     @Override
@@ -54,7 +52,7 @@ public class BlockAtumSlab extends BlockSlab {
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void getSubBlocks(Item par1, CreativeTabs tab, List subItems) {
-        if (this != AtumBlocks.BLOCK_DOUBLESLAB) {
+        if (this != AtumBlocks.DOUBLESLAB) {
             for (int i = 0; i < 4; i++)
                 subItems.add(new ItemStack(this, 1, i));
         }
@@ -73,6 +71,6 @@ public class BlockAtumSlab extends BlockSlab {
     @Override
     @SideOnly(Side.CLIENT)
     public Item getItem(World world, int x, int y, int z) {
-        return AtumBlocks.BLOCK_SLABS == this ? Item.getItemFromBlock(this) : (this == AtumBlocks.BLOCK_DOUBLESLAB ? Item.getItemFromBlock(AtumBlocks.BLOCK_SLABS) : Item.getItemFromBlock(AtumBlocks.BLOCK_SLABS));
+        return AtumBlocks.SLABS == this ? Item.getItemFromBlock(this) : (this == AtumBlocks.DOUBLESLAB ? Item.getItemFromBlock(AtumBlocks.SLABS) : Item.getItemFromBlock(AtumBlocks.SLABS));
     }
 }

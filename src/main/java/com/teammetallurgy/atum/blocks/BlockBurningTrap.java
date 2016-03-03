@@ -1,13 +1,10 @@
 package com.teammetallurgy.atum.blocks;
 
 import com.teammetallurgy.atum.blocks.tileentity.TileEntityBurningTrap;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.IRegistry;
 import net.minecraft.util.RegistryDefaulted;
 import net.minecraft.world.World;
@@ -26,12 +22,9 @@ public class BlockBurningTrap extends BlockContainer {
 
     public static final IRegistry dispenseBehaviorRegistry = new RegistryDefaulted(new BehaviorDefaultDispenseItem());
     protected Random random = new Random();
-    @SideOnly(Side.CLIENT)
-    protected IIcon fireTrap;
 
     public BlockBurningTrap() {
         super(Material.rock);
-        this.setBlockName("burningTrap");
         this.setCreativeTab(CreativeTabs.tabRedstone);
         this.setHardness(-1.0F);
     }
@@ -42,7 +35,7 @@ public class BlockBurningTrap extends BlockContainer {
 
     @Override
     public float getBlockHardness(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlock(par2, par3 + 1, par4) == AtumBlocks.BLOCK_LARGEBRICK && par1World.getBlockMetadata(par2, par3 + 1, par4) == 1 ? -1.0F : super.blockHardness;
+        return par1World.getBlock(par2, par3 + 1, par4) == AtumBlocks.LARGEBRICK && par1World.getBlockMetadata(par2, par3 + 1, par4) == 1 ? -1.0F : super.blockHardness;
     }
 
     @Override
@@ -84,7 +77,7 @@ public class BlockBurningTrap extends BlockContainer {
 
     }
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int par1, int par2) {
         if (par2 == 0) {
@@ -100,7 +93,7 @@ public class BlockBurningTrap extends BlockContainer {
     public void registerBlockIcons(IIconRegister par1IIconRegister) {
         this.blockIcon = par1IIconRegister.registerIcon("atum:TrapSide");
         this.fireTrap = par1IIconRegister.registerIcon("atum:TrapFire");
-    }
+    }*/
 
     @Override
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
@@ -140,5 +133,4 @@ public class BlockBurningTrap extends BlockContainer {
     public TileEntity createNewTileEntity(World var1, int var2) {
         return new TileEntityBurningTrap();
     }
-
 }

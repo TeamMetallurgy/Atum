@@ -1,33 +1,24 @@
 package com.teammetallurgy.atum.blocks;
 
 import com.teammetallurgy.atum.items.AtumItems;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
 public class BlockPapyrus extends Block implements IPlantable {
-    public int renderID = RenderingRegistry.getNextAvailableRenderId();
-    IIcon iconPapyrus;
-    IIcon iconPapyrusTop;
 
     public BlockPapyrus() {
         super(Material.plants);
-        this.setBlockName("papyrus");
         this.setHardness(0.0F);
         this.setStepSound(Block.soundTypeGrass);
         float f = 0.375F;
@@ -79,18 +70,6 @@ public class BlockPapyrus extends Block implements IPlantable {
     }
 
     @Override
-    public IIcon getIcon(int par1, int par2) {
-        return this.iconPapyrus;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-        boolean top = par1IBlockAccess.getBlock(par2, par3 + 1, par4) != this;
-        return top ? this.iconPapyrusTop : this.iconPapyrus;
-    }
-
-    @Override
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
         Block block = par1World.getBlock(par2, par3 - 1, par4);
         return block != null && block.canSustainPlant(par1World, par2, par3 - 1, par4, ForgeDirection.UP, this);
@@ -115,12 +94,10 @@ public class BlockPapyrus extends Block implements IPlantable {
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plant) {
-        EnumPlantType plantType = plant.getPlantType(world, x, y + 1, z);
-        if (plant.getPlant(world, x, y + 1, z) == this) {
+    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing side, IPlantable plant) {
+        if (plant.getPlant(world, pos.up()) == this) {
             return true;
         }
-
         return false;
     }
 
@@ -135,13 +112,8 @@ public class BlockPapyrus extends Block implements IPlantable {
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
+    public boolean isFullCube() {
         return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return renderID;
     }
 
     @Override
@@ -150,14 +122,7 @@ public class BlockPapyrus extends Block implements IPlantable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.iconPapyrus = par1IIconRegister.registerIcon("atum:AtumPapyrus");
-        this.iconPapyrusTop = par1IIconRegister.registerIcon("atum:AtumPapyrusTop");
-    }
-
-    @Override
-    public Block getPlant(IBlockAccess arg0, int arg1, int arg2, int arg3) {
+    public Block getPlant(IBlockAccess world, BlockPos pos) {
         return this;
     }
 

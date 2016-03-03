@@ -1,36 +1,43 @@
 package com.teammetallurgy.atum.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
 public class BlockSandLayered extends Block {
 
+    public static final PropertyInteger LAYERS = PropertyInteger.create("layers", 1, 8);
+
     public BlockSandLayered() {
         super(Material.sand);
-        this.setBlockName("sandLayer");
+        this.setDefaultState(this.blockState.getBaseState().withProperty(LAYERS, Integer.valueOf(1)));
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
-        this.setTickRandomly(true);
-        this.func_96478_d(0);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.blockIcon = par1IIconRegister.registerIcon("atum:AtumSand");
+        this.setBlockBoundsForItemRender();
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+        return (worldIn.getBlockState(pos).getValue(LAYERS)).intValue() < 5;
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state) {
         return null;
     }
 
@@ -40,78 +47,97 @@ public class BlockSandLayered extends Block {
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
+    public boolean isFullCube() {
         return false;
     }
 
     @Override
     public void setBlockBoundsForItemRender() {
-        this.func_96478_d(0);
+        this.getBoundsForLayers(0);
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-        this.func_96478_d(par1IBlockAccess.getBlockMetadata(par2, par3, par4));
+    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        this.getBoundsForLayers((state.getValue(LAYERS)).intValue());
     }
 
-    protected void func_96478_d(int par1) {
-        int j = par1 & 7;
-        float f = (float) (2 * (1 + j)) / 16.0F;
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f, 1.0F);
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
-        Block block = par1World.getBlock(par2, par3 - 1, par4);
-        return block == null ? false : (block == this ? true : (block == this && (par1World.getBlockMetadata(par2, par3 - 1, par4) & 7) == 7 ? true : (!block.isLeaves(par1World, par2, par3 - 1, par4) && !block.isOpaqueCube() ? false : par1World.getBlock(par2, par3 - 1, par4).getMaterial().blocksMovement())));
+    protected void getBoundsForLayers(int layer) {
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, (float) layer / 8.0F, 1.0F);
     }
 
     @Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
-        this.canSnowStay(par1World, par2, par3, par4);
+    public boolean canPlaceBlockAt(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos.down());
+        Block block = state.getBlock();
+        return block == null ? false : (block == this ? true : (block == this && (state.getValue(LAYERS)).intValue() >= 7 ? true : (!block.isLeaves(world, pos.down()) && !block.isOpaqueCube() ? false : block.getMaterial().blocksMovement())));
     }
 
-    private boolean canSnowStay(World par1World, int par2, int par3, int par4) {
-        if (!this.canPlaceBlockAt(par1World, par2, par3, par4)) {
-            par1World.setBlockToAir(par2, par3, par4);
+    @Override
+    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+        this.checkAndDropBlock(world, pos);
+    }
+
+    private boolean checkAndDropBlock(World world, BlockPos pos) {
+        if (!this.canPlaceBlockAt(world, pos)) {
+            world.setBlockToAir(pos);
             return false;
         } else {
-            return false;
+            return true;
         }
     }
 
     @Override
-    public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {
-        super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
-        par1World.setBlockToAir(par3, par4, par5);
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
+        super.harvestBlock(worldIn, player, pos, state, te);
+        worldIn.setBlockToAir(pos);
     }
 
     @Override
-    public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return null;
     }
 
     @Override
-    public int quantityDropped(Random par1Random) {
+    public int quantityDropped(Random random) {
         return 0;
     }
 
     @Override
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        if (par1World.getSavedLightValue(EnumSkyBlock.Block, par2, par3, par4) > 11) {
-            par1World.setBlockToAir(par2, par3, par4);
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) > 11) {
+            world.setBlockToAir(pos);
         }
-
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-        return par5 == 1 ? true : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+        return side == EnumFacing.UP ? true : super.shouldSideBeRendered(worldIn, pos, side);
     }
 
     @Override
-    public int quantityDropped(int meta, int fortune, Random random) {
-        return (meta & 7) + 1;
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(LAYERS, Integer.valueOf((meta & 7) + 1));
+    }
+
+    @Override
+    public boolean isReplaceable(World worldIn, BlockPos pos) {
+        return (worldIn.getBlockState(pos).getValue(LAYERS)).intValue() == 1;
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return (state.getValue(LAYERS)).intValue() - 1;
+    }
+
+    @Override
+    protected BlockState createBlockState() {
+        return new BlockState(this, new IProperty[]{LAYERS});
+    }
+
+    @Override
+    public int quantityDropped(IBlockState state, int fortune, Random random) {
+        return (state.getValue(LAYERS)) + 1;
     }
 }

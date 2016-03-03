@@ -15,12 +15,10 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockAtumRedstone extends Block {
+public class BlockAtumRedstone extends Block { //TODO Extend BlockRedstone?
 
     public BlockAtumRedstone() {
         super(Material.rock);
-        this.setBlockName("redstoneOre");
-        this.setBlockTextureName("atum:AtumRedstone");
         this.setHardness(3.0F);
         this.setResistance(5.0F);
         this.setStepSound(Block.soundTypeStone);
@@ -137,6 +135,6 @@ public class BlockAtumRedstone extends Block {
 
     @Override
     protected ItemStack createStackedBlock(int par1) {
-        return new ItemStack(AtumBlocks.BLOCK_REDSTONEORE);
+        return new ItemStack(AtumBlocks.REDSTONEORE);
     }
 }

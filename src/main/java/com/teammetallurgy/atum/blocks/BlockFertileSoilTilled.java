@@ -1,36 +1,35 @@
 package com.teammetallurgy.atum.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
 public class BlockFertileSoilTilled extends Block {
-    @SideOnly(Side.CLIENT)
-    private IIcon farmlandWet;
-    @SideOnly(Side.CLIENT)
-    private IIcon farmlandDry;
+
+    public static final PropertyInteger MOISTURE = PropertyInteger.create("moisture", 0, 7);
 
     public BlockFertileSoilTilled() {
         super(Material.ground);
         this.setHardness(0.5F);
-        this.setBlockName("fertileSoilTilled");
+        this.setDefaultState(this.blockState.getBaseState().withProperty(MOISTURE, Integer.valueOf(0)));
         this.setTickRandomly(true);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F);
         this.setLightOpacity(255);
@@ -38,19 +37,19 @@ public class BlockFertileSoilTilled extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        int enchanted = (par1World.getBlockMetadata(par2, par3, par4) & 4 & 4) >> 2;
-        if (enchanted == 1 && par5Random.nextDouble() > 0.6D) {
-            double d0 = par5Random.nextGaussian() * 0.02D;
-            double d1 = par5Random.nextGaussian() * 0.02D;
-            double d2 = par5Random.nextGaussian() * 0.02D;
-            par1World.spawnParticle("happyVillager", (double) ((float) par2 + par5Random.nextFloat()), (double) par3 + (double) par5Random.nextFloat() * this.getBlockBoundsMaxY() * 0.4D + 1.0D, (double) ((float) par4 + par5Random.nextFloat()), d0, d1, d2);
+    public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        int enchanted = (world.getBlockMetadata(par2, par3, par4) & 4 & 4) >> 2;
+        if (enchanted == 1 && rand.nextDouble() > 0.6D) {
+            double d0 = rand.nextGaussian() * 0.02D;
+            double d1 = rand.nextGaussian() * 0.02D;
+            double d2 = rand.nextGaussian() * 0.02D;
+            world.spawnParticle("happyVillager", (double) ((float) par2 + par5Random.nextFloat()), (double) par3 + (double) par5Random.nextFloat() * this.getBlockBoundsMaxY() * 0.4D + 1.0D, (double) ((float) par4 + par5Random.nextFloat()), d0, d1, d2);
         }
 
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
         return AxisAlignedBB.getBoundingBox((double) (par2 + 0), (double) (par3 + 0), (double) (par4 + 0), (double) (par2 + 1), (double) (par3 + 1), (double) (par4 + 1));
     }
 
@@ -60,18 +59,8 @@ public class BlockFertileSoilTilled extends Block {
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
+    public boolean isFullCube() {
         return false;
-    }
-    
-    @Override
-	public boolean isNormalCube() {
-		return false;
-	}
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
-        return par2 >> 3 == 0 ? (par1 == 1 ? (par2 > 0 ? this.farmlandWet : this.farmlandDry) : AtumBlocks.BLOCK_FERTILESOIL.getIcon(par1, 1)) : Blocks.farmland.getIcon(par1, par2);
     }
 
     @Override
@@ -148,20 +137,20 @@ public class BlockFertileSoilTilled extends Block {
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plant) {
+    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, EnumFacing facing, IPlantable plant) {
         EnumPlantType plantType = plant.getPlantType(world, x, y + 1, z);
         return plantType == EnumPlantType.Crop;
     }
 
     @Override
     public Item getItemDropped(int par1, Random p_149650_2_, int p_149650_3_) {
-        return par1 >> 3 == 0 ? Item.getItemFromBlock(AtumBlocks.BLOCK_SAND) : Item.getItemFromBlock(Blocks.dirt);
+        return par1 >> 3 == 0 ? Item.getItemFromBlock(AtumBlocks.SAND) : Item.getItemFromBlock(Blocks.dirt);
     }
 
     public void revertToDirt(World world, int x, int y, int z) {
         int type = world.getBlockMetadata(x, y, z) >> 3;
         if (type == 0) {
-            world.setBlock(x, y, z, AtumBlocks.BLOCK_FERTILESOIL);
+            world.setBlock(x, y, z, AtumBlocks.FERTILESOIL);
             world.setBlockMetadataWithNotify(x, y, z, 1, 2);
         } else {
             world.setBlock(x, y, z, Blocks.dirt);
@@ -172,7 +161,7 @@ public class BlockFertileSoilTilled extends Block {
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
         int type = world.getBlockMetadata(x, y, z) >> 3;
-        return type == 0 ? new ItemStack(AtumBlocks.BLOCK_SAND) : new ItemStack(Blocks.dirt);
+        return type == 0 ? new ItemStack(AtumBlocks.SAND) : new ItemStack(Blocks.dirt);
     }
 
     @Override

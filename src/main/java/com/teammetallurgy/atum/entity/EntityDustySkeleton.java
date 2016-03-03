@@ -9,11 +9,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityDustySkeleton extends EntityMob {
-
     boolean onFire = false;
 
-    public EntityDustySkeleton(World par1World) {
-        super(par1World);
+    public EntityDustySkeleton(World world) {
+        super(world);
         this.isImmuneToFire = true;
         this.experienceValue = 6;
     }
@@ -41,13 +40,13 @@ public class EntityDustySkeleton extends EntityMob {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        return super.attackEntityFrom(par1DamageSource, par2);
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        return super.attackEntityFrom(source, amount);
     }
 
     @Override
     public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.boundingBox.minY);
+        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
         if (i <= 62) {
             return false;
         } else {
@@ -61,11 +60,11 @@ public class EntityDustySkeleton extends EntityMob {
     }
 
     @Override
-    protected void dropFewItems(boolean par1, int par2) {
+    protected void dropFewItems(boolean recentlyHit, int looting) {
         switch (this.rand.nextInt(4)) {
             case 0:
                 int amount = rand.nextInt(2) + 1;
-                this.dropItem(AtumItems.ITEM_DUSTYBONE, amount);
+                this.dropItem(AtumItems.DUSTY_BONE, amount);
                 break;
         }
     }

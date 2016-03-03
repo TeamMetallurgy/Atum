@@ -1,18 +1,8 @@
 package com.teammetallurgy.atum.client.render.tileentity;
 
-import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.blocks.BlockDate;
-import com.teammetallurgy.atum.client.model.tileentity.ModelDate;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
+public class RenderDate /*implements ISimpleBlockRenderingHandler*/ { //TODO Move to JSON? Or BakedModel?
 
-public class RenderDate implements ISimpleBlockRenderingHandler {
-
-    ModelDate modelDate = new ModelDate();
+   /* ModelDate modelDate = new ModelDate();
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
@@ -110,11 +100,11 @@ public class RenderDate implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return ((BlockDate) AtumBlocks.BLOCK_DATEBLOCK).renderID;
+        return ((BlockDate) AtumBlocks.DATEBLOCK).renderID;
     }
 
     @Override
     public boolean shouldRender3DInInventory(int arg0) {
         return false;
-    }
+    }*/
 }

@@ -1,18 +1,7 @@
 package com.teammetallurgy.atum.client.render.item;
 
-import com.teammetallurgy.atum.entity.EntityBanditArcher;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.IItemRenderer;
-import org.lwjgl.opengl.GL11;
-
-public class RendererItemBow implements IItemRenderer {
-    @Override
+public class RendererItemBow { //TODO Move to json
+    /*@Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return type == ItemRenderType.EQUIPPED;
     }
@@ -104,5 +93,5 @@ public class RendererItemBow implements IItemRenderer {
 
             GL11.glPopMatrix();
         }
-    }
+    }*/
 }

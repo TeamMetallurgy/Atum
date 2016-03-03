@@ -7,17 +7,15 @@ import net.minecraft.world.World;
 
 public class EntityStone extends EntityMob {
 
-    public EntityStone(World par1World) {
-        super(par1World);
+    public EntityStone(World world) {
+        super(world);
     }
 
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-        int i = par1PotionEffect.getPotionID();
-
-        if (i == Potion.poison.id) {
+    @Override
+    public boolean isPotionApplicable(PotionEffect potioneffect) {
+        if (potioneffect.getPotionID() == Potion.poison.id) {
             return false;
         }
-
         return true;
     }
 }

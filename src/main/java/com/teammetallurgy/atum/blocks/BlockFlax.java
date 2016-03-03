@@ -1,100 +1,57 @@
 package com.teammetallurgy.atum.blocks;
 
+import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.teammetallurgy.atum.items.AtumItems;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFlax extends BlockCrops {
     @SideOnly(Side.CLIENT)
-    private IIcon[] iconArray;
 
     protected BlockFlax() {
         super();
-        this.setBlockName("flax");
-        this.setTickRandomly(true);
-        float f = 0.5F;
-        this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.25F, 0.5F + f);
-        this.setCreativeTab((CreativeTabs) null);
-        this.setHardness(0.0F);
-        this.setStepSound(Block.soundTypeGrass);
-        this.disableStats();
     }
 
     @Override
-    public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
         return EnumPlantType.Crop;
     }
 
     @Override
-    public boolean canBlockStay(World par1World, int par2, int par3, int par4) {
-        if (par1World.getBlockMetadata(par2, par3, par4) >> 3 == 1) {
-            return par1World.getBlock(par2, par3 - 1, par4) == AtumBlocks.BLOCK_FERTILESOIL;
+    public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+        if (world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos)) >> 3 == 1) {
+            return world.getBlockState(pos.down()).getBlock() == AtumBlocks.FERTILESOIL;
         } else {
-            Block soil = par1World.getBlock(par2, par3 - 1, par4);
-            return (par1World.getFullBlockLightValue(par2, par3, par4) >= 8 || par1World.canBlockSeeTheSky(par2, par3, par4)) && soil != null && soil.canSustainPlant(par1World, par2, par3 - 1, par4, ForgeDirection.UP, this);
+            Block soil = world.getBlockState(pos.down()).getBlock();
+            return (world.getLight(pos) >= 8 || world.canSeeSky(pos)) && soil != null && soil.canSustainPlant(world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
         }
     }
 
     @Override
-    protected boolean canPlaceBlockOn(Block par1) {
-        return par1 == Blocks.farmland || par1 == AtumBlocks.BLOCK_FERTILESOILTILLED;
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
-        int iconIndex = par2;
-        
-        if (iconIndex >= 5)
-            iconIndex-- ;
-        if (iconIndex >= 2)
-            iconIndex-- ;
-        
-        if (iconIndex < 0 || iconIndex > 5) {
-            iconIndex = 5;
-        }
-
-        return this.iconArray[iconIndex];
+    protected boolean canPlaceBlockOn(Block ground) {
+        return ground == Blocks.farmland || ground == AtumBlocks.FERTILESOILTILLED;
     }
 
     @Override
     public int getRenderType() {
         return 1;
     }
-    
-    // getSeedItem
+
     @Override
-    protected Item func_149866_i() {
-        return AtumItems.ITEM_FLAXSEED;
-    }
-    
-    // getCropItem
-    @Override
-    protected Item func_149865_P() {
-        return AtumItems.ITEM_FLAX;
+    protected Item getSeed() {
+        return AtumItems.FLAX_SEED;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.iconArray = new IIcon[6];
-
-        for (int i = 0; i < this.iconArray.length; ++i) {
-            this.iconArray[i] = par1IIconRegister.registerIcon("atum:Flax_" + i);
-        }
-
+    protected Item getCrop() {
+        return AtumItems.FLAX;
     }
 }

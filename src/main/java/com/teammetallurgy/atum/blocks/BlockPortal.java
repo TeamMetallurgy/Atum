@@ -2,9 +2,6 @@ package com.teammetallurgy.atum.blocks;
 
 import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.world.AtumTeleporter;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
@@ -14,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -23,17 +21,16 @@ import java.util.Random;
 public class BlockPortal extends BlockBreakable {
 
     public BlockPortal() {
-        super("atum:portal", Material.portal, true);
+        super(Material.portal, true);
         this.setTickRandomly(true);
         this.setHardness(-1.0F);
-        this.setBlockName("portal");
         this.setBlockBounds(0, 0, 0, 1, 0.875F, 1);
     }
 
     @Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         super.updateTick(par1World, par2, par3, par4, par5Random);
-        if (par1World.provider.isSurfaceWorld() && par5Random.nextInt(2000) < par1World.difficultySetting.getDifficultyId()) {
+        if (par1World.provider.isSurfaceWorld() && par5Random.nextInt(2000) < par1World.getDifficulty().getDifficultyId()) {
             ;
         }
     }
@@ -52,7 +49,7 @@ public class BlockPortal extends BlockBreakable {
         for (int x = -1; x < 2; x++) {
             for (int z = -1; z < 2; z++) {
                 for (int y = -1; y < 1; y++) {
-                    if (par1World.getBlock(par2 + x, par3 + y, par4 + z) != Blocks.sandstone && par1World.getBlock(par2 + x, par3 + y, par4 + z) != this && par1World.getBlock(par2 + x, par3 + y, par4 + z) != AtumBlocks.BLOCK_LARGEBRICK) {
+                    if (par1World.getBlock(par2 + x, par3 + y, par4 + z) != Blocks.sandstone && par1World.getBlock(par2 + x, par3 + y, par4 + z) != this && par1World.getBlock(par2 + x, par3 + y, par4 + z) != AtumBlocks.LARGEBRICK) {
                         par1World.setBlockToAir(par2, par3, par4);
                     }
                 }
@@ -65,7 +62,7 @@ public class BlockPortal extends BlockBreakable {
         return false;
     }
 
-    public boolean tryToCreatePortal(World world, int x, int y, int z, Block block) {
+    public boolean tryToCreatePortal(World world, BlockPos pos, Block block) {
         for (int x1 = -2; x1 < 3; x1++) {
             for (int z1 = -2; z1 < 3; z1++) {
                 if (world.getBlock(x + x1, y, z + z1) != block) {
@@ -95,7 +92,7 @@ public class BlockPortal extends BlockBreakable {
         }
         for (int x1 = -1; x1 < 2; x1++) {
             for (int z1 = -1; z1 < 2; z1++) {
-                world.setBlock(x + x1, y + 1, z + z1, AtumBlocks.BLOCK_PORTAL, 0, 2);
+                world.setBlock(x + x1, y + 1, z + z1, AtumBlocks.PORTAL, 0, 2);
 
             }
         }

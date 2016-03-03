@@ -1,14 +1,14 @@
 package com.teammetallurgy.atum.proxy;
 
 import com.teammetallurgy.atum.handler.event.ServerEvents;
-
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
 
     public void init() {
-        ServerEvents ticker = new ServerEvents();
-        FMLCommonHandler.instance().bus().register(ticker);
+        MinecraftForge.EVENT_BUS.register(new ServerEvents());
     }
 
     public void initRenders() {
@@ -17,4 +17,9 @@ public class CommonProxy {
     public void initTiles() {
     }
 
+    public void registerItemVariantModel(Item item, String name, int metadata) {
+    }
+
+    public void setItemResourceLocation(Item item, String name, CreativeTabs tab) {
+    }
 }

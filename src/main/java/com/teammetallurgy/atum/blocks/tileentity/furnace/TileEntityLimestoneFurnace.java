@@ -1,10 +1,6 @@
 package com.teammetallurgy.atum.blocks.tileentity.furnace;
 
 import com.teammetallurgy.atum.blocks.BlockLimeStoneFurnace;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +15,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISidedInventory {
     private static final int[] field_102010_d = new int[]{0};
@@ -70,7 +69,7 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
                 return 200;
             if (item instanceof ItemSword && ((ItemSword) item).getToolMaterialName().equals("WOOD"))
                 return 200;
-            if (item instanceof ItemHoe && ((ItemHoe) item).getToolMaterialName().equals("WOOD"))
+            if (item instanceof ItemHoe && ((ItemHoe) item).getMaterialName().equals("WOOD"))
                 return 200;
             if (i == Items.stick)
                 return 100;
@@ -86,27 +85,18 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         }
     }
 
-    /**
-     * Return true if item is a fuel source (getItemBurnTime() > 0).
-     */
-    public static boolean isItemFuel(ItemStack par0ItemStack) {
-        return getItemBurnTime(par0ItemStack) > 0;
+    public static boolean isItemFuel(ItemStack stack) {
+        return getItemBurnTime(stack) > 0;
     }
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     @Override
     public int getSizeInventory() {
         return this.furnaceItemStacks.length;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     @Override
-    public ItemStack getStackInSlot(int par1) {
-        return this.furnaceItemStacks[par1];
+    public ItemStack getStackInSlot(int slot) {
+        return this.furnaceItemStacks[slot];
     }
 
     /**
@@ -270,30 +260,18 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         
         return packet;
     }
-    
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be
-     * 64, possibly will be extended. *Isn't this more of a set than a get?*
-     */
+
     @Override
     public int getInventoryStackLimit() {
         return 64;
     }
 
     @SideOnly(Side.CLIENT)
-    /**
-     * Returns an integer between 0 and the passed value representing how close the current item is to being completely
-     * cooked
-     */
     public int getCookProgressScaled(int par1) {
         return this.furnaceCookTime * par1 / 200;
     }
 
     @SideOnly(Side.CLIENT)
-    /**
-     * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel
-     * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
-     */
     public int getBurnTimeRemainingScaled(int par1) {
         if (this.currentItemBurnTime == 0) {
             this.currentItemBurnTime = 200;
@@ -315,7 +293,7 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
      * inside its implementation.
      */
     @Override
-    public void updateEntity() {
+    public void update() {
         boolean flag = this.furnaceBurnTime > 0;
         boolean flag1 = false;
 

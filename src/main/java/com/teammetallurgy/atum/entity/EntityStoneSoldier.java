@@ -13,12 +13,12 @@ import net.minecraft.world.World;
 
 public class EntityStoneSoldier extends EntityStone {
 
-    public EntityStoneSoldier(World par1World) {
-        super(par1World);
+    public EntityStoneSoldier(World world) {
+        super(world);
         this.isImmuneToFire = true;
         this.experienceValue = 8;
 
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.ITEM_STONESOLDIER_SWORD));
+        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.STONESOLDIER_SWORD));
 
         for (int i = 0; i < this.equipmentDropChances.length; ++i) {
             this.equipmentDropChances[i] = 0F;
@@ -42,7 +42,7 @@ public class EntityStoneSoldier extends EntityStone {
 
     @Override
     public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.boundingBox.minY);
+        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
         if (i >= 62) {
             return false;
         } else {
@@ -56,13 +56,13 @@ public class EntityStoneSoldier extends EntityStone {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        if (super.attackEntityFrom(par1DamageSource, par2)) {
-            if (par1DamageSource.getEntity() != null) {
-                Entity par1Entity = par1DamageSource.getEntity();
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (super.attackEntityFrom(source, amount)) {
+            if (source.getEntity() != null) {
+                Entity par1Entity = source.getEntity();
                 int j = 0;
                 if (par1Entity instanceof EntityLiving) {
-                    j += EnchantmentHelper.getKnockbackModifier((EntityLiving) par1Entity, this);
+                    j += EnchantmentHelper.getKnockbackModifier(this);
 
                     if (j > 0) {
                         this.motionX /= 0.6D;
@@ -70,19 +70,14 @@ public class EntityStoneSoldier extends EntityStone {
                         this.addVelocity((double) (MathHelper.sin(par1Entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F), -0.1D, (double) (-MathHelper.cos(par1Entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F));
                     }
                 }
-
             }
             return true;
         }
-
         return false;
     }
 
-    /**
-     * knocks back this entity
-     */
     @Override
-    public void knockBack(Entity par1Entity, float par2, double par3, double par5) {
+    public void knockBack(Entity entity, float par2, double par3, double par5) {
         this.isAirBorne = true;
         float f = MathHelper.sqrt_double(par3 * par3 + par5 * par5);
         float f1 = 0.2F;
@@ -97,15 +92,11 @@ public class EntityStoneSoldier extends EntityStone {
         }
     }
 
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param par2 - Level of Looting used to kill this mob.
-     */
     @Override
-    protected void dropFewItems(boolean par1, int par2) {
+    protected void dropFewItems(boolean recentlyHit, int looting) {
         if (this.rand.nextInt(4) == 0) {
             int amount = rand.nextInt(2) + 1;
-            this.dropItem(AtumItems.ITEM_STONECHUNK, amount);
+            this.dropItem(AtumItems.STONE_CHUNK, amount);
         }
     }
-
 }

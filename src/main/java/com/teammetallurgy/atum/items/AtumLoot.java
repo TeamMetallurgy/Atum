@@ -60,45 +60,45 @@ public class AtumLoot {
         goodLoot = new AtumWeightedLootSet();
         junkLoot = new AtumWeightedLootSet();
 
-        ItemStack stack = new ItemStack(AtumItems.ITEM_PTAHSPICK);
+        ItemStack stack = new ItemStack(AtumItems.PTAHS_PICK);
         artifacts.add(stack);
 
-        artifacts.add(new ItemStack(AtumItems.sobeksRage));
-        artifacts.add(new ItemStack(AtumItems.osirisWill));
-        artifacts.add(new ItemStack(AtumItems.akersToil));
-        artifacts.add(new ItemStack(AtumItems.gebsBlessing));
-        artifacts.add(new ItemStack(AtumItems.atensFury));
-        artifacts.add(new ItemStack(AtumItems.rasGlory));
-        artifacts.add(new ItemStack(AtumItems.sekhmetsWrath));
-        artifacts.add(new ItemStack(AtumItems.nutsAgility));
-        artifacts.add(new ItemStack(AtumItems.horusFlight));
-        artifacts.add(new ItemStack(AtumItems.monthusStrike));
-        artifacts.add(new ItemStack(AtumItems.neithsAudacity));
-        artifacts.add(new ItemStack(AtumItems.hedetetsSting));
-        artifacts.add(new ItemStack(AtumItems.nusFlux));
-        artifacts.add(new ItemStack(AtumItems.anhursMight));
-        artifacts.add(new ItemStack(AtumItems.horusSoaring));
-        artifacts.add(new ItemStack(AtumItems.shusBreath));
-        artifacts.add(new ItemStack(AtumItems.hedetetsVenom));
-        artifacts.add(new ItemStack(AtumItems.monthusBlast));
-        artifacts.add(new ItemStack(AtumItems.mnevisHorns));
-        artifacts.add(new ItemStack(AtumItems.isisEmbrace));
-        artifacts.add(new ItemStack(AtumItems.maatsBalance));
-        artifacts.add(new ItemStack(AtumItems.nutsCall));
-        artifacts.add(new ItemStack(AtumItems.ptahsDestruction));
-        artifacts.add(new ItemStack(AtumItems.anuketsBounty));
-        artifacts.add(new ItemStack(AtumItems.anubisMercy));
-        artifacts.add(new ItemStack(AtumItems.amunetsHomecoming));
-        artifacts.add(new ItemStack(AtumItems.isisHealing));
-        artifacts.add(new ItemStack(AtumItems.mafdetsQuickness));
+        artifacts.add(new ItemStack(AtumItems.SOBEKS_RAGE));
+        artifacts.add(new ItemStack(AtumItems.OSIRIS_WILL));
+        artifacts.add(new ItemStack(AtumItems.AKERS_TOIL));
+        artifacts.add(new ItemStack(AtumItems.GEBS_BLESSING));
+        artifacts.add(new ItemStack(AtumItems.ATENS_FURY));
+        artifacts.add(new ItemStack(AtumItems.RAS_GLORY));
+        artifacts.add(new ItemStack(AtumItems.SEKHMETS_WRATH));
+        artifacts.add(new ItemStack(AtumItems.NUTS_AGILITY));
+        artifacts.add(new ItemStack(AtumItems.HORUS_FLIGHT));
+        artifacts.add(new ItemStack(AtumItems.MONTHUS_STRIKE));
+        artifacts.add(new ItemStack(AtumItems.NEITHS_AUDACITY));
+        artifacts.add(new ItemStack(AtumItems.HEDETETS_STING));
+        artifacts.add(new ItemStack(AtumItems.NUS_FLUX));
+        artifacts.add(new ItemStack(AtumItems.ANHURS_MIGHT));
+        artifacts.add(new ItemStack(AtumItems.HORUS_SOARING));
+        artifacts.add(new ItemStack(AtumItems.SHUS_BREATH));
+        artifacts.add(new ItemStack(AtumItems.HEDETETS_VENOM));
+        artifacts.add(new ItemStack(AtumItems.MONTHUS_BLAST));
+        artifacts.add(new ItemStack(AtumItems.MNEVIS_HORNS));
+        artifacts.add(new ItemStack(AtumItems.ISIS_EMBRACE));
+        artifacts.add(new ItemStack(AtumItems.MAATS_BALANCE));
+        artifacts.add(new ItemStack(AtumItems.NUTS_CALL));
+        artifacts.add(new ItemStack(AtumItems.PTAHS_DESTRUCTION));
+        artifacts.add(new ItemStack(AtumItems.ANUKETS_BOUNTY));
+        artifacts.add(new ItemStack(AtumItems.ANUBIS_MERCY));
+        artifacts.add(new ItemStack(AtumItems.AMUNETS_HOMECOMING));
+        artifacts.add(new ItemStack(AtumItems.ISIS_HEALING));
+        artifacts.add(new ItemStack(AtumItems.MAFDETS_QUICKNESS));
 
         // Junk Loot Stuff
-        junkLoot.addLoot(new ItemStack(AtumItems.ITEM_FLAXSEED), 5, 1, 2);
+        junkLoot.addLoot(new ItemStack(AtumItems.FLAX_SEED), 5, 1, 2);
         junkLoot.addLoot(new ItemStack(Items.stick), 5, 1, 5);
-        junkLoot.addLoot(new ItemStack(AtumItems.ITEM_DATE), 5, 1, 2);
+        junkLoot.addLoot(new ItemStack(AtumItems.DATE), 5, 1, 2);
         junkLoot.addLoot(new ItemStack(Items.bone), 10, 1, 3);
-        junkLoot.addLoot(new ItemStack(AtumBlocks.BLOCK_SAND), 12, 1, 64);
-        junkLoot.addLoot(new ItemStack(AtumItems.ITEM_SCIMITAR), 5, 1, 1);
+        junkLoot.addLoot(new ItemStack(AtumBlocks.SAND), 12, 1, 64);
+        junkLoot.addLoot(new ItemStack(AtumItems.SCIMITAR), 5, 1, 1);
         junkLoot.addLoot(new ItemStack(Items.leather), 5, 1, 5);
 
         // Good Loot

@@ -1,23 +1,16 @@
 package com.teammetallurgy.atum.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class ItemAtumBow extends ItemBow {
 
     public static final String[] bowPullIconNameArray = new String[]{"bow_pull_0", "bow_pull_1", "bow_pull_2"};
-    IIcon[] iconArray;
 
     public ItemAtumBow() {
         super();
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IIconRegister) {
         this.iconArray = new IIcon[bowPullIconNameArray.length];
@@ -27,9 +20,9 @@ public class ItemAtumBow extends ItemBow {
             this.iconArray[i] = par1IIconRegister.registerIcon("atum:" + bowPullIconNameArray[i]);
         }
 
-    }
+    }*/
 
-    @Override
+   /* @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         if (usingItem != null) {
             int j = this.getMaxItemUseDuration(stack) - useRemaining;
@@ -53,6 +46,5 @@ public class ItemAtumBow extends ItemBow {
     @SideOnly(Side.CLIENT)
     public IIcon getItemIconForUseDuration(int par1) {
         return this.iconArray[par1];
-    }
-
+    }*/
 }

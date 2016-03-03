@@ -20,7 +20,7 @@ public class EntityBanditArcher extends EntityMob implements IRangedAttackMob {
 
     public EntityBanditArcher(World par1World) {
         super(par1World);
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.ITEM_BOW));
+        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.BOW));
         this.enchantEquipment();
 
         this.setCanPickUpLoot(this.rand.nextFloat() < equipmentDropChances[this.worldObj.difficultySetting.getDifficultyId()]);
@@ -48,26 +48,19 @@ public class EntityBanditArcher extends EntityMob implements IRangedAttackMob {
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
     }
 
-    /**
-     * Checks if the entity's current position is a valid location to spawn this
-     * entity.
-     */
     @Override
     public boolean getCanSpawnHere() {
         int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
+        int j = MathHelper.floor_double(this.getEntityBoundingBox().minY);
         int k = MathHelper.floor_double(this.posZ);
         if (j <= 62) {
             return false;
         } else {
             return this.worldObj.canBlockSeeTheSky(i, j, k) && this.isValidLightLevel() &&
-                   this.worldObj.checkNoEntityCollision(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
+                    this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox()) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
         }
     }
 
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
     @Override
     protected boolean isValidLightLevel() {
         int i = MathHelper.floor_double(this.posX);
@@ -84,9 +77,6 @@ public class EntityBanditArcher extends EntityMob implements IRangedAttackMob {
             return false;
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     @Override
     public boolean isAIEnabled() {
         return true;
@@ -101,24 +91,15 @@ public class EntityBanditArcher extends EntityMob implements IRangedAttackMob {
         }
     }
 
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
     @Override
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEFINED;
     }
 
-    /**
-     * Makes entity wear random armor based on difficulty
-     */
     @Override
     protected void addRandomArmor() {
     }
 
-    /**
-     * Attack the specified entity using a ranged attack.
-     */
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLiving, float par2) {
         EntityArrow entityarrow = new EntityArrow(this.worldObj, this, par1EntityLiving, 1.6F, (float) (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
@@ -142,24 +123,16 @@ public class EntityBanditArcher extends EntityMob implements IRangedAttackMob {
         this.worldObj.spawnEntityInWorld(entityarrow);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readEntityFromNBT(par1NBTTagCompound);
     }
 
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity
-     * has recently been hit by a player. @param par2 - Level of Looting used to
-     * kill this mob.
-     */
     @Override
     protected void dropFewItems(boolean par1, int par2) {
         if (rand.nextInt(20) == 0) {
-            int damage = (int) (AtumItems.ITEM_BOW.getMaxDamage() - rand.nextInt(AtumItems.ITEM_BOW.getMaxDamage()) * 0.5 + 20);
-            this.entityDropItem(new ItemStack(AtumItems.ITEM_BOW, 1, damage), 0.0F);
+            int damage = (int) (AtumItems.BOW.getMaxDamage() - rand.nextInt(AtumItems.BOW.getMaxDamage()) * 0.5 + 20);
+            this.entityDropItem(new ItemStack(AtumItems.BOW, 1, damage), 0.0F);
         }
 
         if (rand.nextInt(10) == 0) {

@@ -1,21 +1,20 @@
 package com.teammetallurgy.atum.entity;
 
-import com.teammetallurgy.atum.items.AtumLoot;
-import com.teammetallurgy.atum.utils.Constants;
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
 import com.teammetallurgy.atum.items.AtumItems;
-import cpw.mods.fml.common.FMLCommonHandler;
+import com.teammetallurgy.atum.items.AtumLoot;
+import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -23,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.List;
 
@@ -30,21 +30,19 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
     public static String[] prefix = {"Ama", "Ata", "Ato", "Bak", "Cal", "Djet", "Eje", "For", "Gol", "Gut", "Hop", "Hor", "Huni", "Iam", "Jor", "Kal", "Khas", "Khor", "Lat", "Mal", "Not", "Oap", "Pra", "Qo", "Ras", "Shas", "Thoth", "Tui", "Uld", "Ver", "Wot", "Xo", "Yat", "Zyt", "Khep"};
     public static String[] suffix = {"Ahat", "Amesh", "Amon", "Anut", "Baroom", "Chanta", "Erant", "Funam", "Daresh", "Djer", "Hotesh", "Khaden", "Kron", "Gorkum", "Ialenter", "Ma'at", "Narmer", "Radeem", "Jaloom", "Lepsha", "Quor", "Oleshet", "Peput", "Talat", "Ulam", "Veresh", "Ranesh", "Snef", "Wollolo", "Hathor", "Intef", "Neferk", "Khatne", "Tepy", "Moret"};
     public static String[] numeral = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"};
-    int linkedX;
-    int linkedY;
-    int linkedZ;
+    int linkedX, linkedY, linkedZ;
     int stage;
     private int suffixID = 0;
     private int prefixID = 0;
     private int numID = 0;
     private int regenTime = 0;
 
-    public EntityPharaoh(World par1World) {
-        super(par1World);
+    public EntityPharaoh(World world) {
+        super(world);
         this.experienceValue = 250;
         stage = 0;
 
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.ITEM_SCEPTER));
+        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SCEPTER));
 
         for (int i = 0; i < this.equipmentDropChances.length; ++i) {
             this.equipmentDropChances[i] = 0F;
@@ -69,23 +67,20 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         dataWatcher.updateObject(23, linkedZ);
     }
 
-    /**
-     * Makes the entity despawn if requirements are reached
-     */
     @Override
     protected void despawnEntity() {
     }
 
     @Override
-    public void onDeath(DamageSource par1DamageSource) {
-        super.onDeath(par1DamageSource);
+    public void onDeath(DamageSource source) {
+        super.onDeath(source);
 
-        if (par1DamageSource.damageType == "player") {
-            EntityPlayer slayer = (EntityPlayer) par1DamageSource.getEntity();
+        if (source.damageType == "player") {
+            EntityPlayer slayer = (EntityPlayer) source.getEntity();
             if (!worldObj.isRemote) {
-                List<EntityPlayer> players = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList;
+                List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList;
                 for (EntityPlayer player : players) {
-                    player.addChatMessage(new ChatComponentText(this.getCommandSenderName() + " " + StatCollector.translateToLocal("chat.atum.killPharaoh") + " " + slayer.getGameProfile().getName()));
+                    player.addChatMessage(new ChatComponentText(this.getName() + " " + StatCollector.translateToLocal("chat.atum.killPharaoh") + " " + slayer.getGameProfile().getName()));
                 }
             }
         }
@@ -93,7 +88,7 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         Integer chestX = dataWatcher.getWatchableObjectInt(21);
         Integer chestY = dataWatcher.getWatchableObjectInt(22);
         Integer chestZ = dataWatcher.getWatchableObjectInt(23);
-        
+
         if (chestX != null && chestY != null && chestZ != null) {
             TileEntity te = worldObj.getTileEntity(chestX, chestY, chestZ);
             if (te != null) {
@@ -102,15 +97,15 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
                     tepc.setOpenable();
                 }
             } else {
-                Constants.LOG.error("Unable to find chest coords for "  + this.getCommandSenderName() + " on " +  chestX + ", " + chestY + ", " + chestZ);
+                Constants.LOG.error("Unable to find chest coords for " + this.getName() + " on " + chestX + ", " + chestY + ", " + chestZ);
             }
         } else {
-            Constants.LOG.error("Unable to get chest coords for "  + this.getCommandSenderName());
+            Constants.LOG.error("Unable to get chest coords for " + this.getName());
         }
     }
 
     @Override
-    public String getCommandSenderName() {
+    public String getName() {
         try {
             int s = this.dataWatcher.getWatchableObjectInt(18);
             int p = this.dataWatcher.getWatchableObjectInt(19);
@@ -121,17 +116,11 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         }
     }
 
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
     @Override
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
     }
 
-    /**
-     * knocks back this entity
-     */
     @Override
     public void knockBack(Entity par1Entity, float par2, double par3, double par5) {
         this.isAirBorne = true;
@@ -149,14 +138,14 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        if (par1DamageSource.isFireDamage()) {
+    public boolean attackEntityFrom(DamageSource source, float par2) {
+        if (source.isFireDamage()) {
             par2 = 0;
         }
 
-        if (super.attackEntityFrom(par1DamageSource, par2)) {
-            if (par1DamageSource.getEntity() != null) {
-                Entity par1Entity = par1DamageSource.getEntity();
+        if (super.attackEntityFrom(source, par2)) {
+            if (source.getEntity() != null) {
+                Entity par1Entity = source.getEntity();
                 int j = 0;
                 if (par1Entity instanceof EntityLiving) {
                     j += EnchantmentHelper.getKnockbackModifier((EntityLiving) par1Entity, this);
@@ -186,11 +175,6 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         return false;
     }
 
-    /**
-     * Destroys all blocks that aren't associated with 'The End' inside the
-     * given bounding box.
-     */
-
     private boolean destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
         int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
         int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
@@ -208,7 +192,7 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
                     int metadata = this.worldObj.getBlockMetadata(x, y, z);
 
                     if (block != null) {
-                        if (block != AtumBlocks.BLOCK_LARGEBRICK && block != AtumBlocks.BLOCK_PHARAOHCHEST && block != Blocks.bedrock && block.isBlockSolid(worldObj, x, y, z, 0)) {
+                        if (block != AtumBlocks.LARGEBRICK && block != AtumBlocks.PHARAOHCHEST && block != Blocks.bedrock && block.isBlockSolid(worldObj, x, y, z, 0)) {
                             block.dropBlockAsItem(worldObj, x, y, z, metadata, 0);
                             flag1 = this.worldObj.setBlockToAir(x, y, z) || flag1;
                         }
@@ -279,49 +263,42 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         }
         if (numSpawned >= 2)
             return;
-
     }
 
     public boolean trySpawnMummy(int x, int y, int z) {
-        EntityMummy mummy1 = new EntityMummy(worldObj);
-        mummy1.setPosition(x, y, z);
-        if (mummy1.getCanSpawnHere()) {
-            if (!worldObj.isRemote)
-                worldObj.spawnEntityInWorld(mummy1);
-            mummy1.spawnExplosionParticle();
+        EntityMummy entityMummy = new EntityMummy(worldObj);
+        entityMummy.setPosition(x, y, z);
+        if (entityMummy.getCanSpawnHere()) {
+            if (!worldObj.isRemote) {
+                worldObj.spawnEntityInWorld(entityMummy);
+            }
+            entityMummy.spawnExplosionParticle();
             return true;
         }
-
         return false;
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     @Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("suffix", dataWatcher.getWatchableObjectInt(18));
-        par1NBTTagCompound.setInteger("prefix", dataWatcher.getWatchableObjectInt(19));
-        par1NBTTagCompound.setInteger("numeral", dataWatcher.getWatchableObjectInt(20));
-        par1NBTTagCompound.setInteger("chestX", dataWatcher.getWatchableObjectInt(21));
-        par1NBTTagCompound.setInteger("chestY", dataWatcher.getWatchableObjectInt(22));
-        par1NBTTagCompound.setInteger("chestZ", dataWatcher.getWatchableObjectInt(23));
+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
+        super.writeEntityToNBT(tagCompound);
+        tagCompound.setInteger("suffix", dataWatcher.getWatchableObjectInt(18));
+        tagCompound.setInteger("prefix", dataWatcher.getWatchableObjectInt(19));
+        tagCompound.setInteger("numeral", dataWatcher.getWatchableObjectInt(20));
+        tagCompound.setInteger("chestX", dataWatcher.getWatchableObjectInt(21));
+        tagCompound.setInteger("chestY", dataWatcher.getWatchableObjectInt(22));
+        tagCompound.setInteger("chestZ", dataWatcher.getWatchableObjectInt(23));
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     @Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readEntityFromNBT(par1NBTTagCompound);
+    public void readEntityFromNBT(NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
         this.dataWatcher.updateObject(16, Float.valueOf(this.prevHealth));
-        suffixID = par1NBTTagCompound.getInteger("suffix");
-        prefixID = par1NBTTagCompound.getInteger("prefix");
-        numID = par1NBTTagCompound.getInteger("numeral");
-        linkedX = par1NBTTagCompound.getInteger("chestX");
-        linkedY = par1NBTTagCompound.getInteger("chestY");
-        linkedZ = par1NBTTagCompound.getInteger("chestZ");
+        suffixID = tagCompound.getInteger("suffix");
+        prefixID = tagCompound.getInteger("prefix");
+        numID = tagCompound.getInteger("numeral");
+        linkedX = tagCompound.getInteger("chestX");
+        linkedY = tagCompound.getInteger("chestY");
+        linkedZ = tagCompound.getInteger("chestZ");
         this.dataWatcher.updateObject(18, new Integer(suffixID));
         this.dataWatcher.updateObject(19, new Integer(prefixID));
         this.dataWatcher.updateObject(20, new Integer(numID));
@@ -347,14 +324,11 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         this.dataWatcher.addObject(23, new Integer(0));
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     @Override
     public void onUpdate() {
         super.onUpdate();
 
-        if (!this.worldObj.isRemote && this.worldObj.difficultySetting.getDifficultyId() == 0) {
+        if (!this.worldObj.isRemote && this.worldObj.getDifficulty().getDifficultyId() == 0) {
             TileEntity te = worldObj.getTileEntity(linkedX, linkedY, linkedZ);
             if (te instanceof TileEntityPharaohChest) {
                 ((TileEntityPharaohChest) te).setPharaohDespawned();
@@ -377,16 +351,11 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         super.onLivingUpdate();
 
         if (!worldObj.isRemote)
-            this.destroyBlocksInAABB(this.boundingBox.expand(0.1, 0, 0.1));
+            this.destroyBlocksInAABB(this.getEntityBoundingBox().expand(0.1, 0, 0.1));
     }
 
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity
-     * has recently been hit by a player. @param par2 - Level of Looting used to
-     * kill this mob.
-     */
     @Override
-    protected void dropFewItems(boolean par1, int par2) {
+    protected void dropFewItems(boolean recentlyHit, int looting) {
         int amount = rand.nextInt(2) + 1;
         this.dropItem(Items.gold_ingot, amount);
 

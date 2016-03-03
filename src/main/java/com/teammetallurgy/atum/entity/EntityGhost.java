@@ -140,7 +140,7 @@ public class EntityGhost extends EntityMob {
     protected void dropFewItems(boolean par1, int par2) {
         if (this.rand.nextInt(4) == 0) {
             int amount = rand.nextInt(3) + 1;
-            this.dropItem(AtumItems.ITEM_ECTOPLASM, amount);
+            this.dropItem(AtumItems.ECTOPLASM, amount);
         }
     }
 

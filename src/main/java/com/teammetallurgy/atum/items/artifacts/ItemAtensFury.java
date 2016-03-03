@@ -1,9 +1,6 @@
 package com.teammetallurgy.atum.items.artifacts;
 
 import com.teammetallurgy.atum.entity.arrow.EntityArrowFire;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,12 +9,14 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.List;
 public class ItemAtensFury extends ItemBow {
 
     public static final String[] bowPullIconNameArray = new String[]{"atens_pull_0", "atens_pull_1", "atens_pull_2"};
-    IIcon[] iconArray;
 
     public ItemAtensFury() {
         super();
@@ -33,7 +31,8 @@ public class ItemAtensFury extends ItemBow {
     }
 
     @Override
-    public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack) {
         return true;
     }
 
@@ -43,14 +42,14 @@ public class ItemAtensFury extends ItemBow {
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
-        int j = this.getMaxItemUseDuration(par1ItemStack) - par4;
-        ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, j);
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int timeLeft) {
+        int j = this.getMaxItemUseDuration(stack) - timeLeft;
+        ArrowLooseEvent event = new ArrowLooseEvent(player, stack, j);
         MinecraftForge.EVENT_BUS.post(event);
         if (!event.isCanceled()) {
             j = event.charge;
-            boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
-            if (flag || par3EntityPlayer.inventory.hasItem(Items.arrow)) {
+            boolean flag = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
+            if (flag || player.inventory.hasItem(Items.arrow)) {
                 float f = (float) j / 20.0F;
                 f = (f * f + f * 2.0F) / 3.0F;
                 if ((double) f < 0.1D) {
@@ -61,40 +60,41 @@ public class ItemAtensFury extends ItemBow {
                     f = 1.0F;
                 }
 
-                EntityArrowFire entityarrow = new EntityArrowFire(par2World, par3EntityPlayer, f * 2.0F);
+                EntityArrowFire entityarrow = new EntityArrowFire(world, player, f * 2.0F);
                 entityarrow.setDamage(entityarrow.getDamage() * 1.5D);
                 if (f == 1.0F) {
                     entityarrow.setIsCritical(true);
                 }
 
-                int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
+                int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, stack);
                 if (k > 0) {
                     entityarrow.setDamage(entityarrow.getDamage() + (double) k * 0.5D + 0.5D);
                 }
 
-                int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
+                int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, stack);
                 if (l > 0) {
                     entityarrow.setKnockbackStrength(l);
                 }
 
                 entityarrow.setFire(100);
-                par1ItemStack.damageItem(1, par3EntityPlayer);
-                par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                stack.damageItem(1, player);
+                world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
                 if (flag) {
                     entityarrow.canBePickedUp = 2;
                 } else {
-                    par3EntityPlayer.inventory.consumeInventoryItem(Items.arrow);
+                    player.inventory.consumeInventoryItem(Items.arrow);
                 }
 
-                if (!par2World.isRemote) {
-                    par2World.spawnEntityInWorld(entityarrow);
+                player.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+
+                if (!world.isRemote) {
+                    world.spawnEntityInWorld(entityarrow);
                 }
             }
-
         }
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IIconRegister) {
         this.iconArray = new IIcon[bowPullIconNameArray.length];
@@ -103,9 +103,9 @@ public class ItemAtensFury extends ItemBow {
             this.iconArray[i] = par1IIconRegister.registerIcon("atum:" + bowPullIconNameArray[i]);
         }
 
-    }
+    }*/
 
-    @Override
+    /*@Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         if (usingItem != null) {
             int j = this.getMaxItemUseDuration(stack) - useRemaining;
@@ -123,29 +123,28 @@ public class ItemAtensFury extends ItemBow {
         }
 
         return this.getIcon(stack, renderPass);
-    }
+    }*/
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getItemIconForUseDuration(int par1) {
         return this.iconArray[par1];
-    }
+    }*/
 
     @Override
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack) {
-        return EnumRarity.rare;
+        return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            par3List.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
         }
     }
-
 }

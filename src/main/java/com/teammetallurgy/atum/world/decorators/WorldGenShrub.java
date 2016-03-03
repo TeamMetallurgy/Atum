@@ -2,6 +2,7 @@ package com.teammetallurgy.atum.world.decorators;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -9,28 +10,32 @@ import java.util.Random;
 
 public class WorldGenShrub extends WorldGenerator {
 
-    private Block deadBush;
+    private Block shrub;
     private int groupSize;
 
-    public WorldGenShrub(Block par1, int par2) {
-        this.deadBush = par1;
-        this.groupSize = par2;
+    public WorldGenShrub(Block block, int size) {
+        this.shrub = block;
+        this.groupSize = size;
     }
 
     @Override
-    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5) {
-        int size = par2Random.nextInt(this.groupSize / 2) + this.groupSize / 2;
+    public boolean generate(World world, Random random, BlockPos pos) {
+        int size = random.nextInt(this.groupSize / 2) + this.groupSize / 2;
+        Block block;
 
-        for (int i1 = 0; i1 < size; ++i1) {
-            byte range = 6;
-            int x = par3 + par2Random.nextInt(range + 1) - range / 2;
-            int z = par5 + par2Random.nextInt(range + 1) - range / 2;
-            int y = par1World.getHeightValue(x, z);
-            if (par1World.isAirBlock(x, y, z) && AtumBlocks.BLOCK_SHRUB.canBlockStay(par1World, x, y, z)) {
-                par1World.setBlock(x, y, z, this.deadBush);
+        do {
+            block = world.getBlockState(pos).getBlock();
+            if (!block.isLeaves(world, pos) && !block.isLeaves(world, pos)) break;
+            pos = pos.down();
+        } while (pos.getY() > 0);
+
+        for (int i = 0; i < size; ++i) {
+            BlockPos blockpos = pos.add(random.nextInt(8) - random.nextInt(8), random.nextInt(4) - random.nextInt(4), random.nextInt(8) - random.nextInt(8));
+
+            if (world.isAirBlock(blockpos) && AtumBlocks.SHRUB.canBlockStay(world, blockpos, shrub.getDefaultState())) {
+                world.setBlockState(blockpos, shrub.getDefaultState(), 2);
             }
         }
-
         return true;
     }
 }

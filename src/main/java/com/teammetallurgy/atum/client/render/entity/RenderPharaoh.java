@@ -1,29 +1,29 @@
 package com.teammetallurgy.atum.client.render.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.teammetallurgy.atum.entity.EntityPharaoh;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderPharaoh extends RenderBiped {
+public class RenderPharaoh extends RenderBiped<EntityPharaoh> {
 
-    public RenderPharaoh(ModelBiped par1ModelBiped, float par2) {
-        super(par1ModelBiped, par2);
+    public RenderPharaoh(RenderManager renderManager, ModelBiped modelBiped, float shadowSize) {
+        super(renderManager, modelBiped, shadowSize);
     }
 
     @Override
-    public void doRender(EntityLiving par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        BossStatus.setBossStatus((net.minecraft.entity.boss.IBossDisplayData) par1Entity, true);
-        super.doRender(par1Entity, par2, par4, par6, par8, par9);
+    public void doRender(EntityPharaoh entityPharaoh, double x, double y, double z, float entityYaw, float partialTicks) {
+        BossStatus.setBossStatus(entityPharaoh, true);
+        super.doRender(entityPharaoh, x, y, z, entityYaw, partialTicks);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity) {
+    protected ResourceLocation getEntityTexture(EntityPharaoh entityPharaoh) {
         return new ResourceLocation("atum", "textures/entities/PharaohBlue.png");
     }
 }

@@ -1,8 +1,5 @@
 package com.teammetallurgy.atum.entity.arrow;
 
-import cpw.mods.fml.common.registry.IThrowableEntity;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -18,21 +15,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IThrowableEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class EntityArrowVelocity extends CustomArrow implements IProjectile, IThrowableEntity {
-    /**
-     * 1 if the player can pick up the arrow
-     */
+public class EntityArrowVelocity extends CustomArrow implements IProjectile, IThrowableEntity { //TODO A lot of this class can probably be removed since it's the same as EntityArrow
+    /** 1 if the player can pick up the arrow */
     public int canBePickedUp = 0;
-    /**
-     * Seems to be some sort of timer for animating an arrow.
-     */
+    /** Seems to be some sort of timer for animating an arrow. */
     public int arrowShake = 0;
-    /**
-     * The owner of this arrow.
-     */
+    /** The owner of this arrow. */
     public Entity shootingEntity;
     private int xTile = -1;
     private int yTile = -1;
@@ -43,52 +37,8 @@ public class EntityArrowVelocity extends CustomArrow implements IProjectile, ITh
     private int ticksInGround;
     private int ticksInAir = 0;
     private double damage = 2.0D;
-
-    /**
-     * The amount of knockback an arrow applies when it hits a mob.
-     */
+    /** The amount of knockback an arrow applies when it hits a mob. */
     private int knockbackStrength;
-
-    public EntityArrowVelocity(World par1World) {
-        super(par1World);
-        this.renderDistanceWeight = 10.0D;
-        this.setSize(0.5F, 0.5F);
-    }
-
-    public EntityArrowVelocity(World par1World, double par2, double par4, double par6) {
-        super(par1World);
-        this.renderDistanceWeight = 10.0D;
-        this.setSize(0.5F, 0.5F);
-        this.setPosition(par2, par4, par6);
-        this.yOffset = 0.0F;
-    }
-
-    public EntityArrowVelocity(World par1World, EntityLivingBase par2EntityLiving, EntityLiving par3EntityLiving, float par4, float par5) {
-        super(par1World);
-        this.renderDistanceWeight = 10.0D;
-        this.shootingEntity = par2EntityLiving;
-
-        if (par2EntityLiving instanceof EntityPlayer) {
-            this.canBePickedUp = 1;
-        }
-
-        this.posY = par2EntityLiving.posY + (double) par2EntityLiving.getEyeHeight() - 0.10000000149011612D;
-        double d0 = par3EntityLiving.posX - par2EntityLiving.posX;
-        double d1 = par3EntityLiving.boundingBox.minY + (double) (par3EntityLiving.height / 3.0F) - this.posY;
-        double d2 = par3EntityLiving.posZ - par2EntityLiving.posZ;
-        double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-
-        if (d3 >= 1.0E-7D) {
-            float f2 = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            float f3 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-            double d4 = d0 / d3;
-            double d5 = d2 / d3;
-            this.setLocationAndAngles(par2EntityLiving.posX + d4, this.posY, par2EntityLiving.posZ + d5, f2, f3);
-            this.yOffset = 0.0F;
-            float f4 = (float) d3 * 0.2F;
-            this.setThrowableHeading(d0, d1 + (double) f4, d2, par4, par5);
-        }
-    }
 
     public EntityArrowVelocity(World par1World, EntityLivingBase par2EntityLiving, float par3) {
         super(par1World);
@@ -105,13 +55,13 @@ public class EntityArrowVelocity extends CustomArrow implements IProjectile, ITh
         this.posY -= 0.10000000149011612D;
         this.posZ -= (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.yOffset = 0.0F;
         this.motionX = (double) (-MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
         this.motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
         this.motionY = (double) (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
     }
 
+    @Override
     protected void entityInit() {
         this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
     }
@@ -140,29 +90,24 @@ public class EntityArrowVelocity extends CustomArrow implements IProjectile, ITh
         this.ticksInGround = 0;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    /**
-     * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
-     * posY, posZ, yaw, pitch
-     */
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
+    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9, boolean b) {
         this.setPosition(par1, par3, par5);
         this.setRotation(par7, par8);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    /**
-     * Sets the velocity to the args. Args: x, y, z
-     */
-    public void setVelocity(double par1, double par3, double par5) {
-        this.motionX = par1;
-        this.motionY = par3;
-        this.motionZ = par5;
+    public void setVelocity(double x, double y, double z) {
+        this.motionX = x;
+        this.motionY = y;
+        this.motionZ = z;
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
-            float f = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
-            this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(par1, par5) * 180.0D / Math.PI);
-            this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(par3, (double) f) * 180.0D / Math.PI);
+            float f = MathHelper.sqrt_double(x * x + z * z);
+            this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
+            this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(y, (double) f) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
             this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);

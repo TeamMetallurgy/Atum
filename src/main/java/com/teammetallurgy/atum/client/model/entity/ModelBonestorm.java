@@ -1,11 +1,11 @@
 package com.teammetallurgy.atum.client.model.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelBonestorm extends ModelBase {
@@ -22,17 +22,13 @@ public class ModelBonestorm extends ModelBase {
         this.bonestormHead.addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8);
     }
 
-    public int func_78104_a() {
-        return 8;
-    }
-
     @Override
-    public void render(Entity entity, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_) {
-        this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_, entity);
-        this.bonestormHead.render(p_78088_7_);
+    public void render(Entity entity, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float scale) { //TODO Proper parameters
+        this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, scale, entity);
+        this.bonestormHead.render(scale);
 
         for (int i = 0; i < this.bonestormSticks.length; ++i) {
-            this.bonestormSticks[i].render(p_78088_7_);
+            this.bonestormSticks[i].render(scale);
         }
     }
 

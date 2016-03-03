@@ -11,7 +11,7 @@ public class BiomeGenSandDunes extends AtumBiomeGenBase {
         super.rootHeight = height_LowPlains.rootHeight + 0.1F;
         super.heightVariation = height_LowPlains.variation + 0.2F;
         
-        super.fillerBlock = AtumBlocks.BLOCK_SAND;
+        super.fillerBlock = AtumBlocks.SAND;
         
         super.palmRarity *= 2;
         super.deadwoodRarity = -1;

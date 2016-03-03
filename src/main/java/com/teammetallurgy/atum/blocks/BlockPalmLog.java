@@ -1,35 +1,41 @@
 package com.teammetallurgy.atum.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
 import java.util.Random;
 
-public class BlockPalmLog extends Block {
-
-    protected IIcon tree_top;
-    protected IIcon tree_side;
+public class BlockPalmLog extends BlockLog {
+    public static final PropertyEnum<BlockAtumPlank.EnumType> VARIANT = PropertyEnum.create("variant", BlockAtumPlank.EnumType.class, new Predicate<BlockAtumPlank.EnumType>() {
+        @Override
+        public boolean apply(BlockAtumPlank.EnumType enumType) {
+            return enumType.getMetadata() < 4;
+        }
+    });
 
     protected BlockPalmLog() {
-        super(Material.wood);
-        this.setBlockName("palmLog");
-        this.setHardness(2.0F);
-        this.setStepSound(Block.soundTypeWood);
+        super();
+        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+        list.add(new ItemStack(item, 1, BlockAtumPlank.EnumType.PALM.getMetadata()));
+        list.add(new ItemStack(item, 1, BlockAtumPlank.EnumType.DEADWOOD.getMetadata()));
     }
 
     @Override
-    public int getRenderType() {
-        return 31;
-    }
-
-    @Override
-    public int quantityDropped(Random par1Random) {
+    public int quantityDropped(Random random) {
         return 1;
     }
 
@@ -74,21 +80,6 @@ public class BlockPalmLog extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
-        int k = par2 & 12;
-        int l = par2 & 3;
-        return k == 0 && (par1 == 1 || par1 == 0) ? this.tree_top : (k == 4 && (par1 == 5 || par1 == 4) ? this.tree_top : (k == 8 && (par1 == 2 || par1 == 3) ? this.tree_top : this.tree_side));
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.tree_top = par1IIconRegister.registerIcon("atum:tree_top");
-        this.tree_side = par1IIconRegister.registerIcon("atum:tree_side");
-    }
-
-    @Override
     public boolean canSustainLeaves(IBlockAccess world, int x, int y, int z) {
         return true;
     }
@@ -97,5 +88,4 @@ public class BlockPalmLog extends Block {
     public boolean isWood(IBlockAccess world, int x, int y, int z) {
         return true;
     }
-
 }

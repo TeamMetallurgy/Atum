@@ -1,16 +1,7 @@
 package com.teammetallurgy.atum.client.render.tileentity;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-
-public class RenderPapyrus implements ISimpleBlockRenderingHandler {
-
+public class RenderPapyrus { //TODO Move to json?
+/*
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         Tessellator tessellator = Tessellator.instance;
@@ -87,6 +78,5 @@ public class RenderPapyrus implements ISimpleBlockRenderingHandler {
     @Override
     public boolean shouldRender3DInInventory(int arg0) {
         return false;
-    }
-
+    }*/
 }

@@ -15,8 +15,8 @@ import net.minecraft.world.World;
 
 public class EntityMummy extends EntityMob {
 
-    public EntityMummy(World par1World) {
-        super(par1World);
+    public EntityMummy(World world) {
+        super(world);
         this.experienceValue = 8;
     }
 
@@ -31,7 +31,7 @@ public class EntityMummy extends EntityMob {
 
     @Override
     public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.boundingBox.minY);
+        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
         if (i <= 62) {
             return false;
         } else {
@@ -45,42 +45,42 @@ public class EntityMummy extends EntityMob {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        if (par1DamageSource.isFireDamage()) {
-            par2 += 1;
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (source.isFireDamage()) {
+            amount += 1;
         }
         if (this.isBurning()) {
-            par2 = (int) (par2 * 1.5);
+            amount = (int) (amount * 1.5);
         }
 
-        return super.attackEntityFrom(par1DamageSource, par2);
+        return super.attackEntityFrom(source, amount);
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity par1Entity) {
-        boolean flag = super.attackEntityAsMob(par1Entity);
+    public boolean attackEntityAsMob(Entity entity) {
+        boolean flag = super.attackEntityAsMob(entity);
 
-        if(flag){
-        	if (this.isBurning() && this.rand.nextFloat() < (float) this.worldObj.difficultySetting.getDifficultyId() * 0.4F) {
-        		par1Entity.setFire(2 * this.worldObj.difficultySetting.getDifficultyId());
-        	}
-        	if(par1Entity instanceof EntityLivingBase){
-        		EntityLivingBase base = (EntityLivingBase)par1Entity;
-        		base.addPotionEffect(new PotionEffect(Potion.wither.id, 40, 1));
-        	}
+        if (flag) {
+            if (this.isBurning() && this.rand.nextFloat() < (float) this.worldObj.getDifficulty().getDifficultyId() * 0.4F) {
+                entity.setFire(2 * this.worldObj.getDifficulty().getDifficultyId());
+            }
+            if (entity instanceof EntityLivingBase) {
+                EntityLivingBase base = (EntityLivingBase) entity;
+                base.addPotionEffect(new PotionEffect(Potion.wither.id, 40, 1));
+            }
         }
 
         return flag;
     }
 
     @Override
-    protected void dropFewItems(boolean par1, int par2) {
+    protected void dropFewItems(boolean recentlyHit, int looting) {
         if (rand.nextInt(4) == 0) {
             this.dropItem(Items.rotten_flesh, 1);
         }
         if (rand.nextInt(4) == 0) {
             int amount = rand.nextInt(2) + 1;
-            this.dropItem(AtumItems.ITEM_SCRAP, amount);
+            this.dropItem(AtumItems.SCRAP, amount);
         }
     }
 }

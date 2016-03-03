@@ -15,7 +15,7 @@ public class EntityBanditWarlord extends EntityMob {
         super(par1World);
         this.experienceValue = 16;
 
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.ITEM_SCIMITAR));
+        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SCIMITAR));
         EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), 5 + this.worldObj.difficultySetting.getDifficultyId() * this.rand.nextInt(6));
 
         for (int i = 0; i < this.equipmentDropChances.length; ++i) {
@@ -77,8 +77,8 @@ public class EntityBanditWarlord extends EntityMob {
     @Override
     protected void dropFewItems(boolean par1, int par2) {
         if (rand.nextInt(20) == 0) {
-            int damage = (int) (AtumItems.ITEM_SCIMITAR.getMaxDamage() - rand.nextInt(AtumItems.ITEM_SCIMITAR.getMaxDamage()) * 0.5 + 20);
-            this.entityDropItem(new ItemStack(AtumItems.ITEM_SCIMITAR, 1, damage), 0.0F);
+            int damage = (int) (AtumItems.SCIMITAR.getMaxDamage() - rand.nextInt(AtumItems.SCIMITAR.getMaxDamage()) * 0.5 + 20);
+            this.entityDropItem(new ItemStack(AtumItems.SCIMITAR, 1, damage), 0.0F);
         }
 
         if (rand.nextInt(4) == 0) {

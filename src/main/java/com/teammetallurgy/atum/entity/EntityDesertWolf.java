@@ -2,8 +2,6 @@ package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.items.AtumItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.entity.*;
@@ -13,27 +11,23 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityDesertWolf extends EntityTameable {
-    private float field_70926_e;
-    private float field_70924_f;
-
-    /**
-     * true is the wolf is wet else false
-     */
+    private float headRotationCourse;
+    private float headRotationCourseOld;
+    private boolean isWet;
     private boolean isShaking;
-    private boolean field_70928_h;
-
-    /**
-     * This time increases while wolf is shaking and emitting water particles.
-     */
     private float timeWolfIsShaking;
     private float prevTimeWolfIsShaking;
 
@@ -133,7 +127,7 @@ public class EntityDesertWolf extends EntityTameable {
         if (j <= 62) {
             return false;
         } else {
-            return this.worldObj.getBlock(i, j - 1, k) == AtumBlocks.BLOCK_SAND && this.worldObj.getFullBlockLightValue(i, j, k) > 8 && this.getBlockPathWeight(i, j, k) >= 0.0F && this.worldObj.canBlockSeeTheSky(i, j, k) &&
+            return this.worldObj.getBlock(i, j - 1, k) == AtumBlocks.SAND && this.worldObj.getFullBlockLightValue(i, j, k) > 8 && this.getBlockPathWeight(i, j, k) >= 0.0F && this.worldObj.canBlockSeeTheSky(i, j, k) &&
                     this.worldObj.checkNoEntityCollision(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
         }
     }
@@ -216,7 +210,7 @@ public class EntityDesertWolf extends EntityTameable {
     protected void dropFewItems(boolean par1, int par2) {
         if (rand.nextInt(4) == 0) {
             int amount = rand.nextInt(2) + 1;
-            this.dropItem(AtumItems.ITEM_PELT, amount);
+            this.dropItem(AtumItems.PELT, amount);
         }
     }
 
@@ -288,26 +282,21 @@ public class EntityDesertWolf extends EntityTameable {
                 for (int j = 0; j < i; ++j) {
                     float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
                     float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
-                    this.worldObj.spawnParticle("splash", this.posX + (double) f1, (double) (f + 0.8F), this.posZ + (double) f2, this.motionX, this.motionY, this.motionZ);
+                    this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (double) f1, (double) (f + 0.8F), this.posZ + (double) f2, this.motionX, this.motionY, this.motionZ);
                 }
             }
         }
     }
 
+
     @SideOnly(Side.CLIENT)
-    /**
-     * Used when calculating the amount of shading to apply while the wolf is shaking.
-     */
-    public boolean getWolfShaking() {
-        return this.isShaking;
+    public boolean isWolfWet() {
+        return this.isWet;
     }
 
     @SideOnly(Side.CLIENT)
-    /**
-     * Used when calculating the amount of shading to apply while the wolf is shaking.
-     */
-    public float getShadingWhileShaking(float par1) {
-        return 0.75F + (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * par1) / 2.0F * 0.25F;
+    public float getShadingWhileWet(float par1) {
+        return 0.75F + (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * p_70915_1_) / 2.0F * 0.25F;
     }
 
     @SideOnly(Side.CLIENT)
@@ -424,7 +413,7 @@ public class EntityDesertWolf extends EntityTameable {
                 this.isJumping = false;
                 this.setPathToEntity((PathEntity) null);
             }
-        } else if (stack != null && stack.getItem() == AtumItems.ITEM_DUSTYBONE) {
+        } else if (stack != null && stack.getItem() == AtumItems.DUSTYBONE) {
             if (!player.capabilities.isCreativeMode) {
                 --stack.stackSize;
             }
@@ -525,8 +514,8 @@ public class EntityDesertWolf extends EntityTameable {
         return this.dataWatcher.getWatchableObjectByte(19) == 1;
     }
 
-    public int getCollarColor() {
-        return this.dataWatcher.getWatchableObjectByte(20) & 15;
+    public EnumDyeColor getCollarColor() {
+        return EnumDyeColor.byDyeDamage(this.dataWatcher.getWatchableObjectByte(20) & 15);
     }
 
     public void setCollarColor(int collarColor) {

@@ -1,20 +1,18 @@
 package com.teammetallurgy.atum.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.IShearable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,7 +22,6 @@ public class BlockLeave extends BlockLeavesBase implements IShearable {
 
     protected BlockLeave() {
         super(Material.leaves, false);
-        this.setBlockName("palmLeaves");
         this.setHardness(0.2F);
         this.setLightOpacity(1);
         this.setStepSound(Block.soundTypeGrass);
@@ -187,7 +184,7 @@ public class BlockLeave extends BlockLeavesBase implements IShearable {
 
     @Override
     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-        return Item.getItemFromBlock(AtumBlocks.BLOCK_PALMSAPLING);
+        return Item.getItemFromBlock(AtumBlocks.PALMSAPLING);
     }
 
     @Override
@@ -229,20 +226,8 @@ public class BlockLeave extends BlockLeavesBase implements IShearable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2) {
-        return this.blockIcon;
-    }
-
-    @Override
     protected ItemStack createStackedBlock(int par1) {
         return new ItemStack(this, 1, par1 & 3);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister) {
-        this.blockIcon = par1IIconRegister.registerIcon("atum:AtumLeaves");
     }
 
     @Override

@@ -2,10 +2,8 @@ package com.teammetallurgy.atum.handler.event;
 
 import com.teammetallurgy.atum.handler.AtumConfig;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
-
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class AtumFogEventListener {
 
@@ -16,5 +14,4 @@ public class AtumFogEventListener {
             GL11.glFogf(GL11.GL_FOG_DENSITY, 0.08F);
         }
     }
-    
 }
