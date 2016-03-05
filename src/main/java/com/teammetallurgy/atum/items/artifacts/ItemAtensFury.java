@@ -23,8 +23,6 @@ import java.util.List;
 
 public class ItemAtensFury extends ItemBow {
 
-    public static final String[] bowPullIconNameArray = new String[]{"atens_pull_0", "atens_pull_1", "atens_pull_2"};
-
     public ItemAtensFury() {
         super();
         this.setMaxDamage(650);
@@ -94,43 +92,6 @@ public class ItemAtensFury extends ItemBow {
         }
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.iconArray = new IIcon[bowPullIconNameArray.length];
-        this.itemIcon = par1IIconRegister.registerIcon("atum:AtensFury");
-        for (int i = 0; i < this.iconArray.length; ++i) {
-            this.iconArray[i] = par1IIconRegister.registerIcon("atum:" + bowPullIconNameArray[i]);
-        }
-
-    }*/
-
-    /*@Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        if (usingItem != null) {
-            int j = this.getMaxItemUseDuration(stack) - useRemaining;
-            if (j >= 18) {
-                return this.getItemIconForUseDuration(2);
-            }
-
-            if (j > 13) {
-                return this.getItemIconForUseDuration(1);
-            }
-
-            if (j > 0) {
-                return this.getItemIconForUseDuration(0);
-            }
-        }
-
-        return this.getIcon(stack, renderPass);
-    }*/
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getItemIconForUseDuration(int par1) {
-        return this.iconArray[par1];
-    }*/
-
     @Override
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack) {
@@ -139,7 +100,7 @@ public class ItemAtensFury extends ItemBow {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
             tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
             tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));

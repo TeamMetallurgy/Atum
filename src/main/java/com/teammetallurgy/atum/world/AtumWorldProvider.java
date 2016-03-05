@@ -29,7 +29,7 @@ public class AtumWorldProvider extends WorldProvider {
 
     @Override
     public IChunkProvider createChunkGenerator() {
-        return new AtumChunkProvider(super.worldObj, super.worldObj.getSeed(), true);
+        return new AtumChunkProvider(super.worldObj, super.worldObj.getSeed(), true, super.worldObj.getWorldInfo().getGeneratorOptions());
     }
 
     @Override

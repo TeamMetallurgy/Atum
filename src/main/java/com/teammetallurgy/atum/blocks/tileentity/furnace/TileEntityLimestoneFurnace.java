@@ -1,51 +1,18 @@
 package com.teammetallurgy.atum.blocks.tileentity.furnace;
 
-import com.teammetallurgy.atum.blocks.BlockLimeStoneFurnace;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISidedInventory {
-    private static final int[] field_102010_d = new int[]{0};
+public class TileEntityLimestoneFurnace extends TileEntityFurnace { //TODO Is this even needed, can't we just use vanilla furnace?
+    /*private static final int[] field_102010_d = new int[]{0};
     private static final int[] field_102011_e = new int[]{2, 1};
     private static final int[] field_102009_f = new int[]{1};
-    /**
-     * The number of ticks that the furnace will keep burning
-     */
+
     public int furnaceBurnTime = 0;
-    /**
-     * The number of ticks that a fresh copy of the currently-burning item would
-     * keep the furnace burning for
-     */
     public int currentItemBurnTime = 0;
-    /**
-     * The number of ticks that the current item has been cooking for
-     */
     public int furnaceCookTime = 0;
-    /**
-     * The ItemStacks that hold the items currently being used in the furnace
-     */
     private ItemStack[] furnaceItemStacks = new ItemStack[3];
     private String field_94130_e;
 
-    /**
-     * Returns the number of ticks that the supplied fuel item will keep the
-     * furnace burning, or 0 if the item isn't fuel
-     */
     public static int getItemBurnTime(ItemStack par0ItemStack) {
         if (par0ItemStack == null) {
             return 0;
@@ -99,10 +66,6 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         return this.furnaceItemStacks[slot];
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number
-     * (second arg) of items and returns them in a new stack.
-     */
     @Override
     public ItemStack decrStackSize(int par1, int par2) {
         if (this.furnaceItemStacks[par1] != null) {
@@ -126,11 +89,6 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop
-     * whatever it returns as an EntityItem - like when you close a workbench
-     * GUI.
-     */
     @Override
     public ItemStack getStackInSlotOnClosing(int par1) {
         if (this.furnaceItemStacks[par1] != null) {
@@ -142,10 +100,6 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be
-     * crafting or armor sections).
-     */
     @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
         this.furnaceItemStacks[par1] = par2ItemStack;
@@ -155,19 +109,10 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         }
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
     @Override
     public String getInventoryName() {
         return this.hasCustomInventoryName() ? this.field_94130_e : "container.limestoneFurnace";
     }
-
-    /**
-     * If this returns false, the inventory name will be used as an unlocalized
-     * name, and translated into the player's language. Otherwise it will be
-     * used directly.
-     */
     @Override
     public boolean hasCustomInventoryName() {
         return this.field_94130_e != null && this.field_94130_e.length() > 0;
@@ -176,10 +121,6 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
     public void func_94129_a(String par1Str) {
         this.field_94130_e = par1Str;
     }
-
-    /**
-     * Reads a tile entity from NBT.
-     */
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readFromNBT(par1NBTTagCompound);
@@ -204,9 +145,6 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         }
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeToNBT(par1NBTTagCompound);
@@ -230,11 +168,6 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         }
     }
 
-    /**
-     * Called on receiving a packet
-     * @param net Network Manager
-     * @param pkt packet
-     */
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         
@@ -245,11 +178,7 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         
         this.readFromNBT(nbtTag);
     }
-    
-    /**
-     * Called when syncing tile entities
-     * @return S35 packet 
-     */
+
     @Override
     public Packet getDescriptionPacket() {
         
@@ -280,18 +209,10 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         return this.furnaceBurnTime * par1 / this.currentItemBurnTime;
     }
 
-    /**
-     * Returns true if the furnace is currently burning
-     */
     public boolean isBurning() {
         return this.furnaceBurnTime > 0;
     }
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses,
-     * e.g. the mob spawner uses this to count ticks and creates a new spawn
-     * inside its implementation.
-     */
     @Override
     public void update() {
         boolean flag = this.furnaceBurnTime > 0;
@@ -341,10 +262,6 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         }
     }
 
-    /**
-     * Returns true if the furnace can smelt an item, i.e. has a source item,
-     * destination stack isn't full, etc.
-     */
     private boolean canSmelt() {
         if (this.furnaceItemStacks[0] == null) {
             return false;
@@ -361,10 +278,6 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         }
     }
 
-    /**
-     * Turn one item from the furnace source stack into the appropriate smelted
-     * item in the furnace result stack
-     */
     public void smeltItem() {
         if (this.canSmelt()) {
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0]);
@@ -383,27 +296,16 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
         }
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes
-     * with Container
-     */
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
         return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
     }
 
-    /**
-     * Returns true if automation is allowed to insert the given stack (ignoring
-     * stack size) into the given slot.
-     */
     @Override
     public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
         return par1 == 2 ? false : (par1 == 1 ? isItemFuel(par2ItemStack) : true);
     }
 
-    /**
-     * Get the size of the side inventory.
-     */
     @Override
     public int[] getAccessibleSlotsFromSide(int par1) {
         return par1 == 0 ? field_102011_e : (par1 == 1 ? field_102010_d : field_102009_f);
@@ -417,6 +319,5 @@ public class TileEntityLimestoneFurnace extends TileEntityFurnace implements ISi
     @Override
     public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
         return par3 != 0 || par1 != 1 || par2ItemStack.getItem() == Items.bucket;
-    }
-
+    }*/
 }

@@ -2,7 +2,10 @@ package com.teammetallurgy.atum.proxy;
 
 import com.teammetallurgy.atum.client.model.entity.ModelDesertWolf;
 import com.teammetallurgy.atum.client.model.entity.ModelDustySkeleton;
-import com.teammetallurgy.atum.client.render.entity.*;
+import com.teammetallurgy.atum.client.render.entity.RenderBonestorm;
+import com.teammetallurgy.atum.client.render.entity.RenderDesertWolf;
+import com.teammetallurgy.atum.client.render.entity.RenderGhost;
+import com.teammetallurgy.atum.client.render.entity.RenderPharaoh;
 import com.teammetallurgy.atum.client.render.entity.arrow.RenderBone;
 import com.teammetallurgy.atum.client.render.entity.arrow.RenderCustomArrow;
 import com.teammetallurgy.atum.client.render.entity.arrow.RenderNutsCall;
@@ -16,22 +19,17 @@ import com.teammetallurgy.atum.handler.event.AtumFogEventListener;
 import com.teammetallurgy.atum.handler.event.ClientEvents;
 import com.teammetallurgy.atum.items.AtumItems;
 import com.teammetallurgy.atum.utils.Constants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelZombie;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.client.renderer.entity.RenderFish;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 import java.util.ArrayList;
@@ -67,64 +65,137 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(((BlockPapyrus) AtumBlocks.PAPYRUS).renderID, new RenderPapyrus());
         RenderingRegistry.registerBlockHandler(((BlockDate) AtumBlocks.DATEBLOCK).renderID, new RenderDate());*/
 
-        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
-
-        RenderingRegistry.registerEntityRenderingHandler(EntityMummy.class, new RenderLiving(renderManager, new ModelZombie(), 0.5F) {
-
+        RenderingRegistry.registerEntityRenderingHandler(EntityMummy.class, new IRenderFactory<EntityMummy>() {
             @Override
-            protected ResourceLocation getEntityTexture(Entity entity) {
-                return new ResourceLocation("atum", "textures/entities/Mummy.png");
+            public Render<? super EntityMummy> createRenderFor(RenderManager manager) {
+                return new RenderLiving<EntityMummy>(manager, new ModelZombie(), 0.5F) {
+
+                    @Override
+                    protected ResourceLocation getEntityTexture(EntityMummy entity) {
+                        return new ResourceLocation("atum", "textures/entities/Mummy.png");
+                    }
+                };
             }
         });
-        RenderingRegistry.registerEntityRenderingHandler(EntityBanditWarrior.class, new RenderBiped(renderManager, new ModelBiped(), 0.5F) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityBanditWarrior.class, new IRenderFactory<EntityBanditWarrior>() {
             @Override
-            protected ResourceLocation getEntityTexture(Entity entity) {
-                return new ResourceLocation("atum", "textures/entities/BanditWarrior.png");
+            public Render<? super EntityBanditWarrior> createRenderFor(RenderManager manager) {
+                return new RenderBiped<EntityBanditWarrior>(manager, new ModelBiped(), 0.5F) {
+                    @Override
+                    protected ResourceLocation getEntityTexture(EntityBanditWarrior entity) {
+                        return new ResourceLocation("atum", "textures/entities/BanditWarrior.png");
+                    }
+                };
             }
         });
-        RenderingRegistry.registerEntityRenderingHandler(EntityBarbarian.class, new RenderBiped(renderManager, new ModelBiped(), 0.5F) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityBarbarian.class, new IRenderFactory<EntityBarbarian>() {
             @Override
-            protected ResourceLocation getEntityTexture(Entity entity) {
-                return new ResourceLocation("atum", "textures/entities/Barbarian.png");
+            public Render<? super EntityBarbarian> createRenderFor(RenderManager manager) {
+                return new RenderBiped<EntityBarbarian>(manager, new ModelBiped(), 0.5F) {
+                    @Override
+                    protected ResourceLocation getEntityTexture(EntityBarbarian entity) {
+                        return new ResourceLocation("atum", "textures/entities/Barbarian.png");
+                    }
+                };
             }
         });
-        RenderingRegistry.registerEntityRenderingHandler(EntityBanditArcher.class, new RenderBandit(renderManager, new ModelBiped(), 0.5F) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityBanditArcher.class, new IRenderFactory<EntityBanditArcher>() {
             @Override
-            protected ResourceLocation getEntityTexture(Entity entity) {
-                return new ResourceLocation("atum", "textures/entities/BanditArcher.png");
+            public Render<? super EntityBanditArcher> createRenderFor(RenderManager manager) {
+                return new RenderBiped<EntityBanditArcher>(manager, new ModelBiped(), 0.5F) {
+                    @Override
+                    protected ResourceLocation getEntityTexture(EntityBanditArcher entity) {
+                        return new ResourceLocation("atum", "textures/entities/BanditArcher.png");
+                    }
+                };
             }
         });
-        RenderingRegistry.registerEntityRenderingHandler(EntityBanditWarlord.class, new RenderBiped(renderManager, new ModelBiped(), 0.5F) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityBanditWarlord.class, new IRenderFactory<EntityBanditWarlord>() {
             @Override
-            protected ResourceLocation getEntityTexture(Entity entity) {
-                return new ResourceLocation("atum", "textures/entities/BanditWarlord.png");
+            public Render<? super EntityBanditWarlord> createRenderFor(RenderManager manager) {
+                return new RenderBiped<EntityBanditWarlord>(manager, new ModelBiped(), 0.5F) {
+                    @Override
+                    protected ResourceLocation getEntityTexture(EntityBanditWarlord entity) {
+                        return new ResourceLocation("atum", "textures/entities/BanditWarlord.png");
+                    }
+                };
             }
         });
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityPharaoh.class, new RenderPharaoh(renderManager, new ModelBiped(), 0.5F));
-
-        RenderingRegistry.registerEntityRenderingHandler(EntityDustySkeleton.class, new RenderBiped(renderManager, new ModelDustySkeleton(), 0.5F) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityPharaoh.class, new IRenderFactory<EntityPharaoh>() {
             @Override
-            protected ResourceLocation getEntityTexture(Entity entity) {
-                return new ResourceLocation("atum", "textures/entities/DustySkeleton.png");
+            public Render<? super EntityPharaoh> createRenderFor(RenderManager manager) {
+                return new RenderPharaoh(manager, new ModelBiped(), 0.5F);
             }
         });
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityGhost.class, new RenderGhost(renderManager, new ModelZombie(), 0.5F));
-        RenderingRegistry.registerEntityRenderingHandler(EntityStoneSoldier.class, new RenderBiped(renderManager, new ModelBiped(), 0.5F) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityDustySkeleton.class, new IRenderFactory<EntityDustySkeleton>() {
             @Override
-            protected ResourceLocation getEntityTexture(Entity entity) {
-                return new ResourceLocation("atum", "textures/entities/StoneSoldier.png");
+            public Render<? super EntityDustySkeleton> createRenderFor(RenderManager manager) {
+                return new RenderBiped<EntityDustySkeleton>(manager, new ModelDustySkeleton(), 0.5F) {
+                    @Override
+                    protected ResourceLocation getEntityTexture(EntityDustySkeleton entity) {
+                        return new ResourceLocation("atum", "textures/entities/DustySkeleton.png");
+                    }
+                };
             }
         });
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityDesertWolf.class, new RenderDesertWolf(renderManager, new ModelDesertWolf(), 0.5F));
-        RenderingRegistry.registerEntityRenderingHandler(EntityBonestorm.class, new RenderBonestorm(renderManager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityGhost.class, new IRenderFactory<EntityGhost>() {
+            @Override
+            public Render<? super EntityGhost> createRenderFor(RenderManager manager) {
+                return new RenderGhost(manager, new ModelZombie(), 0.5F);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityStoneSoldier.class, new IRenderFactory<EntityStoneSoldier>() {
+            @Override
+            public Render<? super EntityStoneSoldier> createRenderFor(RenderManager manager) {
+                return new RenderBiped<EntityStoneSoldier>(manager, new ModelBiped(), 0.5F) {
+                    @Override
+                    protected ResourceLocation getEntityTexture(EntityStoneSoldier entity) {
+                        return new ResourceLocation("atum", "textures/entities/StoneSoldier.png");
+                    }
+                };
+            }
+        });
 
-        RenderingRegistry.registerEntityRenderingHandler(CustomArrow.class, new RenderCustomArrow(renderManager));
-        RenderingRegistry.registerEntityRenderingHandler(EntitySmallBone.class, new RenderBone(renderManager, 0.35F));
-        RenderingRegistry.registerEntityRenderingHandler(EntityNutsCall.class, new RenderNutsCall(renderManager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityAtumFishHook.class, new RenderFish(renderManager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityDesertWolf.class, new IRenderFactory<EntityDesertWolf>() {
+            @Override
+            public Render<? super EntityDesertWolf> createRenderFor(RenderManager manager) {
+                return new RenderDesertWolf(manager, new ModelDesertWolf(), 0.5F);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityBonestorm.class, new IRenderFactory<EntityBonestorm>() {
+            @Override
+            public Render<? super EntityBonestorm> createRenderFor(RenderManager manager) {
+                return new RenderBonestorm(manager);
+            }
+        });
+
+        RenderingRegistry.registerEntityRenderingHandler(CustomArrow.class, new IRenderFactory<CustomArrow>() {
+            @Override
+            public Render<? super CustomArrow> createRenderFor(RenderManager manager) {
+                return new RenderCustomArrow(manager);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntitySmallBone.class, new IRenderFactory<EntitySmallBone>() {
+            @Override
+            public Render<? super EntitySmallBone> createRenderFor(RenderManager manager) {
+                return new RenderBone(manager, 0.35F);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityNutsCall.class, new IRenderFactory<EntityNutsCall>() {
+            @Override
+            public Render<? super EntityNutsCall> createRenderFor(RenderManager manager) {
+                return new RenderNutsCall(manager);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityAtumFishHook.class, new IRenderFactory<EntityAtumFishHook>() {
+            @Override
+            public Render<? super EntityAtumFishHook> createRenderFor(RenderManager manager) {
+                return new RenderFish(manager);
+            }
+        });
     }
 
     @Override

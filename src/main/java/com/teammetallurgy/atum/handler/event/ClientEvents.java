@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.Random;
 
 public class ClientEvents {
-    private boolean raining;
+    //private boolean raining; //TODO Not beeing initialized?
 
     @SubscribeEvent
     public void onRender(TickEvent.RenderTickEvent event) {
@@ -47,7 +47,7 @@ public class ClientEvents {
 
         if (player.dimension == AtumConfig.DIMENSION_ID) {
             if (player.worldObj.isRaining()) {
-                raining = true;
+                //raining = true;
 
                 Random random = new Random();
                 int particlesPerTick = (3 - Minecraft.getMinecraft().gameSettings.particleSetting) * 6;

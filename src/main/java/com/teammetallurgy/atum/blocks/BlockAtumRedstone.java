@@ -1,21 +1,23 @@
 package com.teammetallurgy.atum.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockAtumRedstone extends Block { //TODO Extend BlockRedstone?
+import java.util.Random;
+
+public class BlockAtumRedstone extends Block { //TODO Make sure it goes out of the lit form again. If not possible, then extend BlockRedstoneOre
 
     public BlockAtumRedstone() {
         super(Material.rock);
@@ -23,118 +25,117 @@ public class BlockAtumRedstone extends Block { //TODO Extend BlockRedstone?
         this.setResistance(5.0F);
         this.setStepSound(Block.soundTypeStone);
     }
-    public Item getItemDropped(int meta, Random random, int fortune)
-    {
+
+    @Override
+    public int tickRate(World world) {
+        return 30;
+    }
+
+    @Override
+    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
+        this.activate(worldIn, pos);
+        super.onBlockClicked(worldIn, pos, playerIn);
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
+        this.activate(world, pos);
+        super.onEntityCollidedWithBlock(world, pos, entity);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+        this.activate(world, pos);
+        return super.onBlockActivated(world, pos, state, player, side, hitX, hitY, hitZ);
+    }
+
+    private void activate(World worldIn, BlockPos pos) {
+        this.spawnParticles(worldIn, pos);
+
+        if (this == AtumBlocks.REDSTONEORE) {
+            worldIn.setBlockState(pos, AtumBlocks.REDSTONEORE.getStateFromMeta(1));
+        }
+    }
+
+    @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        if (this == AtumBlocks.REDSTONEORE.getStateFromMeta(1).getBlock()) {
+            world.setBlockState(pos, AtumBlocks.REDSTONEORE.getDefaultState());
+        }
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Items.redstone;
     }
 
-    /**
-     * Returns the usual quantity dropped by the block plus a bonus of 1 to 'i' (inclusive).
-     */
-    public int quantityDroppedWithBonus(int fortune, Random random)
-    {
+    @Override
+    public int quantityDroppedWithBonus(int fortune, Random random) {
         return this.quantityDropped(random) + random.nextInt(fortune + 1);
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    public int quantityDropped(Random random)
-    {
+    @Override
+    public int quantityDropped(Random random) {
         return 4 + random.nextInt(2);
     }
-    @Override
-    public int getLightValue(IBlockAccess world, int x, int y, int z) {
-        return world.getBlockMetadata(x, y, z) == 1 ? 9 : 0;
-    }
 
     @Override
-    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
-        this.glow(par1World, par2, par3, par4);
-        super.onBlockClicked(par1World, par2, par3, par4, par5EntityPlayer);
-    }
-
-    @Override
-    public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity) {
-        this.glow(par1World, par2, par3, par4);
-        super.onEntityWalking(par1World, par2, par3, par4, par5Entity);
-    }
-
-    @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
-        this.glow(par1World, par2, par3, par4);
-        return super.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, par6, par7, par8, par9);
-    }
-
-    private void glow(World par1World, int par2, int par3, int par4) {
-        this.sparkle(par1World, par2, par3, par4);
-        Block meta = par1World.getBlock(par2, par3, par4);
-        if (meta != Blocks.stone) {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
+    public int getExpDrop(net.minecraft.world.IBlockAccess world, BlockPos pos, int fortune) {
+        if (this.getItemDropped(world.getBlockState(pos), RANDOM, fortune) != Item.getItemFromBlock(this)) {
+            return 1 + RANDOM.nextInt(5);
         }
-
-    }
-
-    @Override
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        int meta = par1World.getBlockMetadata(par2, par3, par4);
-        if (meta == 1) {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 2);
-        }
-
+        return 0;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        int meta = par1World.getBlockMetadata(par2, par3, par4);
-        if (meta == 1) {
-            this.sparkle(par1World, par2, par3, par4);
+    public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        if (this == AtumBlocks.REDSTONEORE.getStateFromMeta(1).getBlock()) {
+            this.spawnParticles(world, pos);
         }
-
     }
 
-    private void sparkle(World par1World, int par2, int par3, int par4) {
-        Random random = par1World.rand;
+    private void spawnParticles(World worldIn, BlockPos pos) {
+        Random random = worldIn.rand;
         double d0 = 0.0625D;
 
-        for (int l = 0; l < 6; ++l) {
-            double d1 = (double) ((float) par2 + random.nextFloat());
-            double d2 = (double) ((float) par3 + random.nextFloat());
-            double d3 = (double) ((float) par4 + random.nextFloat());
-            if (l == 0 && !par1World.getBlock(par2, par3 + 1, par4).isOpaqueCube()) {
-                d2 = (double) (par3 + 1) + d0;
+        for (int i = 0; i < 6; ++i) {
+            double x = (double) ((float) pos.getX() + random.nextFloat());
+            double y = (double) ((float) pos.getY() + random.nextFloat());
+            double z = (double) ((float) pos.getZ() + random.nextFloat());
+
+            if (i == 0 && !worldIn.getBlockState(pos.up()).getBlock().isOpaqueCube()) {
+                y = (double) pos.getY() + d0 + 1.0D;
             }
 
-            if (l == 1 && !par1World.getBlock(par2, par3 - 1, par4).isOpaqueCube()) {
-                d2 = (double) (par3 + 0) - d0;
+            if (i == 1 && !worldIn.getBlockState(pos.down()).getBlock().isOpaqueCube()) {
+                y = (double) pos.getY() - d0;
             }
 
-            if (l == 2 && !par1World.getBlock(par2, par3, par4 + 1).isOpaqueCube()) {
-                d3 = (double) (par4 + 1) + d0;
+            if (i == 2 && !worldIn.getBlockState(pos.south()).getBlock().isOpaqueCube()) {
+                z = (double) pos.getZ() + d0 + 1.0D;
             }
 
-            if (l == 3 && !par1World.getBlock(par2, par3, par4 - 1).isOpaqueCube()) {
-                d3 = (double) (par4 + 0) - d0;
+            if (i == 3 && !worldIn.getBlockState(pos.north()).getBlock().isOpaqueCube()) {
+                z = (double) pos.getZ() - d0;
             }
 
-            if (l == 4 && !par1World.getBlock(par2 + 1, par3, par4).isOpaqueCube()) {
-                d1 = (double) (par2 + 1) + d0;
+            if (i == 4 && !worldIn.getBlockState(pos.east()).getBlock().isOpaqueCube()) {
+                x = (double) pos.getX() + d0 + 1.0D;
             }
 
-            if (l == 5 && !par1World.getBlock(par2 - 1, par3, par4).isOpaqueCube()) {
-                d1 = (double) (par2 + 0) - d0;
+            if (i == 5 && !worldIn.getBlockState(pos.west()).getBlock().isOpaqueCube()) {
+                x = (double) pos.getX() - d0;
             }
 
-            if (d1 < (double) par2 || d1 > (double) (par2 + 1) || d2 < 0.0D || d2 > (double) (par3 + 1) || d3 < (double) par4 || d3 > (double) (par4 + 1)) {
-                par1World.spawnParticle("reddust", d1, d2, d3, 0.0D, 0.0D, 0.0D);
+            if (x < (double) pos.getX() || x > (double) (pos.getX() + 1) || y < 0.0D || y > (double) (pos.getY() + 1) || z < (double) pos.getZ() || z > (double) (pos.getZ() + 1)) {
+                worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D, new int[0]);
             }
         }
-
     }
 
     @Override
-    protected ItemStack createStackedBlock(int par1) {
+    protected ItemStack createStackedBlock(IBlockState state) {
         return new ItemStack(AtumBlocks.REDSTONEORE);
     }
 }

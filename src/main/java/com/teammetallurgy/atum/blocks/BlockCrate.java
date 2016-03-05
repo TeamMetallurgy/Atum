@@ -1,35 +1,15 @@
 package com.teammetallurgy.atum.blocks;
 
-import com.teammetallurgy.atum.Atum;
-import com.teammetallurgy.atum.blocks.tileentity.crate.TileEntityCrate;
-import com.teammetallurgy.atum.utils.Constants;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+public class BlockCrate extends Block /*extends BlockContainer*/ {//TODO Crate. What is it even used for? (Can't find it in 1.7.10)
 
-public class BlockCrate extends BlockContainer {
-    
-    private static final String[] TYPES = {"Palm", "Deadwood"};
+    public BlockCrate() {
+        super(Material.wood);
+    }
+
+    /*private static final String[] TYPES = {"Palm", "Deadwood"}; //TODO Use EnumType for AtumPlanks
     private Random random = new Random();
 
     protected BlockCrate() {
@@ -39,33 +19,33 @@ public class BlockCrate extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) { 
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityCrate();
     }
-    
+
     @Override
     public int damageDropped(int meta) {
         return meta;
     }
-    
+
     public String getUnlocalizedName(int meta) {
         if (meta < 0 || meta >= TYPES.length)
             return getUnlocalizedName();
-        
+
         return getUnlocalizedName() + "." + TYPES[meta].toLowerCase(Locale.US);
     }
-    
+
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (world.isRemote)
             return true;
-        
-        TileEntity tileEntity = world.getTileEntity(x,y,z);
+
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity != null && tileEntity instanceof TileEntityCrate) {
             player.openGui(Atum.instance, 1, world, x, y, z);
             return true;
         }
-        
+
         return false;
     }
 
@@ -74,16 +54,16 @@ public class BlockCrate extends BlockContainer {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
 
         if (tileEntity instanceof TileEntityCrate && itemStack.hasDisplayName()) {
-            ((TileEntityCrate)tileEntity).setInventoryName(itemStack.getDisplayName());
+            ((TileEntityCrate) tileEntity).setInventoryName(itemStack.getDisplayName());
         }
     }
-    
+
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        IInventory tileEntity = (IInventory)world.getTileEntity(x, y, z);
+        IInventory tileEntity = (IInventory) world.getTileEntity(x, y, z);
 
         if (tileEntity instanceof TileEntityCrate) {
-            TileEntityCrate tileEntityCrate = (TileEntityCrate)tileEntity;
+            TileEntityCrate tileEntityCrate = (TileEntityCrate) tileEntity;
 
             for (int i = 0; i < tileEntityCrate.getSizeInventory(); i++) {
                 ItemStack droppedItemstack = tileEntityCrate.getStackInSlot(i);
@@ -104,7 +84,7 @@ public class BlockCrate extends BlockContainer {
                         EntityItem dropedItemstackEntity = new EntityItem(world, x + offsetX, y + offsetY, z + offsetZ, new ItemStack(droppedItemstack.getItem(), splitSize, droppedItemstack.getItemDamage()));
 
                         if (droppedItemstack.hasTagCompound()) {
-                            dropedItemstackEntity.getEntityItem().setTagCompound((NBTTagCompound)droppedItemstack.getTagCompound().copy());
+                            dropedItemstackEntity.getEntityItem().setTagCompound((NBTTagCompound) droppedItemstack.getTagCompound().copy());
                         }
 
                         double motionOffset = 0.05D;
@@ -121,31 +101,12 @@ public class BlockCrate extends BlockContainer {
         }
         super.breakBlock(world, x, y, z, block, meta);
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {
-        icons = new IIcon[TYPES.length];
+    public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (int i = 0; i < TYPES.length; i++) {
-            icons[i] = register.registerIcon(Constants.MODID.toLowerCase(Locale.US) + ":" + TYPES[i].toLowerCase(Locale.US) + "_crate");
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        if (meta < 0 || meta >= icons.length)
-            return icons[0];
-
-        return icons[meta];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void getSubBlocks(Item item, CreativeTabs creativeTab, List list) {
-        for (int i = 0; i < TYPES.length ;i++){
             list.add(new ItemStack(this, 1, i));
         }
-    }    
+    }*/
 }

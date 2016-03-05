@@ -1,6 +1,7 @@
 package com.teammetallurgy.atum.blocks;
 
-import net.minecraft.block.BlockStoneBrick;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
@@ -14,12 +15,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class BlockAtumBricks extends BlockStoneBrick {
+public class BlockAtumBricks extends Block {
     public static final PropertyEnum<BlockAtumBricks.EnumType> VARIANT = PropertyEnum.create("variant", BlockAtumBricks.EnumType.class);
 
     public BlockAtumBricks() {
-        super();
-        this.setResistance(200000.0F);
+        super(Material.rock);
+        //this.setResistance(200000.0F); //TODO?
         this.setBlockUnbreakable();
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.SMALL));
     }
@@ -48,6 +49,7 @@ public class BlockAtumBricks extends BlockStoneBrick {
         return (state.getValue(VARIANT)).getMetadata();
     }
 
+    @Override
     protected BlockState createBlockState() {
         return new BlockState(this, new IProperty[]{VARIANT});
     }
@@ -88,7 +90,7 @@ public class BlockAtumBricks extends BlockStoneBrick {
         }
 
         public String getUnlocalizedName() {
-            return this.name + "Brick";
+            return this.name;
         }
 
         static {

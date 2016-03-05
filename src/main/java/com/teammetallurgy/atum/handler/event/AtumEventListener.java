@@ -1,7 +1,9 @@
 package com.teammetallurgy.atum.handler.event;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.blocks.BlockPalmSapling;
+import com.teammetallurgy.atum.blocks.BlockAtumLog;
+import com.teammetallurgy.atum.blocks.BlockAtumPlank;
+import com.teammetallurgy.atum.blocks.BlockAtumSapling;
 import com.teammetallurgy.atum.entity.*;
 import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.items.AtumItems;
@@ -44,13 +46,12 @@ public class AtumEventListener {
         if (!event.world.isRemote) {
 
             Block block = event.world.getBlockState(event.pos).getBlock();
-            if (block == AtumBlocks.PALMSAPLING) {
+            if (block instanceof BlockAtumSapling) {
                 if (event.world.rand.nextInt(7) == 0) {
-                    ((BlockPalmSapling) AtumBlocks.PALMSAPLING).growTree(event.world, event.pos, new Random());
+                    ((BlockAtumSapling) AtumBlocks.SAPLING).generateTree(event.world, event.pos, event.world.getBlockState(event.pos), new Random());
                 }
                 event.setResult(Event.Result.ALLOW);
             }
-
             return false;
         }
         return true;
@@ -87,7 +88,7 @@ public class AtumEventListener {
 
     @SubscribeEvent
     public void onPickup(EntityItemPickupEvent pickupEvent) {
-        if (pickupEvent.item.getEntityItem().isItemEqual(new ItemStack(AtumBlocks.LOG)) || pickupEvent.item.getEntityItem().isItemEqual(new ItemStack(AtumBlocks.DEADWOOD_LOG))) {
+        if (pickupEvent.item.getEntityItem().isItemEqual(new ItemStack(AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.PALM).getBlock())) || pickupEvent.item.getEntityItem().isItemEqual(new ItemStack(AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.DEADWOOD).getBlock()))) {
             pickupEvent.entityPlayer.triggerAchievement(AchievementList.mineWood);
         }
     }

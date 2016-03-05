@@ -38,18 +38,20 @@ public class Atum {
         Constants.LOG.trace("Loading Configuration");
         new AtumConfig(event.getSuggestedConfigurationFile());
 
-        Constants.LOG.trace("Register Blocks");
-        new AtumBlocks();
-
         Constants.LOG.trace("Register Item");
         new AtumItems();
 
-        Constants.LOG.trace("Register Crafting Recipes");
-        new CraftingHandler().register();
+        Constants.LOG.trace("Register Blocks");
+        new AtumBlocks();
+
+        MinecraftForge.EVENT_BUS.register(new AtumEventListener());
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        Constants.LOG.trace("Register Crafting Recipes");
+        new CraftingHandler().register();
+
         Constants.LOG.trace("Register Biomes");
         new AtumBiomes().register();
 
@@ -66,8 +68,6 @@ public class Atum {
         proxy.initRenders();
         proxy.init();
         proxy.initTiles();
-
-        MinecraftForge.EVENT_BUS.register(new AtumEventListener());
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new AtumGuiHandler());
     }

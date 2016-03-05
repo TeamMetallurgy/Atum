@@ -13,6 +13,6 @@ public class LimestoneAxe extends ItemAxe {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return Block.getBlockFromItem(repair.getItem()) == AtumBlocks.LIMESTONECOBBLE;
+        return Block.getBlockFromItem(repair.getItem()) == AtumBlocks.LIMESTONE_CRACKED;
     }
 }

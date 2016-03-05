@@ -25,13 +25,16 @@ public class BiomeGenRuinedCity extends AtumBiomeGenBase {
     }
 
     @Override
-    public void decorate(World world, Random random, int chunkX, int chunkZ) {
-        int xx = chunkX + random.nextInt(16) + 8;
-        int yy = random.nextInt(random.nextInt(248) + 8);
-        int zz = chunkZ + random.nextInt(16) + 8;
+    public void decorate(World world, Random random, BlockPos pos) {
+        int x = random.nextInt(16) + 8;
+        int z = random.nextInt(16) + 8;
+        int height = world.getHeight(pos.add(x, 0, z)).getY() * 2;
 
-        this.genRuins.generate(world, random, new BlockPos(xx, yy, zz));
+        if (height > 0) {
+            int randomHeight = random.nextInt(height);
+            this.genRuins.generate(world, random, pos.add(x, randomHeight, z));
+        }
 
-        super.decorate(world, random, chunkX, chunkZ);
+        super.decorate(world, random, pos);
     }
 }

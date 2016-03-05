@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Random;
 
 public class AtumLoot {
-
     public static List<ItemStack> artifacts;
     public static AtumWeightedLootSet goodLoot;
     public static AtumWeightedLootSet junkLoot;

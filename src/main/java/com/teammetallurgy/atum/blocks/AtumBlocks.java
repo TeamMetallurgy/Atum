@@ -6,7 +6,6 @@ import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityChestSpawner;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
 import com.teammetallurgy.atum.blocks.tileentity.crate.TileEntityCrate;
 import com.teammetallurgy.atum.blocks.tileentity.furnace.TileEntityLimestoneFurnace;
-import com.teammetallurgy.atum.items.ItemBlockBricks;
 import com.teammetallurgy.atum.items.ItemBlockCrate;
 import com.teammetallurgy.atum.items.ItemBlockStainedGlass;
 import com.teammetallurgy.atum.utils.Constants;
@@ -29,22 +28,22 @@ public class AtumBlocks {
     public static Block LIMESTONEGRAVEL = new BlockGravel().setHardness(0.6F).setStepSound(Block.soundTypeGravel);
     public static Block LIMESTONE = new BlockAtumStone();
     public static Block LIMESTONE_CRACKED = new BlockAtum();
-    public static Block LIMESTONE_BRICK = new BlockAtumBricks();
+    public static Block LIMESTONEBRICK = new BlockAtumBricks();
     public static Block WALL = new BlockWalls(LIMESTONE);
-    public static BlockSlab SLABS = new BlockAtumSlab(false);
-    public static BlockSlab DOUBLESLAB = new BlockAtumSlab(true);
-    public static Block SMOOTHSTAIRS = new BlockAtumStairs(LIMESTONE.getDefaultState());
-    public static Block COBBLESTAIRS = new BlockAtumStairs(LIMESTONE_CRACKED.getDefaultState());
-    public static Block LARGESTONESTAIRS = new BlockAtumStairs(LIMESTONE.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE));
-    public static Block LARGESTONESTAIRSBREAKABLE = new BlockAtumStairs(LIMESTONE.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE)).setHardness(2.0F).setResistance(10.0F);
-    public static Block SMALLSTONESTAIRS = new BlockAtumStairs(LIMESTONE.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.SMALL));
+    public static BlockSlab SLABS = new BlockAtumStoneSlab(false);
+    public static BlockSlab DOUBLESLAB = new BlockAtumStoneSlab(true);
+    public static BlockAtumStairs SMOOTHSTAIRS = new BlockAtumStairs(LIMESTONE.getDefaultState());
+    public static BlockAtumStairs COBBLESTAIRS = new BlockAtumStairs(LIMESTONE_CRACKED.getDefaultState());
+    public static BlockAtumStairs LARGESTONESTAIRS = new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE));
+    public static Block LARGESTONESTAIRSBREAKABLE = (new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE))).setHardness(2.0F).setResistance(10.0F);
+    public static Block SMALLSTONESTAIRS = new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.SMALL));
     public static Block SANDLAYERED = new BlockSandLayered();
     public static Block CRACKEDLARGEBRICK = new BlockAtum();
     public static Block CRYSTALGLASS = new BlockAtumGlass(Material.glass);
     public static Block CRYSTALSTAINEDGLASS = new BlockAtumGlassStained();
     public static Block FRAMEDGLASS = new BlockAtumGlass(Material.glass);
     public static Block FRAMEDSTAINEDGLASS = new BlockAtumGlassStained();
-    public static Block PALMSAPLING = new BlockPalmSapling();
+    public static Block SAPLING = new BlockAtumSapling();
     public static Block DATEBLOCK = new BlockDate();
     public static BlockShrub SHRUB = new BlockShrub();
     public static Block WEED = new BlockShrub();
@@ -52,8 +51,8 @@ public class AtumBlocks {
     public static Block FLAX = new BlockFlax();
     public static Block FERTILESOIL = new BlockFertileSoil();
     public static Block FERTILESOILTILLED = new BlockFertileSoilTilled();
-    public static Block LOG = new BlockPalmLog();
-    public static Block LEAVES = new BlockLeave();
+    public static Block LOG = new BlockAtumLog();
+    public static Block LEAVES = new BlockLeave(Material.air);
     public static Block PLANKS = new BlockAtumPlank();
     public static Block PALM_DOOR = new BlockAtumDoor().setHardness(3.0F).setStepSound(Block.soundTypeWood);
     public static Block PALM_FENCE = new BlockAtumFence(Material.wood).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood);
@@ -74,7 +73,6 @@ public class AtumBlocks {
     public static Block DIAMONDORE = new BlockAtumOres();
     public static Block FURNACE = new BlockLimeStoneFurnace(false);
     public static Block FURNACE_LIT = new BlockLimeStoneFurnace(true);
-    public static Block DEADWOOD_LOG = new BlockDeadwoodLog();
     public static Block DEADWOOD_DOOR = new BlockAtumDoor().setHardness(3.0F).setStepSound(Block.soundTypeWood);
     public static Block DEADWOOD_FENCE = new BlockAtumFence(Material.wood).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood);
     public static Block DEADWOOD_FENCE_GATE = new BlockAtumFenceGate().setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood);
@@ -97,7 +95,7 @@ public class AtumBlocks {
         register(LIMESTONEGRAVEL, "limestoneGravel");
         register(LIMESTONE, "limestone");
         register(LIMESTONE_CRACKED, "cobble");
-        register(LIMESTONE_BRICK, ""); //TODO name
+        register(LIMESTONEBRICK, "limestonebrick"); //TODO name
         register(SMOOTHSTAIRS, "smoothStairs");
         register(COBBLESTAIRS, "cobbleStairs");
         register(LARGESTONESTAIRS, "largeStairsUnbreakable");
@@ -107,16 +105,16 @@ public class AtumBlocks {
         register(CRACKEDLARGEBRICK, "crackedLargeBrick");
         register(CRYSTALGLASS, "crystalGlass");
         register(FRAMEDGLASS, "framedGlass");
-        register(PALMSAPLING, "palmSapling");
-        register(DATEBLOCK, "date", null);
+        register(SAPLING, "sapling");
+        register(DATEBLOCK, "dateBlock", null); //TODO
         register(SHRUB, "shrub");
         register(WEED, "weed");
         register(PAPYRUS, "papyrus", null);
-        register(FLAX, "flax", null);
+        register(FLAX, "flaxBlock", null); //TODO
         register(FERTILESOIL, "fertileSoil");
         register(FERTILESOILTILLED, "fertileSoilTilled");
-        register(LOG, "palmLog");
-        register(LEAVES, "palmLeaves");
+        register(LOG, "log");
+        register(LEAVES, "leave");
         register(PLANKS, "palmPlanks");
         register(PALM_DOOR, "palmDoor");
         register(PALM_FENCE, "palmFence");
@@ -135,7 +133,6 @@ public class AtumBlocks {
         register(DIAMONDORE, "diamondOre");
         register(FURNACE, "furnaceIdle"); //TODO Name
         register(FURNACE_LIT, "furnaceBurning"); //TODO Name
-        register(DEADWOOD_LOG, "deadwoodLog");
         register(DEADWOOD_DOOR, "deadwoodDoor");
         register(DEADWOOD_FENCE, "deadwoodFence");
         register(DEADWOOD_FENCE_GATE, "deadwoodFenceGate");
@@ -149,10 +146,10 @@ public class AtumBlocks {
         registerItemBlock(FRAMEDSTAINEDGLASS, ItemBlockStainedGlass.class, "framedStainedGlass");
         registerItemBlock(THINCRYSTALSTAINEDGLASS, ItemBlockStainedGlass.class, "thinCrystalStainedGlass");
         registerItemBlock(THINFRAMEDSTAINEDGLASS, ItemBlockStainedGlass.class, "thinFramedStainedGlass");
-        registerItemBlock(SLABS, ItemBlockSlab.class, "slab");
-        registerItemBlock(DOUBLESLAB, ItemBlockSlab.class, "doubleSlab");
-        GameRegistry.registerBlock(WOOD_SLAB, ItemBlockWoodSlabs.class, "wood_slab", WOOD_SLAB, WOOD_DOUBLESLAB, false); //TODO
-        GameRegistry.registerBlock(WOOD_DOUBLESLAB, ItemBlockWoodSlabs.class, "wood_double_slab", WOOD_SLAB, WOOD_DOUBLESLAB, true); //TODO
+        /*registerItemBlock(SLABS, ItemSlab.class, "slab");
+        registerItemBlock(DOUBLESLAB, ItemSlab.class, "doubleSlab");*/ //TODO
+        /*GameRegistry.registerBlock(WOOD_SLAB, ItemBlockWoodSlabs.class, "wood_slab", WOOD_SLAB, WOOD_DOUBLESLAB, false); //TODO
+        GameRegistry.registerBlock(WOOD_DOUBLESLAB, ItemBlockWoodSlabs.class, "wood_double_slab", WOOD_SLAB, WOOD_DOUBLESLAB, true); //TODO*/ //TODO
         registerItemBlock(WALL, ItemBlockWall.class, "walls");
         registerItemBlock(CRATE, ItemBlockCrate.class, "crate");
 
@@ -168,7 +165,6 @@ public class AtumBlocks {
         Blocks.fire.setFireInfo(PLANKS, 5, 20);
         Blocks.fire.setFireInfo(LEAVES, 30, 60);
         Blocks.fire.setFireInfo(LOG, 5, 5);
-        Blocks.fire.setFireInfo(DEADWOOD_LOG, 5, 5);
         Blocks.fire.setFireInfo(PALM_FENCE, 5, 20);
         Blocks.fire.setFireInfo(DEADWOOD_FENCE, 5, 20);
         Blocks.fire.setFireInfo(WOOD_SLAB, 5, 20);
@@ -183,9 +179,8 @@ public class AtumBlocks {
         //OreDictionary.registerOre("blockLimestone", STONE);
 
         OreDictionary.registerOre("logWood", LOG);
-        OreDictionary.registerOre("logWood", DEADWOOD_LOG);
         OreDictionary.registerOre("plankWood", PLANKS);
-        OreDictionary.registerOre("treeSapling", PALMSAPLING);
+        OreDictionary.registerOre("treeSapling", SAPLING);
         OreDictionary.registerOre("treeLeaves", LEAVES);
 
         OreDictionary.registerOre("oreGold", GOLDORE);
@@ -214,7 +209,7 @@ public class AtumBlocks {
     }
 
     public static Block registerItemBlock(Block block, Class<? extends ItemBlock> itemBlock, String name) {
-        block.setUnlocalizedName(Constants.MODID + ":" + name);
+        block.setUnlocalizedName(Constants.MODID + "." + name);
         block.setCreativeTab(Atum.creativeTab);
 
         GameRegistry.registerBlock(block, itemBlock, name);
@@ -227,7 +222,7 @@ public class AtumBlocks {
     }
 
     public static Block register(Block block, String name, CreativeTabs tab) {
-        block.setUnlocalizedName(Constants.MODID + ":" + name);
+        block.setUnlocalizedName(Constants.MODID + "." + name);
         block.setCreativeTab(tab);
 
         GameRegistry.registerBlock(block, name);

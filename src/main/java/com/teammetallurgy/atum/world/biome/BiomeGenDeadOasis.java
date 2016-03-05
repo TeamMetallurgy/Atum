@@ -8,7 +8,7 @@ public class BiomeGenDeadOasis extends AtumBiomeGenBase {
     public BiomeGenDeadOasis(AtumConfig.BiomeConfig config) {
         super(config);
 
-        super.topBlock = AtumBlocks.LIMESTONECOBBLE.getDefaultState();
+        super.topBlock = AtumBlocks.LIMESTONE_CRACKED.getDefaultState();
 
         super.setHeight(height_ShallowWaters);
 

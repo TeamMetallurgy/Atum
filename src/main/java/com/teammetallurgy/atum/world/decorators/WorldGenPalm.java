@@ -1,30 +1,38 @@
 package com.teammetallurgy.atum.world.decorators;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
+import com.teammetallurgy.atum.blocks.BlockAtumLog;
+import com.teammetallurgy.atum.blocks.BlockAtumPlank;
+import com.teammetallurgy.atum.blocks.BlockLeave;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
 import java.util.Random;
 
 public class WorldGenPalm extends WorldGenAbstractTree {
+    private static final IBlockState blockLog = AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.PALM);
+    private static final IBlockState blockLeaves = AtumBlocks.LEAVES.getDefaultState()/*.withProperty(BlockLeave.VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(BlockLeave.CHECK_DECAY, Boolean.valueOf(false))*/; //TODO
     private final int minTreeHeight;
-    private final IBlockState wood;
-    private final IBlockState leaves;
+    private final IBlockState metaWood;
+    private final IBlockState metaLeaves;
 
     public WorldGenPalm(boolean notify) {
-        this(notify, 5, AtumBlocks.LOG.getDefaultState(), AtumBlocks.LEAVES.getDefaultState());
+        this(notify, 5, blockLog, blockLeaves);
+    }
+
+    public WorldGenPalm(boolean notify, int minTreeHeight) {
+        this(notify, minTreeHeight, blockLog, blockLeaves);
     }
 
     public WorldGenPalm(boolean notify, int minTreeHeight, IBlockState wood, IBlockState leaves) {
         super(notify);
         this.minTreeHeight = minTreeHeight;
-        this.wood = wood;
-        this.leaves = leaves;
+        this.metaWood = wood;
+        this.metaLeaves = leaves;
     }
 
     @Override
@@ -69,9 +77,6 @@ public class WorldGenPalm extends WorldGenAbstractTree {
                     return false;
                 } else {
                     blockDown.onPlantGrow(world, down, pos);
-                    EnumFacing facing = EnumFacing.Plane.HORIZONTAL.random(random);
-                    int k2 = i - random.nextInt(4) - 1;
-                    int l2 = 3 - random.nextInt(3);
                     int i3 = pos.getX();
                     int j1 = pos.getZ();
                     int k1 = 0;
@@ -162,7 +167,7 @@ public class WorldGenPalm extends WorldGenAbstractTree {
                     Block block2 = world.getBlockState(upN).getBlock();
 
                     if (block2.isAir(world, upN) || block2.isLeaves(world, upN)) {
-                        this.setBlockAndNotifyAdequately(world, pos.up(j3), this.wood);
+                        this.setBlockAndNotifyAdequately(world, pos.up(j3), this.metaWood);
                     }
                 }
                 return true;
@@ -175,7 +180,7 @@ public class WorldGenPalm extends WorldGenAbstractTree {
     public void spawnLeaf(World world, BlockPos pos) {
         Block block = world.getBlockState(pos).getBlock();
         if (world.isAirBlock(pos) || block.canBeReplacedByLeaves(world, pos)) {
-            this.setBlockAndNotifyAdequately(world, pos, this.leaves);
+            this.setBlockAndNotifyAdequately(world, pos, this.metaLeaves);
         }
     }
 }

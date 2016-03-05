@@ -1,155 +1,144 @@
 package com.teammetallurgy.atum.world.biome;
 
-import java.util.Random;
-
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.handler.AtumConfig;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
+import java.util.Random;
+
 public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
 
-	private WorldGenerator genSpikes;
-	
+    private WorldGenerator genSpikes;
+
     public BiomeGenLimestoneCrags(AtumConfig.BiomeConfig config) {
         super(config);
-        
+
         super.palmRarity = -1;
         super.pyramidRarity = -1;
-        super.deadwoodRarity = 2; 
-        
+        super.deadwoodRarity = 2;
+
         this.genSpikes = new WorldGenLimestoneSpike();
-        
+
         super.addDefaultSpawns();
     }
-    
+
     @Override
-    public void decorate(World world, Random rng, int x, int z) {
-        for (int k = 0; k < 3; ++k) {
-            final int xx = x + rng.nextInt(16) + 8;
-            final int zz = z + rng.nextInt(16) + 8;
-            this.genSpikes.generate(world, rng, xx, world.getHeightValue(xx, zz), zz);
+    public void decorate(World world, Random random, BlockPos pos) {
+        for (int i = 0; i < 3; ++i) {
+            int j = random.nextInt(16) + 8;
+            int k = random.nextInt(16) + 8;
+            this.genSpikes.generate(world, random, world.getHeight(pos.add(j, 0, k)));
         }
 
-        super.decorate(world, rng, x, z);
+        super.decorate(world, random, pos);
     }
-    
+
     /**
      * Adapted from WorldGenIceSpike
      */
     public class WorldGenLimestoneSpike extends WorldGenerator {
+        private final Block spikeBlock = AtumBlocks.LIMESTONE;
+        private final Block groundBlock = AtumBlocks.SAND;
 
-    	private final Block spikeBlock = AtumBlocks.STONE;
-    	private final Block groundBlock = AtumBlocks.SAND;
-    	
-    	private boolean isBlockReplaceable(Block block) {
-    		return block.getMaterial() == Material.air || block == AtumBlocks.SAND || block == AtumBlocks.SANDLAYERED || block == Blocks.dirt;
-    	}
-    	
-		@Override
-		public boolean generate(World world, Random rng, int x, int z, int y) {
+        private boolean isBlockReplaceable(Block block) {
+            return block.getMaterial() == Material.air || block == AtumBlocks.SAND || block == AtumBlocks.SANDLAYERED || block == Blocks.dirt;
+        }
 
-			// find the surface
-			while (world.isAirBlock(x, z, y) && z > 2) {
-	            --z;
-	        }
+        @Override
+        public boolean generate(World world, Random rand, BlockPos pos) {
 
-	        if (world.getBlock(x, z, y) != groundBlock) {
-	            return false;
-	        } else {
-	            z += rng.nextInt(4);
-	            int l = rng.nextInt(4) + 7;
-	            int i1 = l / 4 + rng.nextInt(2);
+            // find the surface
+            while (world.isAirBlock(pos) && pos.getY() > 2) {
+                pos = pos.down();
+            }
 
-	            if (i1 > 1 && rng.nextInt(60) == 0) {
-	                z += 10 + rng.nextInt(30);
-	            }
+            if (world.getBlockState(pos).getBlock() != groundBlock) {
+                return false;
+            } else {
+                pos = pos.up(rand.nextInt(4));
+                int i = rand.nextInt(4) + 7;
+                int j = i / 4 + rand.nextInt(2);
 
-	            int j1;
-	            int k1;
-	            int l1;
+                if (j > 1 && rand.nextInt(60) == 0) {
+                    pos = pos.up(10 + rand.nextInt(30));
+                }
 
-	            for (j1 = 0; j1 < l; ++j1) {
-	                float f = (1.0F - (float)j1 / (float)l) * (float)i1;
-	                k1 = MathHelper.ceiling_float_int(f);
+                for (int k = 0; k < i; ++k) {
+                    float f = (1.0F - (float) k / (float) i) * (float) j;
+                    int l = MathHelper.ceiling_float_int(f);
 
-	                for (l1 = -k1; l1 <= k1; ++l1) {
-	                    float f1 = (float)MathHelper.abs_int(l1) - 0.25F;
+                    for (int i1 = -l; i1 <= l; ++i1) {
+                        float f1 = (float) MathHelper.abs_int(i1) - 0.25F;
 
-	                    for (int i2 = -k1; i2 <= k1; ++i2) {
-	                        float f2 = (float)MathHelper.abs_int(i2) - 0.25F;
+                        for (int j1 = -l; j1 <= l; ++j1) {
+                            float f2 = (float) MathHelper.abs_int(j1) - 0.25F;
 
-	                        if ((l1 == 0 && i2 == 0 || f1 * f1 + f2 * f2 <= f * f) && (l1 != -k1 && l1 != k1 && i2 != -k1 && i2 != k1 || rng.nextFloat() <= 0.75F)) {
-	                            Block block = world.getBlock(x + l1, z + j1, y + i2);
+                            if ((i1 == 0 && j1 == 0 || f1 * f1 + f2 * f2 <= f * f) && (i1 != -l && i1 != l && j1 != -l && j1 != l || rand.nextFloat() <= 0.75F)) {
+                                Block block = world.getBlockState(pos.add(i1, k, j1)).getBlock();
 
-	                            if (isBlockReplaceable(block)) {
-	                            	this.setBlockAndNotifyAdequately(world, x + l1, z + j1, y + i2, spikeBlock, 0);
-	                            }
+                                if (isBlockReplaceable(block)) {
+                                    this.setBlockAndNotifyAdequately(world, pos.add(i1, k, j1), spikeBlock.getDefaultState());
+                                }
 
-	                            if (j1 != 0 && k1 > 1) {
-	                                block = world.getBlock(x + l1, z - j1, y + i2);
+                                if (k != 0 && l > 1) {
+                                    block = world.getBlockState(pos.add(i1, -k, j1)).getBlock();
 
-	                                if (isBlockReplaceable(block)) {
-	                                    this.setBlockAndNotifyAdequately(world, x + l1, z - j1, y + i2, spikeBlock, 0);
-	                                }
-	                            }
-	                        }
-	                    }
-	                }
-	            }
+                                    if (isBlockReplaceable(block)) {
+                                        this.setBlockAndNotifyAdequately(world, pos.add(i1, -k, j1), spikeBlock.getDefaultState());
 
-	            j1 = i1 - 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
-	            if (j1 < 0) {
-	                j1 = 0;
-	            } else if (j1 > 1) {
-	                j1 = 1;
-	            }
+                int k1 = j - 1;
 
-	            for (int j2 = -j1; j2 <= j1; ++j2) {
-	                k1 = -j1;
+                if (k1 < 0) {
+                    k1 = 0;
+                } else if (k1 > 1) {
+                    k1 = 1;
+                }
 
-	                while (k1 <= j1) {
-	                    l1 = z - 1;
-	                    int k2 = 50;
+                for (int l1 = -k1; l1 <= k1; ++l1) {
+                    for (int i2 = -k1; i2 <= k1; ++i2) {
+                        BlockPos blockpos = pos.add(l1, -1, i2);
+                        int j2 = 50;
 
-	                    if (Math.abs(j2) == 1 && Math.abs(k1) == 1) {
-	                        k2 = rng.nextInt(5);
-	                    }
+                        if (Math.abs(l1) == 1 && Math.abs(i2) == 1) {
+                            j2 = rand.nextInt(5);
+                        }
 
-	                    while (true) {
-	                        if (l1 > 50) {
-	                            Block block1 = world.getBlock(x + j2, l1, y + k1);
+                        while (blockpos.getY() > j2) {
+                            Block block1 = world.getBlockState(blockpos).getBlock();
 
-	                            if (isBlockReplaceable(block1) || block1 == spikeBlock) {
-	                                this.func_150515_a(world, x + j2, l1, y + k1, spikeBlock);
-	                                --l1;
-	                                --k2;
+                            if (isBlockReplaceable(block1) || block1 == spikeBlock) {
+                                break;
+                            }
 
-	                                if (k2 <= 0) {
-	                                    l1 -= rng.nextInt(5) + 1;
-	                                    k2 = rng.nextInt(5);
-	                                }
+                            this.setBlockAndNotifyAdequately(world, blockpos, spikeBlock.getDefaultState());
+                            blockpos = blockpos.down();
+                            --j2;
 
-	                                continue;
-	                            }
-	                        }
 
-	                        ++k1;
-	                        break;
-	                    }
-	                }
-	            }
+                            if (j2 <= 0) {
+                                blockpos = blockpos.down(rand.nextInt(5) + 1);
+                                j2 = rand.nextInt(5);
+                            }
 
-	            return true;
-		}
-    	
-    }
-
+                            continue;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
@@ -16,12 +17,12 @@ import net.minecraft.world.World;
 
 public class EntityBarbarian extends EntityMob {
 
-    public EntityBarbarian(World par1World) {
-        super(par1World);
+    public EntityBarbarian(World world) {
+        super(world);
         this.experienceValue = 9;
 
         this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.GREATSWORD));
-        this.enchantEquipment();
+        //this.enchantEquipment(); //TODO
 
         for (int i = 0; i < this.equipmentDropChances.length; ++i) {
             this.equipmentDropChances[i] = 0F;
@@ -38,36 +39,29 @@ public class EntityBarbarian extends EntityMob {
     }
 
     @Override
-    protected void addRandomArmor() {
-    }
-
-    @Override
     public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
-        int k = MathHelper.floor_double(this.posZ);
-        if (j <= 62) {
+        BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+        if (pos.getY() <= 62) {
             return false;
         } else {
-            return this.worldObj.canBlockSeeTheSky(i, j, k) && this.isValidLightLevel() &&
-                   this.worldObj.checkNoEntityCollision(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
+            return this.worldObj.canBlockSeeSky(pos) && this.isValidLightLevel() &&
+                    this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
         }
     }
 
     @Override
-         protected boolean isValidLightLevel() {
-        int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
-        int k = MathHelper.floor_double(this.posZ);
-        int bl = this.worldObj.getSavedLightValue(EnumSkyBlock.Block, i, j, k);
-        int light = this.worldObj.getBlockLightValue(i, j, k);
+    protected boolean isValidLightLevel() {
+        BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+        int bl = this.worldObj.getLightFor(EnumSkyBlock.BLOCK, pos);
+        int light = this.worldObj.getLight(pos);
 
         if (bl >= 7) {
             return false;
         } else if (light > 8) {
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 
     @Override
@@ -76,7 +70,7 @@ public class EntityBarbarian extends EntityMob {
     }
 
     @Override
-    protected void dropFewItems(boolean par1, int par2) {
+    protected void dropFewItems(boolean recentlyHit, int looting) {
         if (rand.nextInt(20) == 0) {
             int damage = (int) (AtumItems.GREATSWORD.getMaxDamage() - rand.nextInt(AtumItems.GREATSWORD.getMaxDamage()) * 0.5 + 20);
             this.entityDropItem(new ItemStack(AtumItems.GREATSWORD, 1, damage), 0.0F);
@@ -95,8 +89,8 @@ public class EntityBarbarian extends EntityMob {
             float i = 1.2F;
 
             if (entity instanceof EntityLivingBase) {
-                f += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase) entity);
-                i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase) entity);
+                f += EnchantmentHelper.func_152377_a(this.getHeldItem(), ((EntityLivingBase) entity).getCreatureAttribute());
+                i += EnchantmentHelper.getKnockbackModifier(this);
             }
 
             boolean flag = entity.attackEntityFrom(DamageSource.causeMobDamage(this), f);
@@ -112,10 +106,8 @@ public class EntityBarbarian extends EntityMob {
                     entity.setFire(j * 4);
                 }
 
-                if (entity instanceof EntityLivingBase) {
-                    EnchantmentHelper.func_151384_a((EntityLivingBase) entity, this);
-                }
-                EnchantmentHelper.func_151385_b(this, entity);
+                this.applyEnchantments(this, entity);
+
             }
             return flag;
         }

@@ -1,14 +1,8 @@
 package com.teammetallurgy.atum.blocks.tileentity.crate;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+public class ContainerCrate /*extends Container*/ { //TODO Again.. Crate?
 
-public class ContainerCrate extends Container {
-
-    private TileEntityCrate tileEntity;
+    /*private TileEntityCrate tileEntity;
     public ContainerCrate(InventoryPlayer playerInventory, TileEntityCrate crateTe) {
         
         tileEntity = crateTe;
@@ -67,5 +61,5 @@ public class ContainerCrate extends Container {
         }
         
         return transferedStack;
-    }
+    }*/
 }

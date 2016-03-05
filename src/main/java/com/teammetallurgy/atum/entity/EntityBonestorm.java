@@ -2,10 +2,13 @@ package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.entity.projectile.EntitySmallBone;
 import com.teammetallurgy.atum.items.AtumItems;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -13,24 +16,37 @@ import net.minecraft.world.World;
 public class EntityBonestorm extends EntityMob {
     private float heightOffset = 0.2F;
     private int heightOffsetUpdateTime;
-    private int timer;
 
     public EntityBonestorm(World world) {
         super(world);
         this.isImmuneToFire = true;
         this.experienceValue = 8;
+        this.tasks.addTask(4, new EntityBonestorm.AIBoneAttack(this));
+        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
+        this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[0]));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(48.0D);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
         this.dataWatcher.addObject(16, new Byte((byte) 0));
+    }
+
+    @Override
+    public EnumCreatureAttribute getCreatureAttribute() {
+        return EnumCreatureAttribute.UNDEAD;
     }
 
     @Override
@@ -50,77 +66,38 @@ public class EntityBonestorm extends EntityMob {
 
     @Override
     public void onLivingUpdate() {
-        if (!this.worldObj.isRemote) {
-            if (this.isWet()) {
-                this.attackEntityFrom(DamageSource.drown, 1.0F);
-            }
-
-            --this.heightOffsetUpdateTime;
-
-            if (this.heightOffsetUpdateTime <= 0) {
-                this.heightOffsetUpdateTime = 100;
-                this.heightOffset = 0.5F + (float) this.rand.nextGaussian() * 3.0F;
-            }
-
-            if (this.getEntityToAttack() != null && this.getEntityToAttack().posY + (double) this.getEntityToAttack().getEyeHeight() > this.posY + (double) this.getEyeHeight() + (double) this.heightOffset) {
-                this.motionY += (0.30000001192092896D - this.motionY) * 0.23000001192092896D;
-            }
-        }
-
         if (!this.onGround && this.motionY < 0.0D) {
-            this.motionY *= 0.1D;
+            this.motionY *= 0.6D;
         }
 
         super.onLivingUpdate();
     }
 
     @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEAD;
-    }
-
-    @Override
-    protected void attackEntity(Entity entity, float p_70785_2_) {
-        if (this.attackTime <= 0 && p_70785_2_ < 2.0F && entity.boundingBox.maxY > this.boundingBox.minY && entity.boundingBox.minY < this.boundingBox.maxY) {
-            this.attackTime = 20;
-            this.attackEntityAsMob(entity);
-        } else if (p_70785_2_ < 30.0F) {
-            double d0 = entity.posX - this.posX;
-            double d1 = entity.boundingBox.minY + (double) (entity.height / 2.0F) - (this.posY + (double) (this.height / 2.0F));
-            double d2 = entity.posZ - this.posZ;
-
-            if (this.attackTime == 0) {
-                ++this.timer;
-
-                if (this.timer == 1) {
-                    this.attackTime = 30;
-                    this.func_70844_e(true);
-                } else if (this.timer <= 4) {
-                    this.attackTime = 3;
-                } else {
-                    this.attackTime = 50;
-                    this.timer = 0;
-                    this.func_70844_e(false);
-                }
-
-                if (this.timer > 1) {
-                    float f1 = MathHelper.sqrt_float(p_70785_2_) * 0.5F;
-                    this.worldObj.playSoundAtEntity(entity, "mob.skeleton.hurt", 0.7F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-
-                    for (int i = 0; i < 1; ++i) {
-                        EntitySmallBone entitySmallBone = new EntitySmallBone(this.worldObj, this, d0 + this.rand.nextGaussian() * (double) f1, d1, d2 + this.rand.nextGaussian() * (double) f1);
-                        entitySmallBone.posY = this.posY + (double) (this.height / 2.0F) + 0.5D;
-                        this.worldObj.spawnEntityInWorld(entitySmallBone);
-                    }
-                }
-            }
-            this.rotationYaw = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            this.hasAttacked = true;
+    protected void updateAITasks() {
+        if (this.isWet()) {
+            this.attackEntityFrom(DamageSource.drown, 1.0F);
         }
+
+        --this.heightOffsetUpdateTime;
+
+        if (this.heightOffsetUpdateTime <= 0) {
+            this.heightOffsetUpdateTime = 100;
+            this.heightOffset = 0.5F + (float) this.rand.nextGaussian() * 3.0F;
+        }
+
+        EntityLivingBase entitylivingbase = this.getAttackTarget();
+
+        if (entitylivingbase != null && entitylivingbase.posY + (double) entitylivingbase.getEyeHeight() > this.posY + (double) this.getEyeHeight() + (double) this.heightOffset) {
+            this.motionY += (0.30000001192092896D - this.motionY) * 0.30000001192092896D;
+            this.isAirBorne = true;
+        }
+
+        super.updateAITasks();
     }
 
     @Override
-    protected void fall(float fall) {
+    public void fall(float distance, float damageMultiplier) {
     }
 
     @Override
@@ -133,18 +110,6 @@ public class EntityBonestorm extends EntityMob {
         }
     }
 
-    public void func_70844_e(boolean p_70844_1_) {
-        byte b0 = this.dataWatcher.getWatchableObjectByte(16);
-
-        if (p_70844_1_) {
-            b0 = (byte) (b0 | 1);
-        } else {
-            b0 &= -2;
-        }
-
-        this.dataWatcher.updateObject(16, Byte.valueOf(b0));
-    }
-
     @Override
     public boolean getCanSpawnHere() {
         int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
@@ -152,6 +117,77 @@ public class EntityBonestorm extends EntityMob {
             return false;
         } else {
             return super.getCanSpawnHere();
+        }
+    }
+
+    static class AIBoneAttack extends EntityAIBase {
+        private EntityBonestorm bonestorm;
+        private int timer;
+        private int attackTime;
+
+        public AIBoneAttack(EntityBonestorm entityBonestorm) {
+            this.bonestorm = entityBonestorm;
+            this.setMutexBits(3);
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            EntityLivingBase entitylivingbase = this.bonestorm.getAttackTarget();
+            return entitylivingbase != null && entitylivingbase.isEntityAlive();
+        }
+
+        @Override
+        public void startExecuting() {
+            this.timer = 0;
+        }
+
+        @Override
+        public void updateTask() {
+            --this.attackTime;
+            EntityLivingBase entitylivingbase = this.bonestorm.getAttackTarget();
+            double d0 = this.bonestorm.getDistanceSqToEntity(entitylivingbase);
+
+            if (d0 < 4.0D) {
+                if (this.attackTime <= 0) {
+                    this.attackTime = 20;
+                    this.bonestorm.attackEntityAsMob(entitylivingbase);
+                }
+
+                this.bonestorm.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 1.0D);
+            } else if (d0 < 256.0D) {
+                double d1 = entitylivingbase.posX - this.bonestorm.posX;
+                double d2 = entitylivingbase.getEntityBoundingBox().minY + (double) (entitylivingbase.height / 2.0F) - (this.bonestorm.posY + (double) (this.bonestorm.height / 2.0F));
+                double d3 = entitylivingbase.posZ - this.bonestorm.posZ;
+
+                if (this.attackTime <= 0) {
+                    ++this.timer;
+
+                    if (this.timer == 1) {
+                        this.attackTime = 60;
+                    } else if (this.timer <= 4) {
+                        this.attackTime = 6;
+                    } else {
+                        this.attackTime = 100;
+                        this.timer = 0;
+                    }
+
+                    if (this.timer > 1) {
+                        float f = MathHelper.sqrt_float(MathHelper.sqrt_double(d0)) * 0.5F;
+                        this.bonestorm.worldObj.playAuxSFXAtEntity((EntityPlayer) null, 1009, new BlockPos((int) this.bonestorm.posX, (int) this.bonestorm.posY, (int) this.bonestorm.posZ), 0);
+
+                        for (int i = 0; i < 1; ++i) {
+                            EntitySmallBone entitySmallBone = new EntitySmallBone(this.bonestorm.worldObj, this.bonestorm, d1 + this.bonestorm.getRNG().nextGaussian() * (double) f, d2, d3 + this.bonestorm.getRNG().nextGaussian() * (double) f);
+                            entitySmallBone.posY = this.bonestorm.posY + (double) (this.bonestorm.height / 2.0F) + 0.5D;
+                            this.bonestorm.worldObj.spawnEntityInWorld(entitySmallBone);
+                        }
+                    }
+                }
+                this.bonestorm.getLookHelper().setLookPositionWithEntity(entitylivingbase, 10.0F, 10.0F);
+            } else {
+                this.bonestorm.getNavigator().clearPathEntity();
+                this.bonestorm.getMoveHelper().setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, 1.0D);
+            }
+            super.updateTask();
         }
     }
 }

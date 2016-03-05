@@ -1,11 +1,5 @@
 package com.teammetallurgy.atum.gui;
 
-import com.teammetallurgy.atum.blocks.tileentity.crate.ContainerCrate;
-import com.teammetallurgy.atum.blocks.tileentity.crate.GuiCrate;
-import com.teammetallurgy.atum.blocks.tileentity.crate.TileEntityCrate;
-import com.teammetallurgy.atum.blocks.tileentity.furnace.ContainerLimestoneFurnace;
-import com.teammetallurgy.atum.blocks.tileentity.furnace.GuiLimestoneFurnace;
-import com.teammetallurgy.atum.blocks.tileentity.furnace.TileEntityLimestoneFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -26,9 +20,9 @@ public class AtumGuiHandler implements IGuiHandler {
                     }*/
                     break;
                 case 1:
-                    if (te instanceof TileEntityCrate) {
+                    /*if (te instanceof TileEntityCrate) {
                         return new ContainerCrate(player.inventory, (TileEntityCrate) te);
-                    }
+                    }*/
                     break;
             }
         }
@@ -47,9 +41,9 @@ public class AtumGuiHandler implements IGuiHandler {
                     }*/
                     break;
                 case 1:
-                    if (te instanceof TileEntityCrate) {
+                    /*if (te instanceof TileEntityCrate) {
                         return new GuiCrate(player.inventory, (TileEntityCrate) te);
-                    }
+                    }*/
                     break;
             }
         }

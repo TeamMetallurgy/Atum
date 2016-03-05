@@ -1,16 +1,10 @@
 package com.teammetallurgy.atum.blocks.tileentity.crate;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants.NBT;
 
-public class TileEntityCrate extends TileEntity implements IInventory {
+public class TileEntityCrate extends TileEntity { //TODO What is this based of? What does the crate do?
 
-    private ItemStack inventory[] = new ItemStack[getSizeInventory()];
+    /*private ItemStack inventory[] = new ItemStack[getSizeInventory()];
     private String inventoryName;
     
     @Override
@@ -119,18 +113,6 @@ public class TileEntityCrate extends TileEntity implements IInventory {
     }
 
     @Override
-    public void openInventory() {
-        // not needed
-        
-    }
-
-    @Override
-    public void closeInventory() {
-        // not needed
-        
-    }
-
-    @Override
     public boolean isItemValidForSlot(int slotId, ItemStack itemStack) {
         return true;
     }
@@ -176,5 +158,5 @@ public class TileEntityCrate extends TileEntity implements IInventory {
         if (hasCustomInventoryName()) {
             nbtCompound.setString("CustomName", inventoryName);
         }
-    }
+    }*/
 }

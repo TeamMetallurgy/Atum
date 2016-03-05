@@ -1,11 +1,12 @@
 package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
+import com.teammetallurgy.atum.blocks.BlockAtumBricks;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
 import com.teammetallurgy.atum.items.AtumItems;
 import com.teammetallurgy.atum.items.AtumLoot;
 import com.teammetallurgy.atum.utils.Constants;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -88,19 +89,16 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         Integer chestX = dataWatcher.getWatchableObjectInt(21);
         Integer chestY = dataWatcher.getWatchableObjectInt(22);
         Integer chestZ = dataWatcher.getWatchableObjectInt(23);
+        BlockPos chestPos = new BlockPos(chestX, chestY, chestZ);
 
-        if (chestX != null && chestY != null && chestZ != null) {
-            TileEntity te = worldObj.getTileEntity(chestX, chestY, chestZ);
-            if (te != null) {
-                if (te instanceof TileEntityPharaohChest) {
-                    TileEntityPharaohChest tepc = (TileEntityPharaohChest) te;
-                    tepc.setOpenable();
-                }
-            } else {
-                Constants.LOG.error("Unable to find chest coords for " + this.getName() + " on " + chestX + ", " + chestY + ", " + chestZ);
+        TileEntity te = worldObj.getTileEntity(chestPos);
+        if (te != null) {
+            if (te instanceof TileEntityPharaohChest) {
+                TileEntityPharaohChest tepc = (TileEntityPharaohChest) te;
+                tepc.setOpenable();
             }
         } else {
-            Constants.LOG.error("Unable to get chest coords for " + this.getName());
+            Constants.LOG.error("Unable to find chest coords for " + this.getName() + " on " + chestPos);
         }
     }
 
@@ -122,7 +120,7 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
     }
 
     @Override
-    public void knockBack(Entity par1Entity, float par2, double par3, double par5) {
+    public void knockBack(Entity entity, float par2, double par3, double par5) {
         this.isAirBorne = true;
         float f = MathHelper.sqrt_double(par3 * par3 + par5 * par5);
         float f1 = 0.3F;
@@ -138,17 +136,17 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float par2) {
+    public boolean attackEntityFrom(DamageSource source, float amount) {
         if (source.isFireDamage()) {
-            par2 = 0;
+            amount = 0;
         }
 
-        if (super.attackEntityFrom(source, par2)) {
+        if (super.attackEntityFrom(source, amount)) {
             if (source.getEntity() != null) {
                 Entity par1Entity = source.getEntity();
                 int j = 0;
                 if (par1Entity instanceof EntityLiving) {
-                    j += EnchantmentHelper.getKnockbackModifier((EntityLiving) par1Entity, this);
+                    j += EnchantmentHelper.getKnockbackModifier(this);
 
                     if (j > 0) {
                         this.motionX /= 0.6D;
@@ -175,26 +173,26 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         return false;
     }
 
-    private boolean destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
-        int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
+    private boolean destroyBlocksInAABB(AxisAlignedBB axisAlignedBB) {
+        int minX = MathHelper.floor_double(axisAlignedBB.minX);
+        int minY = MathHelper.floor_double(axisAlignedBB.minY);
+        int minZ = MathHelper.floor_double(axisAlignedBB.minZ);
+        int maxX = MathHelper.floor_double(axisAlignedBB.maxX);
+        int maxY = MathHelper.floor_double(axisAlignedBB.maxY);
+        int maxZ = MathHelper.floor_double(axisAlignedBB.maxZ);
         boolean flag = false;
         boolean flag1 = false;
 
         for (int x = minX; x <= maxX; ++x) {
             for (int y = minY; y <= maxY; ++y) {
                 for (int z = minZ; z <= maxZ; ++z) {
-                    Block block = this.worldObj.getBlock(x, y, z);
-                    int metadata = this.worldObj.getBlockMetadata(x, y, z);
+                    BlockPos pos = new BlockPos(x, y, z);
+                    IBlockState state = worldObj.getBlockState(pos);
 
-                    if (block != null) {
-                        if (block != AtumBlocks.LARGEBRICK && block != AtumBlocks.PHARAOHCHEST && block != Blocks.bedrock && block.isBlockSolid(worldObj, x, y, z, 0)) {
-                            block.dropBlockAsItem(worldObj, x, y, z, metadata, 0);
-                            flag1 = this.worldObj.setBlockToAir(x, y, z) || flag1;
+                    if (state != null) {
+                        if (state != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE) && state != AtumBlocks.PHARAOHCHEST.getDefaultState() && state != Blocks.bedrock.getDefaultState() && state.getBlock().getMaterial().isSolid()) {
+                            state.getBlock().dropBlockAsItem(worldObj, pos, state, 0);
+                            flag1 = this.worldObj.setBlockToAir(pos) || flag1;
                         }
 
                         flag = true;
@@ -204,10 +202,11 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         }
 
         if (flag1) {
-            double d0 = par1AxisAlignedBB.minX + (par1AxisAlignedBB.maxX - par1AxisAlignedBB.minX) * (double) this.rand.nextFloat();
-            double d1 = par1AxisAlignedBB.minY + (par1AxisAlignedBB.maxY - par1AxisAlignedBB.minY) * (double) this.rand.nextFloat();
-            double d2 = par1AxisAlignedBB.minZ + (par1AxisAlignedBB.maxZ - par1AxisAlignedBB.minZ) * (double) this.rand.nextFloat();
-            this.worldObj.spawnParticle("largeexplode", d0, d1, d2, 0.0D, 0.0D, 0.0D);
+            double d0 = axisAlignedBB.minX + (axisAlignedBB.maxX - axisAlignedBB.minX) * (double) this.rand.nextFloat();
+            double d1 = axisAlignedBB.minY + (axisAlignedBB.maxY - axisAlignedBB.minY) * (double) this.rand.nextFloat();
+            double d2 = axisAlignedBB.minZ + (axisAlignedBB.maxZ - axisAlignedBB.minZ) * (double) this.rand.nextFloat();
+            worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + Math.random(), d1 + 1.2D, d2 + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
+
         }
 
         return flag;
@@ -261,8 +260,9 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         if (trySpawnMummy((int) posX + 1, (int) posY, (int) posZ - 1)) {
             numSpawned++;
         }
-        if (numSpawned >= 2)
+        if (numSpawned >= 2) {
             return;
+        }
     }
 
     public boolean trySpawnMummy(int x, int y, int z) {
@@ -292,7 +292,7 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
     @Override
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
-        this.dataWatcher.updateObject(16, Float.valueOf(this.prevHealth));
+        this.dataWatcher.updateObject(16, Float.valueOf(this.getHealth()));
         suffixID = tagCompound.getInteger("suffix");
         prefixID = tagCompound.getInteger("prefix");
         numID = tagCompound.getInteger("numeral");
@@ -329,7 +329,7 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         super.onUpdate();
 
         if (!this.worldObj.isRemote && this.worldObj.getDifficulty().getDifficultyId() == 0) {
-            TileEntity te = worldObj.getTileEntity(linkedX, linkedY, linkedZ);
+            TileEntity te = worldObj.getTileEntity(new BlockPos(linkedX, linkedY, linkedZ));
             if (te instanceof TileEntityPharaohChest) {
                 ((TileEntityPharaohChest) te).setPharaohDespawned();
             }
@@ -340,7 +340,7 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
     @Override
     public void onLivingUpdate() {
         if (!this.worldObj.isRemote) {
-            this.dataWatcher.updateObject(16, Float.valueOf(this.prevHealth));
+            this.dataWatcher.updateObject(16, Float.valueOf(this.getHealth()));
         }
 
         if (regenTime++ > 20) {

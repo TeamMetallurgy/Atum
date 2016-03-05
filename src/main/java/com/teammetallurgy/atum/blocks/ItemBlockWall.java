@@ -30,6 +30,6 @@ public class ItemBlockWall extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return "tile." + types[stack.getItemDamage()] + "Wall";
+        return "tile.atum." + types[stack.getItemDamage()] + "Wall";
     }
 }

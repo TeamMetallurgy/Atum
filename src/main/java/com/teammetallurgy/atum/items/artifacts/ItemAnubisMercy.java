@@ -85,7 +85,7 @@ public class ItemAnubisMercy extends Item {
             spawn = world.getSpawnPoint();
         }
 
-        spawn = player.getBedSpawnLocation(world, spawn, false);
+        spawn = EntityPlayer.getBedSpawnLocation(world, spawn, false);
         if (spawn == null) {
             spawn = world.getSpawnPoint();
         }

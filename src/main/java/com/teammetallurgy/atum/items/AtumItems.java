@@ -162,8 +162,8 @@ public class AtumItems {
         this.register(FLAX_SEED, "flaxSeeds");
         this.register(FISH, "fish");
         this.register(NEITHS_AUDACITY, "neithsAudacity", CreativeTabs.tabCombat);
-        this.register(PALM_DOOR, "palmDoor");
-        this.register(DEADWOOD_DOOR, "deadwoodDoor");
+        this.register(PALM_DOOR, "palmItemDoor"); //TODO
+        this.register(DEADWOOD_DOOR, "deadwoodItemDoor"); //TODO
         this.register(STICK, "stick");
         this.register(DEADWOOD_BEETLE, "deadwoodBeetle");
     }
@@ -173,10 +173,7 @@ public class AtumItems {
     }
 
     private Item register(Item item, String name, CreativeTabs tab) {
-        GameRegistry.registerItem(item, item.getUnlocalizedName());
-        item.setCreativeTab(tab);
-
-        item.setUnlocalizedName(Constants.MODID + ":" + name);
+        item.setUnlocalizedName(Constants.MODID + "." + name);
         item.setCreativeTab(tab);
 
         GameRegistry.registerItem(item, name);

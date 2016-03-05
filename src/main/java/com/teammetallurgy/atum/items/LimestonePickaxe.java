@@ -13,11 +13,6 @@ public class LimestonePickaxe extends ItemPickaxe {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return Block.getBlockFromItem(repair.getItem()) == AtumBlocks.LIMESTONECOBBLE;
+        return Block.getBlockFromItem(repair.getItem()) == AtumBlocks.LIMESTONE_CRACKED;
     }
-
-    /*@Override
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.itemIcon = par1IIconRegister.registerIcon("atum:LimestonePickaxe");
-    }*/
 }

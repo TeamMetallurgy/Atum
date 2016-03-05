@@ -5,7 +5,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class ModelDate extends ModelBase {
-
     ModelRenderer Fruit;
     ModelRenderer Stem;
 
@@ -26,10 +25,11 @@ public class ModelDate extends ModelBase {
         this.setRotation(this.Stem, 0.0F, 0.0F, 0.0F);
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        this.Fruit.render(f5);
-        this.Stem.render(f5);
+    @Override
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float scale) {
+        super.render(entity, f, f1, f2, f3, f4, scale);
+        this.Fruit.render(scale);
+        this.Stem.render(scale);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -38,7 +38,8 @@ public class ModelDate extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity par7Entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, par7Entity);
+    @Override
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
     }
 }

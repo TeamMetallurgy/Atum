@@ -1,6 +1,5 @@
 package com.teammetallurgy.atum.items;
 
-import com.teammetallurgy.atum.Atum;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,22 +28,6 @@ public class ItemAtumStick extends Item {
         }
         return unlocalizedName;
     }
-    
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
-        icons = new IIcon[2];
-        icons[0] = register.registerIcon("atum:palm_stick");
-        icons[1] = register.registerIcon("atum:deadwood_stick");
-    }*/
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int damage) {
-        if (damage < 0 || damage >= icons.length)
-            return icons[0];
-        return icons[damage];
-    }*/
 
     @Override
     @SideOnly(Side.CLIENT)

@@ -1,11 +1,9 @@
 package com.teammetallurgy.atum.items;
 
-import com.teammetallurgy.atum.blocks.BlockCrate;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 
-public class ItemBlockCrate extends ItemBlock {
+public class ItemBlockCrate extends ItemBlock { //TODO
 
     public ItemBlockCrate(Block block) {
         super(block);
@@ -18,8 +16,8 @@ public class ItemBlockCrate extends ItemBlock {
         return damage;
     }
 
-    @Override
+    /*@Override
     public String getUnlocalizedName(ItemStack stack) {
         return ((BlockCrate) block).getUnlocalizedName(stack.getItemDamage());
-    }
+    }*/
 }

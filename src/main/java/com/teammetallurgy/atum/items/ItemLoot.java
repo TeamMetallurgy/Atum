@@ -27,8 +27,8 @@ public class ItemLoot extends Item {
         this.setMaxStackSize(1);
     }
 
-    public static ItemStack getRandomLoot(Random rand, boolean isDirty) {
-        int type = rand.nextInt(typeArray.length);
+    public static ItemStack getRandomLoot(Random random, boolean isDirty) {
+        int type = random.nextInt(typeArray.length);
         int quality = qualityArray.length - 6;
         return new ItemStack(AtumItems.LOOT, 1, type << 5 | quality | (isDirty ? 1 : 0));
     }
@@ -38,9 +38,9 @@ public class ItemLoot extends Item {
         int quality = stack.getItemDamage() >> 1 & 15;
         int type = stack.getItemDamage() >> 5 & 15;
         if (type < typeArray.length && quality < qualityArray.length) {
-            return "item.loot." + qualityArray[quality] + "." + typeArray[type];
+            return "item.atum.loot." + qualityArray[quality] + "." + typeArray[type];
         }
-        return "item.loot.unknown";
+        return "item.atum.loot.unknown";
     }
 
     @Override
@@ -56,8 +56,8 @@ public class ItemLoot extends Item {
                 return StatCollector.translateToLocal(unlocalizedName);
 
             // General localization
-            String unlocalizedQuality = "item.loot." + qualityArray[quality] + ".name";
-            String unlocalizedType = "item.loot." + typeArray[type] + ".name";
+            String unlocalizedQuality = "item.atum.loot." + qualityArray[quality] + ".name";
+            String unlocalizedType = "item.atum.loot." + typeArray[type] + ".name";
 
             if (StatCollector.canTranslate(unlocalizedQuality) && StatCollector.canTranslate(unlocalizedType)) {
                 String LocalizedGeneralName = StatCollector.translateToLocal(unlocalizedQuality);
@@ -127,8 +127,4 @@ public class ItemLoot extends Item {
         }
 
     }*/
-
-    public String firstUpperCase(String s) {
-        return Character.toString(s.charAt(0)).toUpperCase() + s.substring(1, s.length());
-    }
 }

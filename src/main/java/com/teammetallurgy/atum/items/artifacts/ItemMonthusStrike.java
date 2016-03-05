@@ -49,8 +49,8 @@ public class ItemMonthusStrike extends ItemAxe {
         int j = this.getMaxItemUseDuration(stack) - timeLeft;
         if (j > 21) {
             AxisAlignedBB bb = player.getEntityBoundingBox().expand(3.0D, 3.0D, 3.0D);
-            List list = world.getEntitiesWithinAABB(EntityLiving.class, bb);
-            Iterator i = list.iterator();
+            List<EntityLiving> list = world.getEntitiesWithinAABB(EntityLiving.class, bb);
+            Iterator<EntityLiving> i = list.iterator();
 
             while (i.hasNext()) {
                 Entity entity = (Entity) i.next();

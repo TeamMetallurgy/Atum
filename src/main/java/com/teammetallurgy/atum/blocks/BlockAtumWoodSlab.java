@@ -43,14 +43,9 @@ public class BlockAtumWoodSlab extends BlockSlab {
     }
 
 
-    /*@Override
-    protected ItemStack createStackedBlock(IBlockState state) {
-        return new ItemStack(this, 2, state.getBlock().getMetaFromState(state) & 4);
-    }*/
-
     @Override
     public MapColor getMapColor(IBlockState state) {
-        return ((BlockAtumPlank.EnumType) state.getValue(VARIANT)).getMapColor();
+        return (state.getValue(VARIANT)).getMapColor();
     }
 
     @Override
@@ -71,7 +66,7 @@ public class BlockAtumWoodSlab extends BlockSlab {
 
     @Override
     public boolean isDouble() {
-        return isDoubleSlab ? true : false;
+        return isDoubleSlab;
     }
 
     @Override
@@ -98,7 +93,7 @@ public class BlockAtumWoodSlab extends BlockSlab {
         IBlockState state = this.getDefaultState().withProperty(VARIANT, BlockAtumPlank.EnumType.byMetadata(meta & 7));
 
         if (!this.isDouble()) {
-            state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
+            state = state.withProperty(HALF, (meta & 8) == 0 ? BlockAtumWoodSlab.EnumBlockHalf.BOTTOM : BlockAtumWoodSlab.EnumBlockHalf.TOP);
         }
 
         return state;
@@ -109,7 +104,7 @@ public class BlockAtumWoodSlab extends BlockSlab {
         int i = 0;
         i = i | (state.getValue(VARIANT)).getMetadata();
 
-        if (!this.isDouble() && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP) {
+        if (!this.isDouble() && state.getValue(HALF) == BlockAtumWoodSlab.EnumBlockHalf.TOP) {
             i |= 8;
         }
         return i;

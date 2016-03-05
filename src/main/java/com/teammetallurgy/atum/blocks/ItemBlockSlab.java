@@ -1,17 +1,7 @@
 package com.teammetallurgy.atum.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemSlab;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
-
-public class ItemBlockSlab extends ItemSlab {
-    public static final String[] types = {"smooth", "cracked", "largeBrick", "smallBrick"};
+public class ItemBlockSlab /*extends ItemSlab*/ { //TODO
+    /*public static final String[] types = {"smooth", "cracked", "largeBrick", "smallBrick"};
 
     public ItemBlockSlab(Block baseBlock) {
         super(baseBlock, AtumBlocks.SLABS, AtumBlocks.DOUBLESLAB);
@@ -35,6 +25,6 @@ public class ItemBlockSlab extends ItemSlab {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return "tile." + types[stack.getItemDamage()] + "Slab";
-    }
+        return "tile.atum." + types[stack.getItemDamage()] + "Slab";
+    }*/
 }

@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -41,38 +40,7 @@ public class BlockPharaohChest extends BlockChest {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(MathHelper.floor_double((double) (placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3).getOpposite();
-        state = state.withProperty(FACING, enumfacing);
-        BlockPos blockpos = pos.north();
-        BlockPos blockpos1 = pos.south();
-        BlockPos blockpos2 = pos.west();
-        BlockPos blockpos3 = pos.east();
-        boolean flag = this == world.getBlockState(blockpos).getBlock();
-        boolean flag1 = this == world.getBlockState(blockpos1).getBlock();
-        boolean flag2 = this == world.getBlockState(blockpos2).getBlock();
-        boolean flag3 = this == world.getBlockState(blockpos3).getBlock();
-
-        if (!flag && !flag1 && !flag2 && !flag3) {
-            world.setBlockState(pos, state, 3);
-        } else if (enumfacing.getAxis() != EnumFacing.Axis.X || !flag && !flag1) {
-            if (enumfacing.getAxis() == EnumFacing.Axis.Z && (flag2 || flag3)) {
-                if (flag2) {
-                    world.setBlockState(blockpos2, state, 3);
-                } else {
-                    world.setBlockState(blockpos3, state, 3);
-                }
-
-                world.setBlockState(pos, state, 3);
-            }
-        } else {
-            if (flag) {
-                world.setBlockState(blockpos, state, 3);
-            } else {
-                world.setBlockState(blockpos1, state, 3);
-            }
-
-            world.setBlockState(pos, state, 3);
-        }
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
 
         if (stack.hasDisplayName()) {
             TileEntity tileentity = world.getTileEntity(pos);
@@ -101,7 +69,6 @@ public class BlockPharaohChest extends BlockChest {
             if (inventory != null) {
                 player.displayGUIChest(inventory);
             }
-
             return true;
         }
     }
