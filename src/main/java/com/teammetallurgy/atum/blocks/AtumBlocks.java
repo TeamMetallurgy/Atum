@@ -7,6 +7,7 @@ import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
 import com.teammetallurgy.atum.blocks.tileentity.crate.TileEntityCrate;
 import com.teammetallurgy.atum.blocks.tileentity.furnace.TileEntityLimestoneFurnace;
 import com.teammetallurgy.atum.items.itemblock.*;
+import com.teammetallurgy.atum.utils.AtumUtils;
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
@@ -206,7 +207,6 @@ public class AtumBlocks {
         }
     }
 
-
     protected static Block register(Block block, String name) {
         return register(block, ItemBlock.class, name);
     }
@@ -220,7 +220,7 @@ public class AtumBlocks {
     }
 
     protected static Block register(Block block, Class<? extends ItemBlock> itemBlockClass, String name, CreativeTabs tab) {
-        block.setUnlocalizedName(Constants.MODID + "." + toUnlocalizedName(name));
+        block.setUnlocalizedName(Constants.MODID + "." + AtumUtils.toUnlocalizedName(name));
         block.setCreativeTab(tab);
 
         GameRegistry.registerBlock(block, itemBlockClass, name);
@@ -228,9 +228,5 @@ public class AtumBlocks {
         Atum.proxy.registerItemVariantModel(Item.getItemFromBlock(block), name);
 
         return block;
-    }
-
-    public static String toUnlocalizedName(String name) { //TODO Figure out a better place to have this (Used in both AtumBlocks & AtumItems)
-        return StringUtils.uncapitalize(WordUtils.capitalize(name, '_')).replace("_", "");
     }
 }

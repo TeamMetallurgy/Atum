@@ -11,8 +11,9 @@ public class ItemAtumGoldenDate extends ItemAppleGold {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        if (stack.getItemDamage() > 0)
+        if (stack.getItemDamage() > 0) {
             return super.getUnlocalizedName() + "Enchanted";
+        }
         return super.getUnlocalizedName();
     }
 }

@@ -1,5 +1,6 @@
 package com.teammetallurgy.atum.items;
 
+import com.teammetallurgy.atum.blocks.BlockAtumPlank;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,22 +18,14 @@ public class ItemAtumStick extends Item {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        String unlocalizedName = getUnlocalizedName();
-
-        switch (stack.getItemDamage()) {
-            case 0:
-                unlocalizedName += ".palm";
-                break;
-            case 1:
-                unlocalizedName += ".deadwood";
-        }
-        return unlocalizedName;
+        return super.getUnlocalizedName() + "." + BlockAtumPlank.EnumType.byMetadata(stack.getItemDamage());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> subItems) {
-        subItems.add(new ItemStack(this, 1, 0));
-        subItems.add(new ItemStack(this, 1, 1));
+        for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
+            subItems.add(new ItemStack(item, 1, enumType.getMetadata()));
+        }
     }
 }

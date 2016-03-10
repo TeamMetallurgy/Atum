@@ -3,6 +3,7 @@ package com.teammetallurgy.atum.items;
 import com.teammetallurgy.atum.Atum;
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.items.artifacts.*;
+import com.teammetallurgy.atum.utils.AtumUtils;
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -126,7 +127,7 @@ public class AtumItems {
         register(HEDETETS_VENOM, "hedetets_venom");
         register(GEBS_SOLIDARITY, "gebs_solidarity");
         register(NUTS_CALL, "nuts_call");
-        register(ANUKETS_BOUNTY, "anukets_bounty" );
+        register(ANUKETS_BOUNTY, "anukets_bounty");
         register(MAFDETS_QUICKNESS, "mafdets_quickness");
         register(ISIS_HEALING, "isis_healing");
         register(AMUNETS_HOMECOMING, "amunets_homecoming");
@@ -169,7 +170,7 @@ public class AtumItems {
     }
 
     private static Item register(Item item, String name, CreativeTabs tab) {
-        item.setUnlocalizedName(Constants.MODID + "." + AtumBlocks.toUnlocalizedName(name));
+        item.setUnlocalizedName(Constants.MODID + "." + AtumUtils.toUnlocalizedName(name));
         item.setCreativeTab(tab);
 
         GameRegistry.registerItem(item, name);

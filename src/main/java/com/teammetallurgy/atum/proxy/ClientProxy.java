@@ -23,6 +23,7 @@ import com.teammetallurgy.atum.items.AtumItems;
 import com.teammetallurgy.atum.items.itemblock.ItemBlockLimestoneBricks;
 import com.teammetallurgy.atum.items.itemblock.ItemBlockPlanks;
 import com.teammetallurgy.atum.items.itemblock.ItemBlockWoodSlabs;
+import com.teammetallurgy.atum.utils.AtumUtils;
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelZombie;
@@ -220,9 +221,10 @@ public class ClientProxy extends CommonProxy {
             List<ItemStack> subItems = new ArrayList<ItemStack>();
             item.getSubItems(item, tab, subItems);
             for (ItemStack stack : subItems) {
-                String subItemName = item.getUnlocalizedName(stack).replace("item." + Constants.MODID + ":", "");
+                String subItemName = item.getUnlocalizedName(stack).replace("item." + Constants.MODID + ".", "").replace(".", "_");
 
-                ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + subItemName, "inventory"));
+                ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + AtumUtils.toRegistryName(subItemName), "inventory"));
+                System.out.println("SubItemName: " + AtumUtils.toRegistryName(subItemName));
             }
         } else {
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
