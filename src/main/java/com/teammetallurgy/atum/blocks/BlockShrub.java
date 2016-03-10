@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class BlockShrub extends BlockDeadBush {
+public class BlockShrub extends BlockDeadBush { //TODO Add 10% chance to drop deadwood sticks
 
     protected BlockShrub() {
         super();

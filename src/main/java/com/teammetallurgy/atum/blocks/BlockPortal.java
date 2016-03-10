@@ -5,9 +5,6 @@ import com.teammetallurgy.atum.world.AtumTeleporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -16,49 +13,26 @@ import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9
-    public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class, new EnumFacing.Axis[]{EnumFacing.Axis.X, EnumFacing.Axis.Z});
+import java.util.Random;
 
+public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9
     public BlockPortal() {
         super(Material.portal, true);
         this.setTickRandomly(true);
         this.setHardness(-1.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.X));
+        this.setBlockBounds(0, 0, 0, 1, 0.875F, 1);
     }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state) {
         return null;
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos) {
-        EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
-        float f = 0.125F;
-        float f1 = 0.125F;
-
-        if (axis == EnumFacing.Axis.X) {
-            f = 0.5F;
-        }
-
-        if (axis == EnumFacing.Axis.Z) {
-            f1 = 0.5F;
-        }
-
-        this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f1, 0.5F + f, 1.0F, 0.5F + f1);
-    }
-
-    public static int getMetaForAxis(EnumFacing.Axis axis) {
-        return axis == EnumFacing.Axis.X ? 1 : (axis == EnumFacing.Axis.Z ? 2 : 0);
     }
 
     @Override
@@ -72,7 +46,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9
             for (int z = -1; z < 2; z++) {
                 for (int y = -1; y < 1; y++) {
                     IBlockState blockState = world.getBlockState(pos.add(x, y, z));
-                    if (blockState != Blocks.sandstone.getDefaultState() && blockState != this && blockState != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE)) {
+                    if (blockState != Blocks.sandstone.getDefaultState() && blockState != this && blockState != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE)) {
                         world.setBlockToAir(pos);
                     }
                 }
@@ -148,28 +122,23 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(AXIS, (meta & 3) == 2 ? EnumFacing.Axis.Z : EnumFacing.Axis.X);
+    public int quantityDropped(Random random) {
+        return 0;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public Item getItem(World world, BlockPos pos) {
+        return null;
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public EnumWorldBlockLayer getBlockLayer() {
         return EnumWorldBlockLayer.TRANSLUCENT;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, BlockPos pos) {
-        return null;
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return getMetaForAxis(state.getValue(AXIS));
-    }
-
-    @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, new IProperty[]{AXIS});
     }
 }

@@ -27,14 +27,14 @@ public class BiomeDecoratorAtum extends BiomeDecorator {
     public BiomeDecoratorAtum() {
         super();
         this.dirtGen = genMinableStone(AtumBlocks.SAND.getDefaultState(), 32);
-        this.gravelGen = genMinableStone(AtumBlocks.LIMESTONEGRAVEL.getDefaultState(), 32);
+        this.gravelGen = genMinableStone(AtumBlocks.LIMESTONE_GRAVEL.getDefaultState(), 32);
         this.clayGen = genMinableStone(Blocks.clay.getDefaultState(), 16);
-        if (AtumConfig.COAL_ENABLED) { this.coalGen = genMinableStone(AtumBlocks.COALORE.getDefaultState(), AtumConfig.COAL_VEIN); }
-        if (AtumConfig.IRON_ENABLED) { this.ironGen = genMinableStone(AtumBlocks.IRONORE.getDefaultState(), AtumConfig.IRON_VEIN); }
-        if (AtumConfig.GOLD_ENABLED) { this.goldGen = genMinableStone(AtumBlocks.GOLDORE.getDefaultState(), AtumConfig.GOLD_VEIN); }
-        if (AtumConfig.REDSTONE_ENABLED) { this.redstoneGen = genMinableStone(AtumBlocks.REDSTONEORE.getDefaultState(), AtumConfig.REDSTONE_VEIN); }
-        if (AtumConfig.DIAMOND_ENABLED) { this.diamondGen = genMinableStone(AtumBlocks.DIAMONDORE.getDefaultState(), AtumConfig.DIAMOND_VEIN); }
-        if (AtumConfig.LAPIS_ENABLED) { this.lapisGen = genMinableStone(AtumBlocks.LAPISORE.getDefaultState(), AtumConfig.LAPIS_VEIN); }
+        if (AtumConfig.COAL_ENABLED) { this.coalGen = genMinableStone(AtumBlocks.COAL_ORE.getDefaultState(), AtumConfig.COAL_VEIN); }
+        if (AtumConfig.IRON_ENABLED) { this.ironGen = genMinableStone(AtumBlocks.IRON_ORE.getDefaultState(), AtumConfig.IRON_VEIN); }
+        if (AtumConfig.GOLD_ENABLED) { this.goldGen = genMinableStone(AtumBlocks.GOLD_ORE.getDefaultState(), AtumConfig.GOLD_VEIN); }
+        if (AtumConfig.REDSTONE_ENABLED) { this.redstoneGen = genMinableStone(AtumBlocks.REDSTONE_ORE.getDefaultState(), AtumConfig.REDSTONE_VEIN); }
+        if (AtumConfig.DIAMOND_ENABLED) { this.diamondGen = genMinableStone(AtumBlocks.DIAMOND_ORE.getDefaultState(), AtumConfig.DIAMOND_VEIN); }
+        if (AtumConfig.LAPIS_ENABLED) { this.lapisGen = genMinableStone(AtumBlocks.LAPIS_ORE.getDefaultState(), AtumConfig.LAPIS_VEIN); }
 
         this.treesPerChunk = 0;
         this.shrubChance = 0.3F;
@@ -125,7 +125,7 @@ public class BiomeDecoratorAtum extends BiomeDecorator {
         }
 
         if (TerrainGen.generateOre(this.currentWorld, this.randomGenerator, this.ironGen, field_180294_c, OreGenEvent.GenerateMinable.EventType.IRON)) {
-            this.genStandardOre1(20, this.ironGen, 0, 64);
+            this.genStandardOre1(20, this.ironGen, 0, 62);
         }
 
         if (TerrainGen.generateOre(this.currentWorld, this.randomGenerator, this.goldGen, field_180294_c, OreGenEvent.GenerateMinable.EventType.GOLD)) {
@@ -153,7 +153,7 @@ public class BiomeDecoratorAtum extends BiomeDecorator {
         }
 
         if (TerrainGen.generateOre(this.currentWorld, this.randomGenerator, this.clayGen, field_180294_c, OreGenEvent.GenerateMinable.EventType.CUSTOM)) {
-            this.genStandardOre1(8, this.clayGen, 0, 64);
+            this.genStandardOre1(8, this.clayGen, 0, 62);
         }
         MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Post(this.currentWorld, this.randomGenerator, field_180294_c));
     }

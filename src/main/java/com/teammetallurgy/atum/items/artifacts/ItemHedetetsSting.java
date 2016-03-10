@@ -56,7 +56,7 @@ public class ItemHedetetsSting extends ItemSword {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.getItem() == Items.diamond;
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return repair.getItem() == Items.diamond;
     }
 }

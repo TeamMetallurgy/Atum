@@ -35,8 +35,8 @@ public class ItemAtensFury extends ItemBow {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.getItem() == Items.diamond;
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return repair.getItem() == Items.diamond;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class ItemAtensFury extends ItemBow {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack) {
+    public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.RARE;
     }
 

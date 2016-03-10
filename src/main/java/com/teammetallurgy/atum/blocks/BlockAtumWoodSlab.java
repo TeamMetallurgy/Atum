@@ -1,6 +1,5 @@
 package com.teammetallurgy.atum.blocks;
 
-import com.teammetallurgy.atum.Atum;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -19,13 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockAtumWoodSlab extends BlockSlab {
+public abstract class BlockAtumWoodSlab extends BlockSlab {
     public static final PropertyEnum<BlockAtumPlank.EnumType> VARIANT = PropertyEnum.create("variant", BlockAtumPlank.EnumType.class);
-    private boolean isDoubleSlab;
 
-    public BlockAtumWoodSlab(boolean isDoubleSlab) {
+    public BlockAtumWoodSlab() {
         super(Material.wood);
-        this.isDoubleSlab = isDoubleSlab;
 
         IBlockState state = this.blockState.getBaseState();
 
@@ -38,8 +35,6 @@ public class BlockAtumWoodSlab extends BlockSlab {
         this.setHardness(2.0F);
         this.setResistance(5.0F);
         this.useNeighborBrightness = true;
-        this.setUnlocalizedName("woodSlab"); //TODO
-        this.setCreativeTab(Atum.creativeTab); //TODO
     }
 
 
@@ -65,11 +60,6 @@ public class BlockAtumWoodSlab extends BlockSlab {
     }
 
     @Override
-    public boolean isDouble() {
-        return isDoubleSlab;
-    }
-
-    @Override
     public IProperty<?> getVariantProperty() {
         return VARIANT;
     }
@@ -80,10 +70,10 @@ public class BlockAtumWoodSlab extends BlockSlab {
     }
 
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        if (itemIn != Item.getItemFromBlock(AtumBlocks.WOOD_DOUBLESLAB)) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+        if (item != Item.getItemFromBlock(AtumBlocks.WOOD_DOUBLE_SLAB)) {
             for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
-                list.add(new ItemStack(itemIn, 1, enumType.getMetadata()));
+                list.add(new ItemStack(item, 1, enumType.getMetadata()));
             }
         }
     }

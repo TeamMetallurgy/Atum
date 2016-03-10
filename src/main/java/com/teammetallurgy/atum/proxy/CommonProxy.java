@@ -14,10 +14,7 @@ public class CommonProxy {
     public void initRenders() {
     }
 
-    public void initTiles() {
-    }
-
-    public void registerItemVariantModel(Item item, String name, int metadata) {
+    public void registerItemVariantModel(Item item, String name) {
     }
 
     public void setItemResourceLocation(Item item, String name, CreativeTabs tab) {

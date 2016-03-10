@@ -1,13 +1,11 @@
 package com.teammetallurgy.atum.world;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.blocks.BlockAtumBricks;
-import net.minecraft.block.BlockPortal;
+import com.teammetallurgy.atum.blocks.BlockLimestoneBricks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
@@ -198,13 +196,13 @@ public class AtumTeleporter extends Teleporter {
             }
         }
 
-        IBlockState portalState = AtumBlocks.PORTAL.getDefaultState().withProperty(BlockPortal.AXIS, l6 != 0 ? EnumFacing.Axis.X : EnumFacing.Axis.Z);
+        IBlockState portalState = AtumBlocks.PORTAL.getDefaultState();
         IBlockState sandState;
 
         if (entity.dimension == 0) {
             sandState = Blocks.sandstone.getDefaultState();
         } else {
-            sandState = AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE);
+            sandState = AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE);
         }
         for (int x1 = -2; x1 < 3; x1++) {
             for (int z1 = -2; z1 < 3; z1++) {

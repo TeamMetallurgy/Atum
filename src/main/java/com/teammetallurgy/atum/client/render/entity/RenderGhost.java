@@ -19,6 +19,6 @@ public class RenderGhost extends RendererLivingEntity<EntityGhost> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityGhost EntityGhost) {
-        return new ResourceLocation("atum", "textures/entities/DesertGhost.png");
+        return new ResourceLocation("atum", "textures/entities/desert_ghost.png");
     }
 }

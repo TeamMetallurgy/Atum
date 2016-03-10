@@ -103,28 +103,4 @@ public class ItemLoot extends Item {
         }
 
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1) {
-        int dirty = par1 & 1;
-        int quality = par1 >> 1 & 15;
-        int type = par1 >> 5 & 15;
-        return dirty == 1 ? this.iconArray[type * 7] : this.iconArray[type * 7 + quality];
-    }*/
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.iconArray = new IIcon[typeArray.length * (qualityArray.length + 1)];
-
-        for (int type = 0; type < 5; ++type) {
-            this.iconArray[type * 7] = par1IIconRegister.registerIcon("atum:Dirty" + firstUpperCase(typeArray[type]));
-
-            for (int quality = 1; quality < 7; ++quality) {
-                this.iconArray[type * 7 + quality] = par1IIconRegister.registerIcon("atum:" + firstUpperCase(qualityArray[quality]) + firstUpperCase(typeArray[type]));
-            }
-        }
-
-    }*/
 }

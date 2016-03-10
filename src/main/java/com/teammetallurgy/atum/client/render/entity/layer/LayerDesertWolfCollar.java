@@ -9,7 +9,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerDesertWolfCollar implements LayerRenderer<EntityDesertWolf> { //TODO Check if the custom collar works as intended
-    private static final ResourceLocation DESERT_WOLF_COLLAR = new ResourceLocation("atum:textures/entities/Desertwolf_collar.png");
+    private static final ResourceLocation DESERT_WOLF_COLLAR = new ResourceLocation("atum:textures/entities/desert_wolf_collar.png");
     //private static final ResourceLocation WOLF_COLLAR = new ResourceLocation("textures/entity/wolf/wolf_collar.png");
     private final RenderDesertWolf wolfRenderer;
 

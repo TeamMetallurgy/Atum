@@ -1,5 +1,7 @@
 package com.teammetallurgy.atum.proxy;
 
+import com.teammetallurgy.atum.blocks.BlockAtumPlank;
+import com.teammetallurgy.atum.blocks.BlockLimestoneBricks;
 import com.teammetallurgy.atum.client.model.entity.ModelDesertWolf;
 import com.teammetallurgy.atum.client.model.entity.ModelDustySkeleton;
 import com.teammetallurgy.atum.client.render.entity.RenderBonestorm;
@@ -18,6 +20,9 @@ import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.handler.event.AtumFogEventListener;
 import com.teammetallurgy.atum.handler.event.ClientEvents;
 import com.teammetallurgy.atum.items.AtumItems;
+import com.teammetallurgy.atum.items.itemblock.ItemBlockLimestoneBricks;
+import com.teammetallurgy.atum.items.itemblock.ItemBlockPlanks;
+import com.teammetallurgy.atum.items.itemblock.ItemBlockWoodSlabs;
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelZombie;
@@ -42,11 +47,10 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
 
         MinecraftForge.EVENT_BUS.register(AtumItems.ANUBIS_MERCY);
-        MinecraftForge.EVENT_BUS.register(AtumItems.GEBS_SOLIDARITY);
         MinecraftForge.EVENT_BUS.register(AtumItems.HORUS_FLIGHT);
         MinecraftForge.EVENT_BUS.register(AtumItems.MAATS_BALANCE);
         MinecraftForge.EVENT_BUS.register(AtumItems.MNEVIS_HORNS);
-        MinecraftForge.EVENT_BUS.register(AtumItems.SEKHMETS_WRATH); //TODO Check if all these Items have a SubscribeEvent
+        MinecraftForge.EVENT_BUS.register(AtumItems.SEKHMETS_WRATH);
 
         if (AtumConfig.FOG_ENABLED) {
             MinecraftForge.EVENT_BUS.register(new AtumFogEventListener());
@@ -55,16 +59,6 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void initRenders() { //TODO Redo in 1.9
-        /*MinecraftForgeClient.registerItemRenderer(AtumItems.BOW, new RendererItemBow());
-        MinecraftForgeClient.registerItemRenderer(AtumItems.atensFury, new RendererItemBow());
-        MinecraftForgeClient.registerItemRenderer(AtumItems.horusSoaring, new RendererItemBow());
-        MinecraftForgeClient.registerItemRenderer(AtumItems.neithsAudacity, new RendererItemBow());
-        MinecraftForgeClient.registerItemRenderer(AtumItems.shusBreath, new RendererItemBow());
-        MinecraftForgeClient.registerItemRenderer(AtumItems.hedetetsVenom, new RendererItemBow());
-        MinecraftForgeClient.registerItemRenderer(AtumItems.monthusBlast, new RendererItemBow());
-        RenderingRegistry.registerBlockHandler(((BlockPapyrus) AtumBlocks.PAPYRUS).renderID, new RenderPapyrus());
-        RenderingRegistry.registerBlockHandler(((BlockDate) AtumBlocks.DATEBLOCK).renderID, new RenderDate());*/
-
         RenderingRegistry.registerEntityRenderingHandler(EntityMummy.class, new IRenderFactory<EntityMummy>() {
             @Override
             public Render<? super EntityMummy> createRenderFor(RenderManager manager) {
@@ -72,7 +66,7 @@ public class ClientProxy extends CommonProxy {
 
                     @Override
                     protected ResourceLocation getEntityTexture(EntityMummy entity) {
-                        return new ResourceLocation("atum", "textures/entities/Mummy.png");
+                        return new ResourceLocation("atum", "textures/entities/mummy.png");
                     }
                 };
             }
@@ -83,7 +77,7 @@ public class ClientProxy extends CommonProxy {
                 return new RenderBiped<EntityBanditWarrior>(manager, new ModelBiped(), 0.5F) {
                     @Override
                     protected ResourceLocation getEntityTexture(EntityBanditWarrior entity) {
-                        return new ResourceLocation("atum", "textures/entities/BanditWarrior.png");
+                        return new ResourceLocation("atum", "textures/entities/bandit_warrior.png");
                     }
                 };
             }
@@ -94,7 +88,7 @@ public class ClientProxy extends CommonProxy {
                 return new RenderBiped<EntityBarbarian>(manager, new ModelBiped(), 0.5F) {
                     @Override
                     protected ResourceLocation getEntityTexture(EntityBarbarian entity) {
-                        return new ResourceLocation("atum", "textures/entities/Barbarian.png");
+                        return new ResourceLocation("atum", "textures/entities/barbarian.png");
                     }
                 };
             }
@@ -105,7 +99,7 @@ public class ClientProxy extends CommonProxy {
                 return new RenderBiped<EntityBanditArcher>(manager, new ModelBiped(), 0.5F) {
                     @Override
                     protected ResourceLocation getEntityTexture(EntityBanditArcher entity) {
-                        return new ResourceLocation("atum", "textures/entities/BanditArcher.png");
+                        return new ResourceLocation("atum", "textures/entities/bandit_archer.png");
                     }
                 };
             }
@@ -116,7 +110,7 @@ public class ClientProxy extends CommonProxy {
                 return new RenderBiped<EntityBanditWarlord>(manager, new ModelBiped(), 0.5F) {
                     @Override
                     protected ResourceLocation getEntityTexture(EntityBanditWarlord entity) {
-                        return new ResourceLocation("atum", "textures/entities/BanditWarlord.png");
+                        return new ResourceLocation("atum", "textures/entities/bandit_warlord.png");
                     }
                 };
             }
@@ -135,7 +129,7 @@ public class ClientProxy extends CommonProxy {
                 return new RenderBiped<EntityDustySkeleton>(manager, new ModelDustySkeleton(), 0.5F) {
                     @Override
                     protected ResourceLocation getEntityTexture(EntityDustySkeleton entity) {
-                        return new ResourceLocation("atum", "textures/entities/DustySkeleton.png");
+                        return new ResourceLocation("atum", "textures/entities/dusty_skeleton.png");
                     }
                 };
             }
@@ -153,7 +147,7 @@ public class ClientProxy extends CommonProxy {
                 return new RenderBiped<EntityStoneSoldier>(manager, new ModelBiped(), 0.5F) {
                     @Override
                     protected ResourceLocation getEntityTexture(EntityStoneSoldier entity) {
-                        return new ResourceLocation("atum", "textures/entities/StoneSoldier.png");
+                        return new ResourceLocation("atum", "textures/entities/stone_soldier.png");
                     }
                 };
             }
@@ -199,10 +193,24 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void registerItemVariantModel(Item item, String name, int metadata) {
+    public void registerItemVariantModel(Item item, String name) { //TODO Make a proper solution
         if (item != null) {
-            //ModelBakery.registerItemVariants(item, new ResourceLocation(Constants.MODID + ":" + name));
-            ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
+            if (item instanceof ItemBlockPlanks || item instanceof ItemBlockWoodSlabs) {
+                for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
+                    String plankName = BlockAtumPlank.EnumType.byMetadata(enumType.getMetadata()) + "_" + name;
+                    ModelLoader.setCustomModelResourceLocation(item, enumType.getMetadata(), new ModelResourceLocation(Constants.MODID + ":" + plankName, "inventory"));
+                    System.out.println("VariantPlank: " + plankName);
+                }
+            } else if (item instanceof ItemBlockLimestoneBricks) {
+                for (BlockLimestoneBricks.EnumType enumType : BlockLimestoneBricks.EnumType.values()) {
+                    String limestonebrickName = name + "_" + BlockLimestoneBricks.EnumType.byMetadata(enumType.getMetadata());
+                    ModelLoader.setCustomModelResourceLocation(item, enumType.getMetadata(), new ModelResourceLocation(Constants.MODID + ":" + limestonebrickName, "inventory"));
+                    System.out.println("VariantBrick: " + limestonebrickName);
+                }
+            } else {
+                ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
+                System.out.print(" - " + name);
+            }
         }
     }
 

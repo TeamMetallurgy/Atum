@@ -1,6 +1,7 @@
 package com.teammetallurgy.atum.blocks;
 
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityChestSpawner;
+import com.teammetallurgy.atum.items.AtumLoot;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,5 +41,7 @@ public class BlockChestSpawner extends BlockChest {
         if (stack.hasDisplayName()) {
             ((TileEntityChestSpawner) world.getTileEntity(pos)).setCustomName(stack.getDisplayName());
         }
+
+        AtumLoot.fillChest((TileEntityChestSpawner) world.getTileEntity(pos), 5, 0.5F);
     }
 }

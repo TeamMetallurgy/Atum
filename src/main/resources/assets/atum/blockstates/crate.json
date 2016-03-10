@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "variant=palm": { "model": "atum:palm_crate" },
+    "variant=deadwood": { "model": "atum:deadwood_crate" }
+  }
+}

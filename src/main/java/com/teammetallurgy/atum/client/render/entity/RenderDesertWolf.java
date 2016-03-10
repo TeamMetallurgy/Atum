@@ -13,8 +13,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderDesertWolf extends RenderLiving<EntityDesertWolf> {
-    private static final ResourceLocation tamedDesertWolfTextures = new ResourceLocation(Constants.MODID + ":" + "textures/entities/DesertWolf_tame.png");
-    private static final ResourceLocation angryDesertWolfTextures = new ResourceLocation(Constants.MODID + ":" + "textures/entities/DesertWolf_angry.png");
+    private static final ResourceLocation tamedDesertWolfTextures = new ResourceLocation(Constants.MODID + ":" + "textures/entities/desert_wolf_tame.png");
+    private static final ResourceLocation angryDesertWolfTextures = new ResourceLocation(Constants.MODID + ":" + "textures/entities/desert_wolf_angry.png");
 
     public RenderDesertWolf(RenderManager renderManager, ModelBase modelBase, float shadowSize) {
         super(renderManager, modelBase, shadowSize);

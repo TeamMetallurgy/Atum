@@ -24,8 +24,6 @@ import java.util.List;
 
 public class ItemNeithsAudacity extends ItemBow {
 
-    public static final String[] bowPullIconNameArray = new String[]{"neiths_pull_0", "neiths_pull_1", "neiths_pull_2"};
-
     public ItemNeithsAudacity() {
         super();
         super.maxStackSize = 1;
@@ -141,26 +139,6 @@ public class ItemNeithsAudacity extends ItemBow {
         }
     }
 
-    /*@Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        if (usingItem != null) {
-            int j = this.getMaxItemUseDuration(stack) - useRemaining;
-            if (j >= 18) {
-                return this.getItemIconForUseDuration(2);
-            }
-
-            if (j > 13) {
-                return this.getItemIconForUseDuration(1);
-            }
-
-            if (j > 0) {
-                return this.getItemIconForUseDuration(0);
-            }
-        }
-
-        return this.getIcon(stack, renderPass);
-    }*/
-
     @Override
     public int getItemEnchantability() {
         return 1;
@@ -170,22 +148,4 @@ public class ItemNeithsAudacity extends ItemBow {
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         return repair.getItem() == Items.diamond;
     }
-
-   /* @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.iconArray = new IIcon[bowPullIconNameArray.length];
-        this.itemIcon = par1IIconRegister.registerIcon("atum:NeithsAudacity");
-
-        for (int i = 0; i < this.iconArray.length; ++i) {
-            this.iconArray[i] = par1IIconRegister.registerIcon("atum:" + bowPullIconNameArray[i]);
-        }
-
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getItemIconForUseDuration(int par1) {
-        return this.iconArray[par1];
-    }*/
 }

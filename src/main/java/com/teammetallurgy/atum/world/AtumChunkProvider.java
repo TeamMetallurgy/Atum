@@ -300,7 +300,7 @@ public class AtumChunkProvider implements IChunkProvider { //TODO Can't it just 
     }
 
     @Override
-    public boolean chunkExists(int par1, int par2) {
+    public boolean chunkExists(int x, int z) {
         return true;
     }
 
@@ -376,7 +376,7 @@ public class AtumChunkProvider implements IChunkProvider { //TODO Can't it just 
     }
 
     @Override
-    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position) {
+    public BlockPos getStrongholdGen(World world, String structureName, BlockPos position) {
         return null;
     }
 

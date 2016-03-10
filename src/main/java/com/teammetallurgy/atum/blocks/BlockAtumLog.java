@@ -28,7 +28,7 @@ public class BlockAtumLog extends BlockLog {
         }
     });
 
-    protected BlockAtumLog() {
+    public BlockAtumLog() {
         super();
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
     }

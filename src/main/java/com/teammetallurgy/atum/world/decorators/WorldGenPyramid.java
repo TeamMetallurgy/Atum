@@ -148,7 +148,7 @@ public class WorldGenPyramid extends WorldGenerator { //TODO What is this based 
             meta = 2;
         }
 
-        world.setBlockState(pos, AtumBlocks.TRAPARROW.getStateFromMeta(meta), 0);
+        world.setBlockState(pos, AtumBlocks.BURNING_TRAP.getStateFromMeta(meta), 0);
     }
 
     public void placeLadders(World world, BlockPos pos, int height) {

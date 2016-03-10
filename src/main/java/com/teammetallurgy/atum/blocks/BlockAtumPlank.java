@@ -3,7 +3,6 @@ package com.teammetallurgy.atum.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +18,7 @@ import java.util.List;
 public class BlockAtumPlank extends Block {
     public static final PropertyEnum<BlockAtumPlank.EnumType> VARIANT = PropertyEnum.create("variant", BlockAtumPlank.EnumType.class);
 
-    protected BlockAtumPlank() {
+    public BlockAtumPlank() {
         super(Material.wood);
         this.setHardness(2.0F);
         this.setResistance(5.0F);
@@ -29,20 +28,21 @@ public class BlockAtumPlank extends Block {
     }
 
     @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(VARIANT, BlockAtumPlank.EnumType.byMetadata(meta));
+    }
+
+    @Override
     public int damageDropped(IBlockState state) {
         return (state.getValue(VARIANT)).getMetadata();
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
             list.add(new ItemStack(item, 1, enumType.getMetadata()));
         }
-    }
-
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(VARIANT, BlockAtumPlank.EnumType.byMetadata(meta));
     }
 
     @Override
@@ -55,11 +55,12 @@ public class BlockAtumPlank extends Block {
         return (state.getValue(VARIANT)).getMetadata();
     }
 
+    @Override
     protected BlockState createBlockState() {
-        return new BlockState(this, new IProperty[]{VARIANT});
+        return new BlockState(this, VARIANT);
     }
 
-    public static enum EnumType implements IStringSerializable {
+    public enum EnumType implements IStringSerializable {
         PALM(0, "palm", MapColor.woodColor),
         DEADWOOD(1, "deadwood", MapColor.obsidianColor);
 
@@ -68,7 +69,7 @@ public class BlockAtumPlank extends Block {
         private final String unlocalizedName;
         private final MapColor mapColor;
 
-        private EnumType(int meta, String unlocalizedName, MapColor mapColor) {
+        EnumType(int meta, String unlocalizedName, MapColor mapColor) {
             this.meta = meta;
             this.unlocalizedName = unlocalizedName;
             this.mapColor = mapColor;

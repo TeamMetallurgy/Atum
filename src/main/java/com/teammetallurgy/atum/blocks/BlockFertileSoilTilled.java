@@ -70,7 +70,7 @@ public class BlockFertileSoilTilled extends Block {
             if ((i & 3) > 0 && rand.nextDouble() > 0.5D) {
                 world.setBlockState(pos, state.withProperty(MOISTURE, Integer.valueOf(i - 1)), 2);
             } else if (!this.hasCrops(world, pos)) {
-                world.setBlockState(pos, AtumBlocks.FERTILESOIL.getDefaultState());
+                world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
             }
         } else {
             world.setBlockState(pos, state.withProperty(MOISTURE, Integer.valueOf(7)), 2);
@@ -92,7 +92,7 @@ public class BlockFertileSoilTilled extends Block {
                     return;
                 }
 
-                world.setBlockState(pos, AtumBlocks.FERTILESOIL.getDefaultState());
+                world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
             }
             super.onFallenUpon(world, pos, entity, fallDistance);
         }
@@ -103,9 +103,9 @@ public class BlockFertileSoilTilled extends Block {
         return block instanceof IPlantable && canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) block);
     }
 
-    private boolean hasWater(World worldIn, BlockPos pos) {
+    private boolean hasWater(World world, BlockPos pos) {
         for (BlockPos.MutableBlockPos mutableBlockPos : BlockPos.getAllInBoxMutable(pos.add(-4, 0, -4), pos.add(4, 1, 4))) {
-            if (worldIn.getBlockState(mutableBlockPos).getBlock().getMaterial() == Material.water) {
+            if (world.getBlockState(mutableBlockPos).getBlock().getMaterial() == Material.water) {
                 return true;
             }
         }
@@ -117,7 +117,7 @@ public class BlockFertileSoilTilled extends Block {
         super.onNeighborBlockChange(world, pos, state, neighborBlock);
 
         if (world.getBlockState(pos.up()).getBlock().getMaterial().isSolid()) {
-            world.setBlockState(pos, AtumBlocks.FERTILESOIL.getDefaultState());
+            world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
         }
     }
 
@@ -146,7 +146,7 @@ public class BlockFertileSoilTilled extends Block {
             case WEST:
             case EAST:
                 Block block = world.getBlockState(pos).getBlock();
-                return !block.isOpaqueCube() && block != AtumBlocks.FERTILESOIL;
+                return !block.isOpaqueCube() && block != AtumBlocks.FERTILE_SOIL;
             default:
                 return super.shouldSideBeRendered(world, pos, side);
         }
@@ -164,7 +164,7 @@ public class BlockFertileSoilTilled extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, BlockPos pos) {
+    public Item getItem(World world, BlockPos pos) {
         return Item.getItemFromBlock(AtumBlocks.SAND);
     }
 

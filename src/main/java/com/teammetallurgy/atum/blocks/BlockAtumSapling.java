@@ -57,17 +57,17 @@ public class BlockAtumSapling extends BlockBush implements IGrowable {
         }
     }
 
-    public void grow(World worldIn, BlockPos pos, IBlockState state, Random random) {
+    public void grow(World world, BlockPos pos, IBlockState state, Random random) {
         if ((state.getValue(STAGE)).intValue() == 0) {
-            worldIn.setBlockState(pos, state.cycleProperty(STAGE), 4);
+            world.setBlockState(pos, state.cycleProperty(STAGE), 4);
         } else {
-            this.generateTree(worldIn, pos, state, random);
+            this.generateTree(world, pos, state, random);
         }
     }
 
     @Override
-    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
-        Block blockDown = worldIn.getBlockState(pos.down()).getBlock();
+    public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+        Block blockDown = world.getBlockState(pos.down()).getBlock();
         return blockDown == AtumBlocks.SAND || blockDown == Blocks.grass || blockDown == Blocks.dirt;
     }
 
@@ -115,27 +115,23 @@ public class BlockAtumSapling extends BlockBush implements IGrowable {
     }
 
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
-            if (enumType != BlockAtumPlank.EnumType.DEADWOOD) {
-                list.add(new ItemStack(itemIn, 1, enumType.getMetadata()));
-            }
-        }
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+        list.add(new ItemStack(item, 1, BlockAtumPlank.EnumType.PALM.getMetadata()));
     }
 
     @Override
-    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
+    public boolean canGrow(World world, BlockPos pos, IBlockState state, boolean isClient) {
         return true;
     }
 
     @Override
-    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-        return (double) worldIn.rand.nextFloat() < 0.45D;
+    public boolean canUseBonemeal(World world, Random rand, BlockPos pos, IBlockState state) {
+        return (double) world.rand.nextFloat() < 0.45D;
     }
 
     @Override
-    public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-        this.grow(worldIn, pos, state, rand);
+    public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
+        this.grow(world, pos, state, rand);
     }
 
     @Override

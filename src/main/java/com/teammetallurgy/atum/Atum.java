@@ -2,7 +2,7 @@ package com.teammetallurgy.atum;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.entity.AtumEntities;
-import com.teammetallurgy.atum.gui.AtumGuiHandler;
+import com.teammetallurgy.atum.client.gui.AtumGuiHandler;
 import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.handler.AtumCreativeTab;
 import com.teammetallurgy.atum.handler.CraftingHandler;
@@ -39,10 +39,13 @@ public class Atum {
         new AtumConfig(event.getSuggestedConfigurationFile());
 
         Constants.LOG.trace("Register Item");
-        new AtumItems();
+        AtumItems.registerItems();
 
         Constants.LOG.trace("Register Blocks");
-        new AtumBlocks();
+        AtumBlocks.registerBlocks();
+
+        Constants.LOG.trace("Renders Init");
+        proxy.initRenders();
 
         MinecraftForge.EVENT_BUS.register(new AtumEventListener());
     }
@@ -65,9 +68,7 @@ public class Atum {
         new AtumLoot().register();
 
         Constants.LOG.trace("Proxy Init");
-        proxy.initRenders();
         proxy.init();
-        proxy.initTiles();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new AtumGuiHandler());
     }

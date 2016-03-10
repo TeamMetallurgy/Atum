@@ -21,7 +21,7 @@ public class BlockBurningTrap extends BlockDispenser {
     @Override
     public float getBlockHardness(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos.up());
-        return world.getBlockState(pos.up()) == AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE) && state.getBlock().getMetaFromState(state) == 1 ? -1.0F : super.blockHardness;
+        return world.getBlockState(pos.up()) == AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE) && state.getBlock().getMetaFromState(state) == 1 ? -1.0F : super.blockHardness;
     }
 
     @Override

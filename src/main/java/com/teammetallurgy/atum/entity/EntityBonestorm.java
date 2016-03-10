@@ -173,7 +173,7 @@ public class EntityBonestorm extends EntityMob {
 
                     if (this.timer > 1) {
                         float f = MathHelper.sqrt_float(MathHelper.sqrt_double(d0)) * 0.5F;
-                        this.bonestorm.worldObj.playAuxSFXAtEntity((EntityPlayer) null, 1009, new BlockPos((int) this.bonestorm.posX, (int) this.bonestorm.posY, (int) this.bonestorm.posZ), 0);
+                        this.bonestorm.worldObj.playSoundAtEntity(this.bonestorm, "mob.skeleton.hurt", 0.7F, (this.bonestorm.rand.nextFloat() - this.bonestorm.rand.nextFloat()) * 0.2F + 1.0F);
 
                         for (int i = 0; i < 1; ++i) {
                             EntitySmallBone entitySmallBone = new EntitySmallBone(this.bonestorm.worldObj, this.bonestorm, d1 + this.bonestorm.getRNG().nextGaussian() * (double) f, d2, d3 + this.bonestorm.getRNG().nextGaussian() * (double) f);

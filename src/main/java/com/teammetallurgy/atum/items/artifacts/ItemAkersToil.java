@@ -26,7 +26,7 @@ public class ItemAkersToil extends ItemSpade {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack par1ItemStack) {
+    public boolean hasEffect(ItemStack stack) {
         return true;
     }
 
@@ -67,9 +67,4 @@ public class ItemAkersToil extends ItemSpade {
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         return repair.getItem() == Items.diamond;
     }
-
-    /*@Override
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.itemIcon = par1IIconRegister.registerIcon("atum:AkersToil");
-    }*/
 }

@@ -1,7 +1,7 @@
 package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.blocks.BlockAtumBricks;
+import com.teammetallurgy.atum.blocks.BlockLimestoneBricks;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
 import com.teammetallurgy.atum.items.AtumItems;
 import com.teammetallurgy.atum.items.AtumLoot;
@@ -143,15 +143,15 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
 
         if (super.attackEntityFrom(source, amount)) {
             if (source.getEntity() != null) {
-                Entity par1Entity = source.getEntity();
+                Entity entity = source.getEntity();
                 int j = 0;
-                if (par1Entity instanceof EntityLiving) {
+                if (entity instanceof EntityLiving) {
                     j += EnchantmentHelper.getKnockbackModifier(this);
 
                     if (j > 0) {
                         this.motionX /= 0.6D;
                         this.motionZ /= 0.6D;
-                        this.addVelocity((double) (MathHelper.sin(par1Entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F), -0.1D, (double) (-MathHelper.cos(par1Entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F));
+                        this.addVelocity((double) (MathHelper.sin(entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F), -0.1D, (double) (-MathHelper.cos(entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F));
                     }
                 }
 
@@ -190,7 +190,7 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
                     IBlockState state = worldObj.getBlockState(pos);
 
                     if (state != null) {
-                        if (state != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE) && state != AtumBlocks.PHARAOHCHEST.getDefaultState() && state != Blocks.bedrock.getDefaultState() && state.getBlock().getMaterial().isSolid()) {
+                        if (state != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE) && state != AtumBlocks.PHARAOH_CHEST.getDefaultState() && state != Blocks.bedrock.getDefaultState() && state.getBlock().getMaterial().isSolid()) {
                             state.getBlock().dropBlockAsItem(worldObj, pos, state, 0);
                             flag1 = this.worldObj.setBlockToAir(pos) || flag1;
                         }

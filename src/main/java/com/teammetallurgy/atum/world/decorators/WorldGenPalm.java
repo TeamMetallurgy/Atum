@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class WorldGenPalm extends WorldGenAbstractTree {
     private static final IBlockState blockLog = AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.PALM);
-    private static final IBlockState blockLeaves = AtumBlocks.LEAVES.getDefaultState()/*.withProperty(BlockLeave.VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(BlockLeave.CHECK_DECAY, Boolean.valueOf(false))*/; //TODO
+    private static final IBlockState blockLeaves = AtumBlocks.LEAVES.getDefaultState().withProperty(BlockLeave.VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(BlockLeave.CHECK_DECAY, Boolean.valueOf(false));
     private final int minTreeHeight;
     private final IBlockState metaWood;
     private final IBlockState metaLeaves;
@@ -40,7 +40,7 @@ public class WorldGenPalm extends WorldGenAbstractTree {
         int i = random.nextInt(3) + this.minTreeHeight;
         boolean flag = true;
         Block blocks = world.getBlockState(pos.down()).getBlock();
-        if ((blocks == AtumBlocks.SAND || blocks == AtumBlocks.FERTILESOIL || blocks == Blocks.dirt) && pos.getY() >= 1 && pos.getY() + i + 1 <= 256) {
+        if ((blocks == AtumBlocks.SAND || blocks == AtumBlocks.FERTILE_SOIL || blocks == Blocks.dirt) && pos.getY() >= 1 && pos.getY() + i + 1 <= 256) {
             for (int j = pos.getY(); j <= pos.getY() + 1 + i; ++j) {
 
                 int k = 1;

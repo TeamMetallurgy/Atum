@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,12 +19,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 public class BlockAtumRedstone extends Block { //TODO Make sure it goes out of the lit form again. If not possible, then extend BlockRedstoneOre
+    private final boolean isLit;
 
-    public BlockAtumRedstone() {
+    public BlockAtumRedstone(boolean isLit) {
         super(Material.rock);
+        this.isLit = isLit;
         this.setHardness(3.0F);
         this.setResistance(5.0F);
         this.setStepSound(Block.soundTypeStone);
+
+        if (isLit) {
+            setLightLevel(0.625F);
+            this.setTickRandomly(true);
+        }
     }
 
     @Override
@@ -32,9 +40,9 @@ public class BlockAtumRedstone extends Block { //TODO Make sure it goes out of t
     }
 
     @Override
-    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
-        this.activate(worldIn, pos);
-        super.onBlockClicked(worldIn, pos, playerIn);
+    public void onBlockClicked(World world, BlockPos pos, EntityPlayer playerIn) {
+        this.activate(world, pos);
+        super.onBlockClicked(world, pos, playerIn);
     }
 
     @Override
@@ -49,18 +57,18 @@ public class BlockAtumRedstone extends Block { //TODO Make sure it goes out of t
         return super.onBlockActivated(world, pos, state, player, side, hitX, hitY, hitZ);
     }
 
-    private void activate(World worldIn, BlockPos pos) {
-        this.spawnParticles(worldIn, pos);
+    private void activate(World world, BlockPos pos) {
+        this.spawnParticles(world, pos);
 
-        if (this == AtumBlocks.REDSTONEORE) {
-            worldIn.setBlockState(pos, AtumBlocks.REDSTONEORE.getStateFromMeta(1));
+        if (this == AtumBlocks.REDSTONE_ORE) {
+            world.setBlockState(pos, AtumBlocks.LIT_REDSTONE_ORE.getDefaultState());
         }
     }
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        if (this == AtumBlocks.REDSTONEORE.getStateFromMeta(1).getBlock()) {
-            world.setBlockState(pos, AtumBlocks.REDSTONEORE.getDefaultState());
+        if (this == AtumBlocks.LIT_REDSTONE_ORE) {
+            world.setBlockState(pos, AtumBlocks.REDSTONE_ORE.getDefaultState());
         }
     }
 
@@ -69,7 +77,6 @@ public class BlockAtumRedstone extends Block { //TODO Make sure it goes out of t
         return Items.redstone;
     }
 
-    @Override
     public int quantityDroppedWithBonus(int fortune, Random random) {
         return this.quantityDropped(random) + random.nextInt(fortune + 1);
     }
@@ -80,23 +87,28 @@ public class BlockAtumRedstone extends Block { //TODO Make sure it goes out of t
     }
 
     @Override
-    public int getExpDrop(net.minecraft.world.IBlockAccess world, BlockPos pos, int fortune) {
+    public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
+        super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        if (this.isLit) {
+            this.spawnParticles(world, pos);
+        }
+    }
+
+    @Override
+    public int getExpDrop(IBlockAccess world, BlockPos pos, int fortune) {
         if (this.getItemDropped(world.getBlockState(pos), RANDOM, fortune) != Item.getItemFromBlock(this)) {
             return 1 + RANDOM.nextInt(5);
         }
         return 0;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        if (this == AtumBlocks.REDSTONEORE.getStateFromMeta(1).getBlock()) {
-            this.spawnParticles(world, pos);
-        }
-    }
-
-    private void spawnParticles(World worldIn, BlockPos pos) {
-        Random random = worldIn.rand;
+    private void spawnParticles(World world, BlockPos pos) {
+        Random random = world.rand;
         double d0 = 0.0625D;
 
         for (int i = 0; i < 6; ++i) {
@@ -104,38 +116,38 @@ public class BlockAtumRedstone extends Block { //TODO Make sure it goes out of t
             double y = (double) ((float) pos.getY() + random.nextFloat());
             double z = (double) ((float) pos.getZ() + random.nextFloat());
 
-            if (i == 0 && !worldIn.getBlockState(pos.up()).getBlock().isOpaqueCube()) {
+            if (i == 0 && !world.getBlockState(pos.up()).getBlock().isOpaqueCube()) {
                 y = (double) pos.getY() + d0 + 1.0D;
             }
 
-            if (i == 1 && !worldIn.getBlockState(pos.down()).getBlock().isOpaqueCube()) {
+            if (i == 1 && !world.getBlockState(pos.down()).getBlock().isOpaqueCube()) {
                 y = (double) pos.getY() - d0;
             }
 
-            if (i == 2 && !worldIn.getBlockState(pos.south()).getBlock().isOpaqueCube()) {
+            if (i == 2 && !world.getBlockState(pos.south()).getBlock().isOpaqueCube()) {
                 z = (double) pos.getZ() + d0 + 1.0D;
             }
 
-            if (i == 3 && !worldIn.getBlockState(pos.north()).getBlock().isOpaqueCube()) {
+            if (i == 3 && !world.getBlockState(pos.north()).getBlock().isOpaqueCube()) {
                 z = (double) pos.getZ() - d0;
             }
 
-            if (i == 4 && !worldIn.getBlockState(pos.east()).getBlock().isOpaqueCube()) {
+            if (i == 4 && !world.getBlockState(pos.east()).getBlock().isOpaqueCube()) {
                 x = (double) pos.getX() + d0 + 1.0D;
             }
 
-            if (i == 5 && !worldIn.getBlockState(pos.west()).getBlock().isOpaqueCube()) {
+            if (i == 5 && !world.getBlockState(pos.west()).getBlock().isOpaqueCube()) {
                 x = (double) pos.getX() - d0;
             }
 
             if (x < (double) pos.getX() || x > (double) (pos.getX() + 1) || y < 0.0D || y > (double) (pos.getY() + 1) || z < (double) pos.getZ() || z > (double) (pos.getZ() + 1)) {
-                worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D, new int[0]);
             }
         }
     }
 
     @Override
     protected ItemStack createStackedBlock(IBlockState state) {
-        return new ItemStack(AtumBlocks.REDSTONEORE);
+        return new ItemStack(AtumBlocks.REDSTONE_ORE);
     }
 }

@@ -28,7 +28,7 @@ public class BlockFlax extends BlockCrops {
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
         if (world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos)) >> 3 == 1) {
-            return world.getBlockState(pos.down()).getBlock() == AtumBlocks.FERTILESOIL;
+            return world.getBlockState(pos.down()).getBlock() == AtumBlocks.FERTILE_SOIL;
         } else {
             Block soil = world.getBlockState(pos.down()).getBlock();
             return (world.getLight(pos) >= 8 || world.canSeeSky(pos)) && soil != null && soil.canSustainPlant(world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
@@ -37,7 +37,7 @@ public class BlockFlax extends BlockCrops {
 
     @Override
     protected boolean canPlaceBlockOn(Block ground) {
-        return ground == Blocks.farmland || ground == AtumBlocks.FERTILESOILTILLED;
+        return ground == Blocks.farmland || ground == AtumBlocks.FERTILE_SOIL_TILLED;
     }
 
     @Override

@@ -69,26 +69,23 @@ public class AtumWorldProvider extends WorldProvider {
     @Override
     @SideOnly(Side.CLIENT)
     public Vec3 getFogColor(float par1, float par2) {
-        float f2 = MathHelper.cos(par1 * 3.1415927F * 2.0F) * 2.0F + 0.5F;
-        if (f2 < 0.2F) {
-            f2 = 0.2F;
+        float f = MathHelper.cos(par1 * 3.1415927F * 2.0F) * 2.0F + 0.5F;
+        if (f < 0.2F) {
+            f = 0.2F;
         }
 
-        if (f2 > 1.0F) {
-            f2 = 1.0F;
+        if (f > 1.0F) {
+            f = 1.0F;
         }
 
-        float f3 = 0.7529412F;
-        float f4 = 0.84705883F;
-        float f5 = 1.0F;
-        f3 = 0.9F * f2;
-        f4 = 0.75F * f2;
-        f5 = 0.6F * f2;
-        return new Vec3((double) f3, (double) f4, (double) f5);
+        float f1 = 0.9F * f;
+        float f2 = 0.75F * f;
+        float f3 = 0.6F * f;
+        return new Vec3((double) f1, (double) f2, (double) f3);
     }
 
     @Override
-    public boolean doesXZShowFog(int par1, int par2) {
+    public boolean doesXZShowFog(int x, int z) {
         return false;
     }
 

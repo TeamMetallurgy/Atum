@@ -42,7 +42,7 @@ public class BlockFertileSoil extends BlockDirt {
                     IBlockState blockState = world.getBlockState(blockPos);
 
                     if ((blockState.getBlock() == this) && (blockState.getBlock().getMetaFromState(blockState) == 1) && (world.getLight(blockPos.up()) >= 4) && (world.getBlockLightOpacity(blockPos.up()) <= 2)) {
-                        world.setBlockState(pos, AtumBlocks.FERTILESOIL.getDefaultState(), 2);
+                        world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState(), 2);
                     }
                 }
             }
@@ -77,7 +77,7 @@ public class BlockFertileSoil extends BlockDirt {
     public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
         super.onNeighborBlockChange(world, pos, state, neighborBlock);
         if (world.getBlockState(pos.up()).getBlock().getMaterial().isSolid()) {
-            world.setBlockState(pos, AtumBlocks.FERTILESOIL.getDefaultState());
+            world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
         }
     }
 

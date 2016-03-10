@@ -97,7 +97,7 @@ public class EntityGhost extends EntityMob {
     }
 
     @Override
-    protected void dropFewItems(boolean par1, int par2) {
+    protected void dropFewItems(boolean recentlyHit, int looting) {
         if (this.rand.nextInt(4) == 0) {
             int amount = rand.nextInt(3) + 1;
             this.dropItem(AtumItems.ECTOPLASM, amount);

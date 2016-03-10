@@ -39,15 +39,13 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
         super.decorate(world, random, pos);
     }
 
-    /**
-     * Adapted from WorldGenIceSpike
-     */
+    /** Adapted from WorldGenIceSpike */
     public class WorldGenLimestoneSpike extends WorldGenerator {
         private final Block spikeBlock = AtumBlocks.LIMESTONE;
         private final Block groundBlock = AtumBlocks.SAND;
 
         private boolean isBlockReplaceable(Block block) {
-            return block.getMaterial() == Material.air || block == AtumBlocks.SAND || block == AtumBlocks.SANDLAYERED || block == Blocks.dirt;
+            return block.getMaterial() == Material.air || block == AtumBlocks.SAND || block == AtumBlocks.SAND_LAYERED || block == Blocks.dirt;
         }
 
         @Override

@@ -37,7 +37,7 @@ public class BlockPapyrus extends BlockReed {
     }
 
     @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, BlockPos pos) {
+    public Item getItem(World world, BlockPos pos) {
         return AtumItems.PAPYRUS_PLANT;
     }
 }

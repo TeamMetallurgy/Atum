@@ -1,9 +1,8 @@
 package com.teammetallurgy.atum.items;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.blocks.BlockAtumBricks;
+import com.teammetallurgy.atum.blocks.BlockLimestoneBricks;
 import com.teammetallurgy.atum.handler.AtumConfig;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,13 +38,13 @@ public class ItemScarab extends Item {
             int y = pos.getY();
             int z = pos.getZ();
             IBlockState temp = null;
-            if (state == Blocks.sandstone.getDefaultState() || state == AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE)) {
+            if (state == Blocks.sandstone.getDefaultState() || state == AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE)) {
                 temp = state;
             }
             if (temp != null) {
                 for (int x1 = -1; x1 < 1; x1++) {
                     for (int z1 = -1; z1 < 1; z1++) {
-                        if (world.getBlockState(new BlockPos(x1 + x, y + 1, z1 + z)).getBlock().getMaterial() == Material.water && (state.getValue(BlockLiquid.LEVEL)) == 0) {
+                        if (world.getBlockState(new BlockPos(x1 + x, y + 1, z1 + z)).getBlock().getMaterial() == Material.water) {
                             if (AtumBlocks.PORTAL.tryToCreatePortal(world, new BlockPos(x1 + x, y, z1 + z), temp)) {
                                 --player.getCurrentEquippedItem().stackSize;
                                 return true;

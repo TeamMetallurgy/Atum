@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "half=bottom": { "model": "atum:palm_half_slab" },
+    "half=top": { "model": "atum:palm_upper_slab" }
+  }
+}

@@ -45,7 +45,7 @@ public class ClientEvents {
     public void onUpdate(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
 
-        if (player.dimension == AtumConfig.DIMENSION_ID) {
+        /*if (player.dimension == AtumConfig.DIMENSION_ID) { //TODO Fix
             if (player.worldObj.isRaining()) {
                 //raining = true;
 
@@ -62,6 +62,6 @@ public class ClientEvents {
                     player.worldObj.spawnParticle(EnumParticleTypes.BLOCK_DUST, player.posX + x, player.posY + y, player.posZ + z, vx + player.motionX, 0.0D, vz + player.motionZ);
                 }
             }
-        }
+        }*/
     }
 }

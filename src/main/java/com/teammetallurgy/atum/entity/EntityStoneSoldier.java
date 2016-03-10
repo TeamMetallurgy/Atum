@@ -59,15 +59,15 @@ public class EntityStoneSoldier extends EntityStone {
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (super.attackEntityFrom(source, amount)) {
             if (source.getEntity() != null) {
-                Entity par1Entity = source.getEntity();
+                Entity entity = source.getEntity();
                 int j = 0;
-                if (par1Entity instanceof EntityLiving) {
+                if (entity instanceof EntityLiving) {
                     j += EnchantmentHelper.getKnockbackModifier(this);
 
                     if (j > 0) {
                         this.motionX /= 0.6D;
                         this.motionZ /= 0.6D;
-                        this.addVelocity((double) (MathHelper.sin(par1Entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F), -0.1D, (double) (-MathHelper.cos(par1Entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F));
+                        this.addVelocity((double) (MathHelper.sin(entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F), -0.1D, (double) (-MathHelper.cos(entity.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F));
                     }
                 }
             }

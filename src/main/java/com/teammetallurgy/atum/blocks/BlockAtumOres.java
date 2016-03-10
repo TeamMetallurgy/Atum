@@ -24,12 +24,12 @@ public class BlockAtumOres extends BlockOre {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return this == AtumBlocks.COALORE ? Items.coal : (this == AtumBlocks.DIAMONDORE ? Items.diamond : (this == AtumBlocks.LAPISORE ? Items.dye : Item.getItemFromBlock(this)));
+        return this == AtumBlocks.COAL_ORE ? Items.coal : (this == AtumBlocks.DIAMOND_ORE ? Items.diamond : (this == AtumBlocks.LAPIS_ORE ? Items.dye : Item.getItemFromBlock(this)));
     }
 
     @Override
     public int quantityDropped(Random random) {
-        return this == AtumBlocks.LAPISORE ? 4 + random.nextInt(5) : 1;
+        return this == AtumBlocks.LAPIS_ORE ? 4 + random.nextInt(5) : 1;
     }
 
     @Override
@@ -39,11 +39,11 @@ public class BlockAtumOres extends BlockOre {
         if (this.getItemDropped(state, rand, fortune) != Item.getItemFromBlock(this)) {
             int xp = 0;
 
-            if (this == AtumBlocks.COALORE) {
+            if (this == AtumBlocks.COAL_ORE) {
                 xp = MathHelper.getRandomIntegerInRange(rand, 0, 2);
-            } else if (this == AtumBlocks.DIAMONDORE) {
+            } else if (this == AtumBlocks.DIAMOND_ORE) {
                 xp = MathHelper.getRandomIntegerInRange(rand, 3, 7);
-            } else if (this == AtumBlocks.LAPISORE) {
+            } else if (this == AtumBlocks.LAPIS_ORE) {
                 xp = MathHelper.getRandomIntegerInRange(rand, 3, 7);
             }
             return xp;
@@ -53,6 +53,6 @@ public class BlockAtumOres extends BlockOre {
 
     @Override
     public int damageDropped(IBlockState state) {
-        return this == AtumBlocks.LAPISORE ? EnumDyeColor.BLUE.getDyeDamage() : 0;
+        return this == AtumBlocks.LAPIS_ORE ? EnumDyeColor.BLUE.getDyeDamage() : 0;
     }
 }

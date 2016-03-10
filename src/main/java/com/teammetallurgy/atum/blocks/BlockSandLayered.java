@@ -32,8 +32,8 @@ public class BlockSandLayered extends Block {
     }
 
     @Override
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
-        return (worldIn.getBlockState(pos).getValue(LAYERS)).intValue() < 5;
+    public boolean isPassable(IBlockAccess w    , BlockPos pos) {
+        return (w.getBlockState(pos).getValue(LAYERS)).intValue() < 5;
     }
 
     @Override
@@ -88,9 +88,9 @@ public class BlockSandLayered extends Block {
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-        super.harvestBlock(worldIn, player, pos, state, te);
-        worldIn.setBlockToAir(pos);
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
+        super.harvestBlock(world, player, pos, state, te);
+        world.setBlockToAir(pos);
     }
 
     @Override
@@ -112,8 +112,8 @@ public class BlockSandLayered extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-        return side == EnumFacing.UP ? true : super.shouldSideBeRendered(worldIn, pos, side);
+    public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return side == EnumFacing.UP ? true : super.shouldSideBeRendered(world, pos, side);
     }
 
     @Override
@@ -122,8 +122,8 @@ public class BlockSandLayered extends Block {
     }
 
     @Override
-    public boolean isReplaceable(World worldIn, BlockPos pos) {
-        return (worldIn.getBlockState(pos).getValue(LAYERS)).intValue() == 1;
+    public boolean isReplaceable(World world, BlockPos pos) {
+        return (world.getBlockState(pos).getValue(LAYERS)).intValue() == 1;
     }
 
     @Override

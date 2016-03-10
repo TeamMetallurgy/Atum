@@ -40,7 +40,7 @@ public class ItemAnhursMight extends ItemSword {
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
+    public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
             if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == this) {

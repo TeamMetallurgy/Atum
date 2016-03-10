@@ -29,11 +29,6 @@ public class ItemSobeksRage extends ItemAxe {
         return true;
     }
 
-    // @Override
-    // public float getDamageVsEntity(Entity entity, ItemStack stack) {
-    // return 4 + super.toolMaterial.getDamageVsEntity();
-    // }
-
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         if (!(target instanceof EntityStoneSoldier) && !(target instanceof EntityPharaoh)) {
@@ -46,13 +41,13 @@ public class ItemSobeksRage extends ItemAxe {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack) {
+    public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
             tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
             tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
@@ -62,12 +57,7 @@ public class ItemSobeksRage extends ItemAxe {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.getItem() == Items.diamond;
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return repair.getItem() == Items.diamond;
     }
-
-    /*@Override
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.itemIcon = par1IIconRegister.registerIcon("atum:SobeksRage");
-    }*/
 }

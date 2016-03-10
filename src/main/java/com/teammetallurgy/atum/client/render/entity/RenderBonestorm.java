@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderBonestorm extends RenderLiving<EntityBonestorm> {
-    private static final ResourceLocation bonestormTextures = new ResourceLocation(Constants.MODID + ":" + "textures/entities/Bonestorm.png");
+    private static final ResourceLocation bonestormTextures = new ResourceLocation(Constants.MODID + ":" + "textures/entities/bonestorm.png");
 
     public RenderBonestorm(RenderManager renderManager) {
         super(renderManager, new ModelBonestorm(), 0.5F);

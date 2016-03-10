@@ -1,9 +1,6 @@
 package com.teammetallurgy.atum.entity.projectile;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -23,20 +20,6 @@ public class EntitySmallBone extends EntityBone {
 
                 if (flag) {
                     this.applyEnchantments(this.shootingEntity, movingObject.entityHit);
-                }
-            } else {
-                boolean flag1 = true;
-
-                if (this.shootingEntity != null && this.shootingEntity instanceof EntityLiving) {
-                    flag1 = this.worldObj.getGameRules().getBoolean("mobGriefing");
-                }
-
-                if (flag1) {
-                    BlockPos pos = movingObject.getBlockPos().offset(movingObject.sideHit);
-
-                    if (this.worldObj.isAirBlock(pos)) {
-                        this.worldObj.setBlockState(pos, Blocks.fire.getDefaultState());
-                    }
                 }
             }
             this.setDead();

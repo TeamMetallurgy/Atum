@@ -10,7 +10,7 @@ public class BiomeGenDriedRiver extends AtumBiomeGenBase {
 
 		super.setHeight(height_RockyWaters);
 
-		super.topBlock = AtumBlocks.LIMESTONEGRAVEL.getDefaultState();
+		super.topBlock = AtumBlocks.LIMESTONE_GRAVEL.getDefaultState();
 		super.fillerBlock = AtumBlocks.LIMESTONE_CRACKED.getDefaultState();
 
 		super.setTemperatureRainfall(0.8F, 0.9F);

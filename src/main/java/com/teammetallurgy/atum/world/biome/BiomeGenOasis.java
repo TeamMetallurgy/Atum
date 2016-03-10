@@ -19,7 +19,7 @@ public class BiomeGenOasis extends AtumBiomeGenBase {
     public BiomeGenOasis(AtumConfig.BiomeConfig config) {
         super(config);
 
-        super.topBlock = AtumBlocks.FERTILESOIL.getDefaultState();
+        super.topBlock = AtumBlocks.FERTILE_SOIL.getDefaultState();
 
         super.setHeight(height_ShallowWaters);
 

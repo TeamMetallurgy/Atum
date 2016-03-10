@@ -63,9 +63,9 @@ public class WorldGenRuins extends WorldGenerator { //TODO figure out what this 
                         world.setBlockToAir(chestX, chestY + height, chestZ);
                     } else if (chestY < wallHeight) {
                         if ((double) random.nextFloat() > 0.1D) {
-                            world.setBlockState(chestX, chestY + height, chestZ, AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.LARGE));
+                            world.setBlockState(chestX, chestY + height, chestZ, AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE));
                         } else {
-                            world.setBlockState(chestX, chestY + height, chestZ, AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockAtumBricks.VARIANT, BlockAtumBricks.EnumType.SMALL));
+                            world.setBlockState(chestX, chestY + height, chestZ, AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.SMALL));
                         }
                     } else if (chestY == wallHeight && (double) random.nextFloat() > 0.7D) {
                         if ((double) random.nextFloat() > 0.1D) {

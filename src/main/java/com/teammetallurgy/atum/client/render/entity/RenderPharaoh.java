@@ -24,6 +24,6 @@ public class RenderPharaoh extends RenderBiped<EntityPharaoh> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityPharaoh entityPharaoh) {
-        return new ResourceLocation("atum", "textures/entities/PharaohBlue.png");
+        return new ResourceLocation("atum", "textures/entities/pharaoh_blue.png");
     }
 }

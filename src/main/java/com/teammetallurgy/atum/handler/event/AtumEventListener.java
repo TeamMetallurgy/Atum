@@ -67,18 +67,18 @@ public class AtumEventListener {
     @SubscribeEvent
     public boolean onHoeEvent(UseHoeEvent event) {
         Block block = event.world.getBlockState(event.pos).getBlock();
-        if (block == AtumBlocks.FERTILESOIL) {
+        if (block == AtumBlocks.FERTILE_SOIL) {
             byte block2 = 0;
             if (event.current.getItem() == AtumItems.GEBS_BLESSING) {
                 block2 = 4;
             }
 
-            event.world.setBlockState(event.pos, AtumBlocks.FERTILESOILTILLED.getStateFromMeta(block2), 2);
+            event.world.setBlockState(event.pos, AtumBlocks.FERTILE_SOIL_TILLED.getStateFromMeta(block2), 2);
             event.setResult(Event.Result.ALLOW);
             event.world.playSoundEffect((double) event.pos.getX(), (double) event.pos.getY(), (double) event.pos.getZ(), block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getFrequency() * 0.8F);
             return true;
         } else if ((block == Blocks.dirt || block == Blocks.grass) && event.current.getItem() == AtumItems.GEBS_BLESSING) {
-            event.world.setBlockState(event.pos, AtumBlocks.FERTILESOILTILLED.getStateFromMeta(12), 2);
+            event.world.setBlockState(event.pos, AtumBlocks.FERTILE_SOIL_TILLED.getStateFromMeta(12), 2);
             event.setResult(Event.Result.ALLOW);
             event.world.playSoundEffect((double) event.pos.getX(), (double) event.pos.getZ(), (double) event.pos.getZ(), block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getFrequency() * 0.8F);
             return true;

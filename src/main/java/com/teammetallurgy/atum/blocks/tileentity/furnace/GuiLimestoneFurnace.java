@@ -1,41 +1,59 @@
 package com.teammetallurgy.atum.blocks.tileentity.furnace;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiLimestoneFurnace /*extends GuiContainer*/ { //TODO Is this even needed? Looks like we can just use GuiFurnace directly.
-    /*private final InventoryPlayer playerInventory;
-    private IInventory tileFurnace;
+public class GuiLimestoneFurnace extends GuiContainer {
+    private final InventoryPlayer playerInventory;
+    private IInventory tileLimestoneFurnace;
 
-    public GuiLimestoneFurnace(InventoryPlayer inventoryPlayer, IInventory furnace) {
-        super(new ContainerFurnace(inventoryPlayer, furnace));
-        this.playerInventory = inventoryPlayer;
-        this.tileFurnace = furnace;
+    public GuiLimestoneFurnace(InventoryPlayer playerInv, IInventory furnaceInv) {
+        super(new ContainerLimestoneFurnace(playerInv, furnaceInv));
+        this.playerInventory = playerInv;
+        this.tileLimestoneFurnace = furnaceInv;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseZ) {
-        String s = StatCollector.translateToLocal(this.playerInventory.getName());
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        String s = this.tileLimestoneFurnace.getDisplayName().getUnformattedText();
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(new ResourceLocation("textures/gui/container/furnace.png"));
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        int i1;
+        this.mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/furnace.png"));
+        int i = (this.width - this.xSize) / 2;
+        int j = (this.height - this.ySize) / 2;
+        this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
 
-        if (this.playerInventory.isBurning()) {
-            i1 = this.playerInventory.getBurnTimeRemainingScaled(12);
-            this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 2);
+        if (TileEntityLimestoneFurnace.isBurning(this.tileLimestoneFurnace)) {
+            int k = this.getBurnLeftScaled(13);
+            this.drawTexturedModalRect(i + 56, j + 36 + 12 - k, 176, 12 - k, 14, k + 1);
         }
+        int l = this.getCookProgressScaled(24);
+        this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
+    }
 
-        i1 = this.playerInventory.getCookProgressScaled(24);
-        this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
-    }*/
+    private int getCookProgressScaled(int pixels) {
+        int i = this.tileLimestoneFurnace.getField(2);
+        int j = this.tileLimestoneFurnace.getField(3);
+        return j != 0 && i != 0 ? i * pixels / j : 0;
+    }
+
+    private int getBurnLeftScaled(int pixels) {
+        int i = this.tileLimestoneFurnace.getField(1);
+
+        if (i == 0) {
+            i = 200;
+        }
+        return this.tileLimestoneFurnace.getField(0) * pixels / i;
+    }
 }
