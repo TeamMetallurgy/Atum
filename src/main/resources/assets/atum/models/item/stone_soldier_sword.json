@@ -1,0 +1,6 @@
+{
+  "parent": "atum:item/default_tool",
+  "textures": {
+    "layer0": "atum:items/stone_soldier_sword"
+  }
+}

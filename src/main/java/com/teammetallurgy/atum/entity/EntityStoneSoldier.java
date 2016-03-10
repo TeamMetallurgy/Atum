@@ -18,7 +18,7 @@ public class EntityStoneSoldier extends EntityStone {
         this.isImmuneToFire = true;
         this.experienceValue = 8;
 
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.STONESOLDIER_SWORD));
+        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.STONE_SOLDIER_SWORD));
 
         for (int i = 0; i < this.equipmentDropChances.length; ++i) {
             this.equipmentDropChances[i] = 0F;

@@ -59,7 +59,7 @@ public class AtumLoot {
         goodLoot = new AtumWeightedLootSet();
         junkLoot = new AtumWeightedLootSet();
 
-        ItemStack stack = new ItemStack(AtumItems.PTAHS_PICK);
+        ItemStack stack = new ItemStack(AtumItems.PTAHS_DECADENCE);
         artifacts.add(stack);
 
         artifacts.add(new ItemStack(AtumItems.SOBEKS_RAGE));

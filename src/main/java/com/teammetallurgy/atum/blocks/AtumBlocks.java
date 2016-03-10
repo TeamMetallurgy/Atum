@@ -230,7 +230,7 @@ public class AtumBlocks {
         return block;
     }
 
-    protected static String toUnlocalizedName(String name) {
+    public static String toUnlocalizedName(String name) { //TODO Figure out a better place to have this (Used in both AtumBlocks & AtumItems)
         return StringUtils.uncapitalize(WordUtils.capitalize(name, '_')).replace("_", "");
     }
 }

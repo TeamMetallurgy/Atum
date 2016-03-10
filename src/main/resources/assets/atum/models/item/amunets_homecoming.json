@@ -1,0 +1,6 @@
+{
+  "parent": "atum:item/default",
+  "textures": {
+    "layer0": "atum:items/amunets_homecoming"
+  }
+}

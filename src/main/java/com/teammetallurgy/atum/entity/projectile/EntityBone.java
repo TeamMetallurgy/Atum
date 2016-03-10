@@ -30,21 +30,15 @@ public abstract class EntityBone extends Entity {
         this.setSize(1.0F, 1.0F);
     }
 
-    @Override
-    protected void entityInit() {
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance) {
-        double d0 = this.getEntityBoundingBox().getAverageEdgeLength() * 4.0D;
-
-        if (Double.isNaN(d0)) {
-            d0 = 4.0D;
-        }
-        d0 = d0 * 64.0D;
-
-        return distance < d0 * d0;
+    public EntityBone(World world, double x, double y, double z, double accelX, double accelY, double accelZ) {
+        super(world);
+        this.setSize(1.0F, 1.0F);
+        this.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
+        this.setPosition(x, y, z);
+        double d0 = (double) MathHelper.sqrt_double(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        this.accelerationX = accelX / d0 * 0.1D;
+        this.accelerationY = accelY / d0 * 0.1D;
+        this.accelerationZ = accelZ / d0 * 0.1D;
     }
 
     public EntityBone(World world, EntityLivingBase shooter, double accelX, double accelY, double accelZ) {
@@ -61,6 +55,23 @@ public abstract class EntityBone extends Entity {
         this.accelerationX = accelX / d0 * 0.1D;
         this.accelerationY = accelY / d0 * 0.1D;
         this.accelerationZ = accelZ / d0 * 0.1D;
+    }
+
+    @Override
+    protected void entityInit() {
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isInRangeToRenderDist(double distance) {
+        double d0 = this.getEntityBoundingBox().getAverageEdgeLength() * 4.0D;
+
+        if (Double.isNaN(d0)) {
+            d0 = 4.0D;
+        }
+        d0 = d0 * 64.0D;
+
+        return distance < d0 * d0;
     }
 
     @Override

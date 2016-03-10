@@ -7,12 +7,9 @@ import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemSeeds;
-import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -30,9 +27,9 @@ public class AtumItems {
     public static final Item SCIMITAR = new ItemSword(ToolMaterial.IRON);
     public static final Item GREATSWORD = new ItemGreatsword(ToolMaterial.IRON);
     public static final Item BOW = new ItemAtumBow();
-    public static final Item STONESOLDIER_SWORD = new ItemSword(ToolMaterial.IRON);
+    public static final Item STONE_SOLDIER_SWORD = new ItemSword(ToolMaterial.IRON);
     public static final Item SCEPTER = new ItemSword(ToolMaterial.GOLD);
-    public static final Item PTAHS_PICK = new ItemPtahsDecadence(ToolMaterial.EMERALD);
+    public static final Item PTAHS_DECADENCE = new ItemPtahsDecadence(ToolMaterial.EMERALD);
     public static final Item SOBEKS_RAGE = new ItemSobeksRage(ToolMaterial.EMERALD);
     public static final Item OSIRIS_WILL = new ItemOsirisWill(ToolMaterial.EMERALD);
     public static final Item AKERS_TOIL = new ItemAkersToil(ToolMaterial.EMERALD);
@@ -78,14 +75,14 @@ public class AtumItems {
     public static final Item DESERT_CHEST = new ItemTexturedArmor(desertEnum, 0, 1).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_1");
     public static final Item DESERT_LEGS = new ItemTexturedArmor(desertEnum, 0, 2).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_2");
     public static final Item DESERT_BOOTS = new ItemTexturedArmor(desertEnum, 0, 3).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_1");
-    public static final Item PAPYRUS_PLANT = new Item() /*new ItemReed(AtumBlocks.PAPYRUS)*/; //TODO
+    public static final Item PAPYRUS_PLANT = new ItemReed(AtumBlocks.PAPYRUS);
     public static final Item ECTOPLASM = new Item();
     public static final Item DUSTY_BONE = new Item();
     public static final Item STONE_CHUNK = new Item();
     public static final Item SCROLL = new Item();
     public static final Item WOLF_PELT = new Item();
     public static final Item FLAX = new Item();
-    public static final Item FLAX_SEED = new Item() /*new ItemSeeds(AtumBlocks.FLAX, Blocks.farmland)*/; //TODO
+    public static final Item FLAX_SEED = new ItemSeeds(AtumBlocks.FLAX, Blocks.farmland);
     public static final Item FISH = new ItemFish();
     public static final Item NEITHS_AUDACITY = new ItemNeithsAudacity();
     public static final Item PALM_DOOR = new ItemAtumDoor();
@@ -94,77 +91,77 @@ public class AtumItems {
     public static final Item DEADWOOD_BEETLE = new ItemDeadwoodBeetle();
 
     public static void registerItems() {
-        register(SCRAP, "clothScrap");
+        register(SCRAP, "cloth_scrap");
         register(LINEN, "linen");
         register(SCARAB, "scarab");
         register(LOOT, "loot");
         register(DATE, "date");
-        register(GOLDEN_DATE, "goldenDate");
+        register(GOLDEN_DATE, "golden_date");
         register(SCIMITAR, "scimitar");
         register(GREATSWORD, "greatsword");
         register(BOW, "bow");
-        register(STONESOLDIER_SWORD, "stoneSoldierSword");
+        register(STONE_SOLDIER_SWORD, "stone_soldier_sword");
         register(SCEPTER, "scepter");
-        register(PTAHS_PICK, "ptahsDecadence");
-        register(SOBEKS_RAGE, "soteksRage");
-        register(OSIRIS_WILL, "osirisWill");
-        register(AKERS_TOIL, "akersToil");
-        register(GEBS_BLESSING, "gebsBlessing");
-        register(ATENS_FURY, "atensFury");
-        register(RAS_GLORY, "rasGlory");
-        register(SEKHMETS_WRATH, "sekhmetsWrath");
-        register(NUTS_AGILITY, "nutsAgility");
-        register(HORUS_FLIGHT, "horusFlight");
-        register(MONTHUS_STRIKE, "monthusStrike");
-        register(ANHURS_MIGHT, "anhursMight");
-        register(HEDETETS_STING, "hedetetsSting");
-        register(HORUS_SOARING, "horusSoaring");
-        register(SHUS_BREATH, "shusBreath");
-        register(PTAHS_DESTRUCTION, "ptahsDestruction");
-        register(MONTHUS_BLAST, "monthusBlast");
-        register(NUS_FLUX, "nusFlux");
-        register(MNEVIS_HORNS, "mnevisHorns");
-        register(ISIS_EMBRACE, "isisEmbrace");
-        register(MAATS_BALANCE, "maatsBalance");
-        register(HEDETETS_VENOM, "hedetetsVenom");
-        register(GEBS_SOLIDARITY, "gebsSolidarity");
-        register(NUTS_CALL, "nutsCall");
-        register(ANUKETS_BOUNTY, "anuketsBounty" );
-        register(MAFDETS_QUICKNESS, "mafdetsQuickness");
-        register(ISIS_HEALING, "isisHealing");
-        register(AMUNETS_HOMECOMING, "amunetsHomecoming");
-        register(ANUBIS_MERCY, "anubisMercy");
-        register(LIMESTONE_SHOVEL, "limestoneShovel");
-        register(LIMESTONE_PICKAXE, "limestonePickaxe");
-        register(LIMESTONE_AXE, "limestoneAxe");
-        register(LIMESTONE_SWORD, "limestoneSword");
-        register(LIMESTONE_HOE, "limestoneHoe");
-        register(MUMMY_HELMET, "mummyHelmet");
-        register(MUMMY_CHEST, "mummyChest");
-        register(MUMMY_LEGS, "mummyLegs");
-        register(MUMMY_BOOTS, "mummyBoots");
-        register(WANDERER_HELMET, "wandererHelmet");
-        register(WANDERER_CHEST, "wandererChest");
-        register(WANDERER_LEGS, "wandererLegs");
-        register(WANDERER_BOOTS, "wandererBoots");
-        register(DESERT_HELMET, "desertHelmet");
-        register(DESERT_CHEST, "desertChest");
-        register(DESERT_LEGS, "desertLegs");
-        register(DESERT_BOOTS, "desertBoots");
-        //register(PAPYRUS_PLANT, "papyrusPlant"); //TODO
+        register(PTAHS_DECADENCE, "ptahs_decadence");
+        register(SOBEKS_RAGE, "soteks_rage");
+        register(OSIRIS_WILL, "osiris_will");
+        register(AKERS_TOIL, "akers_toil");
+        register(GEBS_BLESSING, "gebs_blessing");
+        register(ATENS_FURY, "atens_fury");
+        register(RAS_GLORY, "ras_glory");
+        register(SEKHMETS_WRATH, "sekhmets_wrath");
+        register(NUTS_AGILITY, "nuts_agility");
+        register(HORUS_FLIGHT, "horus_flight");
+        register(MONTHUS_STRIKE, "monthus_strike");
+        register(ANHURS_MIGHT, "anhurs_might");
+        register(HEDETETS_STING, "hedetets_sting");
+        register(HORUS_SOARING, "horus_soaring");
+        register(SHUS_BREATH, "shus_breath");
+        register(PTAHS_DESTRUCTION, "ptahs_destruction");
+        register(MONTHUS_BLAST, "monthus_blast");
+        register(NUS_FLUX, "nus_flux");
+        register(MNEVIS_HORNS, "mnevis_horns");
+        register(ISIS_EMBRACE, "isis_embrace");
+        register(MAATS_BALANCE, "maats_balance");
+        register(HEDETETS_VENOM, "hedetets_venom");
+        register(GEBS_SOLIDARITY, "gebs_solidarity");
+        register(NUTS_CALL, "nuts_call");
+        register(ANUKETS_BOUNTY, "anukets_bounty" );
+        register(MAFDETS_QUICKNESS, "mafdets_quickness");
+        register(ISIS_HEALING, "isis_healing");
+        register(AMUNETS_HOMECOMING, "amunets_homecoming");
+        register(ANUBIS_MERCY, "anubis_mercy");
+        register(LIMESTONE_SHOVEL, "limestone_shovel");
+        register(LIMESTONE_PICKAXE, "limestone_pickaxe");
+        register(LIMESTONE_AXE, "limestone_axe");
+        register(LIMESTONE_SWORD, "limestone_sword");
+        register(LIMESTONE_HOE, "limestone_hoe");
+        register(MUMMY_HELMET, "mummy_helmet");
+        register(MUMMY_CHEST, "mummy_chest");
+        register(MUMMY_LEGS, "mummy_legs");
+        register(MUMMY_BOOTS, "mummy_boots");
+        register(WANDERER_HELMET, "wanderer_helmet");
+        register(WANDERER_CHEST, "wanderer_chest");
+        register(WANDERER_LEGS, "wanderer_legs");
+        register(WANDERER_BOOTS, "wanderer_boots");
+        register(DESERT_HELMET, "desert_helmet");
+        register(DESERT_CHEST, "desert_chest");
+        register(DESERT_LEGS, "desert_legs");
+        register(DESERT_BOOTS, "desert_boots");
+        register(PAPYRUS_PLANT, "papyrus_plant");
         register(ECTOPLASM, "ectoplasm");
-        register(DUSTY_BONE, "dustyBone");
-        register(STONE_CHUNK, "stoneChunk");
+        register(DUSTY_BONE, "dusty_bone");
+        register(STONE_CHUNK, "stone_chunk");
         register(SCROLL, "scroll");
-        register(WOLF_PELT, "wolfPelt");
+        register(WOLF_PELT, "wolf_pelt");
         register(FLAX, "flax");
-        register(FLAX_SEED, "flaxSeeds");
+        register(FLAX_SEED, "flax_seeds");
         register(FISH, "fish");
-        register(NEITHS_AUDACITY, "neithsAudacity");
-        register(PALM_DOOR, "palmItemDoor"); //TODO
-        register(DEADWOOD_DOOR, "deadwoodItemDoor"); //TODO
+        register(NEITHS_AUDACITY, "neiths_audacity");
+        register(PALM_DOOR, "palm_item_door"); //TODO
+        register(DEADWOOD_DOOR, "deadwood_item_door"); //TODO
         register(STICK, "stick");
-        register(DEADWOOD_BEETLE, "deadwoodBeetle");
+        register(DEADWOOD_BEETLE, "deadwood_beetle");
     }
 
     public static Item register(Item item, String name) {
@@ -172,7 +169,7 @@ public class AtumItems {
     }
 
     private static Item register(Item item, String name, CreativeTabs tab) {
-        item.setUnlocalizedName(Constants.MODID + "." + name);
+        item.setUnlocalizedName(Constants.MODID + "." + AtumBlocks.toUnlocalizedName(name));
         item.setCreativeTab(tab);
 
         GameRegistry.registerItem(item, name);

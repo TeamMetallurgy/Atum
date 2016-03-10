@@ -7,8 +7,19 @@ import net.minecraft.world.World;
 
 public class EntitySmallBone extends EntityBone {
 
+    public EntitySmallBone(World worldIn)
+    {
+        super(worldIn);
+        this.setSize(0.3125F, 0.3125F);
+    }
+
     public EntitySmallBone(World world, EntityLivingBase shooter, double accelX, double accelY, double accelZ) {
         super(world, shooter, accelX, accelY, accelZ);
+        this.setSize(0.3125F, 0.3125F);
+    }
+
+    public EntitySmallBone(World world, double x, double y, double z, double accelX, double accelY, double accelZ) {
+        super(world, x, y, z, accelX, accelY, accelZ);
         this.setSize(0.3125F, 0.3125F);
     }
 
