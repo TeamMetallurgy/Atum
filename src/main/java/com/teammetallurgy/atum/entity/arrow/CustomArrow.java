@@ -1,12 +1,12 @@
 package com.teammetallurgy.atum.entity.arrow;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IThrowableEntity;
 
-public class CustomArrow extends EntityArrow {
-
+public class CustomArrow extends EntityArrow implements IThrowableEntity {
     public float arrowShake = 0;
 
     public CustomArrow(World world) {
@@ -18,25 +18,20 @@ public class CustomArrow extends EntityArrow {
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tagCompund) {
-        super.readFromNBT(tagCompund);
-    }
-
-    @Override
-    public void writeEntityToNBT(NBTTagCompound tagCompund) {
-        super.writeToNBT(tagCompund);
-    }
-
-    @Override
     protected void entityInit() {
+    }
+
+    @Override
+    public Entity getThrower() {
+        return shootingEntity;
+    }
+
+    @Override
+    public void setThrower(Entity entity) {
+        shootingEntity = entity;
     }
 
     public String getTexture() {
         return "minecraft:arrow";
-    }
-
-    @Override
-    public void onUpdate() {
-        this.onEntityUpdate();
     }
 }

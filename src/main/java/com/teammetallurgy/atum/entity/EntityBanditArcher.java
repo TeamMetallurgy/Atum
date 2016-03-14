@@ -21,7 +21,7 @@ public class EntityBanditArcher extends EntityMob implements IRangedAttackMob {
 
     public EntityBanditArcher(World world) {
         super(world);
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.BOW));
+        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SHORT_BOW));
         //this.enchantEquipment(); //TODO
 
         this.setCanPickUpLoot(this.rand.nextFloat() < equipmentDropChances[this.worldObj.getDifficulty().getDifficultyId()]);
@@ -119,7 +119,7 @@ public class EntityBanditArcher extends EntityMob implements IRangedAttackMob {
         this.tasks.removeTask(this.aiArrowAttack);
         ItemStack itemstack = this.getHeldItem();
 
-        if (itemstack != null && itemstack.getItem() == AtumItems.BOW) {
+        if (itemstack != null && itemstack.getItem() == AtumItems.SHORT_BOW) {
             this.tasks.addTask(4, this.aiArrowAttack);
         } else {
             this.tasks.addTask(4, this.aiAttackOnCollide);
@@ -136,8 +136,8 @@ public class EntityBanditArcher extends EntityMob implements IRangedAttackMob {
     @Override
     protected void dropFewItems(boolean recentlyHit, int looting) {
         if (rand.nextInt(20) == 0) {
-            int damage = (int) (AtumItems.BOW.getMaxDamage() - rand.nextInt(AtumItems.BOW.getMaxDamage()) * 0.5 + 20);
-            this.entityDropItem(new ItemStack(AtumItems.BOW, 1, damage), 0.0F);
+            int damage = (int) (AtumItems.SHORT_BOW.getMaxDamage() - rand.nextInt(AtumItems.SHORT_BOW.getMaxDamage()) * 0.5 + 20);
+            this.entityDropItem(new ItemStack(AtumItems.SHORT_BOW, 1, damage), 0.0F);
         }
 
         if (rand.nextInt(10) == 0) {

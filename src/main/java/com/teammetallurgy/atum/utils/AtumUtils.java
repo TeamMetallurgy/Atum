@@ -8,13 +8,14 @@ public class AtumUtils {
 
     /**
      * Turns a registry name into a unlocalized name.
+     * Can also turn getUnlocalizedName() into a unlocalized name without mod prefix.
      *
      * Example: Turns example_name into exampleName
      *
      * @param name the registry name to convert into the unlocalized name.
      */
     public static String toUnlocalizedName(String name) {
-        return StringUtils.uncapitalize(WordUtils.capitalize(name, '_')).replace("_", "");
+        return StringUtils.uncapitalize(WordUtils.capitalize(name, '_')).replace("_", "").replace(Constants.MODID, "").replace("item", "").replace("tile", "").replace(".", "");
     }
 
     /**

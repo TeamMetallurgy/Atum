@@ -1,13 +1,13 @@
 package com.teammetallurgy.atum.items.artifacts;
 
 import com.teammetallurgy.atum.entity.arrow.EntityArrowPoison;
+import com.teammetallurgy.atum.items.ItemAtumBaseBow;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -20,7 +20,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class ItemHedetetsVenom extends ItemBow {
+public class ItemHedetetsVenom extends ItemAtumBaseBow {
 
     public ItemHedetetsVenom() {
         super();

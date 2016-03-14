@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "color=white": { "model": "atum:crystal_glass_white" }
+  }
+}

@@ -1,11 +1,15 @@
 package com.teammetallurgy.atum.items.artifacts;
 
 import com.teammetallurgy.atum.entity.arrow.EntityAtumFishHook;
+import com.teammetallurgy.atum.utils.Constants;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -15,7 +19,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class ItemAnuketsBounty extends Item {
+public class ItemAnuketsBounty extends ItemFishingRod {
 
     public ItemAnuketsBounty() {
         super();
@@ -26,18 +30,6 @@ public class ItemAnuketsBounty extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean isFull3D() {
-        return true;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldRotateAroundWhenRendering() {
         return true;
     }
 
@@ -53,6 +45,7 @@ public class ItemAnuketsBounty extends Item {
                 world.spawnEntityInWorld(new EntityAtumFishHook(world, player));
             }
             player.swingItem();
+            player.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
         }
 
         return stack;
@@ -82,5 +75,14 @@ public class ItemAnuketsBounty extends Item {
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         return repair.getItem() == Items.diamond;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModelResourceLocation getModel(ItemStack stack, EntityPlayer player, int useRemaining) {
+        if (player.fishEntity != null && stack != null && stack.getItem() != null) {
+            return new ModelResourceLocation(Constants.MODID + ":" + "anukets_bounty_cast", "inventory");
+        }
+        return super.getModel(stack, player, useRemaining);
     }
 }

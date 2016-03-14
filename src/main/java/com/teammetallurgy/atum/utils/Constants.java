@@ -14,8 +14,5 @@ public class Constants {
 
     public static Logger LOG;
 
-    public static final String[] COLOURS = {"Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "Silver", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta", "Orange", "White"};
-
     public static final String[] ORE_DIC_COLOURS = {"Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta", "Orange", "White"};
-
 }

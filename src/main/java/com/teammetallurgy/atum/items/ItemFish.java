@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemFish extends Item {
+public class ItemFish extends Item { //TODO Make proper fish name (In code)
 
     public ItemFish() {
         super();

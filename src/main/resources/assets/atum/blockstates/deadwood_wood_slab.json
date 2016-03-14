@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "half=bottom": { "model": "atum:deadwood_half_slab" },
-    "half=top": { "model": "atum:deadwood_upper_slab" }
-  }
-}

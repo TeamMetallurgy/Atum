@@ -57,213 +57,213 @@ tile.atum.limestoneFurnaceLit.name=石灰岩熔炉
 container.limestoneFurnace=石灰岩熔炉
 
 # Item
-item.scarab.name=圣甲虫
-item.loot.name=战利品
-item.scimitar.name=短弯刀
-item.greatsword.name=巨剑
-item.scepter.name=权杖
-item.stoneSoldierSword.name=石头士兵剑
-item.bow.name=短弓
-item.limestoneShovel.name=石灰岩铲
-item.limestonePickaxe.name=石灰岩稿
-item.limestoneAxe.name=石灰岩斧
-item.limestoneSword.name=石灰岩剑
-item.limestoneHoe.name=石灰岩锄
-item.mummyHelmet.name=木乃伊头盔
-item.mummyChest.name=木乃伊胸甲
-item.mummyLegs.name=木乃伊护腿
-item.mummyBoots.name=木乃伊靴子
-item.wandererHelmet.name=流浪者头盔
-item.wandererChest.name=流浪者胸甲
-item.wandererLegs.name=流浪者护腿
-item.wandererBoots.name=流浪者靴子
-item.desertHelmet.name=沙漠头盔
-item.desertChest.name=沙漠胸甲
-item.desertLegs.name=沙漠护腿
-item.desertBoots.name=沙漠靴子
-item.papyrusPlant.name=纸莎草
-item.ectoplasm.name=外质
-item.stoneChunk.name=石块
-item.clothScrap.name=碎布
-item.scroll.name=卷轴
-item.wolfPelt.name=狼皮
-item.date.name=栆椰子
-item.linen.name=亚麻布
-item.flax.name=亚麻
-item.flaxSeeds.name=亚麻种子
-item.fish.0.name=被遗忘的鱼
-item.fish.1.name=木乃伊鱼
-item.fish.2.name=宝石鱼
-item.fish.3.name=骸骨鱼
+item.atum.scarab.name=圣甲虫
+item.atum.loot.name=战利品
+item.atum.scimitar.name=短弯刀
+item.atum.greatsword.name=巨剑
+item.atum.scepter.name=权杖
+item.atum.stoneSoldierSword.name=石头士兵剑
+item.atum.short.bow.name=短弓
+item.atum.limestoneShovel.name=石灰岩铲
+item.atum.limestonePickaxe.name=石灰岩稿
+item.atum.limestoneAxe.name=石灰岩斧
+item.atum.limestoneSword.name=石灰岩剑
+item.atum.limestoneHoe.name=石灰岩锄
+item.atum.mummyHelmet.name=木乃伊头盔
+item.atum.mummyChest.name=木乃伊胸甲
+item.atum.mummyLegs.name=木乃伊护腿
+item.atum.mummyBoots.name=木乃伊靴子
+item.atum.wandererHelmet.name=流浪者头盔
+item.atum.wandererChest.name=流浪者胸甲
+item.atum.wandererLegs.name=流浪者护腿
+item.atum.wandererBoots.name=流浪者靴子
+item.atum.desertHelmet.name=沙漠头盔
+item.atum.desertChest.name=沙漠胸甲
+item.atum.desertLegs.name=沙漠护腿
+item.atum.desertBoots.name=沙漠靴子
+item.atum.papyrusPlant.name=纸莎草
+item.atum.ectoplasm.name=外质
+item.atum.stoneChunk.name=石块
+item.atum.clothScrap.name=碎布
+item.atum.scroll.name=卷轴
+item.atum.wolfPelt.name=狼皮
+item.atum.date.name=栆椰子
+item.atum.linen.name=亚麻布
+item.atum.flax.name=亚麻
+item.atum.flaxSeeds.name=亚麻种子
+item.atum.fish.0.name=被遗忘的鱼
+item.atum.fish.1.name=木乃伊鱼
+item.atum.fish.2.name=宝石鱼
+item.atum.fish.3.name=骸骨鱼
 
-item.ptahsDecadence.name=Ptahs之堕落
-item.soteksRage.name=Soteks之愤怒
-item.osirisWill.name=Osiris之意志
-item.akersToil.name=Akers之劳累
-item.gebsBlessing.name=Gebs之祝福
-item.atensFury.name=Atens之狂怒
-item.rasGlory.name=Ras之荣耀
-item.sekhmetsWrath.name=Sekhmets之暴怒
-item.nutsAgility.name=Nuts之敏捷
-item.horusFlight.name=Horus之跃动
-item.monthusStrike.name=Monthus之猛击
-item.anhursMight.name=Anhurs之力量
-item.hedetetsSting.name=Hedetets之穿刺
-item.horusSoaring.name=Horus之翱翔
-item.shusBreath.name=Shus之气息
-item.ptahsDestruction.name=Ptahs之毁灭
-item.monthusBlast.name=Monthus之爆炸
-item.nusFlux.name=Nus之灵动
-item.mnevisHorns.name=Mnevis之号角
-item.isisEmbrace.name=Isis之拥抱
-item.maatsBalance.name=Maats之平衡
-item.hedetetsVenom.name=Hedetets之恶毒
-item.gebsSolidarity.name=Gebs之团结
-item.nutsCall.name=Nuts之召唤
-item.anuketsBounty.name=Anukets之慷慨
-item.mafdetsQuickness.name=Mafdets之迅捷
-item.isisHealing.name=Isis之治疗
-item.amunetsHomecoming.name=Amunets之回归
-item.anubisMercy.name=Anubis之仁慈
-item.neithsAudacity.name=Neiths之胆量
+item.atum.ptahsDecadence.name=Ptahs之堕落
+item.atum.soteksRage.name=Soteks之愤怒
+item.atum.osirisWill.name=Osiris之意志
+item.atum.akersToil.name=Akers之劳累
+item.atum.gebsBlessing.name=Gebs之祝福
+item.atum.atensFury.name=Atens之狂怒
+item.atum.rasGlory.name=Ras之荣耀
+item.atum.sekhmetsWrath.name=Sekhmets之暴怒
+item.atum.nutsAgility.name=Nuts之敏捷
+item.atum.horusFlight.name=Horus之跃动
+item.atum.monthusStrike.name=Monthus之猛击
+item.atum.anhursMight.name=Anhurs之力量
+item.atum.hedetetsSting.name=Hedetets之穿刺
+item.atum.horusSoaring.name=Horus之翱翔
+item.atum.shusBreath.name=Shus之气息
+item.atum.ptahsDestruction.name=Ptahs之毁灭
+item.atum.monthusBlast.name=Monthus之爆炸
+item.atum.nusFlux.name=Nus之灵动
+item.atum.mnevisHorns.name=Mnevis之号角
+item.atum.isisEmbrace.name=Isis之拥抱
+item.atum.maatsBalance.name=Maats之平衡
+item.atum.hedetetsVenom.name=Hedetets之恶毒
+item.atum.gebsSolidarity.name=Gebs之团结
+item.atum.nutsCall.name=Nuts之召唤
+item.atum.anuketsBounty.name=Anukets之慷慨
+item.atum.mafdetsQuickness.name=Mafdets之迅捷
+item.atum.isisHealing.name=Isis之治疗
+item.atum.amunetsHomecoming.name=Amunets之回归
+item.atum.anubisMercy.name=Anubis之仁慈
+item.atum.neithsAudacity.name=Neiths之胆量
 
 
 # Item Information
-item.akersToil.line1=绩效I:更快,
-item.akersToil.line2=且不消耗耐久
-item.akersToil.line3=绩效I
+item.atum.akersToil.line1=绩效I:更快,
+item.atum.akersToil.line2=且不消耗耐久
+item.atum.akersToil.line3=绩效I
 
-item.amunetsHomecoming.line1=回返I:将你传送
-item.amunetsHomecoming.line2=回出生点
-item.amunetsHomecoming.line3=回返I
+item.atum.amunetsHomecoming.line1=回返I:将你传送
+item.atum.amunetsHomecoming.line2=回出生点
+item.atum.amunetsHomecoming.line3=回返I
 
-item.anhursMight.line1=威猛I:使玩家减速,
-item.anhursMight.line2=但有几率击晕敌人
-item.anhursMight.line3=威猛I
+item.atum.anhursMight.line1=威猛I:使玩家减速,
+item.atum.anhursMight.line2=但有几率击晕敌人
+item.atum.anhursMight.line3=威猛I
 
-item.ptahsDecadence.line1=财富I:能从每个矿石中
-item.ptahsDecadence.line2=额外得到一个钻石
-item.ptahsDecadence.line3=财富I
+item.atum.ptahsDecadence.line1=财富I:能从每个矿石中
+item.atum.ptahsDecadence.line2=额外得到一个钻石
+item.atum.ptahsDecadence.line3=财富I
 
-item.soteksRage.line1=驱逐I:能将敌人
-item.soteksRage.line2=击退很远的距离
-item.soteksRage.line3=驱逐I
+item.atum.soteksRage.line1=驱逐I:能将敌人
+item.atum.soteksRage.line2=击退很远的距离
+item.atum.soteksRage.line3=驱逐I
 
-item.osirisWill.line1=放逐I:对亡灵造成额外伤害,
-item.osirisWill.line2=有几率掉落外质
-item.osirisWill.line3=放逐I
+item.atum.osirisWill.line1=放逐I:对亡灵造成额外伤害,
+item.atum.osirisWill.line2=有几率掉落外质
+item.atum.osirisWill.line3=放逐I
 
-item.gebsBlessing.line1=播种I:肥沃耕土受到祝福,
-item.gebsBlessing.line2=能加快生长速率
-item.gebsBlessing.line3=播种I
+item.atum.gebsBlessing.line1=播种I:肥沃耕土受到祝福,
+item.atum.gebsBlessing.line2=能加快生长速率
+item.atum.gebsBlessing.line3=播种I
 
-item.atensFury.line1=焚箭I: 燃烧的箭头
-item.atensFury.line2=能点燃方块与物品
-item.atensFury.line3=焚箭I
+item.atum.atensFury.line1=焚箭I: 燃烧的箭头
+item.atum.atensFury.line2=能点燃方块与物品
+item.atum.atensFury.line3=焚箭I
 
-item.rasGlory.line1=天眼I:夜视,能增加玩家
-item.rasGlory.line2=在亚图姆的可视范围
-item.rasGlory.line3=天眼I
+item.atum.rasGlory.line1=天眼I:夜视,能增加玩家
+item.atum.rasGlory.line2=在亚图姆的可视范围
+item.atum.rasGlory.line3=天眼I
 
-item.sekhmetsWrath.line1=献祭I:抵御火焰伤害,
-item.sekhmetsWrath.line2=有几率点燃攻击者
-item.sekhmetsWrath.line3=献祭I
+item.atum.sekhmetsWrath.line1=献祭I:抵御火焰伤害,
+item.atum.sekhmetsWrath.line2=有几率点燃攻击者
+item.atum.sekhmetsWrath.line3=献祭I
 
-item.nutsAgility.line1=敏捷I:增加奔跑
-item.nutsAgility.line2=与挥舞速度
-item.nutsAgility.line3=敏捷I
+item.atum.nutsAgility.line1=敏捷I:增加奔跑
+item.atum.nutsAgility.line2=与挥舞速度
+item.atum.nutsAgility.line3=敏捷I
 
-item.horusFlight.line1=灵动I:增加跳跃高度,
-item.horusFlight.line2=掉落伤害免疫
-item.horusFlight.line3=灵动I
+item.atum.horusFlight.line1=灵动I:增加跳跃高度,
+item.atum.horusFlight.line2=掉落伤害免疫
+item.atum.horusFlight.line3=灵动I
 
-item.monthusStrike.line1=猛击I:增加伤害,
-item.monthusStrike.line2=有几率触发AOE击退
-item.monthusStrike.line3=猛击I
+item.atum.monthusStrike.line1=猛击I:增加伤害,
+item.atum.monthusStrike.line2=有几率触发AOE击退
+item.atum.monthusStrike.line3=猛击I
 
-item.hedetetsSting.line1=猛毒II:有几率
-item.hedetetsSting.line2=使敌人中毒
-item.hedetetsSting.line3=猛毒II
+item.atum.hedetetsSting.line1=猛毒II:有几率
+item.atum.hedetetsSting.line2=使敌人中毒
+item.atum.hedetetsSting.line3=猛毒II
 
 # I need to talk to shadow
-item.horusSoaring.line1=威猛I:使玩家减速,
-item.horusSoaring.line2=但有几率击晕敌人
-item.horusSoaring.line3=威猛I
+item.atum.horusSoaring.line1=威猛I:使玩家减速,
+item.atum.horusSoaring.line2=但有几率击晕敌人
+item.atum.horusSoaring.line3=威猛I
 
-item.shusBreath.line1=快速瞄准I:减少
-item.shusBreath.line2=瞄准所用时间
-item.shusBreath.line3=快速瞄准I
+item.atum.shusBreath.line1=快速瞄准I:减少
+item.atum.shusBreath.line2=瞄准所用时间
+item.atum.shusBreath.line3=快速瞄准I
 
-item.ptahsDestruction.line1=切石I:增加对
-item.ptahsDestruction.line2=石头敌人的伤害
-item.ptahsDestruction.line3=切石I
+item.atum.ptahsDestruction.line1=切石I:增加对
+item.atum.ptahsDestruction.line2=石头敌人的伤害
+item.atum.ptahsDestruction.line3=切石I
 
-item.monthusBlast.line1=爆炸I:箭头落地
-item.monthusBlast.line2=引起爆炸
-item.monthusBlast.line3=爆炸I
+item.atum.monthusBlast.line1=爆炸I:箭头落地
+item.atum.monthusBlast.line2=引起爆炸
+item.atum.monthusBlast.line3=爆炸I
 
-item.nusFlux.line1=横扫I: 有几率
-item.nusFlux.line2=将敌人抛至空中
-item.nusFlux.line3=横扫I
+item.atum.nusFlux.line1=横扫I: 有几率
+item.atum.nusFlux.line2=将敌人抛至空中
+item.atum.nusFlux.line3=横扫I
 
-item.mnevisHorns.line1=盾刺I:能将伤害
-item.mnevisHorns.line2=反弹给近战攻击者
-item.mnevisHorns.line3=盾刺I
+item.atum.mnevisHorns.line1=盾刺I:能将伤害
+item.atum.mnevisHorns.line2=反弹给近战攻击者
+item.atum.mnevisHorns.line3=盾刺I
 
-item.isisEmbrace.line1=重生I:缓慢地
-item.isisEmbrace.line2=回复生命
-item.isisEmbrace.line3=重生I
+item.atum.isisEmbrace.line1=重生I:缓慢地
+item.atum.isisEmbrace.line2=回复生命
+item.atum.isisEmbrace.line3=重生I
 
-item.maatsBalance.line1=平衡I:减少输出的伤
-item.maatsBalance.line2=害,减少受到的伤害
-item.maatsBalance.line3=平衡I
+item.atum.maatsBalance.line1=平衡I:减少输出的伤
+item.atum.maatsBalance.line2=害,减少受到的伤害
+item.atum.maatsBalance.line3=平衡I
 
-item.hedetetsVenom.line1=毒箭I:发射的箭
-item.hedetetsVenom.line2=能使敌人中毒
-item.hedetetsVenom.line3=毒箭I
+item.atum.hedetetsVenom.line1=毒箭I:发射的箭
+item.atum.hedetetsVenom.line2=能使敌人中毒
+item.atum.hedetetsVenom.line3=毒箭I
 
-item.gebsSolidarity.line1=伟岸I:减少移动速度,
-item.gebsSolidarity.line2=减少被击退的距离(WIP)
-item.gebsSolidarity.line3=伟岸I
+item.atum.gebsSolidarity.line1=伟岸I:减少移动速度,
+item.atum.gebsSolidarity.line2=减少被击退的距离(WIP)
+item.atum.gebsSolidarity.line3=伟岸I
 
-item.nutsCall.line1=暴怒I:有几率召唤
-item.nutsCall.line2=雷电攻击敌人
-item.nutsCall.line3=暴怒I
+item.atum.nutsCall.line1=暴怒I:有几率召唤
+item.atum.nutsCall.line2=雷电攻击敌人
+item.atum.nutsCall.line3=暴怒I
 
-item.anuketsBounty.line1=诱惑I:有几率吸引到
-item.anuketsBounty.line2=亚图姆中特殊的鱼
-item.anuketsBounty.line3=诱惑I
+item.atum.anuketsBounty.line1=诱惑I:有几率吸引到
+item.atum.anuketsBounty.line2=亚图姆中特殊的鱼
+item.atum.anuketsBounty.line3=诱惑I
 
-item.mafdetsQuickness.line1=迅捷I:手持该物品时
-item.mafdetsQuickness.line2=跑得会更快
-item.mafdetsQuickness.line3=迅捷I
+item.atum.mafdetsQuickness.line1=迅捷I:手持该物品时
+item.atum.mafdetsQuickness.line2=跑得会更快
+item.atum.mafdetsQuickness.line3=迅捷I
 
-item.isisHealing.line1=重生I:手持该物品时
-item.isisHealing.line2=能缓慢地回复生命
-item.isisHealing.line3=重生I
+item.atum.isisHealing.line1=重生I:手持该物品时
+item.atum.isisHealing.line2=能缓慢地回复生命
+item.atum.isisHealing.line3=重生I
 
-item.anubisMercy.line1=回返I:死亡时将你,
-item.anubisMercy.line2=传送回出生地
-item.anubisMercy.line3=回返I
+item.atum.anubisMercy.line1=回返I:死亡时将你,
+item.atum.anubisMercy.line2=传送回出生地
+item.atum.anubisMercy.line3=回返I
 
-item.neithsAudacity.line1=连击I:一次
-item.neithsAudacity.line2=发射两支箭
-item.neithsAudacity.line3=连击I
+item.atum.neithsAudacity.line1=连击I:一次
+item.atum.neithsAudacity.line2=发射两支箭
+item.atum.neithsAudacity.line3=连击I
 
 # Loot
-item.loot.dirty.name=泥土
-item.loot.silver.name=白银
-item.loot.gold.name=黄金
-item.loot.sapphire.name=蓝宝石
-item.loot.ruby.name=红宝石
-item.loot.emerald.name=绿宝石
-item.loot.diamond.name=钻石
+item.atum.loot.dirty.name=泥土
+item.atum.loot.silver.name=白银
+item.atum.loot.gold.name=黄金
+item.atum.loot.sapphire.name=蓝宝石
+item.atum.loot.ruby.name=红宝石
+item.atum.loot.emerald.name=绿宝石
+item.atum.loot.diamond.name=钻石
 
-item.loot.idol.name=人偶
-item.loot.necklace.name=项链
-item.loot.ring.name=指环
-item.loot.broach.name=胸针
-item.loot.scepter.name=权杖
+item.atum.loot.idol.name=人偶
+item.atum.loot.necklace.name=项链
+item.atum.loot.ring.name=指环
+item.atum.loot.broach.name=胸针
+item.atum.loot.scepter.name=权杖
 
 # Entity
 entity.atum.mummy.name=木乃伊

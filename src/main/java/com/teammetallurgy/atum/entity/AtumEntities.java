@@ -58,8 +58,8 @@ public class AtumEntities {
 
         public AtumEntity setSpawnEgg(int backgroundEggColour, int foregroundEggColour) {
             int eggID = getUniqueEggId();
-            EntityList.idToClassMapping.put(Integer.valueOf(eggID), entityClass);
-            EntityList.entityEggs.put(Integer.valueOf(eggID), new EntityList.EntityEggInfo(eggID, backgroundEggColour, foregroundEggColour));
+            EntityList.idToClassMapping.put(eggID, entityClass);
+            EntityList.entityEggs.put(eggID, new EntityList.EntityEggInfo(eggID, backgroundEggColour, foregroundEggColour));
             return this;
         }
 

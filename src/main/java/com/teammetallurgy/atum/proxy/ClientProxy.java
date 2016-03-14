@@ -1,7 +1,5 @@
 package com.teammetallurgy.atum.proxy;
 
-import com.teammetallurgy.atum.blocks.BlockAtumPlank;
-import com.teammetallurgy.atum.blocks.BlockLimestoneBricks;
 import com.teammetallurgy.atum.client.model.entity.ModelDesertWolf;
 import com.teammetallurgy.atum.client.model.entity.ModelDustySkeleton;
 import com.teammetallurgy.atum.client.render.entity.RenderBonestorm;
@@ -20,9 +18,6 @@ import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.handler.event.AtumFogEventListener;
 import com.teammetallurgy.atum.handler.event.ClientEvents;
 import com.teammetallurgy.atum.items.AtumItems;
-import com.teammetallurgy.atum.items.itemblock.ItemBlockLimestoneBricks;
-import com.teammetallurgy.atum.items.itemblock.ItemBlockPlanks;
-import com.teammetallurgy.atum.items.itemblock.ItemBlockWoodSlabs;
 import com.teammetallurgy.atum.utils.AtumUtils;
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.client.model.ModelBiped;
@@ -31,6 +26,8 @@ import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
@@ -194,23 +191,20 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void registerItemVariantModel(Item item, String name) { //TODO Make a proper solution
+    public void setBlockResourceLocation(Item item, String name, CreativeTabs tab) {
         if (item != null) {
-            if (item instanceof ItemBlockPlanks || item instanceof ItemBlockWoodSlabs) {
-                for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
-                    String plankName = BlockAtumPlank.EnumType.byMetadata(enumType.getMetadata()) + "_" + name;
-                    ModelLoader.setCustomModelResourceLocation(item, enumType.getMetadata(), new ModelResourceLocation(Constants.MODID + ":" + plankName, "inventory"));
-                    System.out.println("VariantPlank: " + plankName);
-                }
-            } else if (item instanceof ItemBlockLimestoneBricks) {
-                for (BlockLimestoneBricks.EnumType enumType : BlockLimestoneBricks.EnumType.values()) {
-                    String limestonebrickName = name + "_" + BlockLimestoneBricks.EnumType.byMetadata(enumType.getMetadata());
-                    ModelLoader.setCustomModelResourceLocation(item, enumType.getMetadata(), new ModelResourceLocation(Constants.MODID + ":" + limestonebrickName, "inventory"));
-                    System.out.println("VariantBrick: " + limestonebrickName);
+            if (item.getHasSubtypes()) {
+                List<ItemStack> subBlocks = new ArrayList<ItemStack>();
+                item.getSubItems(item, tab, subBlocks);
+                for (ItemStack stack : subBlocks) {
+                    String subBlockName = item.getUnlocalizedName(stack).replace("tile." + Constants.MODID + ".", "").replace(".", "_");
+
+                    ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + AtumUtils.toRegistryName(subBlockName), "inventory"));
+                    System.out.println("SubBlockName: " + AtumUtils.toRegistryName(subBlockName));
                 }
             } else {
                 ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
-                System.out.print(" - " + name);
+                System.out.println("BlockName: " + name);
             }
         }
     }
@@ -224,8 +218,17 @@ public class ClientProxy extends CommonProxy {
                 String subItemName = item.getUnlocalizedName(stack).replace("item." + Constants.MODID + ".", "").replace(".", "_");
 
                 ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + AtumUtils.toRegistryName(subItemName), "inventory"));
-                System.out.println("SubItemName: " + AtumUtils.toRegistryName(subItemName));
             }
+        } else if (item instanceof ItemBow) {
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
+            for (int i = 1; i <= 3; i++) {
+                ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(Constants.MODID + ":" + name + "_pulling_" + (i - 1), "inventory"));
+
+                System.out.println("Damage: " + i + " " + "BowName: " + AtumUtils.toRegistryName(name + "_pulling_" + (i - 1)));
+            }
+        } else if (item instanceof ItemFishingRod) {
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
+            ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(Constants.MODID + ":" + name + "_cast", "inventory"));
         } else {
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
         }

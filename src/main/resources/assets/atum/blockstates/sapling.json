@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "stage=0, variant=palm": { "model": "atum:palm_sapling" },
+    "stage=1, variant=palm": { "model": "atum:palm_sapling" }
+  }
+}

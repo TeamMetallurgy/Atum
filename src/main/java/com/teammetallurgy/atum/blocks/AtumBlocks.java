@@ -21,8 +21,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
 
 public class AtumBlocks {
     public static final BlockPortal PORTAL = new BlockPortal();
@@ -42,9 +40,9 @@ public class AtumBlocks {
     public static final Block SMALL_STONE_STAIRS = new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.SMALL));
     public static final Block SAND_LAYERED = new BlockSandLayered();
     public static final Block CRYSTAL_GLASS = new BlockAtumGlass(Material.glass);
-    public static final Block CRYSTAL_STAINED_GLASS = new BlockAtumGlassStained();
+    public static final BlockAtumGlassStained CRYSTAL_STAINED_GLASS = new BlockAtumGlassStained();
     public static final Block FRAMED_GLASS = new BlockAtumGlass(Material.glass);
-    public static final Block FRAMED_STAINED_GLASS = new BlockAtumGlassStained();
+    public static final BlockAtumGlassStained FRAMED_STAINED_GLASS = new BlockAtumGlassStained();
     public static final Block SAPLING = new BlockAtumSapling();
     public static final Block DATE_BLOCK = new BlockDate();
     public static final BlockShrub SHRUB = new BlockShrub();
@@ -175,7 +173,7 @@ public class AtumBlocks {
         GameRegistry.registerTileEntity(TileEntityLimestoneFurnace.class, "limestone_furnace");
         GameRegistry.registerTileEntity(TileEntityCrate.class, "crate");
 
-        //OreDictionary.registerOre("blockLimestone", STONE);
+        //OreDictionary.registerOre("blockLimestone", STONE); //TODO
 
         OreDictionary.registerOre("logWood", LOG);
         OreDictionary.registerOre("plankWood", PLANKS);
@@ -197,7 +195,6 @@ public class AtumBlocks {
         OreDictionary.registerOre("paneGlass", new ItemStack(FRAMED_STAINED_GLASS, 1, OreDictionary.WILDCARD_VALUE));
 
         String[] oreColours = Constants.ORE_DIC_COLOURS;
-
         for (int i = 0; i < oreColours.length; i++) {
             ItemStack glass = new ItemStack(CRYSTAL_STAINED_GLASS, 1, i);
             ItemStack pane = new ItemStack(FRAMED_STAINED_GLASS, 1, i);
@@ -225,7 +222,7 @@ public class AtumBlocks {
 
         GameRegistry.registerBlock(block, itemBlockClass, name);
 
-        Atum.proxy.registerItemVariantModel(Item.getItemFromBlock(block), name);
+        Atum.proxy.setBlockResourceLocation(Item.getItemFromBlock(block), name, tab);
 
         return block;
     }

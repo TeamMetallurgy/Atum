@@ -31,6 +31,8 @@ public class BlockAtumSapling extends BlockBush implements IGrowable {
 
     public BlockAtumSapling() {
         super();
+        setHardness(0.0F);
+        setStepSound(soundTypeGrass);
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, BlockAtumPlank.EnumType.PALM).withProperty(STAGE, 0));
         float f = 0.4F;
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
@@ -58,7 +60,7 @@ public class BlockAtumSapling extends BlockBush implements IGrowable {
     }
 
     public void grow(World world, BlockPos pos, IBlockState state, Random random) {
-        if ((state.getValue(STAGE)).intValue() == 0) {
+        if (state.getValue(STAGE) == 0) {
             world.setBlockState(pos, state.cycleProperty(STAGE), 4);
         } else {
             this.generateTree(world, pos, state, random);

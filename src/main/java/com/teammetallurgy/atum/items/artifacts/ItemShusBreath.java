@@ -1,5 +1,6 @@
 package com.teammetallurgy.atum.items.artifacts;
 
+import com.teammetallurgy.atum.items.ItemAtumBaseBow;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,7 +8,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
@@ -21,7 +21,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class ItemShusBreath extends ItemBow {
+public class ItemShusBreath extends ItemAtumBaseBow {
 
     public ItemShusBreath() {
         super();
