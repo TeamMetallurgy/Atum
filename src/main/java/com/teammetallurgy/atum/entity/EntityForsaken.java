@@ -8,10 +8,10 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityDustySkeleton extends EntityMob {
+public class EntityForsaken extends EntityMob {
     boolean onFire = false;
 
-    public EntityDustySkeleton(World world) {
+    public EntityForsaken(World world) {
         super(world);
         this.isImmuneToFire = true;
         this.experienceValue = 6;

@@ -1,6 +1,7 @@
 package com.teammetallurgy.atum.client.render.entity.arrow;
 
 import com.teammetallurgy.atum.entity.arrow.EntityNutsCall;
+import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -11,14 +12,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderNutsCall extends Render<EntityNutsCall> {
+public class RenderNutsCall extends Render<EntityNutsCall> { //TODO
 
     public RenderNutsCall(RenderManager renderManager) {
         super(renderManager);
     }
 
     @Override
-    public void doRender(EntityNutsCall nutsCall, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(EntityNutsCall nutsCall, double x, double y, double z, float entityYaw, float partialTicks) { //TODO
         this.bindEntityTexture(nutsCall);
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, (float) z);
@@ -45,6 +46,6 @@ public class RenderNutsCall extends Render<EntityNutsCall> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityNutsCall nutsCall) {
-        return new ResourceLocation("Atum:textures/projectiles/nutscall.png");
+        return new ResourceLocation(Constants.MODID + ":" + "textures/projectiles/nutscall.png");
     }
 }

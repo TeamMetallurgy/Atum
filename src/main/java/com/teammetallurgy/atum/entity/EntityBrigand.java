@@ -10,9 +10,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
-public class EntityBanditWarrior extends EntityMob {
+public class EntityBrigand extends EntityMob {
 
-    public EntityBanditWarrior(World world) {
+    public EntityBrigand(World world) {
         super(world);
         this.experienceValue = 8;
 

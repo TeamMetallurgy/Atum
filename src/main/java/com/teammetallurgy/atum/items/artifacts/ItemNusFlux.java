@@ -1,6 +1,6 @@
 package com.teammetallurgy.atum.items.artifacts;
 
-import com.teammetallurgy.atum.entity.EntityStoneSoldier;
+import com.teammetallurgy.atum.entity.EntityStoneguard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,7 +32,7 @@ public class ItemNusFlux extends ItemSword {
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        if (!attacker.worldObj.isRemote && Math.random() > 0.75D && !(target instanceof EntityStoneSoldier)) {
+        if (!attacker.worldObj.isRemote && Math.random() > 0.75D && !(target instanceof EntityStoneguard)) {
             double dx = target.posX - attacker.posX;
             double dz = target.posZ - attacker.posZ;
             double magnitude = Math.sqrt(dx * dx + dz * dz);

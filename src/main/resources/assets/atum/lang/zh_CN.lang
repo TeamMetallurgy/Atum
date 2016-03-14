@@ -62,7 +62,7 @@ item.atum.loot.name=战利品
 item.atum.scimitar.name=短弯刀
 item.atum.greatsword.name=巨剑
 item.atum.scepter.name=权杖
-item.atum.stoneSoldierSword.name=石头士兵剑
+item.atum.stoneguardSword.name=石头士兵剑
 item.atum.short.bow.name=短弓
 item.atum.limestoneShovel.name=石灰岩铲
 item.atum.limestonePickaxe.name=石灰岩稿
@@ -267,12 +267,12 @@ item.atum.loot.scepter.name=权杖
 
 # Entity
 entity.atum.mummy.name=木乃伊
-entity.atum.banditWarrior.name=强盗战士
-entity.atum.banditArcher.name=强盗射手
+entity.atum.brigand.name=强盗战士
+entity.atum.nomad.name=强盗射手
 entity.atum.pharaoh.name=法老
-entity.atum.dustySkeleton.name=尘灰骷髅
-entity.atum.desertGhost.name=沙漠幽灵
-entity.atum.stoneSoldier.name=石头士兵
+entity.atum.forsaken.name=尘灰骷髅
+entity.atum.wraith.name=沙漠幽灵
+entity.atum.stoneguard.name=石头士兵
 entity.atum.desertWolf.name=沙漠幽狼
 entity.atum.banditWarlord.name=强盗军阀
 entity.atum.barbarian.name=野蛮人

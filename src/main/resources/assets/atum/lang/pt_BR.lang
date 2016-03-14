@@ -62,7 +62,7 @@ item.atum.loot.name=Despojo
 item.atum.scimitar.name=Cimitarra
 item.atum.greatsword.name=Espada Larga 
 item.atum.scepter.name=Cetro
-item.atum.stoneSoldierSword.name=Espada do Soldado de Pedra
+item.atum.stoneguardSword.name=Espada do Soldado de Pedra
 item.atum.shortBow.name=Arco Curto
 item.atum.limestoneShovel.name=Pá de Calcário
 item.atum.limestonePickaxe.name=Picareta de Calcário
@@ -267,12 +267,12 @@ item.atum.loot.scepter.name=Cetro
 
 # Entity
 entity.atum.mummy.name=Múmia
-entity.atum.banditWarrior.name=Bandido Guerreiro 
-entity.atum.banditArcher.name=Bandido Arqueiro 
+entity.atum.brigand.name=Bandido Guerreiro
+entity.atum.nomad.name=Bandido Arqueiro
 entity.atum.pharaoh.name=Faraó
-entity.atum.dustySkeleton.name=Esqueleto Empoeirado 
-entity.atum.desertGhost.name=Fantasma do Deserto
-entity.atum.stoneSoldier.name=Soldado de Pedra
+entity.atum.forsaken.name=Esqueleto Empoeirado
+entity.atum.wraith.name=Fantasma do Deserto
+entity.atum.stoneguard.name=Soldado de Pedra
 entity.atum.desertWolf.name=Chacal
 entity.atum.banditWarlord.name=Banddido Chefe 
 entity.atum.barbarian.name=Bárbaro

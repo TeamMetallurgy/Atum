@@ -11,15 +11,15 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class EntityGhost extends EntityMob {
+public class EntityWraith extends EntityMob {
     private int cycleHeight = 0;
     private int cycleTime = 100;
 
-    public EntityGhost(World world) {
+    public EntityWraith(World world) {
         super(world);
         this.isImmuneToFire = true;
         this.experienceValue = 6;
-        //this.tasks.addTask(4, new EntityGhost.AIGhostAttack(this, EntityPlayer.class)); //TODO
+        //this.tasks.addTask(4, new EntityWraith.AIGhostAttack(this, EntityPlayer.class)); //TODO
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -126,10 +126,10 @@ public class EntityGhost extends EntityMob {
     }
 
     /*static class AIGhostAttack extends EntityAIAttackOnCollide {
-        private EntityGhost ghost;
+        private EntityWraith ghost;
         private int attackTime;
 
-        public AIGhostAttack(EntityGhost entityGhost, Class <? extends Entity> targetClass) {
+        public AIGhostAttack(EntityWraith entityGhost, Class <? extends Entity> targetClass) {
             super(entityGhost, targetClass, 1.0D, true);
             this.setMutexBits(3);
         }

@@ -15,11 +15,11 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
-public class EntityBanditArcher extends EntityMob implements IRangedAttackMob {
+public class EntityNomad extends EntityMob implements IRangedAttackMob {
     private EntityAIArrowAttack aiArrowAttack = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F);
     private EntityAIAttackOnCollide aiAttackOnCollide = new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.2D, false);
 
-    public EntityBanditArcher(World world) {
+    public EntityNomad(World world) {
         super(world);
         this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SHORT_BOW));
         //this.enchantEquipment(); //TODO

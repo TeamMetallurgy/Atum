@@ -132,7 +132,7 @@ item.atum.loot.name=Добыча
 item.atum.scimitar.name=Скимитар
 item.atum.greatsword.name=Большой меч
 item.atum.scepter.name=Скипетр
-item.atum.stoneSoldierSword.name=Меч каменного война
+item.atum.stoneguardSword.name=Меч каменного война
 item.atum.shortBow.name=Короткий лук
 item.atum.limestoneShovel.name=Известняковая лопата
 item.atum.limestonePickaxe.name=Известняковая кирка
@@ -339,12 +339,12 @@ item.atum.loot.scepter.name=скипетр
 
 # Entity
 entity.atum.mummy.name=Мумия
-entity.atum.banditWarrior.name=Бандит-воин
-entity.atum.banditArcher.name=Бандит-стрелок
+entity.atum.brigand.name=Бандит-воин
+entity.atum.nomad.name=Бандит-стрелок
 entity.atum.pharaoh.name=Фараон
-entity.atum.dustySkeleton.name=Пыльный скелет
-entity.atum.desertGhost.name=Пустынный призрак
-entity.atum.stoneSoldier.name=Каменный воин
+entity.atum.forsaken.name=Пыльный скелет
+entity.atum.wraith.name=Пустынный призрак
+entity.atum.stoneguard.name=Каменный воин
 entity.atum.desertWolf.name=Пустынный волк
 entity.atum.banditWarlord.name=Бандит военачальник
 entity.atum.barbarian.name=Варвар

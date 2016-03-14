@@ -28,7 +28,7 @@ public class AtumItems {
     public static final Item SCIMITAR = new ItemSword(ToolMaterial.IRON);
     public static final Item GREATSWORD = new ItemGreatsword(ToolMaterial.IRON);
     public static final Item SHORT_BOW = new ItemAtumBaseBow();
-    public static final Item STONE_SOLDIER_SWORD = new ItemSword(ToolMaterial.IRON);
+    public static final Item STONEGUARD_SWORD = new ItemSword(ToolMaterial.IRON);
     public static final Item SCEPTER = new ItemSword(ToolMaterial.GOLD);
     public static final Item PTAHS_DECADENCE = new ItemPtahsDecadence(ToolMaterial.EMERALD);
     public static final Item SOBEKS_RAGE = new ItemSobeksRage(ToolMaterial.EMERALD);
@@ -101,7 +101,7 @@ public class AtumItems {
         register(SCIMITAR, "scimitar");
         register(GREATSWORD, "greatsword");
         register(SHORT_BOW, "short_bow");
-        register(STONE_SOLDIER_SWORD, "stone_soldier_sword");
+        register(STONEGUARD_SWORD, "stoneguard_sword");
         register(SCEPTER, "scepter");
         register(PTAHS_DECADENCE, "ptahs_decadence");
         register(SOBEKS_RAGE, "soteks_rage");

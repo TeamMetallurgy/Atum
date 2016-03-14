@@ -27,7 +27,7 @@ public class AtumEventListener {
 
     @SubscribeEvent
     public void onFallDamage(LivingFallEvent event) {
-        if (event.entity instanceof EntityGhost || event.entity instanceof EntityPharaoh) {
+        if (event.entity instanceof EntityWraith || event.entity instanceof EntityPharaoh) {
             event.distance = 0.0F;
         }
 
@@ -35,7 +35,7 @@ public class AtumEventListener {
 
     @SubscribeEvent
     public void onLivingHurt(LivingHurtEvent event) {
-        if (event.source.getDamageType().equals("drown") && (event.entity instanceof EntityPharaoh || event.entity instanceof EntityGhost || event.entity instanceof EntityMummy || event.entity instanceof EntityDustySkeleton || event.entity instanceof EntityStoneSoldier)) {
+        if (event.source.getDamageType().equals("drown") && (event.entity instanceof EntityPharaoh || event.entity instanceof EntityWraith || event.entity instanceof EntityMummy || event.entity instanceof EntityForsaken || event.entity instanceof EntityStoneguard)) {
             event.setCanceled(true);
         }
 

@@ -155,7 +155,7 @@ item.atum.loot.name=Loot
 item.atum.scimitar.name=Scimitar
 item.atum.greatsword.name=Greatsword
 item.atum.scepter.name=Scepter
-item.atum.stoneSoldierSword.name=Stone Soldier Sword
+item.atum.stoneguardSword.name=Stoneguard Sword
 item.atum.shortBow.name=Shortbow
 item.atum.limestoneShovel.name=Limestone Shovel
 item.atum.limestonePickaxe.name=Limestone Pickaxe
@@ -377,12 +377,12 @@ item.atum.loot.gold.scepter.name=Golden Scepter
 
 # Entity
 entity.atum.mummy.name=Mummy
-entity.atum.banditWarrior.name=Brigand
-entity.atum.banditArcher.name=Nomad
+entity.atum.brigand.name=Brigand
+entity.atum.nomad.name=Nomad
 entity.atum.pharaoh.name=Pharaoh
-entity.atum.dustySkeleton.name=Forsaken
-entity.atum.desertGhost.name=Wraith
-entity.atum.stoneSoldier.name=Stoneguard
+entity.atum.forsaken.name=Forsaken
+entity.atum.wraith.name=Wraith
+entity.atum.stoneguard.name=Stoneguard
 entity.atum.desertWolf.name=Desert Wolf
 entity.atum.banditWarlord.name=Warlord
 entity.atum.barbarian.name=Barbarian

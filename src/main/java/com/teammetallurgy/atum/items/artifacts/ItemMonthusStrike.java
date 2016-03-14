@@ -1,7 +1,7 @@
 package com.teammetallurgy.atum.items.artifacts;
 
 import com.teammetallurgy.atum.entity.EntityPharaoh;
-import com.teammetallurgy.atum.entity.EntityStoneSoldier;
+import com.teammetallurgy.atum.entity.EntityStoneguard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -54,7 +54,7 @@ public class ItemMonthusStrike extends ItemAxe {
 
             while (i.hasNext()) {
                 Entity entity = (Entity) i.next();
-                if (entity != player && !(entity instanceof EntityStoneSoldier) && !(entity instanceof EntityPharaoh)) {
+                if (entity != player && !(entity instanceof EntityStoneguard) && !(entity instanceof EntityPharaoh)) {
                     double dx = entity.posX - player.posX;
                     double dz = entity.posZ - player.posZ;
                     double magnitude = Math.sqrt(dx * dx + dz * dz);

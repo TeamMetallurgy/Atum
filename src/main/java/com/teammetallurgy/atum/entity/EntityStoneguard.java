@@ -11,14 +11,14 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityStoneSoldier extends EntityStone {
+public class EntityStoneguard extends EntityStone {
 
-    public EntityStoneSoldier(World world) {
+    public EntityStoneguard(World world) {
         super(world);
         this.isImmuneToFire = true;
         this.experienceValue = 8;
 
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.STONE_SOLDIER_SWORD));
+        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.STONEGUARD_SWORD));
 
         for (int i = 0; i < this.equipmentDropChances.length; ++i) {
             this.equipmentDropChances[i] = 0F;
