@@ -2,14 +2,19 @@ package com.teammetallurgy.atum.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 public class BlockAtumFence extends BlockFence {
 
-    public BlockAtumFence(Material material) {
-        super(material);
+    public BlockAtumFence(MapColor mapColor) {
+        super(Material.wood, mapColor);
+        this.setHardness(2.0F);
+        this.setResistance(5.0F);
+        this.setSoundType(SoundType.WOOD);
     }
 
     @Override

@@ -95,7 +95,7 @@ public class AtumConfig {
 
     @SubscribeEvent
     public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.modID.equals(Constants.MODID)) {
+        if (event.getModID().equals(Constants.MODID)) {
             syncConfigData();
         }
     }
@@ -105,19 +105,20 @@ public class AtumConfig {
         Property prop;
 
         prop = config.get(CATEGORY_GENERAL, "Atum Portal", true);
-        prop.comment = "Can a non-creative user create a portal using the scarab?";
+        prop.setComment("Can a non-creative user create a portal using the scarab?");
+        ;
         prop.setLanguageKey("atum.configGui.portalCreation");
         ALLOW_CREATION = prop.getBoolean(true);
         propOrder.add(prop.getName());
 
         prop = config.get(CATEGORY_GENERAL, "Atum Fog", true);
-        prop.comment = "Should clientside fog be rendered?";
+        prop.setComment("Should clientside fog be rendered?");
         prop.setLanguageKey("atum.configGui.fog");
         FOG_ENABLED = prop.getBoolean(true);
         propOrder.add(prop.getName());
 
         prop = config.get(CATEGORY_GENERAL, "Atum Dimension ID", 17);
-        prop.comment = "The ID of the Atum Dimension";
+        prop.setComment("The ID of the Atum Dimension");
         prop.setLanguageKey("atum.configGui.dimensionID").setRequiresMcRestart(true);
         DIMENSION_ID = prop.getInt();
         propOrder.add(prop.getName());
@@ -125,7 +126,7 @@ public class AtumConfig {
         ////////// biomes
         for (BiomeConfig biome : BiomeConfig.values()) {
             prop = config.get(CATEGORY_GENERAL, "Atum " + biome.toString() + " Biome ID", biome.getID());
-            prop.comment = "The ID of the Atum Dimension biome " + biome.toString();
+            prop.setComment("The ID of the Atum Dimension biome " + biome.toString());
             prop.setLanguageKey("atum.configGui.biomeID." + biome.name()).setRequiresMcRestart(true);
             biome.setID(prop.getInt());
             propOrder.add(prop.getName());

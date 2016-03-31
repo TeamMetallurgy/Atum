@@ -1,12 +1,13 @@
 package com.teammetallurgy.atum.blocks;
 
 import com.teammetallurgy.atum.items.AtumItems;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockReed;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
-import net.minecraft.util.BlockPos;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
@@ -20,15 +21,15 @@ public class BlockPapyrus extends BlockReed {
     public BlockPapyrus() {
         super();
         this.setHardness(0.0F);
-        this.setStepSound(Block.soundTypeGrass);
+        this.setSoundType(SoundType.GLASS);
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing side, IPlantable plant) {
-        if (plant.getPlant(world, pos.up()) == this) {
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
+        if (plantable.getPlant(world, pos.up()) == this) {
             return true;
         }
-        return super.canSustainPlant(world, pos, side, plant);
+        return super.canSustainPlant(state, world, pos, direction, plantable);
     }
 
     @Override
@@ -36,8 +37,9 @@ public class BlockPapyrus extends BlockReed {
         return AtumItems.PAPYRUS_PLANT;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public Item getItem(World world, BlockPos pos) {
-        return AtumItems.PAPYRUS_PLANT;
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+        return new ItemStack(AtumItems.PAPYRUS_PLANT);
     }
 }

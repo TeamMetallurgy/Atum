@@ -5,9 +5,7 @@ import com.teammetallurgy.atum.client.model.entity.ModelDustySkeleton;
 import com.teammetallurgy.atum.client.render.entity.RenderBonestorm;
 import com.teammetallurgy.atum.client.render.entity.RenderDesertWolf;
 import com.teammetallurgy.atum.client.render.entity.RenderGhost;
-import com.teammetallurgy.atum.client.render.entity.RenderPharaoh;
 import com.teammetallurgy.atum.client.render.entity.arrow.RenderBone;
-import com.teammetallurgy.atum.client.render.entity.arrow.RenderCustomArrow;
 import com.teammetallurgy.atum.client.render.entity.arrow.RenderNutsCall;
 import com.teammetallurgy.atum.entity.*;
 import com.teammetallurgy.atum.entity.arrow.CustomArrow;
@@ -18,16 +16,16 @@ import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.handler.event.AtumFogEventListener;
 import com.teammetallurgy.atum.handler.event.ClientEvents;
 import com.teammetallurgy.atum.items.AtumItems;
+import com.teammetallurgy.atum.items.artifacts.ItemAnuketsBounty;
 import com.teammetallurgy.atum.utils.AtumUtils;
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelZombie;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
@@ -117,7 +115,12 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityPharaoh.class, new IRenderFactory<EntityPharaoh>() {
             @Override
             public Render<? super EntityPharaoh> createRenderFor(RenderManager manager) {
-                return new RenderPharaoh(manager, new ModelBiped(), 0.5F);
+                return new RenderBiped<EntityPharaoh>(manager, new ModelBiped(), 0.5F) {
+                    @Override
+                    protected ResourceLocation getEntityTexture(EntityPharaoh entity) {
+                        return new ResourceLocation("atum", "textures/entities/pharaoh_blue.png");
+                    }
+                };
             }
         });
 
@@ -167,7 +170,12 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(CustomArrow.class, new IRenderFactory<CustomArrow>() {
             @Override
             public Render<? super CustomArrow> createRenderFor(RenderManager manager) {
-                return new RenderCustomArrow(manager);
+                return new RenderArrow<CustomArrow>(manager) {
+                    @Override
+                    protected ResourceLocation getEntityTexture(CustomArrow entity) {
+                        return new ResourceLocation((entity).getTexture());
+                    }
+                };
             }
         });
         RenderingRegistry.registerEntityRenderingHandler(EntitySmallBone.class, new IRenderFactory<EntitySmallBone>() {
@@ -197,10 +205,10 @@ public class ClientProxy extends CommonProxy {
                 List<ItemStack> subBlocks = new ArrayList<ItemStack>();
                 item.getSubItems(item, tab, subBlocks);
                 for (ItemStack stack : subBlocks) {
-                    String subBlockName = item.getUnlocalizedName(stack).replace("tile." + Constants.MODID + ".", "").replace(".", "_");
+                    String subBlockName = AtumUtils.toRegistryName(AtumUtils.toUnlocalizedName(item.getUnlocalizedName(stack)));
 
-                    ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + AtumUtils.toRegistryName(subBlockName), "inventory"));
-                    System.out.println("SubBlockName: " + AtumUtils.toRegistryName(subBlockName));
+                    ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + subBlockName, "inventory"));
+                    System.out.println("SubBlockName: " + subBlockName);
                 }
             } else {
                 ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
@@ -215,18 +223,16 @@ public class ClientProxy extends CommonProxy {
             List<ItemStack> subItems = new ArrayList<ItemStack>();
             item.getSubItems(item, tab, subItems);
             for (ItemStack stack : subItems) {
-                String subItemName = item.getUnlocalizedName(stack).replace("item." + Constants.MODID + ".", "").replace(".", "_");
+                String subItemName = AtumUtils.toRegistryName(AtumUtils.toUnlocalizedName(item.getUnlocalizedName(stack)));
 
-                ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + AtumUtils.toRegistryName(subItemName), "inventory"));
+                ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + subItemName, "inventory"));
             }
         } else if (item instanceof ItemBow) {
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
             for (int i = 1; i <= 3; i++) {
                 ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(Constants.MODID + ":" + name + "_pulling_" + (i - 1), "inventory"));
-
-                System.out.println("Damage: " + i + " " + "BowName: " + AtumUtils.toRegistryName(name + "_pulling_" + (i - 1)));
             }
-        } else if (item instanceof ItemFishingRod) {
+        } else if (item instanceof ItemAnuketsBounty) {
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
             ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(Constants.MODID + ":" + name + "_cast", "inventory"));
         } else {

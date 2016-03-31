@@ -9,7 +9,7 @@ import com.teammetallurgy.atum.world.decorators.WorldGenPyramid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -26,21 +26,20 @@ public class AtumBiomeGenBase extends BiomeGenBase {
     protected int palmRarity = 5;
     protected int pyramidRarity = 240;
 
-    public AtumBiomeGenBase(int biomeID) {
-        super(biomeID);
+    public AtumBiomeGenBase(BiomeGenBase.BiomeProperties properties) {
+        super(properties);
 
         super.spawnableMonsterList.clear();
         super.spawnableCreatureList.clear();
         super.spawnableWaterCreatureList.clear();
         super.spawnableCaveCreatureList.clear();
 
-        this.setDisableRain();
-
         this.topBlock = AtumBlocks.SAND.getDefaultState();
         this.fillerBlock = AtumBlocks.LIMESTONE.getDefaultState();
 
         this.setColor(16421912);
 
+        this.setDisableRain();
         this.setTemperatureRainfall(2.0F, 0.0F);
         this.setHeight(height_Default);    // same as plains
     }

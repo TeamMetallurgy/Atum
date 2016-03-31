@@ -3,7 +3,6 @@ package com.teammetallurgy.atum.entity;
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.blocks.BlockLimestoneBricks;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
-import com.teammetallurgy.atum.items.AtumItems;
 import com.teammetallurgy.atum.items.AtumLoot;
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.block.state.IBlockState;
@@ -12,22 +11,26 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.List;
 
-public class EntityPharaoh extends EntityMob implements IBossDisplayData {
+public class EntityPharaoh extends EntityMob {
     public static String[] prefix = {"Ama", "Ata", "Ato", "Bak", "Cal", "Djet", "Eje", "For", "Gol", "Gut", "Hop", "Hor", "Huni", "Iam", "Jor", "Kal", "Khas", "Khor", "Lat", "Mal", "Not", "Oap", "Pra", "Qo", "Ras", "Shas", "Thoth", "Tui", "Uld", "Ver", "Wot", "Xo", "Yat", "Zyt", "Khep"};
     public static String[] suffix = {"Ahat", "Amesh", "Amon", "Anut", "Baroom", "Chanta", "Erant", "Funam", "Daresh", "Djer", "Hotesh", "Khaden", "Kron", "Gorkum", "Ialenter", "Ma'at", "Narmer", "Radeem", "Jaloom", "Lepsha", "Quor", "Oleshet", "Peput", "Talat", "Ulam", "Veresh", "Ranesh", "Snef", "Wollolo", "Hathor", "Intef", "Neferk", "Khatne", "Tepy", "Moret"};
     public static String[] numeral = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"};
@@ -43,20 +46,20 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
         this.experienceValue = 250;
         stage = 0;
 
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SCEPTER));
+        /*this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SCEPTER));
 
         for (int i = 0; i < this.equipmentDropChances.length; ++i) {
             this.equipmentDropChances[i] = 0F;
-        }
+        }*/ //TODO
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(300.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.53000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(300.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.53000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
     public void link(int x, int y, int z) {
@@ -69,6 +72,11 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
     }
 
     @Override
+    public boolean isNonBoss() {
+        return false;
+    }
+
+    @Override
     protected void despawnEntity() {
     }
 
@@ -76,12 +84,12 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
     public void onDeath(DamageSource source) {
         super.onDeath(source);
 
-        if (source.damageType == "player") {
+        if (source.damageType.equals("player")) {
             EntityPlayer slayer = (EntityPlayer) source.getEntity();
             if (!worldObj.isRemote) {
-                List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList;
+                List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
                 for (EntityPlayer player : players) {
-                    player.addChatMessage(new ChatComponentText(this.getName() + " " + StatCollector.translateToLocal("chat.atum.killPharaoh") + " " + slayer.getGameProfile().getName()));
+                    player.addChatMessage(new TextComponentString(this.getName() + " " + I18n.translateToLocal("chat.atum.killPharaoh") + " " + slayer.getGameProfile().getName()));
                 }
             }
         }
@@ -108,7 +116,7 @@ public class EntityPharaoh extends EntityMob implements IBossDisplayData {
             int s = this.dataWatcher.getWatchableObjectInt(18);
             int p = this.dataWatcher.getWatchableObjectInt(19);
             int n = this.dataWatcher.getWatchableObjectInt(20);
-            return "Pharaoh " + StatCollector.translateToLocal("entity.atum.pharaoh." + prefix[p]) + StatCollector.translateToLocal("entity.atum.pharaoh." + suffix[s]) + " " + numeral[n];
+            return "Pharaoh " + I18n.translateToLocal("entity.atum.pharaoh." + prefix[p]) + I18n.translateToLocal("entity.atum.pharaoh." + suffix[s]) + " " + numeral[n];
         } catch (Exception e) {
             return "";
         }

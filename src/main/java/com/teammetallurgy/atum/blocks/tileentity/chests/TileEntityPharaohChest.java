@@ -7,8 +7,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.Iterator;
@@ -73,17 +73,17 @@ public class TileEntityPharaohChest extends TileEntityChest implements IInventor
 
         mummy2.spawnExplosionParticle();
         if (!super.worldObj.isRemote) {
-            List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList;
+            List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
             Iterator<EntityPlayerMP> i = players.iterator();
 
             while (i.hasNext()) {
                 EntityPlayer p = i.next();
-                p.addChatMessage(new ChatComponentText(pharaoh.getName() + " " + StatCollector.translateToLocal("chat.atum.summonPharaoh") + " " + player.getGameProfile().getName()));
+                p.addChatMessage(new TextComponentString(pharaoh.getName() + " " + I18n.translateToLocal("chat.atum.summonPharaoh") + " " + player.getGameProfile().getName()));
             }
         }
 
         if (!super.worldObj.isRemote) {
-            super.worldObj.playSoundAtEntity(pharaoh, "Atum.pharaohspawn", 1.0F, 1.0F);
+            //super.worldObj.playSound(pharaoh, "Atum.pharaohspawn", 1.0F, 1.0F); //TODO Fix custom sound
         }
 
     }

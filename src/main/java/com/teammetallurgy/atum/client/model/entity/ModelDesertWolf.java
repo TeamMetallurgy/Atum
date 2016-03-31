@@ -6,20 +6,20 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelDesertWolf extends ModelBase {
-    public ModelRenderer wolfHeadMain;
-    public ModelRenderer wolfBody;
-    public ModelRenderer wolfLeg1;
-    public ModelRenderer wolfLeg2;
-    public ModelRenderer wolfLeg3;
-    public ModelRenderer wolfLeg4;
-    ModelRenderer wolfTail;
-    ModelRenderer wolfMane;
+    private ModelRenderer wolfHeadMain;
+    private ModelRenderer wolfBody;
+    private ModelRenderer wolfLeg1;
+    private ModelRenderer wolfLeg2;
+    private ModelRenderer wolfLeg3;
+    private ModelRenderer wolfLeg4;
+    private ModelRenderer wolfTail;
+    private ModelRenderer wolfMane;
 
     public ModelDesertWolf() {
         float f = 0.0F;
@@ -54,9 +54,9 @@ public class ModelDesertWolf extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float scale) {
-        super.render(entity, par2, par3, par4, par5, par6, scale);
-        this.setRotationAngles(par2, par3, par4, par5, par6, scale, entity);
+    public void render(Entity entity, float par2, float limbSwing, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        super.render(entity, par2, limbSwing, ageInTicks, netHeadYaw, headPitch, scale);
+        this.setRotationAngles(par2, limbSwing, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
         if (this.isChild) {
             float f = 2.0F;
@@ -135,10 +135,10 @@ public class ModelDesertWolf extends ModelBase {
     }
 
     @Override
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
-        super.setRotationAngles(par1, par2, par3, par4, par5, par6, entity);
-        this.wolfHeadMain.rotateAngleX = par5 / (180F / (float) Math.PI);
-        this.wolfHeadMain.rotateAngleY = par4 / (180F / (float) Math.PI);
-        this.wolfTail.rotateAngleX = par3;
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
+        this.wolfHeadMain.rotateAngleX = headPitch / (180F / (float) Math.PI);
+        this.wolfHeadMain.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+        this.wolfTail.rotateAngleX = ageInTicks;
     }
 }

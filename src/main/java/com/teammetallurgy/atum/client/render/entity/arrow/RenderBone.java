@@ -5,7 +5,7 @@ import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -31,21 +31,33 @@ public class RenderBone extends Render<EntityBone> {
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.enableRescaleNormal();
         GlStateManager.scale(this.scale, this.scale, this.scale);
-        TextureAtlasSprite textureatlassprite = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(AtumItems.DUSTY_BONE);
+        TextureAtlasSprite dustyBoneSprite = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(AtumItems.DUSTY_BONE);
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        float f = textureatlassprite.getMinU();
-        float f1 = textureatlassprite.getMaxU();
-        float f2 = textureatlassprite.getMinV();
-        float f3 = textureatlassprite.getMaxV();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        float f = dustyBoneSprite.getMinU();
+        float f1 = dustyBoneSprite.getMaxU();
+        float f2 = dustyBoneSprite.getMinV();
+        float f3 = dustyBoneSprite.getMaxV();
         GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
-        worldrenderer.pos(-0.5D, -0.25D, 0.0D).tex((double) f, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
-        worldrenderer.pos(0.5D, -0.25D, 0.0D).tex((double) f1, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
-        worldrenderer.pos(0.5D, 0.75D, 0.0D).tex((double) f1, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
-        worldrenderer.pos(-0.5D, 0.75D, 0.0D).tex((double) f, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
+        GlStateManager.rotate((float) (this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * -this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+
+        if (this.renderOutlines) {
+            GlStateManager.enableColorMaterial();
+            GlStateManager.enableOutlineMode(this.getTeamColor(entityBone));
+        }
+
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        vertexbuffer.pos(-0.5D, -0.25D, 0.0D).tex((double) f, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(0.5D, -0.25D, 0.0D).tex((double) f1, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(0.5D, 0.75D, 0.0D).tex((double) f1, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
+        vertexbuffer.pos(-0.5D, 0.75D, 0.0D).tex((double) f, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
         tessellator.draw();
+
+        if (this.renderOutlines) {
+            GlStateManager.disableOutlineMode();
+            GlStateManager.disableColorMaterial();
+        }
+
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
         super.doRender(entityBone, x, y, z, entityYaw, partialTicks);

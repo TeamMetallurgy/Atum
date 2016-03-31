@@ -5,7 +5,7 @@ import com.teammetallurgy.atum.entity.EntityStoneguard;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class ItemGreatsword extends ItemSword {
 

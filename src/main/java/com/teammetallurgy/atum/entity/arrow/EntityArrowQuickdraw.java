@@ -1,5 +1,6 @@
 package com.teammetallurgy.atum.entity.arrow;
 
+import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
@@ -9,17 +10,17 @@ public class EntityArrowQuickdraw extends CustomArrow {
         super(world);
     }
 
-    public EntityArrowQuickdraw(World world, EntityLivingBase shooter, float velocity) {
-        super(world, shooter, velocity);
+    public EntityArrowQuickdraw(World world, EntityLivingBase shooter) {
+        super(world, shooter);
     }
 
     @Override
     protected void entityInit() {
-        this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
+        this.dataManager.register(CRITICAL, (byte) 0);
     }
 
     @Override
     public String getTexture() {
-        return "Atum:textures/projectiles/arrows_quickdraw.png";
+        return Constants.MODID + ":" + "textures/projectiles/arrows_quickdraw.png";
     }
 }

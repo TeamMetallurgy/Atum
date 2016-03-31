@@ -2,15 +2,16 @@ package com.teammetallurgy.atum.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -22,10 +23,9 @@ public class BlockFertileSoil extends BlockDirt {
 
     public BlockFertileSoil() {
         super();
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         this.setHardness(0.5F);
-        this.setStepSound(Block.soundTypeGrass);
-        setTickRandomly(true);
+        this.setSoundType(SoundType.GROUND);
+        this.setTickRandomly(true);
     }
 
     @Override
@@ -50,13 +50,13 @@ public class BlockFertileSoil extends BlockDirt {
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing side, IPlantable plantable) {
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
         EnumPlantType plantType = plantable.getPlantType(world, pos.up());
 
-        boolean hasWater = (world.getBlockState(pos.east()).getBlock().getMaterial() == Material.water ||
-                world.getBlockState(pos.west()).getBlock().getMaterial() == Material.water ||
-                world.getBlockState(pos.north()).getBlock().getMaterial() == Material.water ||
-                world.getBlockState(pos.south()).getBlock().getMaterial() == Material.water);
+        boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.water ||
+                world.getBlockState(pos.west()).getMaterial() == Material.water ||
+                world.getBlockState(pos.north()).getMaterial() == Material.water ||
+                world.getBlockState(pos.south()).getMaterial() == Material.water);
 
         switch (plantType) {
             case Plains:
@@ -64,7 +64,7 @@ public class BlockFertileSoil extends BlockDirt {
             case Beach:
                 return hasWater;
             default:
-                return super.canSustainPlant(world, pos, side, plantable);
+                return super.canSustainPlant(state, world, pos, direction, plantable);
         }
     }
 
@@ -76,7 +76,7 @@ public class BlockFertileSoil extends BlockDirt {
     @Override
     public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
         super.onNeighborBlockChange(world, pos, state, neighborBlock);
-        if (world.getBlockState(pos.up()).getBlock().getMaterial().isSolid()) {
+        if (world.getBlockState(pos.up()).getMaterial().isSolid()) {
             world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
         }
     }
@@ -87,7 +87,7 @@ public class BlockFertileSoil extends BlockDirt {
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(this);
     }
 }

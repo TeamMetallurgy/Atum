@@ -5,7 +5,7 @@ import com.teammetallurgy.atum.handler.AtumConfig;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.feature.WorldGenLakes;
@@ -65,7 +65,7 @@ public class BiomeGenOasis extends AtumBiomeGenBase {
 
                 IBlockState state = chunkPrimer.getBlockState(zz, yy, xx);
 
-                if (state.getBlock().getMaterial() == Material.air) {
+                if (state.getMaterial() == Material.air) {
                     if (makingPond) {
                         if (--depth == 0) break;
                         state = Blocks.water.getDefaultState();

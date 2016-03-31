@@ -6,7 +6,7 @@ import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -31,18 +31,13 @@ public class BlockFlax extends BlockCrops {
             return world.getBlockState(pos.down()).getBlock() == AtumBlocks.FERTILE_SOIL;
         } else {
             Block soil = world.getBlockState(pos.down()).getBlock();
-            return (world.getLight(pos) >= 8 || world.canSeeSky(pos)) && soil != null && soil.canSustainPlant(world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+            return (world.getLight(pos) >= 8 || world.canSeeSky(pos)) && soil != null && soil.canSustainPlant(state, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
         }
     }
 
     @Override
-    protected boolean canPlaceBlockOn(Block ground) {
-        return ground == Blocks.farmland || ground == AtumBlocks.FERTILE_SOIL_TILLED;
-    }
-
-    @Override
-    public int getRenderType() {
-        return 1;
+    protected boolean canSustainBush(IBlockState state) {
+        return state.getBlock() == Blocks.farmland || state.getBlock() == AtumBlocks.FERTILE_SOIL_TILLED;
     }
 
     @Override

@@ -5,22 +5,25 @@ import com.teammetallurgy.atum.entity.EntityStoneguard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class ItemMonthusStrike extends ItemAxe {
@@ -45,18 +48,16 @@ public class ItemMonthusStrike extends ItemAxe {
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int timeLeft) {
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
         int j = this.getMaxItemUseDuration(stack) - timeLeft;
         if (j > 21) {
-            AxisAlignedBB bb = player.getEntityBoundingBox().expand(3.0D, 3.0D, 3.0D);
+            AxisAlignedBB bb = entityLiving.getEntityBoundingBox().expand(3.0D, 3.0D, 3.0D);
             List<EntityLiving> list = world.getEntitiesWithinAABB(EntityLiving.class, bb);
-            Iterator<EntityLiving> i = list.iterator();
 
-            while (i.hasNext()) {
-                Entity entity = (Entity) i.next();
-                if (entity != player && !(entity instanceof EntityStoneguard) && !(entity instanceof EntityPharaoh)) {
-                    double dx = entity.posX - player.posX;
-                    double dz = entity.posZ - player.posZ;
+            for (EntityLiving entity : list) {
+                if (entity != entityLiving && !(entity instanceof EntityStoneguard) && !(entity instanceof EntityPharaoh)) {
+                    double dx = entity.posX - entityLiving.posX;
+                    double dz = entity.posZ - entityLiving.posZ;
                     double magnitude = Math.sqrt(dx * dx + dz * dz);
                     dx /= magnitude;
                     dz /= magnitude;
@@ -71,7 +72,7 @@ public class ItemMonthusStrike extends ItemAxe {
                     }
                 }
             }
-            stack.damageItem(4, player);
+            stack.damageItem(4, entityLiving);
         }
     }
 
@@ -81,9 +82,9 @@ public class ItemMonthusStrike extends ItemAxe {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-        return stack;
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player, EnumHand hand) {
+        player.setActiveHand(hand);
+        return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
 
     @Override
@@ -96,10 +97,10 @@ public class ItemMonthusStrike extends ItemAxe {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            tooltip.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(I18n.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + TextFormatting.DARK_GRAY + "[SHIFT]");
         }
     }
 

@@ -6,12 +6,12 @@ import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,7 +34,7 @@ public class BlockAtumLog extends BlockLog {
     }
 
     @Override
-    public boolean canSustainLeaves(IBlockAccess world, BlockPos pos) {
+    public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
         BlockAtumPlank.EnumType enumType = world.getBlockState(pos).getValue(VARIANT);
         if (enumType.getMetadata() == BlockAtumPlank.EnumType.DEADWOOD.getMetadata()) {
             return false;
@@ -119,8 +119,8 @@ public class BlockAtumLog extends BlockLog {
     }
 
     @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, new IProperty[]{VARIANT, LOG_AXIS});
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, new IProperty[]{VARIANT, LOG_AXIS});
     }
 
     @Override

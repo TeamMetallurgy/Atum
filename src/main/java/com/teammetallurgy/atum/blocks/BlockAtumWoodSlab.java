@@ -5,12 +5,14 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -50,8 +52,8 @@ public abstract class BlockAtumWoodSlab extends BlockSlab {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Item getItem(World world, BlockPos pos) {
-        return Item.getItemFromBlock(AtumBlocks.WOOD_SLAB);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return new ItemStack(Item.getItemFromBlock(AtumBlocks.WOOD_SLAB));
     }
 
     @Override
@@ -65,7 +67,7 @@ public abstract class BlockAtumWoodSlab extends BlockSlab {
     }
 
     @Override
-    public Object getVariant(ItemStack stack) {
+    public Comparable<?> getTypeForItem(ItemStack stack) {
         return BlockAtumPlank.EnumType.byMetadata(stack.getMetadata() & 7);
     }
 
@@ -101,8 +103,8 @@ public abstract class BlockAtumWoodSlab extends BlockSlab {
     }
 
     @Override
-    protected BlockState createBlockState() {
-        return this.isDouble() ? new BlockState(this, new IProperty[]{VARIANT}) : new BlockState(this, new IProperty[]{HALF, VARIANT});
+    protected BlockStateContainer createBlockState() {
+        return this.isDouble() ? new BlockStateContainer(this, new IProperty[]{VARIANT}) : new BlockStateContainer(this, new IProperty[]{HALF, VARIANT});
     }
 
     @Override

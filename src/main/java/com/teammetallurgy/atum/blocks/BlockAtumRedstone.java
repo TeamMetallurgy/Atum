@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
@@ -116,27 +116,27 @@ public class BlockAtumRedstone extends Block { //TODO Make sure it goes out of t
             double y = (double) ((float) pos.getY() + random.nextFloat());
             double z = (double) ((float) pos.getZ() + random.nextFloat());
 
-            if (i == 0 && !world.getBlockState(pos.up()).getBlock().isOpaqueCube()) {
+            if (i == 0 && !world.getBlockState(pos.up()).isOpaqueCube()) {
                 y = (double) pos.getY() + d0 + 1.0D;
             }
 
-            if (i == 1 && !world.getBlockState(pos.down()).getBlock().isOpaqueCube()) {
+            if (i == 1 && !world.getBlockState(pos.down()).isOpaqueCube()) {
                 y = (double) pos.getY() - d0;
             }
 
-            if (i == 2 && !world.getBlockState(pos.south()).getBlock().isOpaqueCube()) {
+            if (i == 2 && !world.getBlockState(pos.south()).isOpaqueCube()) {
                 z = (double) pos.getZ() + d0 + 1.0D;
             }
 
-            if (i == 3 && !world.getBlockState(pos.north()).getBlock().isOpaqueCube()) {
+            if (i == 3 && !world.getBlockState(pos.north()).isOpaqueCube()) {
                 z = (double) pos.getZ() - d0;
             }
 
-            if (i == 4 && !world.getBlockState(pos.east()).getBlock().isOpaqueCube()) {
+            if (i == 4 && !world.getBlockState(pos.east()).isOpaqueCube()) {
                 x = (double) pos.getX() + d0 + 1.0D;
             }
 
-            if (i == 5 && !world.getBlockState(pos.west()).getBlock().isOpaqueCube()) {
+            if (i == 5 && !world.getBlockState(pos.west()).isOpaqueCube()) {
                 x = (double) pos.getX() - d0;
             }
 

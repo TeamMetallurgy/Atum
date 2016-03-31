@@ -4,11 +4,13 @@ import com.teammetallurgy.atum.items.AtumItems;
 import com.teammetallurgy.atum.items.ItemTexturedArmor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -38,22 +40,22 @@ public class ItemHorusFlight extends ItemTexturedArmor {
         if (world.isRemote || stack == null || stack.getItem() != this) {
             return;
         }
-        player.addPotionEffect(new PotionEffect(8, 40, 1, true, true)); //TODO Check showParticles boolean
+        player.addPotionEffect(new PotionEffect(MobEffects.jump, 40, 1, true, true));
     }
 
     @SubscribeEvent
     public void onJump(LivingJumpEvent event) {
-        if (event.entityLiving.getEquipmentInSlot(1) != null && event.entityLiving.getEquipmentInSlot(1).getItem() == this) {
-            event.entityLiving.motionY += 0.2D;
-            event.entityLiving.motionX *= 1.2D;
-            event.entityLiving.motionZ *= 1.2D;
+        if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.FEET) != null && event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == this) {
+            event.getEntityLiving().motionY += 0.2D;
+            event.getEntityLiving().motionX *= 1.2D;
+            event.getEntityLiving().motionZ *= 1.2D;
         }
     }
 
     @SubscribeEvent
     public void onFallDamage(LivingFallEvent event) {
-        if (event.entityLiving.getEquipmentInSlot(1) != null && event.entityLiving.getEquipmentInSlot(1).getItem() == AtumItems.HORUS_FLIGHT) {
-            event.distance = 0.0F;
+        if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.FEET) != null && event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == AtumItems.HORUS_FLIGHT) {
+            event.setDistance(0.0F);
         }
 
     }
@@ -68,10 +70,10 @@ public class ItemHorusFlight extends ItemTexturedArmor {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            tooltip.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(I18n.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + TextFormatting.DARK_GRAY + "[SHIFT]");
         }
     }
 

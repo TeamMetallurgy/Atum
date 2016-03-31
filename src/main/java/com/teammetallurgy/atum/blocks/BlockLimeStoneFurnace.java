@@ -2,23 +2,24 @@ package com.teammetallurgy.atum.blocks;
 
 import com.teammetallurgy.atum.Atum;
 import com.teammetallurgy.atum.blocks.tileentity.furnace.TileEntityLimestoneFurnace;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -35,10 +36,10 @@ public class BlockLimestoneFurnace extends BlockContainer {
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.isBurning = isBurning;
 
-        setHardness(3.5F);
-        setStepSound(soundTypePiston);
+        this.setHardness(3.5F);
+        this.setSoundType(SoundType.STONE);
         if (isBurning) {
-            setLightLevel(0.875F);
+            this.setLightLevel(0.875F);
         }
     }
 
@@ -54,19 +55,19 @@ public class BlockLimestoneFurnace extends BlockContainer {
 
     private void setDefaultFacing(World world, BlockPos pos, IBlockState state) {
         if (!world.isRemote) {
-            Block blockNorth = world.getBlockState(pos.north()).getBlock();
-            Block blockSouth = world.getBlockState(pos.south()).getBlock();
-            Block blockWest = world.getBlockState(pos.west()).getBlock();
-            Block blockEast = world.getBlockState(pos.east()).getBlock();
+            IBlockState stateNorth = world.getBlockState(pos.north());
+            IBlockState stateSouth = world.getBlockState(pos.south());
+            IBlockState stateWest = world.getBlockState(pos.west());
+            IBlockState stateEast = world.getBlockState(pos.east());
             EnumFacing facing = state.getValue(FACING);
 
-            if (facing == EnumFacing.NORTH && blockNorth.isFullBlock() && !blockSouth.isFullBlock()) {
+            if (facing == EnumFacing.NORTH && stateNorth.isFullBlock() && !stateSouth.isFullBlock()) {
                 facing = EnumFacing.SOUTH;
-            } else if (facing == EnumFacing.SOUTH && blockSouth.isFullBlock() && !blockNorth.isFullBlock()) {
+            } else if (facing == EnumFacing.SOUTH && stateSouth.isFullBlock() && !stateNorth.isFullBlock()) {
                 facing = EnumFacing.NORTH;
-            } else if (facing == EnumFacing.WEST && blockWest.isFullBlock() && !blockEast.isFullBlock()) {
+            } else if (facing == EnumFacing.WEST && stateWest.isFullBlock() && !stateEast.isFullBlock()) {
                 facing = EnumFacing.EAST;
-            } else if (facing == EnumFacing.EAST && blockEast.isFullBlock() && !blockWest.isFullBlock()) {
+            } else if (facing == EnumFacing.EAST && stateEast.isFullBlock() && !stateWest.isFullBlock()) {
                 facing = EnumFacing.WEST;
             }
 
@@ -76,7 +77,7 @@ public class BlockLimestoneFurnace extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
         if (this.isBurning) {
             EnumFacing facing = state.getValue(FACING);
             double d0 = (double) pos.getX() + 0.5D;
@@ -85,28 +86,36 @@ public class BlockLimestoneFurnace extends BlockContainer {
             double d3 = 0.52D;
             double d4 = rand.nextDouble() * 0.6D - 0.3D;
 
+            if (rand.nextDouble() < 0.1D) {
+                world.playSound((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.block_furnace_fire_crackle, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            }
+
             switch (facing) {
                 case WEST:
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 - d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                    world.spawnParticle(EnumParticleTypes.FLAME, d0 - d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
                     break;
                 case EAST:
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
                     break;
                 case NORTH:
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 - d3, 0.0D, 0.0D, 0.0D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 - d3, 0.0D, 0.0D, 0.0D, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 - d3, 0.0D, 0.0D, 0.0D);
+                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 - d3, 0.0D, 0.0D, 0.0D);
                     break;
                 case SOUTH:
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 + d3, 0.0D, 0.0D, 0.0D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 + d3, 0.0D, 0.0D, 0.0D, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 + d3, 0.0D, 0.0D, 0.0D);
+                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 + d3, 0.0D, 0.0D, 0.0D);
+                    break;
+                case DOWN:
+                case UP:
+                    break;
             }
         }
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             return true;
         } else {
@@ -114,7 +123,7 @@ public class BlockLimestoneFurnace extends BlockContainer {
 
             if (tileEntity instanceof TileEntityLimestoneFurnace) {
                 player.openGui(Atum.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
-                player.triggerAchievement(StatList.field_181741_Y);
+                player.addStat(StatList.furnaceInteraction);
             }
             return true;
         }
@@ -165,42 +174,37 @@ public class BlockLimestoneFurnace extends BlockContainer {
     }
 
     @Override
-    public boolean hasComparatorInputOverride() {
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if (!keepInventory) {
+            TileEntity tileentity = worldIn.getTileEntity(pos);
+
+            if (tileentity instanceof TileEntityLimestoneFurnace) {
+                InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityLimestoneFurnace) tileentity);
+                worldIn.updateComparatorOutputLevel(pos, this);
+            }
+        }
+
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
 
     @Override
-    public int getComparatorInputOverride(World world, BlockPos pos) {
+    public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
         return Container.calcRedstone(world.getTileEntity(pos));
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        if (!keepInventory) {
-            TileEntity tileentity = world.getTileEntity(pos);
-
-            if (tileentity instanceof TileEntityLimestoneFurnace) {
-                InventoryHelper.dropInventoryItems(world, pos, (TileEntityLimestoneFurnace) tileentity);
-                world.updateComparatorOutputLevel(pos, this);
-            }
-        }
-        super.breakBlock(world, pos, state);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World world, BlockPos pos) {
-        return Item.getItemFromBlock(AtumBlocks.LIMESTONE_FURNACE);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return new ItemStack(AtumBlocks.LIMESTONE_FURNACE);
     }
 
     @Override
-    public int getRenderType() {
-        return 3;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state) {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override
@@ -219,7 +223,17 @@ public class BlockLimestoneFurnace extends BlockContainer {
     }
 
     @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, FACING);
+    public IBlockState withRotation(IBlockState state, Rotation rotation) {
+        return state.withProperty(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    public IBlockState withMirror(IBlockState state, Mirror mirror) {
+        return state.withRotation(mirror.toRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
     }
 }

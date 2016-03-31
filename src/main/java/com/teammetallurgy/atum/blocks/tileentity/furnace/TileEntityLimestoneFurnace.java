@@ -12,7 +12,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class TileEntityLimestoneFurnace extends TileEntityFurnace {
     private ItemStack[] furnaceItemStacks = new ItemStack[3];

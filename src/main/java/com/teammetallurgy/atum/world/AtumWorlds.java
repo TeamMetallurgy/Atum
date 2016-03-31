@@ -7,7 +7,7 @@ public class AtumWorlds {
     public void register() {
         int atumID = AtumConfig.DIMENSION_ID;
 
-        DimensionManager.registerProviderType(atumID, AtumWorldProvider.class, true);
+        DimensionManager.registerProviderType(atumID, WorldProviderAtum.class, true);
         DimensionManager.registerDimension(atumID, atumID);
     }
 }

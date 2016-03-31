@@ -1,14 +1,11 @@
 package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.items.AtumItems;
-import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityForsaken extends EntityMob {
+public class EntityForsaken extends EntityUndeadBase {
     boolean onFire = false;
 
     public EntityForsaken(World world) {
@@ -20,14 +17,14 @@ public class EntityForsaken extends EntityMob {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
         double speed = 0.53000000417232513D;
         if (this.onFire) {
             speed = 0.9D;
         }
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(speed);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(speed);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
     @Override
@@ -42,21 +39,6 @@ public class EntityForsaken extends EntityMob {
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return super.attackEntityFrom(source, amount);
-    }
-
-    @Override
-    public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
-        if (i <= 62) {
-            return false;
-        } else {
-            return super.getCanSpawnHere();
-        }
-    }
-
-    @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEAD;
     }
 
     @Override

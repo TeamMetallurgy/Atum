@@ -6,9 +6,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -52,16 +52,16 @@ public class ItemLoot extends Item {
 
             // Individual localization
             String unlocalizedName = this.getUnlocalizedName(stack) + ".name";
-            if (StatCollector.canTranslate(unlocalizedName))
-                return StatCollector.translateToLocal(unlocalizedName);
+            if (I18n.canTranslate(unlocalizedName))
+                return I18n.translateToLocal(unlocalizedName);
 
             // General localization
             String unlocalizedQuality = "item.atum.loot." + qualityArray[quality] + ".name";
             String unlocalizedType = "item.atum.loot." + typeArray[type] + ".name";
 
-            if (StatCollector.canTranslate(unlocalizedQuality) && StatCollector.canTranslate(unlocalizedType)) {
-                String LocalizedGeneralName = StatCollector.translateToLocal(unlocalizedQuality);
-                LocalizedGeneralName += " " + StatCollector.translateToLocal(unlocalizedType);
+            if (I18n.canTranslate(unlocalizedQuality) && I18n.canTranslate(unlocalizedType)) {
+                String LocalizedGeneralName = I18n.translateToLocal(unlocalizedQuality);
+                LocalizedGeneralName += " " + I18n.translateToLocal(unlocalizedType);
                 return LocalizedGeneralName;
             }
 

@@ -1,10 +1,11 @@
 package com.teammetallurgy.atum.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -22,7 +23,7 @@ public class BlockAtumPlank extends Block {
         super(Material.wood);
         this.setHardness(2.0F);
         this.setResistance(5.0F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setSoundType(SoundType.WOOD);
 
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockAtumPlank.EnumType.PALM));
     }
@@ -56,8 +57,8 @@ public class BlockAtumPlank extends Block {
     }
 
     @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, VARIANT);
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, VARIANT);
     }
 
     public enum EnumType implements IStringSerializable {

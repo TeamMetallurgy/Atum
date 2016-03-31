@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -11,7 +12,10 @@ import net.minecraft.tileentity.TileEntityLockable;
 
 public class TileEntityCrate extends TileEntityLockable implements IInventory {
     private ItemStack[] inventory = new ItemStack[getSizeInventory()];
-    private String crateName;
+    private String customName;
+
+    public TileEntityCrate() {
+    }
 
     @Override
     public int getSizeInventory() {
@@ -28,32 +32,18 @@ public class TileEntityCrate extends TileEntityLockable implements IInventory {
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        if (index < 0 && index >= inventory.length || inventory[index] == null) {
-            return null;
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.inventory, index, count);
+
+        if (itemstack != null) {
+            this.markDirty();
         }
 
-        ItemStack returnedStack;
-        if (inventory[index].stackSize <= count) {
-            returnedStack = inventory[index];
-            inventory[index] = null;
-        } else {
-            returnedStack = inventory[index].splitStack(count);
-            if (inventory[index].stackSize <= 0) {
-                inventory[index] = null;
-            }
-        }
-        return returnedStack;
+        return itemstack;
     }
 
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        ItemStack returnedStack = null;
-
-        if (index >= 0 && index < inventory.length && inventory[index] != null) {
-            returnedStack = inventory[index];
-            inventory[index] = null;
-        }
-        return returnedStack;
+        return ItemStackHelper.getAndRemove(this.inventory, index);
     }
 
     @Override
@@ -65,11 +55,13 @@ public class TileEntityCrate extends TileEntityLockable implements IInventory {
         if (stack != null && stack.stackSize > getInventoryStackLimit()) {
             stack.stackSize = getInventoryStackLimit();
         }
+
+        this.markDirty();
     }
 
     @Override
     public String getName() {
-        return this.hasCustomName() ? this.crateName : getDefaultName(); //TODO fix custom inventory name
+        return this.hasCustomName() ? this.customName : getDefaultName(); //TODO fix custom inventory name
     }
 
     private String getDefaultName() {
@@ -86,16 +78,16 @@ public class TileEntityCrate extends TileEntityLockable implements IInventory {
                 name += "invaild";
         }
 
-        return name ;
+        return name;
     }
 
     @Override
     public boolean hasCustomName() {
-        return this.crateName != null && this.crateName.length() > 0;
+        return this.customName != null && !this.customName.isEmpty();
     }
 
     public void setCustomName(String name) {
-        this.crateName = name;
+        this.customName = name;
     }
 
     @Override
@@ -105,7 +97,7 @@ public class TileEntityCrate extends TileEntityLockable implements IInventory {
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.pos) == this && player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -129,7 +121,7 @@ public class TileEntityCrate extends TileEntityLockable implements IInventory {
         this.inventory = new ItemStack[this.getSizeInventory()];
 
         if (tagCompound.hasKey("CustomName", 8)) {
-            this.crateName = tagCompound.getString("CustomName");
+            this.customName = tagCompound.getString("CustomName");
         }
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
@@ -159,7 +151,7 @@ public class TileEntityCrate extends TileEntityLockable implements IInventory {
         tagCompound.setTag("Items", inventoryNbt);
 
         if (this.hasCustomName()) {
-            tagCompound.setString("CustomName", this.crateName);
+            tagCompound.setString("CustomName", this.customName);
         }
     }
 

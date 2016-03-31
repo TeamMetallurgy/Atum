@@ -1,13 +1,13 @@
 package com.teammetallurgy.atum.items.artifacts;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,8 +32,8 @@ public class ItemAnubisMercy extends Item {
 
     @SubscribeEvent
     public void onDamage(LivingHurtEvent event) {
-        if (event.entityLiving instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.entityLiving;
+        if (event.getEntity() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
             ItemStack stack = null;
             ItemStack[] damageAmount = player.inventory.mainInventory;
             int resistance = damageAmount.length;
@@ -50,19 +50,19 @@ public class ItemAnubisMercy extends Item {
                 return;
             }
 
-            float amount = event.ammount;
-            if (!event.source.isUnblockable()) {
-                amount = (event.ammount * (25 - player.getTotalArmorValue()) + player.getAbsorptionAmount()) / 25.0F;
+            float amount = event.getAmount();
+            if (!event.getSource().isUnblockable()) {
+                amount = (event.getAmount() * (25 - player.getTotalArmorValue()) + player.getAbsorptionAmount()) / 25.0F;
             }
 
-            if (player.isPotionActive(Potion.resistance)) {
-                resistance = 25 - (player.getActivePotionEffect(Potion.resistance).getAmplifier() + 1) * 5;
+            if (player.isPotionActive(MobEffects.resistance)) {
+                resistance = 25 - (player.getActivePotionEffect(MobEffects.resistance).getAmplifier() + 1) * 5;
                 amount = amount * (float) resistance / 25.0F;
             }
 
             if (Math.ceil((double) amount) >= (double) player.getHealth()) {
                 event.setCanceled(true);
-                this.respawnPlayer(event.entityLiving.worldObj, player);
+                this.respawnPlayer(event.getEntityLiving().worldObj, player);
                 player.setHealth(player.getMaxHealth());
                 player.getFoodStats().setFoodLevel(20);
                 player.getFoodStats().setFoodSaturationLevel(20.0F);
@@ -75,7 +75,7 @@ public class ItemAnubisMercy extends Item {
 
     }
 
-    public void respawnPlayer(World world, EntityPlayer player) {
+    private void respawnPlayer(World world, EntityPlayer player) {
         BlockPos spawn = player.getBedLocation(player.dimension);
         if (spawn == null) {
             spawn = world.getSpawnPoint();
@@ -94,7 +94,7 @@ public class ItemAnubisMercy extends Item {
         player.rotationYaw = 0.0F;
         player.setPositionAndUpdate((double) spawn.getX() + 0.5D, (double) spawn.getY() + 0.1D, (double) spawn.getZ());
 
-        while (!world.getCollidingBoundingBoxes(player, player.getEntityBoundingBox()).isEmpty()) {
+        while (!world.getCollisionBoxes(player, player.getEntityBoundingBox()).isEmpty()) {
             player.setPosition(player.posX, player.posY + 1.0D, player.posZ);
         }
     }
@@ -109,14 +109,14 @@ public class ItemAnubisMercy extends Item {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            tooltip.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(I18n.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + TextFormatting.DARK_GRAY + "[SHIFT]");
         }
 
         int remaining = stack.getMaxDamage() - stack.getItemDamage();
-        String localizedRemaining = StatCollector.translateToLocalFormatted("tooltip.atum.usesRemaining", remaining);
+        String localizedRemaining = I18n.translateToLocalFormatted("tooltip.atum.usesRemaining", remaining);
         tooltip.add(localizedRemaining);
     }
 }

@@ -2,13 +2,12 @@ package com.teammetallurgy.atum.entity.projectile;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntitySmallBone extends EntityBone {
 
-    public EntitySmallBone(World worldIn)
-    {
+    public EntitySmallBone(World worldIn) {
         super(worldIn);
         this.setSize(0.3125F, 0.3125F);
     }
@@ -24,13 +23,13 @@ public class EntitySmallBone extends EntityBone {
     }
 
     @Override
-    protected void onImpact(MovingObjectPosition movingObject) {
+    protected void onImpact(RayTraceResult result) {
         if (!this.worldObj.isRemote) {
-            if (movingObject.entityHit != null) {
-                boolean flag = movingObject.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), 2.0F);
+            if (result.entityHit != null) {
+                boolean flag = result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), 2.0F);
 
                 if (flag) {
-                    this.applyEnchantments(this.shootingEntity, movingObject.entityHit);
+                    this.applyEnchantments(this.shootingEntity, result.entityHit);
                 }
             }
             this.setDead();

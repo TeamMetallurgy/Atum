@@ -5,13 +5,15 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,8 +53,8 @@ public class BlockLimestoneSlab extends BlockSlab {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Item getItem(World world, BlockPos pos) {
-        return AtumBlocks.LIMESTONE_SLAB == this ? Item.getItemFromBlock(this) : (this == AtumBlocks.LIMESTONE_DOUBLE_SLAB ? Item.getItemFromBlock(AtumBlocks.LIMESTONE_SLAB) : Item.getItemFromBlock(AtumBlocks.LIMESTONE_SLAB));
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return new ItemStack(AtumBlocks.LIMESTONE_SLAB) == new ItemStack(this) ? new ItemStack(this) : (new ItemStack(this) == new ItemStack(AtumBlocks.LIMESTONE_DOUBLE_SLAB) ? new ItemStack(AtumBlocks.LIMESTONE_SLAB) : new ItemStack(AtumBlocks.LIMESTONE_SLAB));
     }
 
     @Override
@@ -71,7 +73,7 @@ public class BlockLimestoneSlab extends BlockSlab {
     }
 
     @Override
-    public Object getVariant(ItemStack stack) {
+    public Comparable<?> getTypeForItem(ItemStack stack) {
         return EnumType.byMetadata(stack.getMetadata() & 7);
     }
 
@@ -108,8 +110,8 @@ public class BlockLimestoneSlab extends BlockSlab {
     }
 
     @Override
-    protected BlockState createBlockState() {
-        return this.isDouble() ? new BlockState(this, VARIANT) : new BlockState(this, new IProperty[]{HALF, VARIANT});
+    protected BlockStateContainer createBlockState() {
+        return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, new IProperty[]{HALF, VARIANT});
     }
 
     @Override

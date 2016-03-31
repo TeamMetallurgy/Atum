@@ -3,17 +3,16 @@ package com.teammetallurgy.atum.entity;
 import com.teammetallurgy.atum.entity.projectile.EntitySmallBone;
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityBonestorm extends EntityMob {
+public class EntityBonestorm extends EntityUndeadBase {
     private float heightOffset = 0.2F;
     private int heightOffsetUpdateTime;
 
@@ -21,47 +20,40 @@ public class EntityBonestorm extends EntityMob {
         super(world);
         this.isImmuneToFire = true;
         this.experienceValue = 8;
+    }
+
+    @Override
+    protected void initEntityAI() {
         this.tasks.addTask(4, new EntityBonestorm.AIBoneAttack(this));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(48.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(48.0D);
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataWatcher.addObject(16, new Byte((byte) 0));
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.entity_skeleton_horse_ambient;
     }
 
     @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEAD;
+    protected SoundEvent getHurtSound() {
+        return SoundEvents.entity_skeleton_horse_hurt;
     }
 
     @Override
-    protected String getLivingSound() {
-        return "mob.horse.skeleton.idle";
-    }
-
-    @Override
-    protected String getHurtSound() {
-        return "mob.skeleton.hurt";
-    }
-
-    @Override
-    protected String getDeathSound() {
-        return "mob.horse.skeleton.death";
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.entity_skeleton_horse_death;
     }
 
     @Override
@@ -75,10 +67,6 @@ public class EntityBonestorm extends EntityMob {
 
     @Override
     protected void updateAITasks() {
-        if (this.isWet()) {
-            this.attackEntityFrom(DamageSource.drown, 1.0F);
-        }
-
         --this.heightOffsetUpdateTime;
 
         if (this.heightOffsetUpdateTime <= 0) {
@@ -110,22 +98,12 @@ public class EntityBonestorm extends EntityMob {
         }
     }
 
-    @Override
-    public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
-        if (i <= 62) {
-            return false;
-        } else {
-            return super.getCanSpawnHere();
-        }
-    }
-
-    static class AIBoneAttack extends EntityAIBase {
+    private static class AIBoneAttack extends EntityAIBase {
         private EntityBonestorm bonestorm;
         private int timer;
         private int attackTime;
 
-        public AIBoneAttack(EntityBonestorm entityBonestorm) {
+        private AIBoneAttack(EntityBonestorm entityBonestorm) {
             this.bonestorm = entityBonestorm;
             this.setMutexBits(3);
         }
@@ -173,7 +151,7 @@ public class EntityBonestorm extends EntityMob {
 
                     if (this.timer > 1) {
                         float f = MathHelper.sqrt_float(MathHelper.sqrt_double(d0)) * 0.5F;
-                        this.bonestorm.worldObj.playSoundAtEntity(this.bonestorm, "mob.skeleton.hurt", 0.7F, (this.bonestorm.rand.nextFloat() - this.bonestorm.rand.nextFloat()) * 0.2F + 1.0F);
+                        this.bonestorm.worldObj.playSound(null, entitylivingbase.getPosition(), SoundEvents.entity_skeleton_hurt, SoundCategory.HOSTILE, 0.7F, (this.bonestorm.rand.nextFloat() - this.bonestorm.rand.nextFloat()) * 0.2F + 1.0F);
 
                         for (int i = 0; i < 1; ++i) {
                             EntitySmallBone entitySmallBone = new EntitySmallBone(this.bonestorm.worldObj, this.bonestorm, d1 + this.bonestorm.getRNG().nextGaussian() * (double) f, d2, d3 + this.bonestorm.getRNG().nextGaussian() * (double) f);

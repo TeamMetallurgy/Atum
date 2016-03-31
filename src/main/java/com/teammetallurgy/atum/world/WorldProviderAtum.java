@@ -1,35 +1,30 @@
 package com.teammetallurgy.atum.world;
 
 import com.teammetallurgy.atum.handler.AtumConfig;
-import com.teammetallurgy.atum.world.biome.AtumWorldChunkManager;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import com.teammetallurgy.atum.world.biome.AtumBiomeProvider;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class AtumWorldProvider extends WorldProvider {
+public class WorldProviderAtum extends WorldProvider {
+
     @Override
-    public String getDimensionName() {
-        return "Atum";
+    public DimensionType getDimensionType() {
+        return DimensionType.register("Atum", "_atum", AtumConfig.DIMENSION_ID, WorldProviderAtum.class, false);
     }
 
     @Override
-    public String getInternalNameSuffix() {
-        return "_atum";
+    protected void createBiomeProvider() {
+        this.biomeProvider = new AtumBiomeProvider(super.worldObj.getSeed());
     }
 
     @Override
-    protected void registerWorldChunkManager() {
-        this.worldChunkMgr = new AtumWorldChunkManager(super.worldObj.getSeed());
-
-        this.dimensionId = AtumConfig.DIMENSION_ID;
-    }
-
-    @Override
-    public IChunkProvider createChunkGenerator() {
-        return new AtumChunkProvider(super.worldObj, super.worldObj.getSeed(), true, super.worldObj.getWorldInfo().getGeneratorOptions());
+    public IChunkGenerator createChunkGenerator() {
+        return new ChunkProviderAtum(super.worldObj, super.worldObj.getSeed(), true, super.worldObj.getWorldInfo().getGeneratorOptions());
     }
 
     @Override
@@ -49,9 +44,9 @@ public class AtumWorldProvider extends WorldProvider {
     }
 
     @Override
-    public float calculateCelestialAngle(long par1, float par3) {
-        int j = (int) (par1 % 48000L);
-        float f1 = ((float) j + par3) / 48000.0F - 0.25F;
+    public float calculateCelestialAngle(long worldTime, float partialTicks) {
+        int j = (int) (worldTime % 48000L);
+        float f1 = ((float) j + partialTicks) / 48000.0F - 0.25F;
         if (f1 < 0.0F) {
             ++f1;
         }
@@ -68,7 +63,7 @@ public class AtumWorldProvider extends WorldProvider {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Vec3 getFogColor(float par1, float par2) {
+    public Vec3d getFogColor(float par1, float par2) {
         float f = MathHelper.cos(par1 * 3.1415927F * 2.0F) * 2.0F + 0.5F;
         if (f < 0.2F) {
             f = 0.2F;
@@ -81,7 +76,7 @@ public class AtumWorldProvider extends WorldProvider {
         float f1 = 0.9F * f;
         float f2 = 0.75F * f;
         float f3 = 0.6F * f;
-        return new Vec3((double) f1, (double) f2, (double) f3);
+        return new Vec3d((double) f1, (double) f2, (double) f3);
     }
 
     @Override

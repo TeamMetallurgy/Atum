@@ -6,7 +6,11 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +24,7 @@ public class TileEntityBurningTrap extends TileEntity implements ITickable {
         int y = super.getPos().getY();
         int z = super.getPos().getZ();
 
-        EntityPlayer player = super.worldObj.getClosestPlayer((double) x, (double) y, (double) z, 4.0D);
+        EntityPlayer player = super.worldObj.getClosestPlayer((double) x, (double) y, (double) z, 4.0D, false);
         byte range = 1;
         int xMin = x;
         int xMax = x + range;
@@ -38,7 +42,7 @@ public class TileEntityBurningTrap extends TileEntity implements ITickable {
         zMax += facing.getFrontOffsetZ() * range;
         AxisAlignedBB bb = new AxisAlignedBB((double) xMin, (double) yMin, (double) zMin, (double) xMax, (double) yMax, (double) zMax);
         List<EntityMob> list = super.worldObj.getEntitiesWithinAABB(EntityMob.class, bb);
-        if (player != null && bb.isVecInside(new Vec3(player.posX, player.posY + 0.5D, player.posZ))) {
+        if (player != null && bb.isVecInside(new Vec3d(player.posX, player.posY + 0.5D, player.posZ))) {
             player.setFire(2);
             this.spawnFlames();
         }

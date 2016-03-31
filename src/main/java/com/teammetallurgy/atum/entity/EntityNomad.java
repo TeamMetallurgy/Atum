@@ -1,102 +1,117 @@
 package com.teammetallurgy.atum.entity;
 
+import com.teammetallurgy.atum.entity.ai.EntityAIAttackRangedBowBandit;
 import com.teammetallurgy.atum.items.AtumItems;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityTippedArrow;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-public class EntityNomad extends EntityMob implements IRangedAttackMob {
-    private EntityAIArrowAttack aiArrowAttack = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F);
-    private EntityAIAttackOnCollide aiAttackOnCollide = new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.2D, false);
+public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
+    private EntityAIAttackRangedBowBandit aiArrowAttack = new EntityAIAttackRangedBowBandit(this, 1.0D, 20, 15.0F);
+    private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false) {
+        @Override
+        public void resetTask() {
+            super.resetTask();
+            EntityNomad.this.startShooting(false);
+        }
+
+        @Override
+        public void startExecuting() {
+            super.startExecuting();
+            EntityNomad.this.startShooting(true);
+        }
+    };
 
     public EntityNomad(World world) {
         super(world);
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SHORT_BOW));
-        //this.enchantEquipment(); //TODO
-
-        this.setCanPickUpLoot(this.rand.nextFloat() < equipmentDropChances[this.worldObj.getDifficulty().getDifficultyId()]);
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIRestrictSun(this));
-        this.tasks.addTask(3, new EntityAIWander(this, 0.8));
-        this.tasks.addTask(4, this.aiArrowAttack);
-        this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
-
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
-
+        this.haveBow = true;
         this.experienceValue = 6;
 
-        if (world != null && !world.isRemote) {
-            this.setCombatTask();
-        }
+        this.setCombatTask();
+    }
+
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(3, new EntityAIAvoidEntity<EntityDesertWolf>(this, EntityDesertWolf.class, 6.0F, 1.0D, 1.2D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(6, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
     @Override
-    public boolean getCanSpawnHere() {
-        BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        if (pos.getY() <= 62) {
-            return false;
-        } else {
-            return this.worldObj.canBlockSeeSky(pos) && this.isValidLightLevel() &&
-                    this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox()) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(canShoot, false);
+    }
+
+    @Override
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        super.setEquipmentBasedOnDifficulty(difficulty);
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(AtumItems.SHORT_BOW));
+    }
+
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+
+        this.tasks.addTask(4, this.aiArrowAttack);
+        this.setEquipmentBasedOnDifficulty(difficulty);
+        this.setEnchantmentBasedOnDifficulty(difficulty);
+
+        this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
+
+        return livingdata;
+    }
+
+    public void setCombatTask() {
+        if (this.worldObj != null && !this.worldObj.isRemote) {
+            this.tasks.removeTask(this.aiAttackOnCollide);
+            this.tasks.removeTask(this.aiArrowAttack);
+            ItemStack itemstack = this.getHeldItemMainhand();
+
+            if (itemstack != null && itemstack.getItem() == AtumItems.SHORT_BOW) {
+                this.tasks.addTask(4, this.aiArrowAttack);
+            } else {
+                this.tasks.addTask(4, this.aiAttackOnCollide);
+            }
         }
     }
 
     @Override
-    protected boolean isValidLightLevel() {
-        BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        int bl = this.worldObj.getLightFor(EnumSkyBlock.BLOCK, pos);
-        int light = this.worldObj.getLight(pos);
-
-        if (bl >= 7) {
-            return false;
-        } else if (light > 8) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean attackEntityAsMob(Entity entity) {
-        if (super.attackEntityAsMob(entity)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEFINED;
-    }
-
-    @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase livingBase, float range) {
-        EntityArrow entityarrow = new EntityArrow(this.worldObj, this, livingBase, 1.6F, (float) (14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
-        int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItem());
-        int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItem());
-        entityarrow.setDamage((double) (range * 2.0F) + this.rand.nextGaussian() * 0.25D + (double) ((float) this.worldObj.getDifficulty().getDifficultyId() * 0.11F));
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float damage) {
+        EntityArrow entityarrow = new EntityTippedArrow(this.worldObj, this);
+        double d0 = target.posX - this.posX;
+        double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - entityarrow.posY;
+        double d2 = target.posZ - this.posZ;
+        double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+        entityarrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
+        int i = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.power, this);
+        int j = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.punch, this);
+        entityarrow.setDamage((double) (damage * 2.0F) + this.rand.nextGaussian() * 0.25D + (double) ((float) this.worldObj.getDifficulty().getDifficultyId() * 0.11F));
 
         if (i > 0) {
             entityarrow.setDamage(entityarrow.getDamage() + (double) i * 0.5D + 0.5D);
@@ -106,31 +121,38 @@ public class EntityNomad extends EntityMob implements IRangedAttackMob {
             entityarrow.setKnockbackStrength(j);
         }
 
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0) {
+        if (EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.flame, this) > 0) {
             entityarrow.setFire(100);
         }
 
-        this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.playSound(SoundEvents.entity_arrow_shoot, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.worldObj.spawnEntityInWorld(entityarrow);
     }
 
-    public void setCombatTask() {
-        this.tasks.removeTask(this.aiAttackOnCollide);
-        this.tasks.removeTask(this.aiArrowAttack);
-        ItemStack itemstack = this.getHeldItem();
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
 
-        if (itemstack != null && itemstack.getItem() == AtumItems.SHORT_BOW) {
-            this.tasks.addTask(4, this.aiArrowAttack);
-        } else {
-            this.tasks.addTask(4, this.aiAttackOnCollide);
+        this.setCombatTask();
+    }
+
+    @Override
+    public void setItemStackToSlot(EntityEquipmentSlot slot, ItemStack stack) {
+        super.setItemStackToSlot(slot, stack);
+
+        if (!this.worldObj.isRemote && slot == EntityEquipmentSlot.MAINHAND) {
+            this.setCombatTask();
         }
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tagCompound) {
-        super.readEntityFromNBT(tagCompound);
+    public float getEyeHeight() {
+        return 1.74F;
+    }
 
-        this.setCombatTask();
+    @Override
+    public double getYOffset() {
+        return -0.35D;
     }
 
     @Override

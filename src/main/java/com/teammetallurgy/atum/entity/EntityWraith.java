@@ -1,17 +1,22 @@
 package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.items.AtumItems;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
+import net.minecraft.init.MobEffects;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateClimber;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class EntityWraith extends EntityMob {
+public class EntityWraith extends EntityUndeadBase {
+    private static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(EntityWraith.class, DataSerializers.BYTE);
     private int cycleHeight = 0;
     private int cycleTime = 100;
 
@@ -19,25 +24,31 @@ public class EntityWraith extends EntityMob {
         super(world);
         this.isImmuneToFire = true;
         this.experienceValue = 6;
-        //this.tasks.addTask(4, new EntityWraith.AIGhostAttack(this, EntityPlayer.class)); //TODO
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
 
         cycleTime = (int) ((Math.random() * 40) + 80);
         cycleHeight = (int) (Math.random() * cycleTime);
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataWatcher.addObject(16, new Byte((byte) 0));
+    protected void initEntityAI() {
+        this.tasks.addTask(4, new EntityWraith.AIWraithAttack(this));
+        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
+        this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(6, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityWraith.AIWraithTarget<EntityPlayer>(this, EntityPlayer.class));
     }
 
     @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEAD;
+    protected PathNavigate getNewNavigator(World world) {
+        return new PathNavigateClimber(this, world);
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(CLIMBING, (byte) 0);
     }
 
     @Override
@@ -51,10 +62,10 @@ public class EntityWraith extends EntityMob {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.04D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.04D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
     @Override
@@ -65,21 +76,11 @@ public class EntityWraith extends EntityMob {
     }
 
     @Override
-    public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
-        if (i <= 62) {
-            return false;
-        } else {
-            return super.getCanSpawnHere();
-        }
-    }
-
-    @Override
     protected void jump() {
         this.motionY = 0.56999998688697815D;
 
-        if (this.isPotionActive(Potion.jump)) {
-            this.motionY += (double) ((float) (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
+        if (this.isPotionActive(MobEffects.jump)) {
+            this.motionY += (double) ((float) (this.getActivePotionEffect(MobEffects.jump).getAmplifier() + 1) * 0.1F);
         }
 
         if (this.isSprinting()) {
@@ -109,59 +110,54 @@ public class EntityWraith extends EntityMob {
         return this.isBesideClimbableBlock();
     }
 
-    public boolean isBesideClimbableBlock() {
-        return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
+    private boolean isBesideClimbableBlock() {
+        return (this.dataManager.get(CLIMBING) & 1) != 0;
     }
 
-    public void setBesideClimbableBlock(boolean besideClimbableBlock) {
-        byte climb = this.dataWatcher.getWatchableObjectByte(16);
+    private void setBesideClimbableBlock(boolean climbing) {
+        byte b0 = this.dataManager.get(CLIMBING);
 
-        if (besideClimbableBlock) {
-            climb = (byte) (climb | 1);
+        if (climbing) {
+            b0 = (byte) (b0 | 1);
         } else {
-            climb = (byte) (climb & -2);
+            b0 = (byte) (b0 & -2);
         }
 
-        this.dataWatcher.updateObject(16, Byte.valueOf(climb));
+        this.dataManager.set(CLIMBING, b0);
     }
 
-    /*static class AIGhostAttack extends EntityAIAttackOnCollide {
-        private EntityWraith ghost;
-        private int attackTime;
+    private static class AIWraithAttack extends EntityAIAttackMelee {
+        AIWraithAttack(EntityWraith wraith) {
+            super(wraith, 1.0D, true);
+        }
 
-        public AIGhostAttack(EntityWraith entityGhost, Class <? extends Entity> targetClass) {
-            super(entityGhost, targetClass, 1.0D, true);
-            this.setMutexBits(3);
+        @Override
+        public boolean continueExecuting() {
+            float f = this.attacker.getBrightness(1.0F);
+
+            if (f >= 0.5F && this.attacker.getRNG().nextInt(100) == 0) {
+                this.attacker.setAttackTarget(null);
+                return false;
+            } else {
+                return super.continueExecuting();
+            }
+        }
+
+        @Override
+        protected double func_179512_a(EntityLivingBase attackTarget) {
+            return (double) (4.0F + attackTarget.width);
+        }
+    }
+
+    private static class AIWraithTarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
+        AIWraithTarget(EntityWraith wraith, Class<T> classTarget) {
+            super(wraith, classTarget, true);
         }
 
         @Override
         public boolean shouldExecute() {
-            EntityLivingBase entitylivingbase = this.ghost.getAttackTarget();
-            return entitylivingbase != null && entitylivingbase.isEntityAlive();
+            float f = this.taskOwner.getBrightness(1.0F);
+            return f < 0.5F && super.shouldExecute();
         }
-
-        @Override
-        public void startExecuting() {
-            this.attackTime = 0;
-        }
-
-        @Override
-        public void updateTask() {
-            --this.attackTime;
-            EntityLivingBase livingBase = this.ghost.getAttackTarget();
-            double distanceSqToEntity = this.ghost.getDistanceSqToEntity(livingBase);
-
-            if (distanceSqToEntity < 4.0D) {
-                if (this.attackTime <= 0) {
-                    this.attackTime = 20;
-                    this.ghost.attackEntityAsMob(livingBase);
-                }
-                if (Math.random() > 0.75 && livingBase instanceof EntityLiving) {
-                    EntityLiving entityLiving = (EntityLiving) livingBase;
-                    entityLiving.addPotionEffect(new PotionEffect(2, 100, 2));
-                }
-            }
-            super.updateTask();
-        }
-    }*/
+    }
 }

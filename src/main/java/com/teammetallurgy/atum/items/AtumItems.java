@@ -8,6 +8,7 @@ import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -15,9 +16,9 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class AtumItems {
-    private static final ArmorMaterial mummyEnum = EnumHelper.addArmorMaterial("Mummy", "", 5, new int[]{1, 3, 2, 1}, 15); //TODO TextureName
-    private static final ArmorMaterial wandererEnum = EnumHelper.addArmorMaterial("Wanderer", "", 10, new int[]{2, 3, 3, 2}, 15); //TODO TextureName
-    private static final ArmorMaterial desertEnum = EnumHelper.addArmorMaterial("Desert", "", 20, new int[]{3, 6, 5, 3}, 15); //TODO TextureName
+    private static final ArmorMaterial mummyEnum = EnumHelper.addArmorMaterial("Mummy", "", 5, new int[]{1, 3, 2, 1}, 15, SoundEvents.item_armor_equip_generic); //TODO TextureName
+    private static final ArmorMaterial wandererEnum = EnumHelper.addArmorMaterial("Wanderer", "", 10, new int[]{2, 3, 3, 2}, 15, SoundEvents.item_armor_equip_generic); //TODO TextureName
+    private static final ArmorMaterial desertEnum = EnumHelper.addArmorMaterial("Desert", "", 20, new int[]{3, 6, 5, 3}, 15, SoundEvents.item_armor_equip_generic); //TODO TextureName
 
     public static final Item SCRAP = new Item();
     public static final Item LINEN = new Item();
@@ -30,24 +31,24 @@ public class AtumItems {
     public static final Item SHORT_BOW = new ItemAtumBaseBow();
     public static final Item STONEGUARD_SWORD = new ItemSword(ToolMaterial.IRON);
     public static final Item SCEPTER = new ItemSword(ToolMaterial.GOLD);
-    public static final Item PTAHS_DECADENCE = new ItemPtahsDecadence(ToolMaterial.EMERALD);
-    public static final Item SOBEKS_RAGE = new ItemSobeksRage(ToolMaterial.EMERALD);
-    public static final Item OSIRIS_WILL = new ItemOsirisWill(ToolMaterial.EMERALD);
-    public static final Item AKERS_TOIL = new ItemAkersToil(ToolMaterial.EMERALD);
-    public static final Item GEBS_BLESSING = new ItemGebsBlessing(ToolMaterial.EMERALD);
+    public static final Item PTAHS_DECADENCE = new ItemPtahsDecadence(ToolMaterial.DIAMOND);
+    public static final Item SOBEKS_RAGE = new ItemSobeksRage(ToolMaterial.DIAMOND);
+    public static final Item OSIRIS_WILL = new ItemOsirisWill(ToolMaterial.DIAMOND);
+    public static final Item AKERS_TOIL = new ItemAkersToil(ToolMaterial.DIAMOND);
+    public static final Item GEBS_BLESSING = new ItemGebsBlessing(ToolMaterial.DIAMOND);
     public static final Item ATENS_FURY = new ItemAtensFury();
     public static final Item RAS_GLORY = new ItemRasGlory(ArmorMaterial.DIAMOND, 0, 0).setTextureFile("EgyptianArmor_1");
     public static final Item SEKHMETS_WRATH = new ItemSekhmetsWrath(1, 1).setTextureFile("EgyptianArmor_1");
     public static final Item NUTS_AGILITY = new ItemNutsAgility(ArmorMaterial.DIAMOND, 2, 2).setTextureFile("EgyptianArmor_2");
     public static final Item HORUS_FLIGHT = new ItemHorusFlight(ArmorMaterial.DIAMOND, 3, 3).setTextureFile("EgyptianArmor_1");
-    public static final Item MONTHUS_STRIKE = new ItemMonthusStrike(ToolMaterial.EMERALD);
-    public static final Item ANHURS_MIGHT = new ItemAnhursMight(ToolMaterial.EMERALD);
-    public static final Item HEDETETS_STING = new ItemHedetetsSting(ToolMaterial.EMERALD);
+    public static final Item MONTHUS_STRIKE = new ItemMonthusStrike(ToolMaterial.DIAMOND);
+    public static final Item ANHURS_MIGHT = new ItemAnhursMight(ToolMaterial.DIAMOND);
+    public static final Item HEDETETS_STING = new ItemHedetetsSting(ToolMaterial.DIAMOND);
     public static final Item HORUS_SOARING = new ItemHorusSoaring();
     public static final Item SHUS_BREATH = new ItemShusBreath();
-    public static final Item PTAHS_DESTRUCTION = new ItemPtahsDestruction(ToolMaterial.EMERALD);
+    public static final Item PTAHS_DESTRUCTION = new ItemPtahsDestruction(ToolMaterial.DIAMOND);
     public static final Item MONTHUS_BLAST = new ItemMonthusBlast();
-    public static final Item NUS_FLUX = new ItemNusFlux(ToolMaterial.EMERALD);
+    public static final Item NUS_FLUX = new ItemNusFlux(ToolMaterial.DIAMOND);
     public static final Item MNEVIS_HORNS = new ItemMnevisHorns(ArmorMaterial.DIAMOND, 0, 0).setTextureFile("RubyArtifactArmor_1");
     public static final Item ISIS_EMBRACE = new ItemIsisEmbrace(ArmorMaterial.DIAMOND, 1, 1).setTextureFile("RubyArtifactArmor_1");
     public static final Item MAATS_BALANCE = new ItemMaatsBalance(ArmorMaterial.DIAMOND, 2, 2).setTextureFile("RubyArtifactArmor_2");
@@ -76,7 +77,7 @@ public class AtumItems {
     public static final Item DESERT_CHEST = new ItemTexturedArmor(desertEnum, 0, 1).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_1");
     public static final Item DESERT_LEGS = new ItemTexturedArmor(desertEnum, 0, 2).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_2");
     public static final Item DESERT_BOOTS = new ItemTexturedArmor(desertEnum, 0, 3).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_1");
-    public static final Item PAPYRUS_PLANT = new ItemReed(AtumBlocks.PAPYRUS);
+    public static final Item PAPYRUS_PLANT = new ItemBlockSpecial(AtumBlocks.PAPYRUS);
     public static final Item ECTOPLASM = new Item();
     public static final Item DUSTY_BONE = new Item();
     public static final Item STONE_CHUNK = new Item();

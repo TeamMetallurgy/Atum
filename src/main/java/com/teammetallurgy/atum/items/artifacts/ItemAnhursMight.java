@@ -4,13 +4,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,8 +33,8 @@ public class ItemAnhursMight extends ItemSword {
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         if (Math.random() > 0.5D) {
-            target.addPotionEffect(new PotionEffect(21, 80, 1, false, true));  //TODO Check showParticles boolean
-            target.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 80, 6, false, true));  //TODO Check showParticles boolean
+            target.addPotionEffect(new PotionEffect(MobEffects.healthBoost, 80, 1));
+            target.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 80, 6));
         }
         return super.hitEntity(stack, target, attacker);
     }
@@ -43,8 +43,8 @@ public class ItemAnhursMight extends ItemSword {
     public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
-            if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == this) {
-                player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 2, 0, true, true));  //TODO Check showParticles boolean
+            if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == this) {
+                player.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 2, 0, true, true));
             }
         }
     }
@@ -59,10 +59,10 @@ public class ItemAnhursMight extends ItemSword {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            tooltip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            tooltip.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(I18n.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + TextFormatting.DARK_GRAY + "[SHIFT]");
         }
     }
 

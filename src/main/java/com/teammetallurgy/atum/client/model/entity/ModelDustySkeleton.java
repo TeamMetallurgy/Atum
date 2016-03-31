@@ -12,7 +12,7 @@ public class ModelDustySkeleton extends ModelZombie {
     }
 
     public ModelDustySkeleton(float modelSize) {
-        super(modelSize, 0.0F, 64, 32);
+        super(modelSize, true);
         this.bipedRightArm = new ModelRenderer(this, 40, 16);
         this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, modelSize);
         this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);

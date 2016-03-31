@@ -1,19 +1,19 @@
 package com.teammetallurgy.atum.world.biome;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.*;
 
 import java.util.List;
 import java.util.Random;
 
-public class AtumWorldChunkManager extends WorldChunkManager {
+public class AtumBiomeProvider extends BiomeProvider {
 
     public static final int BIOME_SCALE = 4;
     private GenLayer biomeIndexLayer;
 
-    public AtumWorldChunkManager(long seed) {
+    public AtumBiomeProvider(long seed) {
 
         GenLayer layerBiome = new GenLayerAtumBiome(seed);
         for (int k = 0; k < BIOME_SCALE; ++k) {
@@ -34,8 +34,8 @@ public class AtumWorldChunkManager extends WorldChunkManager {
         biomeIndexLayer = layerRiver;
     }
 
-    @Override
-    public float[] getRainfall(float[] listToReuse, int x, int z, int width, int length) {
+    /*@Override
+    public float[] getRainfall(float[] listToReuse, int x, int z, int width, int length) { //TODO
         if (listToReuse == null || listToReuse.length < width * length) {
             listToReuse = new float[width * length];
         }
@@ -47,12 +47,12 @@ public class AtumWorldChunkManager extends WorldChunkManager {
 
         for (int k = 0; k < length * width; ++k) {
             // NB: reference wraps this in a try/catch with crash reporting
-            final float rain = BiomeGenBase.getBiome(cache[k]).getIntRainfall() / 65536.0F;
+            final float rain = BiomeGenBase.getBiome(cache[k]).getRainfall() / 65536.0F;
             listToReuse[k] = (rain > 1.0F ? 1.0F : rain);
         }
 
         return listToReuse;
-    }
+    }*/
 
     @Override
     public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomes, int x, int z, int width, int height) {

@@ -4,11 +4,15 @@ import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.*;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class EntityStoneguard extends EntityStone {
@@ -18,41 +22,44 @@ public class EntityStoneguard extends EntityStone {
         this.isImmuneToFire = true;
         this.experienceValue = 8;
 
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.STONEGUARD_SWORD));
+    }
 
-        for (int i = 0; i < this.equipmentDropChances.length; ++i) {
-            this.equipmentDropChances[i] = 0F;
-        }
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
+        this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.53000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.53000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
     @Override
-    protected String getHurtSound()
-    {
-        return "step.stone";
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        super.setEquipmentBasedOnDifficulty(difficulty);
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(AtumItems.STONEGUARD_SWORD));
     }
 
     @Override
-    public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
-        if (i >= 62) {
-            return false;
-        } else {
-            return super.getCanSpawnHere();
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+
+        this.setEquipmentBasedOnDifficulty(difficulty);
+        this.setEnchantmentBasedOnDifficulty(difficulty);
+
+        for (int i = 0; i < this.inventoryArmorDropChances.length; ++i) {
+            this.inventoryArmorDropChances[i] = 0F;
         }
-    }
 
-    @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEFINED;
+        return livingdata;
     }
 
     @Override
@@ -77,15 +84,15 @@ public class EntityStoneguard extends EntityStone {
     }
 
     @Override
-    public void knockBack(Entity entity, float par2, double par3, double par5) {
+    public void knockBack(Entity entity, float strength, double xRatio, double zRatio) {
         this.isAirBorne = true;
-        float f = MathHelper.sqrt_double(par3 * par3 + par5 * par5);
+        float f = MathHelper.sqrt_double(xRatio * xRatio + zRatio * zRatio);
         float f1 = 0.2F;
         this.motionX /= 2.0D;
         this.motionY /= 2.0D;
         this.motionZ /= 2.0D;
-        this.motionX -= par3 / (double) f * (double) f1;
-        this.motionZ -= par5 / (double) f * (double) f1;
+        this.motionX -= xRatio / (double) f * (double) f1;
+        this.motionZ -= zRatio / (double) f * (double) f1;
 
         if (this.motionY > 0.4000000059604645D) {
             this.motionY = 0.4000000059604645D;
@@ -95,8 +102,7 @@ public class EntityStoneguard extends EntityStone {
     @Override
     protected void dropFewItems(boolean recentlyHit, int looting) {
         if (this.rand.nextInt(4) == 0) {
-            int amount = rand.nextInt(2) + 1;
-            this.dropItem(AtumItems.STONE_CHUNK, amount);
+            this.dropItem(AtumItems.STONE_CHUNK, rand.nextInt(2) + 1);
         }
     }
 }

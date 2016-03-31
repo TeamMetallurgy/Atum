@@ -1,11 +1,8 @@
 package com.teammetallurgy.atum.world.decorators;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
-import com.teammetallurgy.atum.items.AtumLoot;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 

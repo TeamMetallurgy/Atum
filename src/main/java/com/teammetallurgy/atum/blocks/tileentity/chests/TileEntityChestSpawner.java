@@ -1,6 +1,7 @@
 package com.teammetallurgy.atum.blocks.tileentity.chests;
 
 import com.teammetallurgy.atum.blocks.BlockChestSpawner;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -9,10 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.WeightedSpawnerEntity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -36,11 +38,12 @@ public class TileEntityChestSpawner extends TileEntityChest {
         }
 
         @Override
-        public void setRandomEntity(MobSpawnerBaseLogic.WeightedRandomMinecart entity) {
-            super.setRandomEntity(entity);
+        public void func_184993_a(WeightedSpawnerEntity spawnerEntity) {
+            super.func_184993_a(spawnerEntity);
 
             if (this.getSpawnerWorld() != null) {
-                this.getSpawnerWorld().markBlockForUpdate(TileEntityChestSpawner.this.pos);
+                IBlockState state = this.getSpawnerWorld().getBlockState(this.getSpawnerPosition());
+                this.getSpawnerWorld().notifyBlockUpdate(TileEntityChestSpawner.this.pos, state, state, 4);
             }
         }
     };
@@ -189,7 +192,7 @@ public class TileEntityChestSpawner extends TileEntityChest {
         List<EntityMob> list = super.worldObj.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB((double) super.pos.getX() - d0, (double) super.pos.getY() - d1, (double) super.pos.getZ() - d0, (double) super.pos.getX() + d0, (double) super.pos.getY() + d1, (double) super.pos.getZ() + d0));
         if (!list.isEmpty()) {
             if (!super.worldObj.isRemote) {
-                player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("chat.atum.enemies")));
+                player.addChatMessage(new TextComponentString(I18n.translateToLocal("chat.atum.enemies")));
             }
             return false;
         } else {

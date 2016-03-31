@@ -7,7 +7,7 @@ import com.teammetallurgy.atum.blocks.BlockLeave;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
@@ -71,12 +71,12 @@ public class WorldGenPalm extends WorldGenAbstractTree {
                 return false;
             } else {
                 BlockPos down = pos.down();
-                Block blockDown = world.getBlockState(down).getBlock();
+                IBlockState stateDown = world.getBlockState(down);
 
                 if (pos.getY() < 256 - i - 1) {
                     return false;
                 } else {
-                    blockDown.onPlantGrow(world, down, pos);
+                    stateDown.getBlock().onPlantGrow(stateDown, world, down, pos);
                     int i3 = pos.getX();
                     int j1 = pos.getZ();
                     int k1 = 0;
@@ -164,9 +164,9 @@ public class WorldGenPalm extends WorldGenAbstractTree {
 
                 for (int j3 = 0; j3 < i; ++j3) {
                     BlockPos upN = pos.up(j3);
-                    Block block2 = world.getBlockState(upN).getBlock();
+                    IBlockState stateUpN = world.getBlockState(upN);
 
-                    if (block2.isAir(world, upN) || block2.isLeaves(world, upN)) {
+                    if (stateUpN.getBlock().isAir(stateUpN, world, upN) || stateUpN.getBlock().isLeaves(stateUpN, world, upN)) {
                         this.setBlockAndNotifyAdequately(world, pos.up(j3), this.metaWood);
                     }
                 }
@@ -178,8 +178,8 @@ public class WorldGenPalm extends WorldGenAbstractTree {
     }
 
     public void spawnLeaf(World world, BlockPos pos) {
-        Block block = world.getBlockState(pos).getBlock();
-        if (world.isAirBlock(pos) || block.canBeReplacedByLeaves(world, pos)) {
+        IBlockState state = world.getBlockState(pos);
+        if (world.isAirBlock(pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
             this.setBlockAndNotifyAdequately(world, pos, this.metaLeaves);
         }
     }
