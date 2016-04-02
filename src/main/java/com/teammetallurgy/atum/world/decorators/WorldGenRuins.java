@@ -8,31 +8,33 @@ import java.util.Random;
 
 public class WorldGenRuins extends WorldGenerator { //TODO figure out what this is based on.
 
-    private final static int AVG_WIDTH = 9;
+    /*private final static int AVG_WIDTH = 9;
     private final static int AVG_DEPTH = 7;
     private final static int VARIATION = 3;
 
     private final static int BUILDING_CHANCE = 3;    // 1 in 3 ruins will be a full building
-    private final static int CHEST_CHANCE = 5;       // 1 in 5 buildings will house a chest
+    private final static int CHEST_CHANCE = 5;       // 1 in 5 buildings will house a chest*/
 
     @Override
-    public boolean generate(World world, Random random, BlockPos pos) { //TODO Make proper port to 1.8.9. Talk to Allaryin
+    public boolean generate(World world, Random random, BlockPos pos) { //TODO Make proper port to 1.9. Talk to Allaryin
         /*int width = random.nextInt(AVG_WIDTH - VARIATION) + VARIATION;
         int depth = random.nextInt(AVG_DEPTH - VARIATION) + VARIATION;
-        int height = world.getHeightValue(x, z);
+        int x = pos.getX();
+        int z = pos.getZ();
+        int height = world.getHeight(x, z);
         int x2;
         int z2;
-        if (world.getHeightValue(x + width, z + depth) >= height) {
+        if (world.getHeight(x + width, z + depth) >= height) {
             x2 = x + width;
             z2 = z + depth;
-        } else if (world.getHeightValue(x - width, z + depth) >= height) {
+        } else if (world.getHeight(x - width, z + depth) >= height) {
             x2 = x - width;
             z2 = z + depth;
-        } else if (world.getHeightValue(x + width, z - depth) >= height) {
+        } else if (world.getHeight(x + width, z - depth) >= height) {
             x2 = x + width;
             z2 = z - depth;
         } else {
-            if (world.getHeightValue(x - width, z - depth) < height) {
+            if (world.getHeight(x - width, z - depth) < height) {
                 return false;
             }
 
@@ -102,8 +104,8 @@ public class WorldGenRuins extends WorldGenerator { //TODO figure out what this 
                 }
             }
 
-            chestY = world.getHeight(chestX, chestZ);
-            world.setBlockState(new BlockPos(chestX, chestY, chestZ), AtumBlocks.CURSEDCHEST.getDefaultState(), 2);
+            chestY = world.getHeight(pos.add(chestX, 0, chestZ));
+            world.setBlockState(new BlockPos(chestX, chestY, chestZ), AtumBlocks.CURSED_CHEST.getDefaultState(), 2);
             IInventory chest = (IInventory) world.getTileEntity(new BlockPos(chestX, chestY, chestZ));
             AtumLoot.fillChest(chest, 5, 0.5F);
         }*/

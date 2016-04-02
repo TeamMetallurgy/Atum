@@ -1,6 +1,5 @@
 package com.teammetallurgy.atum.world.biome;
 
-import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.world.decorators.WorldGenRuins;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -12,12 +11,10 @@ public class BiomeGenRuinedCity extends AtumBiomeGenBase {
 
     protected final WorldGenerator genRuins;
 
-    public BiomeGenRuinedCity(AtumConfig.BiomeConfig config) {
-        super(config);
+    public BiomeGenRuinedCity(BiomeProperties properties) {
+        super(properties);
 
         this.genRuins = new WorldGenRuins();
-
-        super.setHeight(height_LowPlains);
 
         super.deadwoodRarity = -1;
 

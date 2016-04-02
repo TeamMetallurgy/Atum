@@ -9,7 +9,10 @@ import com.teammetallurgy.atum.blocks.tileentity.furnace.TileEntityLimestoneFurn
 import com.teammetallurgy.atum.items.itemblock.*;
 import com.teammetallurgy.atum.utils.AtumUtils;
 import com.teammetallurgy.atum.utils.Constants;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockGravel;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -23,8 +26,8 @@ public class AtumBlocks {
     public static final BlockPortal PORTAL = new BlockPortal();
     public static final Block CURSED_CHEST = new BlockChestSpawner();
     public static final Block SAND = new BlockSands().setHardness(0.5F);
-    public static final Block LIMESTONE_GRAVEL = new BlockGravel().setHardness(0.6F).setSoundType(SoundType.GROUND);
-    public static final Block LIMESTONE = new Block(Material.rock).setHardness(1.5F).setResistance(10.0F).setSoundType(SoundType.STONE);
+    public static final Block LIMESTONE_GRAVEL = new BlockGravel().setHardness(0.6F)/*.setSoundType(SoundType.GROUND)*/;
+    public static final Block LIMESTONE = new Block(Material.rock).setHardness(1.5F).setResistance(10.0F)/*.setSoundType(SoundType.STONE)*/;
     public static final Block LIMESTONE_CRACKED = new BlockAtum();
     public static final Block LIMESTONEBRICK = new BlockLimestoneBricks();
     public static final Block WALL = new BlockWalls(LIMESTONE);
@@ -55,7 +58,7 @@ public class AtumBlocks {
     public static final Block PALM_FENCE = new BlockAtumFence(BlockAtumPlank.EnumType.PALM.getMapColor());
     public static final Block PALM_FENCE_GATE = new BlockAtumFenceGate();
     public static final Block PALM_HATCH = new BlockAtumTrapDoor();
-    public static final Block PALM_LADDER = new BlockAtumLadder().setHardness(0.4F).setSoundType(SoundType.LADDER);
+    public static final Block PALM_LADDER = new BlockAtumLadder();
     public static final Block THIN_CRYSTAL_GLASS = new BlockAtumPane();
     public static final Block THIN_CRYSTAL_STAINED_GLASS = new BlockAtumPaneStained();
     public static final Block THIN_FRAMED_GLASS = new BlockAtumPane();
@@ -67,15 +70,15 @@ public class AtumBlocks {
     public static final Block COAL_ORE = new BlockAtumOres();
     public static final Block LAPIS_ORE = new BlockAtumOres();
     public static final Block DIAMOND_ORE = new BlockAtumOres();
-    public static final Block REDSTONE_ORE = new BlockAtumRedstone(false);
-    public static final Block LIT_REDSTONE_ORE = new BlockAtumRedstone(true);
+    public static final Block REDSTONE_ORE = new BlockAtumRedstoneOre(false);
+    public static final Block LIT_REDSTONE_ORE = new BlockAtumRedstoneOre(true);
     public static final Block LIMESTONE_FURNACE = new BlockLimestoneFurnace(false);
     public static final Block LIMESTONE_FURNACE_LIT = new BlockLimestoneFurnace(true);
     public static final Block DEADWOOD_DOOR = new BlockAtumDoor().setHardness(3.0F);
     public static final Block DEADWOOD_FENCE = new BlockAtumFence(BlockAtumPlank.EnumType.DEADWOOD.getMapColor());
     public static final Block DEADWOOD_FENCE_GATE = new BlockAtumFenceGate();
     public static final Block DEADWOOD_HATCH = new BlockAtumTrapDoor();
-    public static final Block DEADWOOD_LADDER = new BlockAtumLadder().setHardness(0.4F).setSoundType(SoundType.LADDER);
+    public static final Block DEADWOOD_LADDER = new BlockAtumLadder();
     public static final BlockSlab WOOD_SLAB = new BlockAtumHalfWoodSlab();
     public static final BlockSlab WOOD_DOUBLE_SLAB = new BlockAtumDoubleWoodSlab();
     public static final Block PALM_STAIRS = new BlockAtumStairs(PLANKS.getDefaultState().withProperty(BlockAtumPlank.VARIANT, BlockAtumPlank.EnumType.PALM));
@@ -94,7 +97,7 @@ public class AtumBlocks {
         register(LARGE_STONE_STAIRS, "large_stairs_unbreakable");
         register(LARGE_STONE_STAIRS_BREAKABLE, "large_stairs");
         register(SMALL_STONE_STAIRS, "small_stairs");
-        register(SAND_LAYERED, "sand_layer"); //TODO Merge into sand block
+        register(SAND_LAYERED, "sand_layer");
         register(CRYSTAL_GLASS, "crystal_glass");
         register(FRAMED_GLASS, "framed_glass");
         register(DATE_BLOCK, "date_block", null); //TODO name

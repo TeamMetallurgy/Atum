@@ -20,8 +20,8 @@ import java.util.List;
 
 public class ItemMnevisHorns extends ItemTexturedArmor {
 
-    public ItemMnevisHorns(ArmorMaterial material, int renderIndex, int armorType) {
-        super(material, renderIndex, armorType);
+    public ItemMnevisHorns(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
+        super(material, renderIndex, slot);
     }
 
     @Override

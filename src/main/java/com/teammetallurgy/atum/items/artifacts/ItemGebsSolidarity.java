@@ -4,6 +4,7 @@ import com.teammetallurgy.atum.items.ItemTexturedArmor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -18,8 +19,8 @@ import java.util.List;
 
 public class ItemGebsSolidarity extends ItemTexturedArmor {
 
-    public ItemGebsSolidarity(ArmorMaterial material, int renderIndex, int armorType) {
-        super(material, renderIndex, armorType);
+    public ItemGebsSolidarity(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
+        super(material, renderIndex, slot);
     }
 
     @Override

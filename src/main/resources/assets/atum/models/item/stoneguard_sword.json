@@ -1,5 +1,5 @@
 {
-  "parent": "atum:item/default_tool",
+  "parent": "item/handheld",
   "textures": {
     "layer0": "atum:items/stoneguard_sword"
   }

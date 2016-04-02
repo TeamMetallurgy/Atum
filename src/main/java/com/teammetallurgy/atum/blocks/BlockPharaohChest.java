@@ -11,8 +11,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -20,7 +21,7 @@ import java.util.Random;
 public class BlockPharaohChest extends BlockChest {
 
     protected BlockPharaohChest() {
-        super(0);
+        super(Type.BASIC);
         this.setHardness(4.0F);
     }
 
@@ -53,7 +54,7 @@ public class BlockPharaohChest extends BlockChest {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileEntityPharaohChest) {
             TileEntityPharaohChest pharaohChest = (TileEntityPharaohChest) te;

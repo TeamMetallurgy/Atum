@@ -51,7 +51,7 @@ public class TileEntityPharaohChest extends TileEntityChest implements IInventor
     public void spawn(EntityPlayer player) {
         EntityPharaoh pharaoh = new EntityPharaoh(super.worldObj);
         pharaoh.setPosition((double) this.pos.getX() + 0.5D, (double) (this.pos.getX() + 1), (double) this.pos.getX() + 0.5D);
-        pharaoh.link(this.pos.getX(), this.pos.getY(), this.pos.getZ());
+        pharaoh.link(this.pos);
         if (!super.worldObj.isRemote) {
             super.worldObj.spawnEntityInWorld(pharaoh);
         }

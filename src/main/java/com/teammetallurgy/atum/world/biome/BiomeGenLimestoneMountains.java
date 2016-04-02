@@ -1,7 +1,6 @@
 package com.teammetallurgy.atum.world.biome;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.handler.AtumConfig;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
@@ -9,12 +8,10 @@ import java.util.Random;
 
 public class BiomeGenLimestoneMountains extends AtumBiomeGenBase {
 
-    public BiomeGenLimestoneMountains(AtumConfig.BiomeConfig config) {
-        super(config);
+    public BiomeGenLimestoneMountains(BiomeProperties properties) {
+        super(properties);
 
         super.fillerBlock = AtumBlocks.LIMESTONE.getDefaultState();
-
-        super.setHeight(height_MidHills);
 
         super.palmRarity = -1;
         super.pyramidRarity = -1;

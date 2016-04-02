@@ -20,8 +20,6 @@ public class EntityArrowExplosive extends CustomArrow {
     private boolean inGround;
     private int ticksInGround;
     private int ticksInAir;
-    private double damage = 2.0D;
-    private int knockbackStrength;
 
     public EntityArrowExplosive(World world) {
         super(world);
@@ -78,7 +76,7 @@ public class EntityArrowExplosive extends CustomArrow {
                 this.motionY *= (double) (this.rand.nextFloat() * 0.2F);
                 this.motionZ *= (double) (this.rand.nextFloat() * 0.2F);
                 this.ticksInGround = 0;
-                this.ticksInAir = 0;
+                ticksInAir = 0;
             }
 
             ++this.field_184552_b;

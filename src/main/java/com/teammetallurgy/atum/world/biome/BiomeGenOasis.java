@@ -1,7 +1,6 @@
 package com.teammetallurgy.atum.world.biome;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.handler.AtumConfig;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -16,14 +15,10 @@ public class BiomeGenOasis extends AtumBiomeGenBase {
     protected final int lakeRarity = 3;
     protected final int waterLevel = 64;
 
-    public BiomeGenOasis(AtumConfig.BiomeConfig config) {
-        super(config);
+    public BiomeGenOasis(BiomeProperties properties) {
+        super(properties);
 
         super.topBlock = AtumBlocks.FERTILE_SOIL.getDefaultState();
-
-        super.setHeight(height_ShallowWaters);
-
-        super.setTemperatureRainfall(0.8F, 0.9F);
 
         // no hostile spawns here
 

@@ -1,19 +1,16 @@
 package com.teammetallurgy.atum.handler.event;
 
-import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-
-import java.util.Random;
 
 public class ClientEvents {
     //private boolean raining; //TODO Not beeing initialized?
@@ -22,20 +19,20 @@ public class ClientEvents {
     public void onRender(TickEvent.RenderTickEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-        if (player != null && player.getCurrentArmor(3) != null) {
-            if (player.getCurrentArmor(3).getItem() == AtumItems.MUMMY_HELMET) {
+        if (player != null && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null) {
+            if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == AtumItems.MUMMY_HELMET) {
                 ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
                 int width = scaledResolution.getScaledWidth();
                 int height = scaledResolution.getScaledHeight();
 
                 Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("atum", "textures/hud/mummyblur.png"));
                 Tessellator tessellator = Tessellator.getInstance();
-                WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-                worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-                worldrenderer.pos(0.0D, height, -100).tex(0.0D, 1.0D).endVertex();
-                worldrenderer.pos(width, height, -100).tex(1.0D, 1.0D).endVertex();
-                worldrenderer.pos(width, 0.0D, -100).tex(1.0D, 0.0D).endVertex();
-                worldrenderer.pos(0.0D, 0.0D, -100).tex(0.0D, 0.0D).endVertex();
+                VertexBuffer vertexBuffer = tessellator.getBuffer();
+                vertexBuffer.begin(7, DefaultVertexFormats.POSITION);
+                vertexBuffer.pos(0.0D, height, -100).tex(0.0D, 1.0D).endVertex();
+                vertexBuffer.pos(width, height, -100).tex(1.0D, 1.0D).endVertex();
+                vertexBuffer.pos(width, 0.0D, -100).tex(1.0D, 0.0D).endVertex();
+                vertexBuffer.pos(0.0D, 0.0D, -100).tex(0.0D, 0.0D).endVertex();
                 tessellator.draw();
             }
         }
@@ -43,9 +40,9 @@ public class ClientEvents {
 
     @SubscribeEvent
     public void onUpdate(TickEvent.PlayerTickEvent event) {
-        EntityPlayer player = event.player;
+        /*EntityPlayer player = event.player;
 
-        /*if (player.dimension == AtumConfig.DIMENSION_ID) { //TODO Fix
+        if (player.dimension == AtumConfig.DIMENSION_ID) { //TODO Fix
             if (player.worldObj.isRaining()) {
                 //raining = true;
 

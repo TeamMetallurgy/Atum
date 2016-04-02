@@ -1,5 +1,5 @@
 {
-  "parent": "atum:item/default",
+  "parent": "item/generated",
   "textures": {
     "layer0": "atum:items/fish_2"
   }

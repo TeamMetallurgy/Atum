@@ -3,8 +3,10 @@ package com.teammetallurgy.atum.world.decorators;
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.blocks.BlockAtumLog;
 import com.teammetallurgy.atum.blocks.BlockAtumPlank;
+import com.teammetallurgy.atum.blocks.BlockAtumSapling;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
@@ -28,8 +30,7 @@ public class WorldGenDeadwood extends WorldGenAbstractTree {
     public boolean generate(World world, Random random, BlockPos pos) { //TODO figure out how to do the Direction offset (EnumFacing) properly
         int i = random.nextInt(3) + this.minTreeHeight;
         boolean flag = true;
-        IBlockState baseState = world.getBlockState(pos.up());
-        if (baseState == AtumBlocks.SAND.getDefaultState() && pos.getY() >= 1 && pos.getY() + i + 1 <= 256) {
+        if (pos.getY() >= 1 && pos.getY() + i + 1 <= 256) {
             for (int spaceY = pos.getY(); spaceY <= pos.getY() + 1 + i; spaceY++) {
 
                 int extraGirth = 1;
@@ -57,78 +58,90 @@ public class WorldGenDeadwood extends WorldGenAbstractTree {
                 }
             }
 
-            if (flag && pos.getY() < 256 - 1 - i) {
-                baseState.getBlock().onPlantGrow(world, pos.up(), pos);
+            if (!flag) {
+                return false;
+            } else {
+                IBlockState state = world.getBlockState(pos.down());
 
-                int splitStartfromTop = 4;
-                int logX = pos.getX();
-                int logZ = pos.getZ();
-                int branchStart = i - random.nextInt(splitStartfromTop + 1) - 1;
-                int branchHeight = splitStartfromTop - random.nextInt(splitStartfromTop);
-                int branchDirection = random.nextInt(3);
+                if (state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, (BlockAtumSapling) AtumBlocks.SAPLING) && pos.getY() < 256 - 1 - i) {
+                    setStrangeSandAt(world, pos.down());
 
-                // First branch
-                for (int logY = pos.getY(); logY < i + pos.getY(); logY++) {
+                    int splitStartfromTop = 4;
+                    int logX = pos.getX();
+                    int logZ = pos.getZ();
+                    int branchStart = i - random.nextInt(splitStartfromTop + 1) - 1;
+                    int branchHeight = splitStartfromTop - random.nextInt(splitStartfromTop);
+                    int branchDirection = random.nextInt(3);
 
-                    if (logY >= branchStart + pos.getY() && branchHeight > 0) {
+                    // First branch
+                    for (int logY = pos.getY(); logY < i + pos.getY(); logY++) {
+
+                        if (logY >= branchStart + pos.getY() && branchHeight > 0) {
                         /*logX += Direction.offsetX[branchDirection];
                         logZ += Direction.offsetZ[branchDirection];*/ //TODO
-                        branchHeight--;
-                    }
+                            branchHeight--;
+                        }
 
-                    BlockPos currentPos = new BlockPos(logX, logY, logZ);
-                    Block currentBlock = world.getBlockState(currentPos).getBlock();
-                    if (currentBlock.isAir(world, currentPos) || currentBlock.isLeaves(world, currentPos)) {
-                        setBlockAndNotifyAdequately(world, currentPos, this.blockLog);
-                    }
+                        BlockPos currentPos = new BlockPos(logX, logY, logZ);
+                        Block currentBlock = world.getBlockState(currentPos).getBlock();
+                        if (currentBlock.isAir(state, world, currentPos) || currentBlock.isLeaves(state, world, currentPos)) {
+                            setBlockAndNotifyAdequately(world, currentPos, this.blockLog);
+                        }
 
-                    // Trunk base
-                    if (logY == pos.getY()) {
-                        int numberOfBaseSides = random.nextInt(3) + 1;
-                        for (int j = 0; j < numberOfBaseSides; j++) {
-                            int baseDirection = random.nextInt(3);
+                        // Trunk base
+                        if (logY == pos.getY()) {
+                            int numberOfBaseSides = random.nextInt(3) + 1;
+                            for (int j = 0; j < numberOfBaseSides; j++) {
+                                //int baseDirection = random.nextInt(3);
                             /*int baseX = Direction.offsetX[baseDirection] + logX;
                             int baseZ = Direction.offsetZ[baseDirection] + logZ;*/ //TODO
 
-                            //BlockPos currentBasePos = new BlockPos(baseX, logY, baseZ); //TODO
-                            BlockPos currentBasePos = new BlockPos(logX, logY, logZ); //Temp
-                            Block currentBaseBlock = world.getBlockState(currentPos).getBlock();
-                            Block lowerBaseBlock = world.getBlockState(currentPos.down()).getBlock();
-                            if ((currentBaseBlock.isAir(world, currentBasePos) || currentBaseBlock.isLeaves(world, currentBasePos)) && lowerBaseBlock == AtumBlocks.SAND.getDefaultState()) {
-                                setBlockAndNotifyAdequately(world, currentBasePos, this.blockLog);
+                                //BlockPos currentBasePos = new BlockPos(baseX, logY, baseZ); //TODO
+                                BlockPos currentBasePos = new BlockPos(logX, logY, logZ); //Temp
+                                Block currentBaseBlock = world.getBlockState(currentPos).getBlock();
+                                Block lowerBaseBlock = world.getBlockState(currentPos.down()).getBlock();
+                                if ((currentBaseBlock.isAir(state, world, currentBasePos) || currentBaseBlock.isLeaves(state, world, currentBasePos)) && lowerBaseBlock == AtumBlocks.SAND.getDefaultState()) {
+                                    setBlockAndNotifyAdequately(world, currentBasePos, this.blockLog);
+                                }
                             }
                         }
                     }
-                }
 
-                // Second branch
-                logX = pos.getX();
-                logZ = pos.getZ();
-                int branch2Direction = random.nextInt(3);
-                if (branchDirection != branch2Direction) {
-                    int branch2Start = branchStart - random.nextInt(splitStartfromTop - 1) - 1;
-                    int branch2Height = 1 + random.nextInt(splitStartfromTop);
-                    boolean firstRun = true;
-                    for (int logY = branch2Start + pos.getY(); logY < i + pos.getY() && branch2Height > 0; logY++) {
+                    // Second branch
+                    logX = pos.getX();
+                    logZ = pos.getZ();
+                    int branch2Direction = random.nextInt(3);
+                    if (branchDirection != branch2Direction) {
+                        int branch2Start = branchStart - random.nextInt(splitStartfromTop - 1) - 1;
+                        int branch2Height = 1 + random.nextInt(splitStartfromTop);
+                        boolean firstRun = true;
+                        for (int logY = branch2Start + pos.getY(); logY < i + pos.getY() && branch2Height > 0; logY++) {
 
-                        if (!firstRun) {
+                            if (!firstRun) {
                             /*logX += Direction.offsetX[branch2Direction];
                             logZ += Direction.offsetZ[branch2Direction];*/ //TODO
 
-                            BlockPos currentPos = new BlockPos(logX, logY, logZ);
-                            Block currentBlock = world.getBlockState(currentPos).getBlock();
-                            if (currentBlock.isAir(world, currentPos) || currentBlock.isLeaves(world, currentPos)) {
-                                setBlockAndNotifyAdequately(world, currentPos, this.blockLog);
+                                BlockPos currentPos = new BlockPos(logX, logY, logZ);
+                                Block currentBlock = world.getBlockState(currentPos).getBlock();
+                                if (currentBlock.isAir(state, world, currentPos) || currentBlock.isLeaves(state, world, currentPos)) {
+                                    setBlockAndNotifyAdequately(world, currentPos, this.blockLog);
+                                }
                             }
+                            firstRun = false;
+                            branch2Height--;
                         }
-                        firstRun = false;
-                        branch2Height--;
-                    }
 
+                    }
                 }
                 return true;
             }
         }
         return false;
+    }
+
+    protected void setStrangeSandAt(World worldIn, BlockPos pos) {
+        if (worldIn.getBlockState(pos).getBlock() != AtumBlocks.SAND) {
+            this.setBlockAndNotifyAdequately(worldIn, pos, AtumBlocks.SAND.getDefaultState());
+        }
     }
 }

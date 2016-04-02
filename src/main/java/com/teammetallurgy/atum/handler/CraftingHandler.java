@@ -13,13 +13,13 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class CraftingHandler {
-    public void register() {
+    public static void register() {
         addRecipes();
         addSmeltingRecipes();
         addShapelessRecipes();
     }
 
-    private void addRecipes() {
+    private static void addRecipes() {
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()), new ItemStack(AtumBlocks.LIMESTONEBRICK));
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()), new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()));
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LARGE_STONE_STAIRS_BREAKABLE), new ItemStack(AtumBlocks.LARGE_STONE_STAIRS)); //TODO
@@ -96,7 +96,7 @@ public class CraftingHandler {
         }
     }
 
-    private void addSmeltingRecipes() {
+    private static void addSmeltingRecipes() {
         GameRegistry.addSmelting(AtumBlocks.IRON_ORE, new ItemStack(Items.iron_ingot), 0.7F);
         GameRegistry.addSmelting(AtumBlocks.COAL_ORE, new ItemStack(Items.coal), 0.1F);
         GameRegistry.addSmelting(AtumBlocks.REDSTONE_ORE, new ItemStack(Items.redstone), 0.7F);
@@ -109,7 +109,7 @@ public class CraftingHandler {
         GameRegistry.addSmelting(AtumBlocks.SAND, new ItemStack(AtumBlocks.CRYSTAL_GLASS), 0.1F);
     }
 
-    private void addShapelessRecipes() {
+    private static void addShapelessRecipes() {
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.PLANKS, 4, BlockAtumPlank.EnumType.PALM.getMetadata()), new ItemStack(AtumBlocks.LOG, 1, BlockAtumPlank.EnumType.PALM.getMetadata()));
         GameRegistry.addShapelessRecipe(new ItemStack(AtumItems.DESERT_HELMET), AtumItems.WANDERER_HELMET, Items.iron_helmet);
         GameRegistry.addShapelessRecipe(new ItemStack(AtumItems.DESERT_CHEST), AtumItems.WANDERER_CHEST, Items.iron_chestplate);

@@ -3,6 +3,7 @@ package com.teammetallurgy.atum.items.artifacts;
 import com.teammetallurgy.atum.items.ItemTexturedArmor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
@@ -16,8 +17,8 @@ import java.util.List;
 
 public class ItemIsisEmbrace extends ItemTexturedArmor {
 
-    public ItemIsisEmbrace(ArmorMaterial material, int renderIndex, int armorType) {
-        super(material, renderIndex, armorType);
+    public ItemIsisEmbrace(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
+        super(material, renderIndex, slot);
         this.setRepairItem(Items.diamond);
     }
 

@@ -2,9 +2,12 @@ package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class EntityBanditWarlord extends EntityBanditBase {
@@ -12,13 +15,6 @@ public class EntityBanditWarlord extends EntityBanditBase {
     public EntityBanditWarlord(World world) {
         super(world);
         this.experienceValue = 16;
-
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SCIMITAR));
-        EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), 5 + this.worldObj.getDifficulty().getDifficultyId() * this.rand.nextInt(6));
-
-        for (int i = 0; i < this.equipmentDropChances.length; ++i) {
-            this.equipmentDropChances[i] = 0.05F;
-        }
     }
 
     @Override
@@ -28,6 +24,47 @@ public class EntityBanditWarlord extends EntityBanditBase {
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.53000000417232513D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
+    }
+
+    @Override
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        super.setEquipmentBasedOnDifficulty(difficulty);
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(AtumItems.SCIMITAR));
+    }
+
+    @Override
+    protected void setEnchantmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        float f = difficulty.getClampedAdditionalDifficulty();
+
+        if (this.getHeldItemMainhand() != null && this.rand.nextFloat() < 0.25F * f) {
+            EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItemMainhand(), (int) (5.0F + f * (float) this.rand.nextInt(6)), false);
+        }
+
+        for (EntityEquipmentSlot entityequipmentslot : EntityEquipmentSlot.values()) {
+            if (entityequipmentslot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+                ItemStack itemstack = this.getItemStackFromSlot(entityequipmentslot);
+
+                if (itemstack != null && this.rand.nextFloat() < 0.5F * f) {
+                    EnchantmentHelper.addRandomEnchantment(this.rand, itemstack, (int) (5.0F + f * (float) this.rand.nextInt(18)), false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+
+        this.setEquipmentBasedOnDifficulty(difficulty);
+        this.setEnchantmentBasedOnDifficulty(difficulty);
+
+        for (int i = 0; i < this.inventoryArmorDropChances.length; ++i) {
+            this.inventoryArmorDropChances[i] = 0.05F;
+        }
+
+        this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
+
+        return livingdata;
     }
 
     @Override

@@ -1,18 +1,13 @@
 package com.teammetallurgy.atum.world.biome;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.handler.AtumConfig;
 
 public class BiomeGenDeadOasis extends AtumBiomeGenBase {
 
-    public BiomeGenDeadOasis(AtumConfig.BiomeConfig config) {
-        super(config);
+    public BiomeGenDeadOasis(BiomeProperties properties) {
+        super(properties);
 
         super.topBlock = AtumBlocks.LIMESTONE_CRACKED.getDefaultState();
-
-        super.setHeight(height_ShallowWaters);
-
-        super.setTemperatureRainfall(0.8F, 0.9F);
 
         //no hostile spawns here
 

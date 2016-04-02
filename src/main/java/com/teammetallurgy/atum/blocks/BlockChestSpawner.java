@@ -17,7 +17,7 @@ import java.util.Random;
 public class BlockChestSpawner extends BlockChest {
 
     protected BlockChestSpawner() {
-        super(0);
+        super(Type.BASIC);
     }
 
     @Override

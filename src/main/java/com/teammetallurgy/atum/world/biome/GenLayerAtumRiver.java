@@ -1,6 +1,5 @@
 package com.teammetallurgy.atum.world.biome;
 
-import com.teammetallurgy.atum.handler.AtumConfig;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
@@ -20,7 +19,7 @@ public class GenLayerAtumRiver extends GenLayer {
         int[] pInts = this.parent.getInts(xx, zz, ww, ll);
         int[] cache = IntCache.getIntCache(width * length);
 
-        final int riverId = AtumConfig.BiomeConfig.DRIED_RIVER.getID();
+        final int riverId = AtumBiomes.BiomeType.DRIED_RIVER.getID();
 
         for (int i2 = 0; i2 < length; ++i2) {
             for (int j2 = 0; j2 < width; ++j2) {

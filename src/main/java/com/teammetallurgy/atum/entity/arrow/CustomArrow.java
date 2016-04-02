@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.registry.IThrowableEntity;
 
 public class CustomArrow extends EntityArrow implements IThrowableEntity {
     protected static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(CustomArrow.class, DataSerializers.BYTE);
-    public float arrowShake = 0;
 
     public CustomArrow(World world) {
         super(world);

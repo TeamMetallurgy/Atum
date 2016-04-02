@@ -1,13 +1,14 @@
 package com.teammetallurgy.atum.world;
 
 import com.teammetallurgy.atum.handler.AtumConfig;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
 public class AtumWorlds {
-    public void register() {
-        int atumID = AtumConfig.DIMENSION_ID;
+    public static DimensionType ATUM;
 
-        DimensionManager.registerProviderType(atumID, WorldProviderAtum.class, true);
-        DimensionManager.registerDimension(atumID, atumID);
+    public static void register() {
+        ATUM = DimensionType.register("Atum", "_atum", AtumConfig.DIMENSION_ID, WorldProviderAtum.class, true);
+        DimensionManager.registerDimension(AtumConfig.DIMENSION_ID, ATUM);
     }
 }

@@ -18,8 +18,9 @@ archivesBaseName = "Atum"
 
 minecraft {
     version = "${minecraft_version}-${forge_version}"
-	mappings = "${mappings_version}"
-	runDir = "run"
+    mappings = "${mappings_version}"
+    useDepAts = true
+    runDir = "run"
 }
 
 dependencies {

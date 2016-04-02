@@ -23,8 +23,8 @@ import java.util.List;
 
 public class ItemHorusFlight extends ItemTexturedArmor {
 
-    public ItemHorusFlight(ArmorMaterial material, int renderIndex, int armorType) {
-        super(material, renderIndex, armorType);
+    public ItemHorusFlight(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
+        super(material, renderIndex, slot);
     }
 
     @Override

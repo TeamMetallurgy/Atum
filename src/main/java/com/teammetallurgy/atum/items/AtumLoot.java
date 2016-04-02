@@ -54,7 +54,7 @@ public class AtumLoot {
         }
     }
 
-    public void register() {
+    public static void register() {
         artifacts = new ArrayList<ItemStack>();
         goodLoot = new AtumWeightedLootSet();
         junkLoot = new AtumWeightedLootSet();

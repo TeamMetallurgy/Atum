@@ -4,15 +4,14 @@ import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class EntityBarbarian extends EntityBanditBase {
@@ -20,53 +19,37 @@ public class EntityBarbarian extends EntityBanditBase {
     public EntityBarbarian(World world) {
         super(world);
         this.experienceValue = 9;
-
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.GREATSWORD));
-        //this.enchantEquipment(); //TODO
-
-        for (int i = 0; i < this.equipmentDropChances.length; ++i) {
-            this.equipmentDropChances[i] = 0F;
-        }
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.53000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.53000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
     @Override
-    public boolean getCanSpawnHere() {
-        BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        if (pos.getY() <= 62) {
-            return false;
-        } else {
-            return this.worldObj.canBlockSeeSky(pos) && this.isValidLightLevel() &&
-                    this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        super.setEquipmentBasedOnDifficulty(difficulty);
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(AtumItems.GREATSWORD));
+    }
+
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+
+        this.setEquipmentBasedOnDifficulty(difficulty);
+        this.setEnchantmentBasedOnDifficulty(difficulty);
+
+        for (int i = 0; i < this.inventoryArmorDropChances.length; ++i) {
+            this.inventoryArmorDropChances[i] = 0F;
         }
-    }
 
-    @Override
-    protected boolean isValidLightLevel() {
-        BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        int bl = this.worldObj.getLightFor(EnumSkyBlock.BLOCK, pos);
-        int light = this.worldObj.getLight(pos);
+        this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
 
-        if (bl >= 7) {
-            return false;
-        } else if (light > 8) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEFINED;
+        return livingdata;
     }
 
     @Override
@@ -84,12 +67,12 @@ public class EntityBarbarian extends EntityBanditBase {
 
     @Override
     public boolean attackEntityAsMob(Entity entity) {
-        if (this.getEquipmentInSlot(0).getItem() == AtumItems.GREATSWORD) {
-            float f = (float) this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+        if (this.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == AtumItems.GREATSWORD) {
+            float f = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
             float i = 1.2F;
 
             if (entity instanceof EntityLivingBase) {
-                f += EnchantmentHelper.func_152377_a(this.getHeldItem(), ((EntityLivingBase) entity).getCreatureAttribute());
+                f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) entity).getCreatureAttribute());
                 i += EnchantmentHelper.getKnockbackModifier(this);
             }
 

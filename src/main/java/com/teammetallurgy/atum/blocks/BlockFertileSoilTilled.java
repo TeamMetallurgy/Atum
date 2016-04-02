@@ -2,17 +2,19 @@ package com.teammetallurgy.atum.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -23,16 +25,35 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 public class BlockFertileSoilTilled extends Block {
-
     public static final PropertyInteger MOISTURE = PropertyInteger.create("moisture", 0, 7);
+    protected static final AxisAlignedBB TILLED_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
 
     public BlockFertileSoilTilled() {
         super(Material.ground);
         this.setHardness(0.5F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(MOISTURE, Integer.valueOf(0)));
         this.setTickRandomly(true);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F);
         this.setLightOpacity(255);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return TILLED_AABB;
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World world, BlockPos pos) {
+        return FULL_BLOCK_AABB;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
     }
 
     /*@Override
@@ -48,64 +69,44 @@ public class BlockFertileSoilTilled extends Block {
     }*/
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state) {
-        return new AxisAlignedBB((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double) (pos.getX() + 1), (double) (pos.getY() + 1), (double) (pos.getZ() + 1));
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public boolean isFullCube() {
-        return false;
-    }
-
-    @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        int i = (state.getValue(MOISTURE)).intValue();
+        int i = state.getValue(MOISTURE);
 
-        if (!this.hasWater(world, pos) && !world.canLightningStrike(pos.up())) {
+        if (!this.hasWater(world, pos) && !world.isRainingAt(pos.up())) {
             if ((i & 3) > 0 && rand.nextDouble() > 0.5D) {
-                world.setBlockState(pos, state.withProperty(MOISTURE, Integer.valueOf(i - 1)), 2);
+                world.setBlockState(pos, state.withProperty(MOISTURE, i - 1), 2);
             } else if (!this.hasCrops(world, pos)) {
                 world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
             }
-        } else {
+        } else if (i < 7) {
             world.setBlockState(pos, state.withProperty(MOISTURE, Integer.valueOf(7)), 2);
         }
 
-        Block block = world.getBlockState(pos.up()).getBlock();
-        if (block != null) {
+        Block blockUp = world.getBlockState(pos.up()).getBlock();
+        if (blockUp != null) {
             for (int j = 0; j < 2; ++i) {
-                block.updateTick(world, pos.up(), state, rand);
+                blockUp.updateTick(world, pos.up(), state, rand);
             }
         }
     }
 
     @Override
     public void onFallenUpon(World world, BlockPos pos, Entity entity, float fallDistance) {
-        if (entity instanceof EntityLivingBase) {
-            if (!world.isRemote && world.rand.nextFloat() < fallDistance - 0.5F) {
-                if (!(entity instanceof EntityPlayer) && !world.getGameRules().getBoolean("mobGriefing")) {
-                    return;
-                }
-
-                world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
-            }
-            super.onFallenUpon(world, pos, entity, fallDistance);
+        if (!world.isRemote && world.rand.nextFloat() < fallDistance - 0.5F && entity instanceof EntityLivingBase && (entity instanceof EntityPlayer || world.getGameRules().getBoolean("mobGriefing")) && entity.width * entity.width * entity.height > 0.512F) {
+            world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
         }
+
+        super.onFallenUpon(world, pos, entity, fallDistance);
     }
 
     private boolean hasCrops(World world, BlockPos pos) {
         Block block = world.getBlockState(pos.up()).getBlock();
-        return block instanceof IPlantable && canSustainPlant(world, pos, EnumFacing.UP, (IPlantable) block);
+        return block instanceof IPlantable && canSustainPlant(world.getBlockState(pos), world, pos, EnumFacing.UP, (IPlantable) block);
     }
 
     private boolean hasWater(World world, BlockPos pos) {
         for (BlockPos.MutableBlockPos mutableBlockPos : BlockPos.getAllInBoxMutable(pos.add(-4, 0, -4), pos.add(4, 1, 4))) {
-            if (world.getBlockState(mutableBlockPos).getBlock().getMaterial() == Material.water) {
+            if (world.getBlockState(mutableBlockPos).getMaterial() == Material.water) {
                 return true;
             }
         }
@@ -116,13 +117,13 @@ public class BlockFertileSoilTilled extends Block {
     public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
         super.onNeighborBlockChange(world, pos, state, neighborBlock);
 
-        if (world.getBlockState(pos.up()).getBlock().getMaterial().isSolid()) {
+        if (world.getBlockState(pos.up()).getMaterial().isSolid()) {
             world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
         }
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
         EnumPlantType plantType = plantable.getPlantType(world, pos.up());
 
         switch (plantType) {
@@ -131,13 +132,13 @@ public class BlockFertileSoilTilled extends Block {
             case Plains:
                 return true;
             default:
-                return super.canSustainPlant(world, pos, direction, plantable);
+                return super.canSustainPlant(state, world, pos, direction, plantable);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         switch (side) {
             case UP:
                 return true;
@@ -145,10 +146,11 @@ public class BlockFertileSoilTilled extends Block {
             case SOUTH:
             case WEST:
             case EAST:
-                Block block = world.getBlockState(pos).getBlock();
-                return !block.isOpaqueCube() && block != AtumBlocks.FERTILE_SOIL;
+                IBlockState stateSide = world.getBlockState(pos.offset(side));
+                Block block = stateSide.getBlock();
+                return !stateSide.isOpaqueCube() && block != AtumBlocks.FERTILE_SOIL && block != Blocks.grass_path;
             default:
-                return super.shouldSideBeRendered(world, pos, side);
+                return super.shouldSideBeRendered(state, world, pos, side);
         }
     }
 
@@ -158,23 +160,23 @@ public class BlockFertileSoilTilled extends Block {
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(MOISTURE, Integer.valueOf(meta & 7));
+    @SideOnly(Side.CLIENT)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return new ItemStack(AtumBlocks.SAND);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World world, BlockPos pos) {
-        return Item.getItemFromBlock(AtumBlocks.SAND);
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(MOISTURE, meta & 7);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return ((Integer) state.getValue(MOISTURE)).intValue();
+        return state.getValue(MOISTURE);
     }
 
     @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, new IProperty[]{MOISTURE});
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, MOISTURE);
     }
 }

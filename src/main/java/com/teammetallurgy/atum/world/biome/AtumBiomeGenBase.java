@@ -2,7 +2,6 @@ package com.teammetallurgy.atum.world.biome;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.entity.*;
-import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.world.decorators.WorldGenDeadwood;
 import com.teammetallurgy.atum.world.decorators.WorldGenPalm;
 import com.teammetallurgy.atum.world.decorators.WorldGenPyramid;
@@ -19,9 +18,6 @@ import java.util.Random;
 
 public class AtumBiomeGenBase extends BiomeGenBase {
 
-    protected int weight = AtumConfig.DEFAULT_BIOME_WEIGHT;
-    protected AtumConfig.BiomeConfig config;
-
     protected int deadwoodRarity = 5;
     protected int palmRarity = 5;
     protected int pyramidRarity = 240;
@@ -36,25 +32,6 @@ public class AtumBiomeGenBase extends BiomeGenBase {
 
         this.topBlock = AtumBlocks.SAND.getDefaultState();
         this.fillerBlock = AtumBlocks.LIMESTONE.getDefaultState();
-
-        this.setColor(16421912);
-
-        this.setDisableRain();
-        this.setTemperatureRainfall(2.0F, 0.0F);
-        this.setHeight(height_Default);    // same as plains
-    }
-
-    public AtumBiomeGenBase(AtumConfig.BiomeConfig config) {
-        this(config.getID());
-        this.config = config;
-
-        this.setBiomeName(config.toString());
-        this.weight = config.getWeight();
-        config.setGen(this);
-    }
-
-    public int getWeight() {
-        return weight;
     }
 
     protected void addDefaultSpawns() {
@@ -115,7 +92,7 @@ public class AtumBiomeGenBase extends BiomeGenBase {
             } else {
                 IBlockState existingState = chunkPrimer.getBlockState(zz, yy, xx);
 
-                if (existingState.getBlock().getMaterial() == Material.air) {
+                if (existingState.getMaterial() == Material.air) {
                     flag = -1;
                 } else if (existingState == AtumBlocks.LIMESTONE.getDefaultState()) {
                     if (flag == -1) {
@@ -144,6 +121,29 @@ public class AtumBiomeGenBase extends BiomeGenBase {
                     }
                 }
             }
+        }
+    }
+
+    public static class AtumBiomeProperties extends BiomeProperties {
+        private int weight = AtumBiomes.DEFAULT_BIOME_WEIGHT;
+        protected AtumBiomes.BiomeType biomeType;
+
+        public AtumBiomeProperties(String biomeName) {
+            super(biomeName);
+            this.setBaseHeight(0.125F); // same as plains
+            this.setHeightVariation(0.05F);
+            this.setRainDisabled();
+            //this.weight = biomeType.getWeight(); //TODO Fix Weight
+            //this.setColor(16421912); //TODO
+        }
+
+        public int getWeight() {
+            return weight;
+        }
+
+        public AtumBiomeProperties setWeight(int weight) {
+            this.weight = weight;
+            return this;
         }
     }
 }

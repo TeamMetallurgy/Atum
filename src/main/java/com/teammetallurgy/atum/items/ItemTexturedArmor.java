@@ -1,6 +1,8 @@
 package com.teammetallurgy.atum.items;
 
+import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -9,11 +11,11 @@ public class ItemTexturedArmor extends ItemArmor {
     private String textureFile;
     private Item repairItem = null;
 
-    public ItemTexturedArmor(ArmorMaterial material, int renderIndex, int armorType) {
-        super(material, renderIndex, armorType);
+    public ItemTexturedArmor(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
+        super(material, renderIndex, slot);
     }
 
-    public ItemTexturedArmor setRepairItem(Item item) {
+    protected ItemTexturedArmor setRepairItem(Item item) {
         this.repairItem = item;
         return this;
     }
@@ -29,7 +31,7 @@ public class ItemTexturedArmor extends ItemArmor {
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        return "atum:textures/armor/" + this.textureFile + ".png";
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+        return Constants.MODID + ":" + "textures/armor/" + this.textureFile + ".png";
     }
 }

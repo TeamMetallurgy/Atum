@@ -3,20 +3,24 @@ package com.teammetallurgy.atum.entity;
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.blocks.BlockLimestoneBricks;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
+import com.teammetallurgy.atum.items.AtumItems;
 import com.teammetallurgy.atum.items.AtumLoot;
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -25,17 +29,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.List;
 
 public class EntityPharaoh extends EntityMob {
-    public static String[] prefix = {"Ama", "Ata", "Ato", "Bak", "Cal", "Djet", "Eje", "For", "Gol", "Gut", "Hop", "Hor", "Huni", "Iam", "Jor", "Kal", "Khas", "Khor", "Lat", "Mal", "Not", "Oap", "Pra", "Qo", "Ras", "Shas", "Thoth", "Tui", "Uld", "Ver", "Wot", "Xo", "Yat", "Zyt", "Khep"};
-    public static String[] suffix = {"Ahat", "Amesh", "Amon", "Anut", "Baroom", "Chanta", "Erant", "Funam", "Daresh", "Djer", "Hotesh", "Khaden", "Kron", "Gorkum", "Ialenter", "Ma'at", "Narmer", "Radeem", "Jaloom", "Lepsha", "Quor", "Oleshet", "Peput", "Talat", "Ulam", "Veresh", "Ranesh", "Snef", "Wollolo", "Hathor", "Intef", "Neferk", "Khatne", "Tepy", "Moret"};
-    public static String[] numeral = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"};
-    int linkedX, linkedY, linkedZ;
-    int stage;
+    private static String[] prefixArray = {"Ama", "Ata", "Ato", "Bak", "Cal", "Djet", "Eje", "For", "Gol", "Gut", "Hop", "Hor", "Huni", "Iam", "Jor", "Kal", "Khas", "Khor", "Lat", "Mal", "Not", "Oap", "Pra", "Qo", "Ras", "Shas", "Thoth", "Tui", "Uld", "Ver", "Wot", "Xo", "Yat", "Zyt", "Khep"};
+    private static String[] suffixArray = {"Ahat", "Amesh", "Amon", "Anut", "Baroom", "Chanta", "Erant", "Funam", "Daresh", "Djer", "Hotesh", "Khaden", "Kron", "Gorkum", "Ialenter", "Ma'at", "Narmer", "Radeem", "Jaloom", "Lepsha", "Quor", "Oleshet", "Peput", "Talat", "Ulam", "Veresh", "Ranesh", "Snef", "Wollolo", "Hathor", "Intef", "Neferk", "Khatne", "Tepy", "Moret"};
+    private static String[] numeralArray = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"};
+    private static final DataParameter<Integer> PREFIX = EntityDataManager.createKey(EntityPharaoh.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> SUFFIX = EntityDataManager.createKey(EntityPharaoh.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> NUMERAL = EntityDataManager.createKey(EntityPharaoh.class, DataSerializers.VARINT);
+    private static final DataParameter<BlockPos> LINKED_POS = EntityDataManager.createKey(EntityPharaoh.class, DataSerializers.BLOCK_POS);
+    private static final DataParameter<BlockPos> CHEST_POS = EntityDataManager.createKey(EntityPharaoh.class, DataSerializers.BLOCK_POS);
+    private int stage;
     private int suffixID = 0;
     private int prefixID = 0;
     private int numID = 0;
@@ -43,14 +52,19 @@ public class EntityPharaoh extends EntityMob {
 
     public EntityPharaoh(World world) {
         super(world);
+        this.setHealth(this.getMaxHealth());
         this.experienceValue = 250;
         stage = 0;
+    }
 
-        /*this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SCEPTER));
-
-        for (int i = 0; i < this.equipmentDropChances.length; ++i) {
-            this.equipmentDropChances[i] = 0F;
-        }*/ //TODO
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(4, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
     }
 
     @Override
@@ -62,13 +76,45 @@ public class EntityPharaoh extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
-    public void link(int x, int y, int z) {
-        linkedX = x;
-        linkedY = y;
-        linkedZ = z;
-        dataWatcher.updateObject(21, linkedX);
-        dataWatcher.updateObject(22, linkedY);
-        dataWatcher.updateObject(23, linkedZ);
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        if (prefixID == 0 && suffixID == 0 && numID == 0) {
+            prefixID = rand.nextInt(prefixArray.length);
+            suffixID = rand.nextInt(suffixArray.length);
+            numID = rand.nextInt(numeralArray.length);
+        }
+        this.dataManager.register(PREFIX, suffixID);
+        this.dataManager.register(SUFFIX, prefixID);
+        this.dataManager.register(NUMERAL, numID);
+        this.dataManager.register(CHEST_POS, new BlockPos(posX, posY, posZ));
+        this.dataManager.register(LINKED_POS, this.getPosition());
+    }
+
+    @Override
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        super.setEquipmentBasedOnDifficulty(difficulty);
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(AtumItems.SCEPTER));
+    }
+
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+
+        this.setEquipmentBasedOnDifficulty(difficulty);
+        this.setEnchantmentBasedOnDifficulty(difficulty);
+
+
+        for (int i = 0; i < this.inventoryArmorDropChances.length; ++i) {
+            this.inventoryArmorDropChances[i] = 0F;
+        }
+        this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
+
+        return livingdata;
+    }
+
+    public void link(BlockPos pos) {
+        this.dataManager.register(LINKED_POS, pos);
     }
 
     @Override
@@ -94,10 +140,7 @@ public class EntityPharaoh extends EntityMob {
             }
         }
 
-        Integer chestX = dataWatcher.getWatchableObjectInt(21);
-        Integer chestY = dataWatcher.getWatchableObjectInt(22);
-        Integer chestZ = dataWatcher.getWatchableObjectInt(23);
-        BlockPos chestPos = new BlockPos(chestX, chestY, chestZ);
+        BlockPos chestPos = this.dataManager.get(CHEST_POS);
 
         TileEntity te = worldObj.getTileEntity(chestPos);
         if (te != null) {
@@ -113,10 +156,10 @@ public class EntityPharaoh extends EntityMob {
     @Override
     public String getName() {
         try {
-            int s = this.dataWatcher.getWatchableObjectInt(18);
-            int p = this.dataWatcher.getWatchableObjectInt(19);
-            int n = this.dataWatcher.getWatchableObjectInt(20);
-            return "Pharaoh " + I18n.translateToLocal("entity.atum.pharaoh." + prefix[p]) + I18n.translateToLocal("entity.atum.pharaoh." + suffix[s]) + " " + numeral[n];
+            int p = this.dataManager.get(PREFIX);
+            int s = this.dataManager.get(SUFFIX);
+            int n = this.dataManager.get(NUMERAL);
+            return "Pharaoh " + I18n.translateToLocal("entity.atum.pharaoh." + prefixArray[p]) + I18n.translateToLocal("entity.atum.pharaoh." + suffixArray[s]) + " " + numeralArray[n];
         } catch (Exception e) {
             return "";
         }
@@ -198,7 +241,7 @@ public class EntityPharaoh extends EntityMob {
                     IBlockState state = worldObj.getBlockState(pos);
 
                     if (state != null) {
-                        if (state != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE) && state != AtumBlocks.PHARAOH_CHEST.getDefaultState() && state != Blocks.bedrock.getDefaultState() && state.getBlock().getMaterial().isSolid()) {
+                        if (state != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE) && state != AtumBlocks.PHARAOH_CHEST.getDefaultState() && state != Blocks.bedrock.getDefaultState() && state.getMaterial().isSolid()) {
                             state.getBlock().dropBlockAsItem(worldObj, pos, state, 0);
                             flag1 = this.worldObj.setBlockToAir(pos) || flag1;
                         }
@@ -273,7 +316,7 @@ public class EntityPharaoh extends EntityMob {
         }
     }
 
-    public boolean trySpawnMummy(int x, int y, int z) {
+    private boolean trySpawnMummy(int x, int y, int z) {
         EntityMummy entityMummy = new EntityMummy(worldObj);
         entityMummy.setPosition(x, y, z);
         if (entityMummy.getCanSpawnHere()) {
@@ -287,49 +330,26 @@ public class EntityPharaoh extends EntityMob {
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound tagCompound) {
-        super.writeEntityToNBT(tagCompound);
-        tagCompound.setInteger("suffix", dataWatcher.getWatchableObjectInt(18));
-        tagCompound.setInteger("prefix", dataWatcher.getWatchableObjectInt(19));
-        tagCompound.setInteger("numeral", dataWatcher.getWatchableObjectInt(20));
-        tagCompound.setInteger("chestX", dataWatcher.getWatchableObjectInt(21));
-        tagCompound.setInteger("chestY", dataWatcher.getWatchableObjectInt(22));
-        tagCompound.setInteger("chestZ", dataWatcher.getWatchableObjectInt(23));
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("prefix", this.dataManager.get(PREFIX));
+        compound.setInteger("suffix", this.dataManager.get(SUFFIX));
+        compound.setInteger("numeral", this.dataManager.get(NUMERAL));
+        compound.setInteger("chestPos", this.dataManager.get(CHEST_POS).getX());
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tagCompound) {
-        super.readEntityFromNBT(tagCompound);
-        this.dataWatcher.updateObject(16, Float.valueOf(this.getHealth()));
-        suffixID = tagCompound.getInteger("suffix");
-        prefixID = tagCompound.getInteger("prefix");
-        numID = tagCompound.getInteger("numeral");
-        linkedX = tagCompound.getInteger("chestX");
-        linkedY = tagCompound.getInteger("chestY");
-        linkedZ = tagCompound.getInteger("chestZ");
-        this.dataWatcher.updateObject(18, new Integer(suffixID));
-        this.dataWatcher.updateObject(19, new Integer(prefixID));
-        this.dataWatcher.updateObject(20, new Integer(numID));
-        this.dataWatcher.updateObject(21, new Integer(linkedX));
-        this.dataWatcher.updateObject(22, new Integer(linkedY));
-        this.dataWatcher.updateObject(23, new Integer(linkedZ));
-    }
-
-    @Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataWatcher.addObject(16, new Float(100));
-        if (suffixID == 0 && prefixID == 0 && numID == 0) {
-            suffixID = rand.nextInt(suffix.length);
-            prefixID = rand.nextInt(prefix.length);
-            numID = rand.nextInt(numeral.length);
-        }
-        this.dataWatcher.addObject(18, new Integer(suffixID));
-        this.dataWatcher.addObject(19, new Integer(prefixID));
-        this.dataWatcher.addObject(20, new Integer(numID));
-        this.dataWatcher.addObject(21, new Integer(0));
-        this.dataWatcher.addObject(22, new Integer(0));
-        this.dataWatcher.addObject(23, new Integer(0));
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        suffixID = compound.getInteger("suffix");
+        prefixID = compound.getInteger("prefix");
+        numID = compound.getInteger("numeral");
+        //linkedXYZ = compound.getInteger("chestPos"); //TODO
+        this.dataManager.set(PREFIX, prefixID);
+        this.dataManager.set(SUFFIX, suffixID);
+        this.dataManager.set(NUMERAL, numID);
+        this.dataManager.set(LINKED_POS, this.dataManager.get(LINKED_POS));
+        this.dataManager.set(CHEST_POS, this.dataManager.get(CHEST_POS));
     }
 
     @Override
@@ -337,7 +357,7 @@ public class EntityPharaoh extends EntityMob {
         super.onUpdate();
 
         if (!this.worldObj.isRemote && this.worldObj.getDifficulty().getDifficultyId() == 0) {
-            TileEntity te = worldObj.getTileEntity(new BlockPos(linkedX, linkedY, linkedZ));
+            TileEntity te = worldObj.getTileEntity(this.dataManager.get(LINKED_POS));
             if (te instanceof TileEntityPharaohChest) {
                 ((TileEntityPharaohChest) te).setPharaohDespawned();
             }
@@ -347,10 +367,6 @@ public class EntityPharaoh extends EntityMob {
 
     @Override
     public void onLivingUpdate() {
-        if (!this.worldObj.isRemote) {
-            this.dataWatcher.updateObject(16, Float.valueOf(this.getHealth()));
-        }
-
         if (regenTime++ > 20) {
             regenTime = 0;
             this.heal(1);

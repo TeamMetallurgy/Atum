@@ -24,7 +24,7 @@ public class AtumTeleporter extends Teleporter {
 
     @Override
     public void placeInPortal(Entity entity, float rotationYaw) {
-        if (this.worldServerInstance.provider.getDimensionId() != 1) {
+        if (this.worldServerInstance.provider.getDimension() != 1) {
             if (!this.placeInExistingPortal(entity, rotationYaw)) {
                 this.makePortal(entity);
                 this.placeInExistingPortal(entity, rotationYaw);
@@ -97,7 +97,7 @@ public class AtumTeleporter extends Teleporter {
                                         int k5 = l2 + (k4 - 1) * i4 - j4 * l3;
                                         mutableBlockPos.set(i5, j5, k5);
 
-                                        if (l4 < 0 && !this.worldServerInstance.getBlockState(mutableBlockPos).getBlock().getMaterial().isSolid() || l4 >= 0 && !this.worldServerInstance.isAirBlock(mutableBlockPos)) {
+                                        if (l4 < 0 && !this.worldServerInstance.getBlockState(mutableBlockPos).getMaterial().isSolid() || l4 >= 0 && !this.worldServerInstance.isAirBlock(mutableBlockPos)) {
                                             continue label142;
                                         }
                                     }
@@ -145,7 +145,7 @@ public class AtumTeleporter extends Teleporter {
                                         int j13 = j6 + (j10 - 1) * j9;
                                         mutableBlockPos.set(j12, i13, j13);
 
-                                        if (j11 < 0 && !this.worldServerInstance.getBlockState(mutableBlockPos).getBlock().getMaterial().isSolid() || j11 >= 0 && !this.worldServerInstance.isAirBlock(mutableBlockPos)) {
+                                        if (j11 < 0 && !this.worldServerInstance.getBlockState(mutableBlockPos).getMaterial().isSolid() || j11 >= 0 && !this.worldServerInstance.isAirBlock(mutableBlockPos)) {
                                             continue label562;
                                         }
                                     }

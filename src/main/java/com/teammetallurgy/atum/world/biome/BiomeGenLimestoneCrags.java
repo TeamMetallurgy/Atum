@@ -1,9 +1,9 @@
 package com.teammetallurgy.atum.world.biome;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.handler.AtumConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -16,8 +16,8 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
 
     private WorldGenerator genSpikes;
 
-    public BiomeGenLimestoneCrags(AtumConfig.BiomeConfig config) {
-        super(config);
+    public BiomeGenLimestoneCrags(BiomeProperties properties) {
+        super(properties);
 
         super.palmRarity = -1;
         super.pyramidRarity = -1;
@@ -39,13 +39,15 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
         super.decorate(world, random, pos);
     }
 
-    /** Adapted from WorldGenIceSpike */
+    /**
+     * Adapted from WorldGenIceSpike
+     */
     public class WorldGenLimestoneSpike extends WorldGenerator {
         private final Block spikeBlock = AtumBlocks.LIMESTONE;
         private final Block groundBlock = AtumBlocks.SAND;
 
-        private boolean isBlockReplaceable(Block block) {
-            return block.getMaterial() == Material.air || block == AtumBlocks.SAND || block == AtumBlocks.SAND_LAYERED || block == Blocks.dirt;
+        private boolean isBlockReplaceable(IBlockState state) {
+            return state.getMaterial() == Material.air || state.getBlock() == AtumBlocks.SAND || state.getBlock() == AtumBlocks.SAND_LAYERED || state.getBlock() == Blocks.dirt;
         }
 
         @Override
@@ -78,16 +80,16 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
                             float f2 = (float) MathHelper.abs_int(j1) - 0.25F;
 
                             if ((i1 == 0 && j1 == 0 || f1 * f1 + f2 * f2 <= f * f) && (i1 != -l && i1 != l && j1 != -l && j1 != l || rand.nextFloat() <= 0.75F)) {
-                                Block block = world.getBlockState(pos.add(i1, k, j1)).getBlock();
+                                IBlockState state = world.getBlockState(pos.add(i1, k, j1));
 
-                                if (isBlockReplaceable(block)) {
+                                if (isBlockReplaceable(state)) {
                                     this.setBlockAndNotifyAdequately(world, pos.add(i1, k, j1), spikeBlock.getDefaultState());
                                 }
 
                                 if (k != 0 && l > 1) {
-                                    block = world.getBlockState(pos.add(i1, -k, j1)).getBlock();
+                                    state = world.getBlockState(pos.add(i1, -k, j1));
 
-                                    if (isBlockReplaceable(block)) {
+                                    if (isBlockReplaceable(state)) {
                                         this.setBlockAndNotifyAdequately(world, pos.add(i1, -k, j1), spikeBlock.getDefaultState());
 
                                     }
@@ -115,9 +117,9 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
                         }
 
                         while (blockpos.getY() > j2) {
-                            Block block1 = world.getBlockState(blockpos).getBlock();
+                            IBlockState state1 = world.getBlockState(blockpos);
 
-                            if (isBlockReplaceable(block1) || block1 == spikeBlock) {
+                            if (isBlockReplaceable(state1) || state1.getBlock() == spikeBlock) {
                                 break;
                             }
 
@@ -130,8 +132,6 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
                                 blockpos = blockpos.down(rand.nextInt(5) + 1);
                                 j2 = rand.nextInt(5);
                             }
-
-                            continue;
                         }
                     }
                 }

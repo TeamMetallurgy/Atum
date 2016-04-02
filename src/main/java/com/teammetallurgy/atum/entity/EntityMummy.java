@@ -3,17 +3,14 @@ package com.teammetallurgy.atum.entity;
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Items;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityMummy extends EntityMob {
+public class EntityMummy extends EntityUndeadBase {
 
     public EntityMummy(World world) {
         super(world);
@@ -23,25 +20,10 @@ public class EntityMummy extends EntityMob {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.53000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
-    }
-
-    @Override
-    public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
-        if (i <= 62) {
-            return false;
-        } else {
-            return super.getCanSpawnHere();
-        }
-    }
-
-    @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEAD;
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.53000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
     @Override
@@ -66,7 +48,7 @@ public class EntityMummy extends EntityMob {
             }
             if (entity instanceof EntityLivingBase) {
                 EntityLivingBase base = (EntityLivingBase) entity;
-                base.addPotionEffect(new PotionEffect(Potion.wither.id, 40, 1));
+                base.addPotionEffect(new PotionEffect(MobEffects.wither, 40, 1));
             }
         }
 

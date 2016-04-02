@@ -32,7 +32,7 @@ public class ItemIsisHealing extends Item {
     public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
-            if (isSelected && player.onGround && player.getHeldItem() != null && player.getHeldItem().getItem() == this) {
+            if (isSelected && player.onGround && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == this) {
                 this.doEffect(player, stack);
             }
         }

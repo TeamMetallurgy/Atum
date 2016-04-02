@@ -1,8 +1,8 @@
 package com.teammetallurgy.atum;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
-import com.teammetallurgy.atum.entity.AtumEntities;
 import com.teammetallurgy.atum.client.gui.AtumGuiHandler;
+import com.teammetallurgy.atum.entity.AtumEntities;
 import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.handler.AtumCreativeTab;
 import com.teammetallurgy.atum.handler.CraftingHandler;
@@ -53,19 +53,19 @@ public class Atum {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         Constants.LOG.trace("Register Crafting Recipes");
-        new CraftingHandler().register();
+        CraftingHandler.register();
 
         Constants.LOG.trace("Register Biomes");
-        new AtumBiomes().register();
+        AtumBiomes.register();
 
         Constants.LOG.trace("Register World");
-        new AtumWorlds().register();
+        AtumWorlds.register();
 
         Constants.LOG.trace("Register Entity");
-        new AtumEntities().register();
+        AtumEntities.register();
 
         Constants.LOG.trace("Register Loot");
-        new AtumLoot().register();
+        AtumLoot.register();
 
         Constants.LOG.trace("Proxy Init");
         proxy.init();

@@ -4,6 +4,7 @@ import com.teammetallurgy.atum.items.ItemTexturedArmor;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EntityDamageSource;
@@ -19,8 +20,8 @@ import java.util.List;
 
 public class ItemMaatsBalance extends ItemTexturedArmor {
 
-    public ItemMaatsBalance(ArmorMaterial material, int renderIndex, int armorType) {
-        super(material, renderIndex, armorType);
+    public ItemMaatsBalance(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
+        super(material, renderIndex, slot);
     }
 
     @Override
@@ -31,16 +32,16 @@ public class ItemMaatsBalance extends ItemTexturedArmor {
 
     @SubscribeEvent
     public void onLivingAttack(LivingHurtEvent event) {
-        if (event.entityLiving.getEquipmentInSlot(3) != null && event.entityLiving.getEquipmentInSlot(3).getItem() == this) {
-            event.ammount = (event.ammount + 1) / 1.5F - 1;
+        if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null && event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == this) {
+            event.setAmount((event.getAmount() + 1.0F) / 1.5F - 1.0F);
         }
 
-        if (event.source instanceof EntityDamageSource) {
-            EntityDamageSource source = (EntityDamageSource) event.source;
+        if (event.getSource() instanceof EntityDamageSource) {
+            EntityDamageSource source = (EntityDamageSource) event.getSource();
             if (source.getEntity() != null && source.getEntity() instanceof EntityLiving) {
                 EntityLiving entity = (EntityLiving) source.getEntity();
-                if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() == this) {
-                    event.ammount = (event.ammount + 1) / 1.5F - 1;
+                if (entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null && entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == this) {
+                    event.setAmount((event.getAmount() + 1.0F) / 1.5F - 1.0F);
                 }
             }
         }

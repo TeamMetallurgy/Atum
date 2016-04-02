@@ -1,67 +1,50 @@
 package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.items.AtumItems;
-import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-public class EntityBrigand extends EntityMob {
+public class EntityBrigand extends EntityBanditBase {
 
     public EntityBrigand(World world) {
         super(world);
         this.experienceValue = 8;
-
-        super.setCurrentItemOrArmor(0, new ItemStack(AtumItems.SCIMITAR));
-        //this.enchantEquipment(); //TODO
-
-        for (int i = 0; i < this.equipmentDropChances.length; ++i) {
-            this.equipmentDropChances[i] = 0F;
-        }
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.53000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.53000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
     @Override
-    public boolean getCanSpawnHere() {
-        BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        if (pos.getY() <= 62) {
-            return false;
-        } else {
-            return this.worldObj.canBlockSeeSky(pos) && this.isValidLightLevel() &&
-                    this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        super.setEquipmentBasedOnDifficulty(difficulty);
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(AtumItems.SCIMITAR));
+    }
+
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+
+        this.setEquipmentBasedOnDifficulty(difficulty);
+        this.setEnchantmentBasedOnDifficulty(difficulty);
+
+        this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
+
+        for (int i = 0; i < this.inventoryArmorDropChances.length; ++i) {
+            this.inventoryArmorDropChances[i] = 0F;
         }
-    }
 
-    @Override
-    protected boolean isValidLightLevel() {
-        BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        int bl = this.worldObj.getLightFor(EnumSkyBlock.BLOCK, pos);
-        int light = this.worldObj.getLight(pos);
-
-        if (bl >= 7) {
-            return false;
-        } else if (light > 8) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEFINED;
+        return livingdata;
     }
 
     @Override

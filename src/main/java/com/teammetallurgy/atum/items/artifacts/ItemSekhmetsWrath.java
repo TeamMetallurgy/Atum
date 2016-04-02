@@ -23,8 +23,8 @@ import java.util.List;
 
 public class ItemSekhmetsWrath extends ItemTexturedArmor {
 
-    public ItemSekhmetsWrath(int renderIndex, int armorType) {
-        super(ArmorMaterial.DIAMOND, renderIndex, armorType);
+    public ItemSekhmetsWrath(int renderIndex, EntityEquipmentSlot slot) {
+        super(ArmorMaterial.DIAMOND, renderIndex, slot);
     }
 
     @Override

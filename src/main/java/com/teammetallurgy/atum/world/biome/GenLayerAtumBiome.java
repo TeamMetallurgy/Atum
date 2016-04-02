@@ -22,8 +22,8 @@ public class GenLayerAtumBiome extends GenLayer {
 		super(seed);
 		//noise = new NoiseGeneratorSimplex(new Random(seed));
 
-		for (AtumBiomeGenBase biome : AtumBiomes.biomes) {
-			final BiomeEntry entry = new BiomeEntry(biome, biome.getWeight());
+		for (AtumBiomes.BiomeType biome : AtumBiomes.biomeRegistry) {
+			final BiomeEntry entry = new BiomeEntry(biome.getGen(), biome.getWeight());
 			//if( biome.rootHeight >= 0.25F ) {
 			//	hBiomes.add(entry);
 			//} else {
@@ -52,7 +52,7 @@ public class GenLayerAtumBiome extends GenLayer {
 				//	biome = ((BiomeEntry)WeightedRandom.getItem(lBiomes, nextInt(lWeight)));
 				//}
 				biome = ((BiomeEntry) WeightedRandom.getRandomItem(biomes, nextInt(totalWeight)));
-				cache[j + i * width] = biome.biome.biomeID;
+				cache[j + i * width] = AtumBiomeGenBase.getIdForBiome(biome.biome);
 			}
 		}
 		return cache;

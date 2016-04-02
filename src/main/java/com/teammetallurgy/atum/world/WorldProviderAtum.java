@@ -14,7 +14,7 @@ public class WorldProviderAtum extends WorldProvider {
 
     @Override
     public DimensionType getDimensionType() {
-        return DimensionType.register("Atum", "_atum", AtumConfig.DIMENSION_ID, WorldProviderAtum.class, false);
+        return AtumWorlds.ATUM;
     }
 
     @Override

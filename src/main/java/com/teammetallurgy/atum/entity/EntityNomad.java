@@ -3,9 +3,11 @@ package com.teammetallurgy.atum.entity;
 import com.teammetallurgy.atum.entity.ai.EntityAIAttackRangedBowBandit;
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Enchantments;
@@ -14,11 +16,15 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
+    protected static final DataParameter<Boolean> canShoot = EntityDataManager.createKey(EntityBanditBase.class, DataSerializers.BOOLEAN);
     private EntityAIAttackRangedBowBandit aiArrowAttack = new EntityAIAttackRangedBowBandit(this, 1.0D, 20, 15.0F);
     private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false) {
         @Override
@@ -36,21 +42,9 @@ public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
 
     public EntityNomad(World world) {
         super(world);
-        this.haveBow = true;
         this.experienceValue = 6;
 
         this.setCombatTask();
-    }
-
-    @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIAvoidEntity<EntityDesertWolf>(this, EntityDesertWolf.class, 6.0F, 1.0D, 1.2D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
     }
 
     @Override
@@ -153,6 +147,11 @@ public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
     @Override
     public double getYOffset() {
         return -0.35D;
+    }
+
+    @Override
+    public void startShooting(boolean shouldShoot) {
+        this.dataManager.set(canShoot, shouldShoot);
     }
 
     @Override

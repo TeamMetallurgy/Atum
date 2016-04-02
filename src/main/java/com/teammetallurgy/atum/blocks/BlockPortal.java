@@ -7,41 +7,78 @@ import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemMonsterPlacer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9
+public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch over to having a sub-class with the size
+    protected static final AxisAlignedBB PORTAL_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
+
     public BlockPortal() {
         super(Material.portal, true);
         this.setTickRandomly(true);
         this.setHardness(-1.0F);
-        this.setBlockBounds(0, 0, 0, 1, 0.875F, 1);
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state) {
-        return null;
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return PORTAL_AABB;
     }
 
     @Override
-    public boolean isFullCube() {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World world, BlockPos pos) {
+        return NULL_AABB;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        super.updateTick(world, pos, state, rand);
+
+        if (world.provider.isSurfaceWorld() && world.getGameRules().getBoolean("doMobSpawning") && rand.nextInt(2000) < world.getDifficulty().getDifficultyId()) {
+            int i = pos.getY();
+            BlockPos blockpos;
+
+            for (blockpos = pos; !world.getBlockState(blockpos).isFullyOpaque() && blockpos.getY() > 0; blockpos = blockpos.down()) {
+                ;
+            }
+
+            if (i > 0 && !world.getBlockState(blockpos.up()).isNormalCube()) {
+                Entity entity = ItemMonsterPlacer.spawnCreature(world, EntityList.getEntityStringFromClass(EntityPigZombie.class), (double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 1.1D, (double) blockpos.getZ() + 0.5D);
+
+                if (entity != null) {
+                    entity.timeUntilPortal = entity.getPortalCooldown();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) { //TODO
         for (int x = -1; x < 2; x++) {
             for (int z = -1; z < 2; z++) {
                 for (int y = -1; y < 1; y++) {
@@ -54,7 +91,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9
         }
     }
 
-    public boolean tryToCreatePortal(World world, BlockPos pos, IBlockState state) { //TODO Redo for 1.9
+    public boolean tryToCreatePortal(World world, BlockPos pos, IBlockState state) { //TODO
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
@@ -94,26 +131,40 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-        if (entity.ridingEntity == null && entity.riddenByEntity == null && entity instanceof EntityPlayerMP) {
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) { //TODO
+        pos = pos.offset(side);
+
+        boolean flag = world.getBlockState(pos.west()).getBlock() == this && world.getBlockState(pos.west(2)).getBlock() != this;
+        boolean flag1 = world.getBlockState(pos.east()).getBlock() == this && world.getBlockState(pos.east(2)).getBlock() != this;
+        boolean flag2 = world.getBlockState(pos.north()).getBlock() == this && world.getBlockState(pos.north(2)).getBlock() != this;
+        boolean flag3 = world.getBlockState(pos.south()).getBlock() == this && world.getBlockState(pos.south(2)).getBlock() != this;
+        boolean flag4 = flag || flag1;
+        boolean flag5 = flag2 || flag3;
+        return flag4 && side == EnumFacing.WEST || (flag4 && side == EnumFacing.EAST || (flag5 && side == EnumFacing.NORTH || flag5 && side == EnumFacing.SOUTH));
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) { //TODO
+        if (!entity.isRiding() && !entity.isBeingRidden() && entity.isNonBoss() && entity instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) entity;
-            if (entity.timeUntilPortal == 0 && entity instanceof EntityPlayerMP) {
+            if (entity.timeUntilPortal == 0) {
                 entity.timeUntilPortal = 100;
-                MinecraftServer minecraftserver = MinecraftServer.getServer();
+                MinecraftServer minecraftserver = FMLCommonHandler.instance().getMinecraftServerInstance();
                 int dimID = entity.dimension;
                 int atumId = AtumConfig.DIMENSION_ID;
                 WorldServer worldserver = minecraftserver.worldServerForDimension(0);
                 WorldServer worldserver1 = minecraftserver.worldServerForDimension(atumId);
                 if (dimID == atumId) {
-                    minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) entity, 0, new AtumTeleporter(worldserver));
+                    minecraftserver.getPlayerList().transferPlayerToDimension((EntityPlayerMP) entity, 0, new AtumTeleporter(worldserver));
                 } else {
-                    minecraftserver.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP) entity, atumId, new AtumTeleporter(worldserver1));
+                    minecraftserver.getPlayerList().transferPlayerToDimension((EntityPlayerMP) entity, atumId, new AtumTeleporter(worldserver1));
                 }
 
                 try {
-                    ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, Integer.valueOf(-1), new String[]{"lastExperience", "cp", "field_71144_ck"});
-                    ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, Integer.valueOf(-1), new String[]{"lastHealth", "cm", "field_71149_ch"});
-                    ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, Integer.valueOf(-1), new String[]{"lastFoodLevel", "cn", "field_71146_ci"});
+                    ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, -1, "lastExperience", "cp", "field_71144_ck");
+                    ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, -1, "lastHealth", "cm", "field_71149_ch");
+                    ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, -1, "lastFoodLevel", "cn", "field_71146_ci");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -126,8 +177,9 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9
         return 0;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public Item getItem(World world, BlockPos pos) {
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return null;
     }
 
@@ -138,7 +190,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer() {
-        return EnumWorldBlockLayer.TRANSLUCENT;
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.TRANSLUCENT;
     }
 }

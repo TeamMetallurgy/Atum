@@ -2,11 +2,10 @@ package com.teammetallurgy.atum.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
@@ -14,11 +13,21 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 public class EntityBanditBase extends EntityMob {
-    protected static final DataParameter<Boolean> canShoot = EntityDataManager.createKey(EntityBanditBase.class, DataSerializers.BOOLEAN);
-    protected boolean haveBow = false;
 
     public EntityBanditBase(World world) {
         super(world);
+    }
+
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(3, new EntityAIAvoidEntity<EntityDesertWolf>(this, EntityDesertWolf.class, 6.0F, 1.0D, 1.2D));
+        this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(4, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityUndeadBase>(this, EntityUndeadBase.class, true));
     }
 
     @Override
@@ -71,8 +80,5 @@ public class EntityBanditBase extends EntityMob {
     }
 
     public void startShooting(boolean shouldShoot) {
-        if (haveBow) {
-            this.dataManager.set(canShoot, shouldShoot);
-        }
     }
 }
