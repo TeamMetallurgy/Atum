@@ -1,10 +1,14 @@
 package com.teammetallurgy.atum.integration;
 
-/*@JEIPlugin
+import mezz.jei.api.BlankModPlugin;
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.JEIPlugin;
+
+@JEIPlugin
 public class JEIItemBlacklist extends BlankModPlugin {
     @Override
     public void register(IModRegistry registry) {
-        IItemBlacklist blacklist = registry.getJeiHelpers().getItemBlacklist();
+        /*IItemBlacklist blacklist = registry.getJeiHelpers().getItemBlacklist();
 
         blacklist.addItemToBlacklist(new ItemStack(AtumBlocks.DATE_BLOCK, 1, OreDictionary.WILDCARD_VALUE));
         blacklist.addItemToBlacklist(new ItemStack(AtumBlocks.FLAX, 1, OreDictionary.WILDCARD_VALUE));
@@ -15,6 +19,6 @@ public class JEIItemBlacklist extends BlankModPlugin {
         blacklist.addItemToBlacklist(new ItemStack(AtumBlocks.PALM_DOOR));
         blacklist.addItemToBlacklist(new ItemStack(AtumBlocks.DEADWOOD_DOOR));
         blacklist.addItemToBlacklist(new ItemStack(AtumBlocks.WOOD_DOUBLE_SLAB, 1, OreDictionary.WILDCARD_VALUE));
-        blacklist.addItemToBlacklist(new ItemStack(AtumBlocks.LIT_REDSTONE_ORE));
+        blacklist.addItemToBlacklist(new ItemStack(AtumBlocks.LIT_REDSTONE_ORE));*/
     }
-}*/
+}

@@ -1,12 +1,12 @@
 package com.teammetallurgy.atum.blocks;
 
+import com.google.common.base.Function;
 import com.teammetallurgy.atum.Atum;
 import com.teammetallurgy.atum.blocks.tileentity.TileEntityBurningTrap;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityChestSpawner;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
 import com.teammetallurgy.atum.blocks.tileentity.crate.TileEntityCrate;
 import com.teammetallurgy.atum.blocks.tileentity.furnace.TileEntityLimestoneFurnace;
-import com.teammetallurgy.atum.items.itemblock.*;
 import com.teammetallurgy.atum.utils.AtumUtils;
 import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.block.Block;
@@ -16,9 +16,8 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -31,8 +30,8 @@ public class AtumBlocks {
     public static final Block LIMESTONE_CRACKED = new BlockAtum();
     public static final Block LIMESTONEBRICK = new BlockLimestoneBricks();
     public static final Block WALL = new BlockWalls(LIMESTONE);
-    public static final BlockLimestoneSlab LIMESTONE_SLAB = new BlockLimestoneSlab(false);
-    public static final BlockLimestoneSlab LIMESTONE_DOUBLE_SLAB = new BlockLimestoneSlab(true);
+    public static final BlockSlab LIMESTONE_SLAB = new BlockLimestoneHalfSlab();
+    public static final BlockSlab LIMESTONE_DOUBLE_SLAB = new BlockLimestoneDoubleSlab();
     public static final BlockAtumStairs SMOOTH_STAIRS = new BlockAtumStairs(LIMESTONE.getDefaultState());
     public static final BlockAtumStairs COBBLE_STAIRS = new BlockAtumStairs(LIMESTONE_CRACKED.getDefaultState());
     public static final BlockAtumStairs LARGE_STONE_STAIRS = new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE));
@@ -133,21 +132,56 @@ public class AtumBlocks {
         register(PALM_STAIRS, "palm_stairs");
         register(DEADWOOD_STAIRS, "deadwood_stairs");
 
-        register(CRYSTAL_STAINED_GLASS, ItemBlockStainedGlass.class, "crystal_stained_glass");
-        register(FRAMED_STAINED_GLASS, ItemBlockStainedGlass.class, "framed_stained_glass");
-        register(THIN_CRYSTAL_STAINED_GLASS, ItemBlockStainedGlass.class, "thin_crystal_stained_glass");
-        register(THIN_FRAMED_STAINED_GLASS, ItemBlockStainedGlass.class, "thin_framed_stained_glass");
-        register(LIMESTONEBRICK, ItemBlockLimestoneBricks.class, "limestonebrick");
-        register(LIMESTONE_SLAB, ItemBlockLimestoneSlab.class, "limestone_slab");
-        register(LIMESTONE_DOUBLE_SLAB, ItemBlockLimestoneSlab.class, "limestone_double_slab");
-        register(WALL, ItemBlockWall.class, "walls");
-        register(PLANKS, ItemBlockPlanks.class, "planks");
-        register(LOG, ItemBlockPlanks.class, "log");
-        register(WOOD_SLAB, ItemBlockWoodSlabs.class, "wood_slab");
-        register(WOOD_DOUBLE_SLAB, ItemBlockWoodSlabs.class, "wood_double_slab");
-        register(LEAVES, ItemBlockPlanks.class, "leave");
-        register(SAPLING, ItemBlockPlanks.class, "sapling");
-        register(CRATE, ItemBlockPlanks.class, "crate");
+        register(CRYSTAL_STAINED_GLASS, new ItemCloth(CRYSTAL_STAINED_GLASS), "crystal_stained_glass");
+        register(FRAMED_STAINED_GLASS, new ItemCloth(FRAMED_STAINED_GLASS), "framed_stained_glass");
+        register(THIN_CRYSTAL_STAINED_GLASS, new ItemCloth(THIN_CRYSTAL_STAINED_GLASS), "thin_crystal_stained_glass");
+        register(THIN_FRAMED_STAINED_GLASS, new ItemCloth(THIN_FRAMED_STAINED_GLASS), "thin_framed_stained_glass");
+        register(LIMESTONEBRICK, new ItemMultiTexture(LIMESTONEBRICK, LIMESTONEBRICK, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockLimestoneBricks.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "limestonebrick");
+        register(LIMESTONE_SLAB, new ItemSlab(LIMESTONE_SLAB, LIMESTONE_SLAB, LIMESTONE_DOUBLE_SLAB), "limestone_slab");
+        register(LIMESTONE_DOUBLE_SLAB, "limestone_double_slab");
+        register(WALL, new ItemMultiTexture(WALL, WALL, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockLimestoneBricks.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "walls");
+        register(PLANKS, new ItemMultiTexture(PLANKS, PLANKS, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "planks");
+        register(LOG, new ItemMultiTexture(LOG, LOG, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "log");
+        register(WOOD_SLAB, new ItemSlab(WOOD_SLAB, WOOD_SLAB, WOOD_DOUBLE_SLAB), "wood_slab");
+        register(WOOD_DOUBLE_SLAB, "wood_double_slab");
+        register(LEAVES, new ItemMultiTexture(LEAVES, LEAVES, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "leave");
+        register(SAPLING, new ItemMultiTexture(SAPLING, SAPLING, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "sapling");
+        register(CRATE, new ItemMultiTexture(CRATE, CRATE, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "crate");
 
         //ForgeHooks.canToolHarvestBlock(SAND, 0, new ItemStack(Items.iron_shovel)); //TODO
         SAND.setHarvestLevel("shovel", 0);
@@ -205,22 +239,25 @@ public class AtumBlocks {
     }
 
     protected static Block register(Block block, String name) {
-        return register(block, ItemBlock.class, name);
+        return register(block, new ItemBlock(block), name);
     }
 
     protected static Block register(Block block, String name, CreativeTabs tab) {
-        return register(block, ItemBlock.class, name, tab);
+        return register(block, new ItemBlock(block), name, tab);
     }
 
-    protected static Block register(Block block, Class<? extends ItemBlock> itemBlock, String name) {
+    protected static Block register(Block block, Item itemBlock, String name) {
         return register(block, itemBlock, name, Atum.creativeTab);
     }
 
-    protected static Block register(Block block, Class<? extends ItemBlock> itemBlockClass, String name, CreativeTabs tab) {
-        block.setUnlocalizedName(Constants.MODID + "." + AtumUtils.toUnlocalizedName(name));
+    protected static Block register(Block block, Item itemBlock, String name, CreativeTabs tab) {
+        if (block.getUnlocalizedName() == null) {
+            block.setUnlocalizedName(Constants.MODID + "." + AtumUtils.toUnlocalizedName(name));
+        }
         block.setCreativeTab(tab);
 
-        GameRegistry.registerBlock(block, itemBlockClass, name);
+        GameRegistry.register(block, new ResourceLocation(Constants.MODID, name));
+        GameRegistry.register(itemBlock, new ResourceLocation(Constants.MODID, name));
 
         Atum.proxy.setBlockResourceLocation(Item.getItemFromBlock(block), name, tab);
 

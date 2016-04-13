@@ -27,15 +27,15 @@ import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.*;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS;
 
 public class ChunkProviderAtum implements IChunkGenerator {
-    protected static final IBlockState LIMESTONE = AtumBlocks.LIMESTONE.getDefaultState();
+    private static final IBlockState LIMESTONE = AtumBlocks.LIMESTONE.getDefaultState();
     private final Random rand;
     private NoiseGeneratorOctaves field_185991_j;
     private NoiseGeneratorOctaves field_185992_k;
     private NoiseGeneratorOctaves field_185993_l;
     private NoiseGeneratorPerlin field_185994_m;
-    public NoiseGeneratorOctaves field_185983_b; //TODO noiseGen5?
-    public NoiseGeneratorOctaves field_185984_c; //TODO noiseGen6?
-    public NoiseGeneratorOctaves field_185985_d; // TODO mobSpawnerNoise?
+    private NoiseGeneratorOctaves field_185983_b; //TODO noiseGen5?
+    private NoiseGeneratorOctaves field_185984_c; //TODO noiseGen6?
+    private NoiseGeneratorOctaves field_185985_d; // TODO mobSpawnerNoise?
     private final World worldObj;
     private final boolean mapFeaturesEnabled;
     private final WorldType terrainType;
@@ -47,10 +47,10 @@ public class ChunkProviderAtum implements IChunkGenerator {
     private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
     private MapGenBase ravineGenerator = new MapGenRavine();
     private BiomeGenBase[] biomesForGeneration;
-    double[] field_185986_e;
-    double[] field_185987_f;
-    double[] field_185988_g;
-    double[] field_185989_h;
+    private double[] field_185986_e;
+    private double[] field_185987_f;
+    private double[] field_185988_g;
+    private double[] field_185989_h;
 
     public ChunkProviderAtum(World world, long seed, boolean mapFeaturesEnabled, String generatorOptions) {
         {

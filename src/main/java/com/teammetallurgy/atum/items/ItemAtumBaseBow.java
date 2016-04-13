@@ -19,7 +19,7 @@ public class ItemAtumBaseBow extends ItemBow {
         this.maxStackSize = 1;
         this.setMaxDamage(384);
 
-        this.addPropertyOverride(new ResourceLocation(Constants.MODID + ":" + "pull"), new IItemPropertyGetter() {
+        this.addPropertyOverride(new ResourceLocation(Constants.MODID, "pull"), new IItemPropertyGetter() {
             @Override
             @SideOnly(Side.CLIENT)
             public float apply(ItemStack stack, World world, EntityLivingBase entity) {
@@ -32,7 +32,7 @@ public class ItemAtumBaseBow extends ItemBow {
             }
         });
         String bowName = AtumUtils.toRegistryName(AtumUtils.toUnlocalizedName(this.getUnlocalizedName()));
-        this.addPropertyOverride(new ResourceLocation(Constants.MODID + ":" + bowName + "pulling"), new IItemPropertyGetter() {
+        this.addPropertyOverride(new ResourceLocation(Constants.MODID, bowName + "pulling"), new IItemPropertyGetter() {
             @Override
             @SideOnly(Side.CLIENT)
             public float apply(ItemStack stack, World worldIn, EntityLivingBase entity) {

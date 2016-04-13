@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "half=bottom": { "model": "atum:half_slab_smooth_limestone" },
+    "half=top": { "model": "atum:upper_slab_smooth_limestone" }
+  }
+}

@@ -13,6 +13,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -175,7 +176,7 @@ public class AtumItems {
         item.setUnlocalizedName(Constants.MODID + "." + AtumUtils.toUnlocalizedName(name));
         item.setCreativeTab(tab);
 
-        GameRegistry.registerItem(item, name);
+        GameRegistry.register(item, new ResourceLocation(Constants.MODID, name));
         Atum.proxy.setItemResourceLocation(item, name, tab);
         System.out.println("ItemName: " + name);
 

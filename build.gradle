@@ -12,6 +12,12 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
+repositories {
+  maven {
+    url "http://dvs1.progwml6.com/files/maven"
+  }
+}
+
 version = "${minecraft_version}-${mod_version}"
 group= "com.teammetallurgy.atum"
 archivesBaseName = "Atum"
@@ -24,6 +30,7 @@ minecraft {
 }
 
 dependencies {
+    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
 }
 
 processResources {

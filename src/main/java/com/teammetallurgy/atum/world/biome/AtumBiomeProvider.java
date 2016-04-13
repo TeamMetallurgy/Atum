@@ -4,25 +4,25 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.*;
+import net.minecraft.world.storage.WorldInfo;
 
 import java.util.List;
 import java.util.Random;
 
 public class AtumBiomeProvider extends BiomeProvider {
-
     public static final int BIOME_SCALE = 4;
     private GenLayer biomeIndexLayer;
 
-    public AtumBiomeProvider(long seed) {
+    public AtumBiomeProvider(WorldInfo info) {
 
-        GenLayer layerBiome = new GenLayerAtumBiome(seed);
+        GenLayer layerBiome = new GenLayerAtumBiome(info.getSeed());
         for (int k = 0; k < BIOME_SCALE; ++k) {
             layerBiome = new GenLayerZoom((long) (1000 + k), layerBiome);
         }
 
         GenLayer layerSmooth = new GenLayerSmooth(1000L, layerBiome);
         GenLayer layerVoronoi = new GenLayerVoronoiZoom(10L, layerSmooth);
-        layerVoronoi.initWorldGenSeed(seed);
+        layerVoronoi.initWorldGenSeed(info.getSeed());
 
         GenLayer layerRiver = new GenLayerRiverInit(100L, layerSmooth);
         layerRiver = GenLayerZoom.magnify(1000L, layerRiver, 2);

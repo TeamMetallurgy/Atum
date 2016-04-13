@@ -19,12 +19,12 @@ public class WorldProviderAtum extends WorldProvider {
 
     @Override
     protected void createBiomeProvider() {
-        this.biomeProvider = new AtumBiomeProvider(super.worldObj.getSeed());
+         this.biomeProvider = new AtumBiomeProvider(worldObj.getWorldInfo());
     }
 
     @Override
     public IChunkGenerator createChunkGenerator() {
-        return new ChunkProviderAtum(super.worldObj, super.worldObj.getSeed(), true, super.worldObj.getWorldInfo().getGeneratorOptions());
+        return new ChunkProviderAtum(worldObj, worldObj.getSeed(), true, worldObj.getWorldInfo().getGeneratorOptions());
     }
 
     @Override

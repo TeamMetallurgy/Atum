@@ -21,24 +21,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockLimestoneSlab extends BlockSlab {
+public abstract class BlockLimestoneSlab extends BlockSlab {
     public static final PropertyEnum<BlockLimestoneSlab.EnumType> VARIANT = PropertyEnum.create("variant", BlockLimestoneSlab.EnumType.class);
-    private boolean isDoubleslab;
 
-    public BlockLimestoneSlab(boolean isDoubleSlab) {
+    public BlockLimestoneSlab() {
         super(Material.rock);
-        this.isDoubleslab = isDoubleSlab;
 
         IBlockState state = this.blockState.getBaseState();
 
         if (!this.isDouble()) {
+            useNeighborBrightness = true;
             state = state.withProperty(HALF, BlockLimestoneSlab.EnumBlockHalf.BOTTOM);
         }
 
         this.setDefaultState(state.withProperty(VARIANT, EnumType.SMOOTH));
 
         this.setHardness(2.0F);
-        this.useNeighborBrightness = true;
     }
 
     @Override
@@ -52,7 +50,6 @@ public class BlockLimestoneSlab extends BlockSlab {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(AtumBlocks.LIMESTONE_SLAB) == new ItemStack(this) ? new ItemStack(this) : (new ItemStack(this) == new ItemStack(AtumBlocks.LIMESTONE_DOUBLE_SLAB) ? new ItemStack(AtumBlocks.LIMESTONE_SLAB) : new ItemStack(AtumBlocks.LIMESTONE_SLAB));
     }
@@ -60,11 +57,6 @@ public class BlockLimestoneSlab extends BlockSlab {
     @Override
     public String getUnlocalizedName(int meta) {
         return super.getUnlocalizedName() + "." + EnumType.byMetadata(meta).getUnlocalizedName();
-    }
-
-    @Override
-    public boolean isDouble() {
-        return isDoubleslab;
     }
 
     @Override
@@ -111,7 +103,7 @@ public class BlockLimestoneSlab extends BlockSlab {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, new IProperty[]{HALF, VARIANT});
+        return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
     }
 
     @Override
@@ -132,11 +124,11 @@ public class BlockLimestoneSlab extends BlockSlab {
         private final String name;
         private final String unlocalizedName;
 
-        private EnumType(int meta, MapColor mapColor, String name) {
+        EnumType(int meta, MapColor mapColor, String name) {
             this(meta, mapColor, name, name);
         }
 
-        private EnumType(int meta, MapColor mapColor, String name, String unlocalizedName) {
+        EnumType(int meta, MapColor mapColor, String name, String unlocalizedName) {
             this.meta = meta;
             this.mapColor = mapColor;
             this.name = name;

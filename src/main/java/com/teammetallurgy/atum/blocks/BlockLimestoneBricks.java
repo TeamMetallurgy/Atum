@@ -2,7 +2,6 @@ package com.teammetallurgy.atum.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -51,7 +50,7 @@ public class BlockLimestoneBricks extends Block {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{VARIANT});
+        return new BlockStateContainer(this, VARIANT);
     }
 
     public static enum EnumType implements IStringSerializable {
@@ -92,7 +91,7 @@ public class BlockLimestoneBricks extends Block {
         }
 
         public String getUnlocalizedName() {
-            return "limestonebrick_" + this.name;
+            return this.name;
         }
 
         static {
@@ -101,7 +100,6 @@ public class BlockLimestoneBricks extends Block {
             }
         }
     }
-
     /*@Override
     public float getBlockHardness(World world, BlockPos pos) { //TODO
         int meta = world.getBlockMetadata(x, y, z);

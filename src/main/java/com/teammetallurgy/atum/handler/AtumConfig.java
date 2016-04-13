@@ -57,7 +57,6 @@ public class AtumConfig {
 
         prop = config.get(CATEGORY_GENERAL, "Atum Portal", true);
         prop.setComment("Can a non-creative user create a portal using the scarab?");
-        ;
         prop.setLanguageKey("atum.configGui.portalCreation");
         ALLOW_CREATION = prop.getBoolean(true);
         propOrder.add(prop.getName());

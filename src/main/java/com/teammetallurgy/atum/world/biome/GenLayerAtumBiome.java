@@ -11,7 +11,6 @@ import java.util.List;
 //import net.minecraft.world.gen.NoiseGeneratorSimplex;
 
 public class GenLayerAtumBiome extends GenLayer {
-
 	//private List<BiomeEntry> lBiomes = Lists.newArrayList();
 	//private List<BiomeEntry> hBiomes = Lists.newArrayList();
 	private List<BiomeEntry> biomes = Lists.newArrayList();
@@ -22,8 +21,8 @@ public class GenLayerAtumBiome extends GenLayer {
 		super(seed);
 		//noise = new NoiseGeneratorSimplex(new Random(seed));
 
-		for (AtumBiomes.BiomeType biome : AtumBiomes.biomeRegistry) {
-			final BiomeEntry entry = new BiomeEntry(biome.getGen(), biome.getWeight());
+		for (AtumBiomeGenBase biome : AtumBiomes.biomeRegistry) {
+			final BiomeEntry entry = new BiomeEntry(biome, biome.getWeight());
 			//if( biome.rootHeight >= 0.25F ) {
 			//	hBiomes.add(entry);
 			//} else {
