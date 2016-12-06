@@ -3,6 +3,7 @@ package com.teammetallurgy.atum.entity;
 import com.teammetallurgy.atum.Atum;
 import com.teammetallurgy.atum.entity.arrow.*;
 import com.teammetallurgy.atum.entity.projectile.EntitySmallBone;
+import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.util.ResourceLocation;
@@ -49,7 +50,7 @@ public class AtumEntities {
 
     private static void registerEntity(String registryName, Class<? extends Entity> entityClass, boolean sendsVelocityUpdates) {
         int entityID = 0;
-        ResourceLocation resourceLocation = new ResourceLocation(registryName);
+        ResourceLocation resourceLocation = new ResourceLocation(Constants.MODID, registryName);
         EntityRegistry.registerModEntity(resourceLocation, entityClass, resourceLocation.toString(), entityID++, Atum.instance, 64, 1, sendsVelocityUpdates);
     }
 
@@ -66,7 +67,7 @@ public class AtumEntities {
         }
 
         private AtumEntity(Class<? extends Entity> entityClass, String entityName, int eggPrimary, int eggSecondary) {
-            this(entityClass, new ResourceLocation(entityName), eggPrimary, eggSecondary);
+            this(entityClass, new ResourceLocation(Constants.MODID, entityName), eggPrimary, eggSecondary);
         }
     }
 }

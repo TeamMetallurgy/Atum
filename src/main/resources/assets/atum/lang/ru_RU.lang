@@ -338,16 +338,16 @@ item.atum.loot.broach.name=брошь
 item.atum.loot.scepter.name=скипетр
 
 # Entity
-entity.atum.mummy.name=Мумия
-entity.atum.brigand.name=Бандит-воин
-entity.atum.nomad.name=Бандит-стрелок
-entity.atum.pharaoh.name=Фараон
-entity.atum.forsaken.name=Пыльный скелет
-entity.atum.wraith.name=Пустынный призрак
-entity.atum.stoneguard.name=Каменный воин
-entity.atum.desertWolf.name=Пустынный волк
-entity.atum.banditWarlord.name=Бандит военачальник
-entity.atum.barbarian.name=Варвар
+entity.atum:mummy.name=Мумия
+entity.atum:brigand.name=Бандит-воин
+entity.atum:nomad.name=Бандит-стрелок
+entity.atum:pharaoh.name=Фараон
+entity.atum:forsaken.name=Пыльный скелет
+entity.atum:wraith.name=Пустынный призрак
+entity.atum:stoneguard.name=Каменный воин
+entity.atum:desert_wolf.name=Пустынный волк
+entity.atum:bandit_warlord.name=Бандит военачальник
+entity.atum:barbarian.name=Варвар
 
 # Pharaoh Names
 entity.atum.pharaoh.Ama=Ama'

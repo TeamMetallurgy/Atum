@@ -266,16 +266,16 @@ item.atum.loot.broach.name=胸针
 item.atum.loot.scepter.name=权杖
 
 # Entity
-entity.atum.mummy.name=木乃伊
-entity.atum.brigand.name=强盗战士
-entity.atum.nomad.name=强盗射手
-entity.atum.pharaoh.name=法老
-entity.atum.forsaken.name=尘灰骷髅
-entity.atum.wraith.name=沙漠幽灵
-entity.atum.stoneguard.name=石头士兵
-entity.atum.desertWolf.name=沙漠幽狼
-entity.atum.banditWarlord.name=强盗军阀
-entity.atum.barbarian.name=野蛮人
+entity.atum:mummy.name=木乃伊
+entity.atum:brigand.name=强盗战士
+entity.atum:nomad.name=强盗射手
+entity.atum:pharaoh.name=法老
+entity.atum:forsaken.name=尘灰骷髅
+entity.atum:wraith.name=沙漠幽灵
+entity.atum:stoneguard.name=石头士兵
+entity.atum:desert_wolf.name=沙漠幽狼
+entity.atum:bandit_warlord.name=强盗军阀
+entity.atum:barbarian.name=野蛮人
 
 # Pharaoh Names
 entity.atum.pharaoh.Ama=Ama'
