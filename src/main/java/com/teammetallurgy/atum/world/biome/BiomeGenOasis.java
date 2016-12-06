@@ -11,7 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenLakes;
 
 import java.util.Random;
 
-public class BiomeGenOasis extends AtumBiomeGenBase {
+public class BiomeGenOasis extends AtumBiome {
     protected final int lakeRarity = 3;
     protected final int waterLevel = 64;
 
@@ -38,14 +38,14 @@ public class BiomeGenOasis extends AtumBiomeGenBase {
         int height = random.nextInt(random.nextInt(248) + 8);
 
         if (height < waterLevel || random.nextInt(lakeRarity) == 0) {
-            (new WorldGenLakes(Blocks.water)).generate(world, random, pos.add(x, height, z));
+            (new WorldGenLakes(Blocks.WATER)).generate(world, random, pos.add(x, height, z));
         }
         super.decorate(world, random, pos);
     }
 
     @Override
     public void genTerrainBlocks(World world, Random random, ChunkPrimer chunkPrimer, int x, int z, double stoneNoise) { //TODO Figure out what this is based of
-        double noise = GRASS_COLOR_NOISE.func_151601_a((double) x * 0.25D, (double) z * 0.25D);
+        double noise = GRASS_COLOR_NOISE.getValue((double) x * 0.25D, (double) z * 0.25D);
 
         boolean makingPond = false;
         int depth = 1 + random.nextInt(5);
@@ -60,15 +60,15 @@ public class BiomeGenOasis extends AtumBiomeGenBase {
 
                 IBlockState state = chunkPrimer.getBlockState(zz, yy, xx);
 
-                if (state.getMaterial() == Material.air) {
+                if (state.getMaterial() == Material.AIR) {
                     if (makingPond) {
                         if (--depth == 0) break;
-                        state = Blocks.water.getDefaultState();
+                        state = Blocks.WATER.getDefaultState();
                     } else if (yy <= waterLevel && state == this.topBlock) {
-                        state = Blocks.water.getDefaultState();
+                        state = Blocks.WATER.getDefaultState();
                         if (noise < 0.12D) {
                             yy = yy +1;
-                            state = Blocks.waterlily.getDefaultState(); //TODO
+                            state = Blocks.WATERLILY.getDefaultState(); //TODO
                         }
                         makingPond = true;
                     }

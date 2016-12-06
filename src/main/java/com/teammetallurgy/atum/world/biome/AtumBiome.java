@@ -10,20 +10,20 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
-public class AtumBiomeGenBase extends BiomeGenBase {
+public class AtumBiome extends Biome {
     private int weight = AtumBiomes.DEFAULT_BIOME_WEIGHT;
     protected AtumBiomes.BiomeType biomeType;
     protected int deadwoodRarity = 5;
     protected int palmRarity = 5;
     protected int pyramidRarity = 240;
 
-    public AtumBiomeGenBase(BiomeGenBase.BiomeProperties properties) {
+    public AtumBiome(Biome.BiomeProperties properties) {
         super(properties);
 
         super.spawnableMonsterList.clear();
@@ -93,11 +93,11 @@ public class AtumBiomeGenBase extends BiomeGenBase {
 
         for (int yy = 255; yy >= 0; --yy) {
             if (yy <= random.nextInt(5)) {
-                chunkPrimer.setBlockState(zz, yy, xx, Blocks.bedrock.getDefaultState());
+                chunkPrimer.setBlockState(zz, yy, xx, Blocks.BEDROCK.getDefaultState());
             } else {
                 IBlockState existingState = chunkPrimer.getBlockState(zz, yy, xx);
 
-                if (existingState.getMaterial() == Material.air) {
+                if (existingState.getMaterial() == Material.AIR) {
                     flag = -1;
                 } else if (existingState == AtumBlocks.LIMESTONE.getDefaultState()) {
                     if (flag == -1) {
@@ -137,7 +137,7 @@ public class AtumBiomeGenBase extends BiomeGenBase {
             this.setHeightVariation(0.05F);
             this.setRainDisabled();
             //this.weight = biomeType.getWeight(); //TODO Fix Weight
-            //biomeType.setGen(new AtumBiomeGenBase(this));
+            //biomeType.setGen(new AtumBiome(this));
             //this.setColor(16421912); //TODO
         }
 

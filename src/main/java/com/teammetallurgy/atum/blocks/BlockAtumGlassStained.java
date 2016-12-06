@@ -6,7 +6,7 @@ import net.minecraft.block.material.Material;
 
 public class BlockAtumGlassStained extends BlockStainedGlass {
     public BlockAtumGlassStained() {
-        super(Material.glass);
+        super(Material.GLASS);
         this.setSoundType(SoundType.GLASS);
         this.setHardness(0.3F);
     }

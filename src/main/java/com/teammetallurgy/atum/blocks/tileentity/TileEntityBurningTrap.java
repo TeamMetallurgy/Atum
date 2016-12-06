@@ -24,7 +24,7 @@ public class TileEntityBurningTrap extends TileEntity implements ITickable {
         int y = super.getPos().getY();
         int z = super.getPos().getZ();
 
-        EntityPlayer player = super.worldObj.getClosestPlayer((double) x, (double) y, (double) z, 4.0D, false);
+        EntityPlayer player = super.world.getClosestPlayer((double) x, (double) y, (double) z, 4.0D, false);
         byte range = 1;
         int xMin = x;
         int xMax = x + range;
@@ -32,7 +32,7 @@ public class TileEntityBurningTrap extends TileEntity implements ITickable {
         int yMax = y + range;
         int zMin = z;
         int zMax = z + range;
-        IBlockState state = super.worldObj.getBlockState(super.pos);
+        IBlockState state = super.world.getBlockState(super.pos);
         EnumFacing facing = EnumFacing.getFront(state.getBlock().getMetaFromState(state));
         xMin += facing.getFrontOffsetX() * range;
         xMax += facing.getFrontOffsetX() * range;
@@ -41,7 +41,7 @@ public class TileEntityBurningTrap extends TileEntity implements ITickable {
         zMin += facing.getFrontOffsetZ() * range;
         zMax += facing.getFrontOffsetZ() * range;
         AxisAlignedBB bb = new AxisAlignedBB((double) xMin, (double) yMin, (double) zMin, (double) xMax, (double) yMax, (double) zMax);
-        List<EntityMob> list = super.worldObj.getEntitiesWithinAABB(EntityMob.class, bb);
+        List<EntityMob> list = super.world.getEntitiesWithinAABB(EntityMob.class, bb);
         if (player != null && bb.isVecInside(new Vec3d(player.posX, player.posY + 0.5D, player.posZ))) {
             player.setFire(2);
             this.spawnFlames();
@@ -57,8 +57,8 @@ public class TileEntityBurningTrap extends TileEntity implements ITickable {
     }
 
     public void spawnFlames() {
-        Random random = worldObj.rand;
-        IBlockState state = super.worldObj.getBlockState(super.pos);
+        Random random = world.rand;
+        IBlockState state = super.world.getBlockState(super.pos);
         int meta = state.getBlock().getMetaFromState(state);
         float f = (float) super.pos.getX() + 0.5F;
         float f1 = (float) super.pos.getY() + 0.1875F + random.nextFloat() * 10.0F / 16.0F;
@@ -69,17 +69,17 @@ public class TileEntityBurningTrap extends TileEntity implements ITickable {
         double my = random.nextDouble() * 0.08D - 0.04D;
         double mz = random.nextDouble() * 0.08D - 0.04D;
         if (meta == 4) {
-            super.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f - f3), (double) f1, (double) (f2 + f4), mx - 0.1D, my, mz);
-            super.worldObj.spawnParticle(EnumParticleTypes.FLAME, (double) (f - f3), (double) f1, (double) (f2 + f4), mx - 0.1D, my, mz);
+            super.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f - f3), (double) f1, (double) (f2 + f4), mx - 0.1D, my, mz);
+            super.world.spawnParticle(EnumParticleTypes.FLAME, (double) (f - f3), (double) f1, (double) (f2 + f4), mx - 0.1D, my, mz);
         } else if (meta == 5) {
-            super.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f + f3), (double) f1, (double) (f2 + f4), mx + 0.1D, my, mz);
-            super.worldObj.spawnParticle(EnumParticleTypes.FLAME, (double) (f + f3), (double) f1, (double) (f2 + f4), mx + 0.1D, my, mz);
+            super.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f + f3), (double) f1, (double) (f2 + f4), mx + 0.1D, my, mz);
+            super.world.spawnParticle(EnumParticleTypes.FLAME, (double) (f + f3), (double) f1, (double) (f2 + f4), mx + 0.1D, my, mz);
         } else if (meta == 2) {
-            super.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f + f4), (double) f1, (double) (f2 - f3), mx, my, mz - 0.1D);
-            super.worldObj.spawnParticle(EnumParticleTypes.FLAME, (double) (f + f4), (double) f1, (double) (f2 - f3), mx, my, mz - 0.1D);
+            super.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f + f4), (double) f1, (double) (f2 - f3), mx, my, mz - 0.1D);
+            super.world.spawnParticle(EnumParticleTypes.FLAME, (double) (f + f4), (double) f1, (double) (f2 - f3), mx, my, mz - 0.1D);
         } else if (meta == 3) {
-            super.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f + f4), (double) f1, (double) (f2 + f3), mx, my, mz + 0.1D);
-            super.worldObj.spawnParticle(EnumParticleTypes.FLAME, (double) (f + f4), (double) f1, (double) (f2 + f3), mx, my, mz + 0.1D);
+            super.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double) (f + f4), (double) f1, (double) (f2 + f3), mx, my, mz + 0.1D);
+            super.world.spawnParticle(EnumParticleTypes.FLAME, (double) (f + f4), (double) f1, (double) (f2 + f3), mx, my, mz + 0.1D);
         }
     }
 }

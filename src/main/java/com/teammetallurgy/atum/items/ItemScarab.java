@@ -19,6 +19,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class ItemScarab extends Item {
 
     public ItemScarab() {
@@ -33,22 +35,23 @@ public class ItemScarab extends Item {
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    @Nonnull
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (AtumConfig.ALLOW_CREATION || player.capabilities.isCreativeMode) {
             IBlockState state = world.getBlockState(pos);
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();
             IBlockState temp = null;
-            if (state == Blocks.sandstone.getDefaultState() || state == AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE)) {
+            if (state == Blocks.SANDSTONE.getDefaultState() || state == AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE)) {
                 temp = state;
             }
             if (temp != null) {
                 for (int x1 = -1; x1 < 1; x1++) {
                     for (int z1 = -1; z1 < 1; z1++) {
-                        if (world.getBlockState(new BlockPos(x1 + x, y + 1, z1 + z)).getMaterial() == Material.water) {
+                        if (world.getBlockState(new BlockPos(x1 + x, y + 1, z1 + z)).getMaterial() == Material.WATER) {
                             if (AtumBlocks.PORTAL.tryToCreatePortal(world, new BlockPos(x1 + x, y, z1 + z), temp)) {
-                                --player.getHeldItem(hand).stackSize;
+                                player.getHeldItem(hand).shrink(1);
                                 return EnumActionResult.SUCCESS;
                             }
                         }
@@ -80,7 +83,7 @@ public class ItemScarab extends Item {
                 }
             }
         } else {
-            player.addChatMessage(new TextComponentString(I18n.translateToLocal("chat.atum.disabled")));
+            player.sendMessage(new TextComponentString(I18n.translateToLocal("chat.atum.disabled")));
         }
         return EnumActionResult.PASS;
     }

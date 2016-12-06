@@ -1,15 +1,18 @@
 package com.teammetallurgy.atum.blocks.tileentity.chests;
 
 import com.teammetallurgy.atum.blocks.BlockChestSpawner;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.WeightedSpawnerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -17,29 +20,33 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class TileEntityChestSpawner extends TileEntityChest {
 
     private final MobSpawnerBaseLogic spawnerLogic = new MobSpawnerBaseLogic() {
         @Override
-        public void func_98267_a(int id) {
-            TileEntityChestSpawner.this.worldObj.addBlockEvent(TileEntityChestSpawner.this.pos, Blocks.mob_spawner, id, 0);
+        public void broadcastEvent(int id) {
+            TileEntityChestSpawner.this.world.addBlockEvent(TileEntityChestSpawner.this.pos, Blocks.MOB_SPAWNER, id, 0);
         }
 
         @Override
+        @Nonnull
         public World getSpawnerWorld() {
-            return TileEntityChestSpawner.this.worldObj;
+            return TileEntityChestSpawner.this.world;
         }
 
         @Override
+        @Nonnull
         public BlockPos getSpawnerPosition() {
             return TileEntityChestSpawner.this.pos;
         }
 
         @Override
-        public void func_184993_a(WeightedSpawnerEntity spawnerEntity) {
-            super.func_184993_a(spawnerEntity);
+        public void setNextSpawnData(@Nonnull WeightedSpawnerEntity spawnerEntity) {
+            super.setNextSpawnData(spawnerEntity);
 
             if (this.getSpawnerWorld() != null) {
                 IBlockState state = this.getSpawnerWorld().getBlockState(this.getSpawnerPosition());
@@ -48,13 +55,10 @@ public class TileEntityChestSpawner extends TileEntityChest {
         }
     };
 
-    private ItemStack[] chestContents = new ItemStack[27];
-    private String customName;
+    private NonNullList<ItemStack> chestContents = NonNullList.withSize(27, ItemStack.EMPTY);
 
     public TileEntityChestSpawner() {
-        this.spawnerLogic.setEntityName(entityName());
-
-        this.spawnerLogic.setDelayToMin(0);
+        //this.spawnerLogic.setEntityName(entityName()); //TODO
     }
 
     private String entityName() {
@@ -80,139 +84,75 @@ public class TileEntityChestSpawner extends TileEntityChest {
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
-        return this.chestContents[index];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        if (this.chestContents[index] != null) {
-            if (this.chestContents[index].stackSize <= count) {
-                ItemStack stack = this.chestContents[index];
-                this.chestContents[index] = null;
-                this.markDirty();
-                return stack;
-            } else {
-                ItemStack stack1 = this.chestContents[index].splitStack(count);
-
-                if (this.chestContents[index].stackSize == 0) {
-                    this.chestContents[index] = null;
-                }
-                this.markDirty();
-                return stack1;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-        if (this.chestContents[index] != null) {
-            ItemStack stack = this.chestContents[index];
-            this.chestContents[index] = null;
-            return stack;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        this.chestContents[index] = stack;
-        if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-            stack.stackSize = this.getInventoryStackLimit();
-        }
-        this.markDirty();
-    }
-
-    @Override
-    public String getName() {
-        return this.hasCustomName() ? this.customName : "container.chest";
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return this.customName != null && this.customName.length() > 0;
-    }
-
-    @Override
-    public void setCustomName(String name) {
-        this.customName = name;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
-        NBTTagList nbttaglist = tagCompound.getTagList("Items", 10);
-        this.chestContents = new ItemStack[this.getSizeInventory()];
-
-        if (tagCompound.hasKey("CustomName", 8)) {
-            this.customName = tagCompound.getString("CustomName");
-        }
-
-        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
-            int j = nbttagcompound.getByte("Slot") & 255;
-
-            if (j >= 0 && j < this.chestContents.length) {
-                this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound);
+    public boolean isEmpty() {
+        for (ItemStack stack : this.chestContents) {
+            if (!stack.isEmpty()) {
+                return false;
             }
         }
-
-        this.spawnerLogic.readFromNBT(tagCompound);
+        return true;
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
-        super.writeToNBT(tagCompound);
-        NBTTagList tagList = new NBTTagList();
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        this.chestContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
-        for (int i = 0; i < this.chestContents.length; ++i) {
-            if (this.chestContents[i] != null) {
-                NBTTagCompound compound = new NBTTagCompound();
-                compound.setByte("Slot", (byte) i);
-                this.chestContents[i].writeToNBT(compound);
-                tagList.appendTag(compound);
-            }
+        if (!this.checkLootAndRead(compound)) {
+            ItemStackHelper.loadAllItems(compound, this.chestContents);
         }
-        tagCompound.setTag("Items", tagList);
+
+        if (compound.hasKey("CustomName", 8)) {
+            this.customName = compound.getString("CustomName");
+        }
+
+        this.spawnerLogic.readFromNBT(compound);
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound compound) {
+        super.writeToNBT(compound);
+
+        if (!this.checkLootAndWrite(compound)) {
+            ItemStackHelper.saveAllItems(compound, this.chestContents);
+        }
 
         if (this.hasCustomName()) {
-            tagCompound.setString("CustomName", this.customName);
+            compound.setString("CustomName", this.customName);
         }
 
-        this.spawnerLogic.writeToNBT(tagCompound);
+        this.spawnerLogic.writeToNBT(compound);
+
+        return compound;
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
         double d0 = 4.0D;
         double d1 = 3.0D;
-        List<EntityMob> list = super.worldObj.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB((double) super.pos.getX() - d0, (double) super.pos.getY() - d1, (double) super.pos.getZ() - d0, (double) super.pos.getX() + d0, (double) super.pos.getY() + d1, (double) super.pos.getZ() + d0));
+        List<EntityMob> list = super.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB((double) super.pos.getX() - d0, (double) super.pos.getY() - d1, (double) super.pos.getZ() - d0, (double) super.pos.getX() + d0, (double) super.pos.getY() + d1, (double) super.pos.getZ() + d0));
         if (!list.isEmpty()) {
-            if (!super.worldObj.isRemote) {
-                player.addChatMessage(new TextComponentString(I18n.translateToLocal("chat.atum.enemies")));
+            if (!super.world.isRemote) {
+                player.sendMessage(new TextComponentString(I18n.translateToLocal("chat.atum.enemies")));
             }
             return false;
         } else {
-            return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+            return this.world.getTileEntity(this.pos) == this && player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
         }
-    }
-
-
-    @Override
-    public void update() {
-        this.spawnerLogic.updateSpawner();
     }
 
     @Override
     public void closeInventory(EntityPlayer player) {
         if (!player.isSpectator() && this.getBlockType() instanceof BlockChestSpawner) {
             --this.numPlayersUsing;
-            this.worldObj.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
-            this.worldObj.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
-            this.worldObj.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
+            this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
+
+            this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false);
+
+            if (this.getChestType() == BlockChest.Type.TRAP) {
+                this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType(), false);
+            }
         }
     }
 
@@ -220,5 +160,44 @@ public class TileEntityChestSpawner extends TileEntityChest {
     public void invalidate() {
         this.tileEntityInvalid = true;
         this.updateContainingBlockInfo();
+    }
+
+    @Override
+    @Nonnull
+    protected NonNullList<ItemStack> getItems() {
+        return this.chestContents;
+    }
+
+    @Override
+    public void update() {
+        this.spawnerLogic.updateSpawner();
+    }
+
+    @Override
+    @Nullable
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(this.pos, 1, this.getUpdateTag());
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound tag = this.writeToNBT(new NBTTagCompound());
+        tag.removeTag("SpawnPotentials");
+        return tag;
+    }
+
+    @Override
+    public boolean receiveClientEvent(int id, int type) {
+        return this.spawnerLogic.setDelayToMin(id) || super.receiveClientEvent(id, type);
+    }
+
+    @Override
+    public boolean onlyOpsCanSetNbt() {
+        return true;
+    }
+
+    public MobSpawnerBaseLogic getSpawnerBaseLogic() {
+        return this.spawnerLogic;
     }
 }

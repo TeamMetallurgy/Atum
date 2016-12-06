@@ -2,7 +2,7 @@ package com.teammetallurgy.atum.world.biome;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 
-public class BiomeGenDeadOasis extends AtumBiomeGenBase {
+public class BiomeGenDeadOasis extends AtumBiome {
 
     public BiomeGenDeadOasis(BiomeProperties properties) {
         super(properties);

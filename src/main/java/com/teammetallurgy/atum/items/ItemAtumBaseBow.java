@@ -13,6 +13,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class ItemAtumBaseBow extends ItemBow {
 
     public ItemAtumBaseBow() {
@@ -22,12 +24,12 @@ public class ItemAtumBaseBow extends ItemBow {
         this.addPropertyOverride(new ResourceLocation(Constants.MODID, "pull"), new IItemPropertyGetter() {
             @Override
             @SideOnly(Side.CLIENT)
-            public float apply(ItemStack stack, World world, EntityLivingBase entity) {
+            public float apply(@Nonnull ItemStack stack, World world, EntityLivingBase entity) {
                 if (entity == null) {
                     return 0.0F;
                 } else {
                     ItemStack activeStack = entity.getActiveItemStack();
-                    return activeStack != null && activeStack.getItem() instanceof ItemAtumBaseBow ? (float) (stack.getMaxItemUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
+                    return !activeStack.isEmpty() && activeStack.getItem() instanceof ItemAtumBaseBow ? (float) (stack.getMaxItemUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
                 }
             }
         });
@@ -35,12 +37,13 @@ public class ItemAtumBaseBow extends ItemBow {
         this.addPropertyOverride(new ResourceLocation(Constants.MODID, bowName + "pulling"), new IItemPropertyGetter() {
             @Override
             @SideOnly(Side.CLIENT)
-            public float apply(ItemStack stack, World worldIn, EntityLivingBase entity) {
+            public float apply(@Nonnull ItemStack stack, World worldIn, EntityLivingBase entity) {
                 return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
             }
         });
     }
 
+    @Nonnull
     protected ItemStack findAmmo(EntityPlayer player) {
         if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND))) {
             return player.getHeldItem(EnumHand.OFF_HAND);
@@ -54,7 +57,7 @@ public class ItemAtumBaseBow extends ItemBow {
                     return stack;
                 }
             }
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 }

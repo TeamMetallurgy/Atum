@@ -5,15 +5,18 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class ContainerLimestoneFurnace extends Container {
     private final IInventory tileLimestoneFurnace;
-    private int field_178152_f;
-    private int field_178153_g;
-    private int field_178154_h;
-    private int field_178155_i;
+    private int cookTime;
+    private int totalCookTime;
+    private int furnaceBurnTime;
+    private int currentItemBurnTime;
 
     public ContainerLimestoneFurnace(InventoryPlayer playerInventory, IInventory furnaceInventory) {
         this.tileLimestoneFurnace = furnaceInventory;
@@ -33,8 +36,8 @@ public class ContainerLimestoneFurnace extends Container {
     }
 
     @Override
-    public void onCraftGuiOpened(ICrafting listener) {
-        super.onCraftGuiOpened(listener);
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
         listener.sendAllWindowProperties(this, this.tileLimestoneFurnace);
     }
 
@@ -42,30 +45,27 @@ public class ContainerLimestoneFurnace extends Container {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.crafters.size(); ++i) {
-            ICrafting icrafting = this.crafters.get(i);
+        for (int i = 0; i < this.listeners.size(); ++i) {
+            IContainerListener containerListener = this.listeners.get(i);
 
-            if (this.field_178152_f != this.tileLimestoneFurnace.getField(2)) {
-                icrafting.sendProgressBarUpdate(this, 2, this.tileLimestoneFurnace.getField(2));
+            if (this.cookTime != this.tileLimestoneFurnace.getField(2)) {
+                containerListener.sendProgressBarUpdate(this, 2, this.tileLimestoneFurnace.getField(2));
             }
-
-            if (this.field_178154_h != this.tileLimestoneFurnace.getField(0)) {
-                icrafting.sendProgressBarUpdate(this, 0, this.tileLimestoneFurnace.getField(0));
+            if (this.furnaceBurnTime != this.tileLimestoneFurnace.getField(0)) {
+                containerListener.sendProgressBarUpdate(this, 0, this.tileLimestoneFurnace.getField(0));
             }
-
-            if (this.field_178155_i != this.tileLimestoneFurnace.getField(1)) {
-                icrafting.sendProgressBarUpdate(this, 1, this.tileLimestoneFurnace.getField(1));
+            if (this.currentItemBurnTime != this.tileLimestoneFurnace.getField(1)) {
+                containerListener.sendProgressBarUpdate(this, 1, this.tileLimestoneFurnace.getField(1));
             }
-
-            if (this.field_178153_g != this.tileLimestoneFurnace.getField(3)) {
-                icrafting.sendProgressBarUpdate(this, 3, this.tileLimestoneFurnace.getField(3));
+            if (this.totalCookTime != this.tileLimestoneFurnace.getField(3)) {
+                containerListener.sendProgressBarUpdate(this, 3, this.tileLimestoneFurnace.getField(3));
             }
         }
 
-        this.field_178152_f = this.tileLimestoneFurnace.getField(2);
-        this.field_178154_h = this.tileLimestoneFurnace.getField(0);
-        this.field_178155_i = this.tileLimestoneFurnace.getField(1);
-        this.field_178153_g = this.tileLimestoneFurnace.getField(3);
+        this.cookTime = this.tileLimestoneFurnace.getField(2);
+        this.furnaceBurnTime = this.tileLimestoneFurnace.getField(0);
+        this.currentItemBurnTime = this.tileLimestoneFurnace.getField(1);
+        this.totalCookTime = this.tileLimestoneFurnace.getField(3);
     }
 
     @Override
@@ -75,13 +75,14 @@ public class ContainerLimestoneFurnace extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
-        return this.tileLimestoneFurnace.isUseableByPlayer(player);
+    public boolean canInteractWith(@Nonnull EntityPlayer player) {
+        return this.tileLimestoneFurnace.isUsableByPlayer(player);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-        ItemStack stack = null;
+    @Nonnull
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+        ItemStack stack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
@@ -90,40 +91,39 @@ public class ContainerLimestoneFurnace extends Container {
 
             if (index == 2) {
                 if (!this.mergeItemStack(slotStack, 3, 39, true)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
-
                 slot.onSlotChange(slotStack, stack);
             } else if (index != 1 && index != 0) {
-                if (FurnaceRecipes.instance().getSmeltingResult(slotStack) != null) {
+                if (!FurnaceRecipes.instance().getSmeltingResult(slotStack).isEmpty()) {
                     if (!this.mergeItemStack(slotStack, 0, 1, false)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
-                } else if (TileEntityLimestoneFurnace.isItemFuel(slotStack)) {
+                } else if (TileEntityFurnace.isItemFuel(slotStack)) {
                     if (!this.mergeItemStack(slotStack, 1, 2, false)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 } else if (index >= 3 && index < 30) {
                     if (!this.mergeItemStack(slotStack, 30, 39, false)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 } else if (index >= 30 && index < 39 && !this.mergeItemStack(slotStack, 3, 30, false)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (!this.mergeItemStack(slotStack, 3, 39, false)) {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (slotStack.stackSize == 0) {
-                slot.putStack(null);
+            if (slotStack.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }
 
-            if (slotStack.stackSize == stack.stackSize) {
-                return null;
+            if (slotStack.getCount() == stack.getCount()) {
+                return ItemStack.EMPTY;
             }
-            slot.onPickupFromSlot(player, slotStack);
+            slot.onTake(playerIn, slotStack);
         }
         return stack;
     }

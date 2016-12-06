@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemMafdetsQuickness extends Item {
@@ -26,34 +27,34 @@ public class ItemMafdetsQuickness extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack) {
+    public boolean hasEffect(@Nonnull ItemStack stack) {
         return true;
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+    public void onUpdate(@Nonnull ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
-            if (isSelected && player.onGround && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == this) {
+            if (isSelected && player.onGround && !player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == this) {
                 doEffect(player, stack);
             }
         }
     }
 
-    public void doEffect(EntityPlayer player, ItemStack item) {
-        player.addPotionEffect(new PotionEffect(MobEffects.moveSpeed, 40, 0, false, true)); //TODO Check showParticles parameter
+    private void doEffect(EntityPlayer player, @Nonnull ItemStack stack) {
+        player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 40, 0, false, true)); //TODO Check showParticles parameter
         if (!player.capabilities.isCreativeMode) {
-            if (item.getItemDamage() == 1) {
-                item.damageItem(1, player);
+            if (stack.getItemDamage() == 1) {
+                stack.damageItem(1, player);
             } else {
-                item.setItemDamage(item.getItemDamage() + 1);
+                stack.setItemDamage(stack.getItemDamage() + 1);
             }
         }
 
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @Nonnull
     public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.RARE;
     }
@@ -75,6 +76,6 @@ public class ItemMafdetsQuickness extends Item {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 }

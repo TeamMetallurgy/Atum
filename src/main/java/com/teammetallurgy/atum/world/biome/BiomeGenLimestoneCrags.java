@@ -12,7 +12,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
+public class BiomeGenLimestoneCrags extends AtumBiome {
 
     private WorldGenerator genSpikes;
 
@@ -47,7 +47,7 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
         private final Block groundBlock = AtumBlocks.SAND;
 
         private boolean isBlockReplaceable(IBlockState state) {
-            return state.getMaterial() == Material.air || state.getBlock() == AtumBlocks.SAND || state.getBlock() == AtumBlocks.SAND_LAYERED || state.getBlock() == Blocks.dirt;
+            return state.getMaterial() == Material.AIR || state.getBlock() == AtumBlocks.SAND || state.getBlock() == AtumBlocks.SAND_LAYERED || state.getBlock() == Blocks.DIRT;
         }
 
         @Override
@@ -71,13 +71,13 @@ public class BiomeGenLimestoneCrags extends AtumBiomeGenBase {
 
                 for (int k = 0; k < i; ++k) {
                     float f = (1.0F - (float) k / (float) i) * (float) j;
-                    int l = MathHelper.ceiling_float_int(f);
+                    int l = MathHelper.ceil(f);
 
                     for (int i1 = -l; i1 <= l; ++i1) {
-                        float f1 = (float) MathHelper.abs_int(i1) - 0.25F;
+                        float f1 = (float) MathHelper.abs(i1) - 0.25F;
 
                         for (int j1 = -l; j1 <= l; ++j1) {
-                            float f2 = (float) MathHelper.abs_int(j1) - 0.25F;
+                            float f2 = (float) MathHelper.abs(j1) - 0.25F;
 
                             if ((i1 == 0 && j1 == 0 || f1 * f1 + f2 * f2 <= f * f) && (i1 != -l && i1 != l && j1 != -l && j1 != l || rand.nextFloat() <= 0.75F)) {
                                 IBlockState state = world.getBlockState(pos.add(i1, k, j1));

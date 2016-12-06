@@ -2,7 +2,9 @@ package com.teammetallurgy.atum.handler;
 
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nonnull;
 
 public class AtumCreativeTab extends CreativeTabs {
 
@@ -11,7 +13,8 @@ public class AtumCreativeTab extends CreativeTabs {
     }
 
     @Override
-    public Item getTabIconItem() {
-        return AtumItems.SCARAB;
+    @Nonnull
+    public ItemStack getTabIconItem() {
+        return new ItemStack(AtumItems.SCARAB);
     }
 }

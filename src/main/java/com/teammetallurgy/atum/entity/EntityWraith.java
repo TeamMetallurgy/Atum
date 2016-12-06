@@ -38,7 +38,7 @@ public class EntityWraith extends EntityUndeadBase {
     }
 
     @Override
-    protected PathNavigate getNewNavigator(World world) {
+    protected PathNavigate createNavigator(World world) {
         return new PathNavigateClimber(this, world);
     }
 
@@ -51,7 +51,7 @@ public class EntityWraith extends EntityUndeadBase {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (!this.worldObj.isRemote) {
+        if (!this.world.isRemote) {
             this.setBesideClimbableBlock(this.isCollidedHorizontally);
         }
     }
@@ -76,8 +76,8 @@ public class EntityWraith extends EntityUndeadBase {
     protected void jump() {
         this.motionY = 0.56999998688697815D;
 
-        if (this.isPotionActive(MobEffects.jump)) {
-            this.motionY += (double) ((float) (this.getActivePotionEffect(MobEffects.jump).getAmplifier() + 1) * 0.1F);
+        if (this.isPotionActive(MobEffects.JUMP_BOOST)) {
+            this.motionY += (double) ((float) (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
         }
 
         if (this.isSprinting()) {
@@ -141,7 +141,7 @@ public class EntityWraith extends EntityUndeadBase {
         }
 
         @Override
-        protected double func_179512_a(EntityLivingBase attackTarget) {
+        protected double getAttackReachSqr(EntityLivingBase attackTarget) {
             return (double) (4.0F + attackTarget.width);
         }
     }

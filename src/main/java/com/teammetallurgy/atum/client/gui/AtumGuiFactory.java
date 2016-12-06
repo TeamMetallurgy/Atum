@@ -9,7 +9,6 @@ import java.util.Set;
 public class AtumGuiFactory implements IModGuiFactory {
     @Override
     public void initialize(Minecraft minecraftInstance) {
-
     }
 
     @Override

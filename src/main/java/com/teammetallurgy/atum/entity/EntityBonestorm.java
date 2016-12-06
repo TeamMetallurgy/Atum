@@ -43,17 +43,17 @@ public class EntityBonestorm extends EntityUndeadBase {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.entity_skeleton_horse_ambient;
+        return SoundEvents.ENTITY_SKELETON_HORSE_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound() {
-        return SoundEvents.entity_skeleton_horse_hurt;
+        return SoundEvents.ENTITY_SKELETON_HORSE_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.entity_skeleton_horse_death;
+        return SoundEvents.ENTITY_SKELETON_HORSE_DEATH;
     }
 
     @Override
@@ -150,13 +150,13 @@ public class EntityBonestorm extends EntityUndeadBase {
                     }
 
                     if (this.timer > 1) {
-                        float f = MathHelper.sqrt_float(MathHelper.sqrt_double(d0)) * 0.5F;
-                        this.bonestorm.worldObj.playSound(null, entitylivingbase.getPosition(), SoundEvents.entity_skeleton_hurt, SoundCategory.HOSTILE, 0.7F, (this.bonestorm.rand.nextFloat() - this.bonestorm.rand.nextFloat()) * 0.2F + 1.0F);
+                        float f = MathHelper.sqrt(MathHelper.sqrt(d0)) * 0.5F;
+                        this.bonestorm.world.playSound(null, entitylivingbase.getPosition(), SoundEvents.ENTITY_SKELETON_HURT, SoundCategory.HOSTILE, 0.7F, (this.bonestorm.rand.nextFloat() - this.bonestorm.rand.nextFloat()) * 0.2F + 1.0F);
 
                         for (int i = 0; i < 1; ++i) {
-                            EntitySmallBone entitySmallBone = new EntitySmallBone(this.bonestorm.worldObj, this.bonestorm, d1 + this.bonestorm.getRNG().nextGaussian() * (double) f, d2, d3 + this.bonestorm.getRNG().nextGaussian() * (double) f);
+                            EntitySmallBone entitySmallBone = new EntitySmallBone(this.bonestorm.world, this.bonestorm, d1 + this.bonestorm.getRNG().nextGaussian() * (double) f, d2, d3 + this.bonestorm.getRNG().nextGaussian() * (double) f);
                             entitySmallBone.posY = this.bonestorm.posY + (double) (this.bonestorm.height / 2.0F) + 0.5D;
-                            this.bonestorm.worldObj.spawnEntityInWorld(entitySmallBone);
+                            this.bonestorm.world.spawnEntity(entitySmallBone);
                         }
                     }
                 }

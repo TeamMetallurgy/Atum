@@ -61,7 +61,7 @@ public class EntityBarbarian extends EntityBanditBase {
 
         if (rand.nextInt(4) == 0) {
             int amount = rand.nextInt(2) + 1;
-            this.dropItem(Items.gold_nugget, amount);
+            this.dropItem(Items.GOLD_NUGGET, amount);
         }
     }
 

@@ -65,6 +65,6 @@ public class RenderBone extends Render<EntityBone> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityBone entityBone) {
-        return TextureMap.locationBlocksTexture;
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }
 }

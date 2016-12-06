@@ -9,7 +9,6 @@ import com.teammetallurgy.atum.client.render.entity.arrow.RenderBone;
 import com.teammetallurgy.atum.client.render.entity.arrow.RenderNutsCall;
 import com.teammetallurgy.atum.entity.*;
 import com.teammetallurgy.atum.entity.arrow.CustomArrow;
-import com.teammetallurgy.atum.entity.arrow.EntityAtumFishHook;
 import com.teammetallurgy.atum.entity.arrow.EntityNutsCall;
 import com.teammetallurgy.atum.entity.projectile.EntitySmallBone;
 import com.teammetallurgy.atum.handler.AtumConfig;
@@ -27,14 +26,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClientProxy extends CommonProxy {
 
@@ -190,19 +187,19 @@ public class ClientProxy extends CommonProxy {
                 return new RenderNutsCall(manager);
             }
         });
-        RenderingRegistry.registerEntityRenderingHandler(EntityAtumFishHook.class, new IRenderFactory<EntityAtumFishHook>() {
+        /*RenderingRegistry.registerEntityRenderingHandler(EntityAtumFishHook.class, new IRenderFactory<EntityAtumFishHook>() {
             @Override
             public Render<? super EntityAtumFishHook> createRenderFor(RenderManager manager) {
                 return new RenderFish(manager);
             }
-        });
+        });*/ //TODO
     }
 
     @Override
     public void setBlockResourceLocation(Item item, String name, CreativeTabs tab) {
         if (item != null) {
             if (item.getHasSubtypes()) {
-                List<ItemStack> subBlocks = new ArrayList<ItemStack>();
+                NonNullList<ItemStack> subBlocks = NonNullList.create();
                 item.getSubItems(item, tab, subBlocks);
                 for (ItemStack stack : subBlocks) {
                     String subBlockName = AtumUtils.toRegistryName(AtumUtils.toUnlocalizedName(item.getUnlocalizedName(stack)));
@@ -220,7 +217,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void setItemResourceLocation(Item item, String name, CreativeTabs tab) {
         if (item.getHasSubtypes()) {
-            List<ItemStack> subItems = new ArrayList<ItemStack>();
+            NonNullList<ItemStack> subItems = NonNullList.create();
             item.getSubItems(item, tab, subItems);
             for (ItemStack stack : subItems) {
                 String subItemName = AtumUtils.toRegistryName(AtumUtils.toUnlocalizedName(item.getUnlocalizedName(stack)));

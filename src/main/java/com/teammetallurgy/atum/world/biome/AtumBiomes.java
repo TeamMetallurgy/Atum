@@ -1,12 +1,12 @@
 package com.teammetallurgy.atum.world.biome;
 
 import com.google.common.collect.Lists;
-import com.teammetallurgy.atum.world.biome.AtumBiomeGenBase.AtumBiomeProperties;
+import com.teammetallurgy.atum.world.biome.AtumBiome.AtumBiomeProperties;
 
 import java.util.List;
 
 public class AtumBiomes {
-    static List<AtumBiomeGenBase> biomeRegistry = Lists.newArrayList();
+    static List<AtumBiome> biomeRegistry = Lists.newArrayList();
     static final int DEFAULT_BIOME_WEIGHT = 20;
 
     public static void register() {
@@ -23,7 +23,7 @@ public class AtumBiomes {
     }
 
     // in case we want to do anything extra at registration time...
-    private static void registerBiome(AtumBiomeGenBase genBase) {
+    private static void registerBiome(AtumBiome genBase) {
         biomeRegistry.add(genBase);
     }
 
@@ -41,7 +41,7 @@ public class AtumBiomes {
         private int id;
         private final String friendlyName;
         private int weight;
-        private AtumBiomeGenBase gen;
+        private AtumBiome gen;
 
         private BiomeType(int defaultID, String friendlyName, float weightMultiplier) {
             this.id = defaultID;
@@ -57,11 +57,11 @@ public class AtumBiomes {
             return this.id;
         }
 
-        public void setGen(AtumBiomeGenBase gen) {
+        public void setGen(AtumBiome gen) {
             this.gen = gen;
         }
 
-        public AtumBiomeGenBase getGen() {
+        public AtumBiome getGen() {
             return this.gen;
         }
 

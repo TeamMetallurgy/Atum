@@ -9,16 +9,17 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
+import javax.annotation.Nonnull;
 
 public class BlockLimestoneBricks extends Block {
     public static final PropertyEnum<BlockLimestoneBricks.EnumType> VARIANT = PropertyEnum.create("variant", BlockLimestoneBricks.EnumType.class);
 
     public BlockLimestoneBricks() {
-        super(Material.rock);
+        super(Material.ROCK);
         //this.setResistance(200000.0F); //TODO?
         this.setBlockUnbreakable();
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.SMALL));
@@ -32,13 +33,14 @@ public class BlockLimestoneBricks extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (BlockLimestoneBricks.EnumType enumType : BlockLimestoneBricks.EnumType.values()) {
             list.add(new ItemStack(item, 1, enumType.getMetadata()));
         }
     }
 
     @Override
+    @Nonnull
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(VARIANT, BlockLimestoneBricks.EnumType.byMetadata(meta));
     }
@@ -49,11 +51,12 @@ public class BlockLimestoneBricks extends Block {
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT);
     }
 
-    public static enum EnumType implements IStringSerializable {
+    public enum EnumType implements IStringSerializable {
         SMALL(0, "small"),
         LARGE(1, "large"),
         CRACKED(2, "cracked"),
@@ -63,7 +66,7 @@ public class BlockLimestoneBricks extends Block {
         private final int meta;
         private final String name;
 
-        private EnumType(int meta, String name) {
+        EnumType(int meta, String name) {
             this.meta = meta;
             this.name = name;
         }
@@ -86,6 +89,7 @@ public class BlockLimestoneBricks extends Block {
         }
 
         @Override
+        @Nonnull
         public String getName() {
             return this.name;
         }

@@ -26,13 +26,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockLimestoneFurnace extends BlockContainer {
+public class BlockLimeStoneFurnace extends BlockContainer {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     private final boolean isBurning;
     private static boolean keepInventory;
 
-    public BlockLimestoneFurnace(boolean isBurning) {
-        super(Material.rock);
+    public BlockLimeStoneFurnace(boolean isBurning) {
+        super(Material.ROCK);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.isBurning = isBurning;
 
@@ -87,7 +87,7 @@ public class BlockLimestoneFurnace extends BlockContainer {
             double d4 = rand.nextDouble() * 0.6D - 0.3D;
 
             if (rand.nextDouble() < 0.1D) {
-                world.playSound((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.block_furnace_fire_crackle, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                world.playSound((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
 
             switch (facing) {
@@ -115,7 +115,7 @@ public class BlockLimestoneFurnace extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             return true;
         } else {
@@ -123,7 +123,7 @@ public class BlockLimestoneFurnace extends BlockContainer {
 
             if (tileEntity instanceof TileEntityLimestoneFurnace) {
                 player.openGui(Atum.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
-                player.addStat(StatList.furnaceInteraction);
+                player.addStat(StatList.FURNACE_INTERACTION);
             }
             return true;
         }
@@ -156,7 +156,7 @@ public class BlockLimestoneFurnace extends BlockContainer {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
 

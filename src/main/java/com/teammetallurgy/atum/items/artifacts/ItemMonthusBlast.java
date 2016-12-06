@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemMonthusBlast extends ItemAtumBaseBow {
@@ -37,23 +38,23 @@ public class ItemMonthusBlast extends ItemAtumBaseBow {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
+    public void onPlayerStoppedUsing(@Nonnull ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
         if (entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityLiving;
-            boolean flag = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.infinity, stack) > 0;
+            boolean flag = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack ammoStack = this.findAmmo(player);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            i = ForgeEventFactory.onArrowLoose(stack, world, (EntityPlayer) entityLiving, i, ammoStack != null || flag);
+            i = ForgeEventFactory.onArrowLoose(stack, world, (EntityPlayer) entityLiving, i, !ammoStack.isEmpty() || flag);
             if (i < 0) return;
 
-            if (ammoStack != null || flag) {
-                if (ammoStack == null) {
-                    ammoStack = new ItemStack(Items.arrow);
+            if (!ammoStack.isEmpty() || flag) {
+                if (ammoStack.isEmpty()) {
+                    ammoStack = new ItemStack(Items.ARROW);
                 }
 
                 float f = getArrowVelocity(i);
@@ -63,42 +64,42 @@ public class ItemMonthusBlast extends ItemAtumBaseBow {
 
                     if (!world.isRemote) {
                         EntityArrowExplosive entityarrow = new EntityArrowExplosive(world, player);
-                        entityarrow.func_184547_a(player, player.rotationPitch, player.rotationYaw, 0.0F, f * 1.5F, 1.0F);
+                        entityarrow.setAim(player, player.rotationPitch, player.rotationYaw, 0.0F, f * 1.5F, 1.0F);
                         entityarrow.setDamage(entityarrow.getDamage() * 1.5D);
 
                         if (f == 1.0F) {
                             entityarrow.setIsCritical(true);
                         }
 
-                        int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.power, stack);
+                        int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
                         if (j > 0) {
-                            entityarrow.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
+                            entityarrow.setDamage(entityarrow.getDamage() + (double) j * 0.5D + 0.5D);
                         }
 
-                        int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.punch, stack);
+                        int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
                         if (k > 0) {
                             entityarrow.setKnockbackStrength(k);
                         }
 
-                        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.flame, stack) > 0) {
+                        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0) {
                             entityarrow.setFire(100);
                         }
 
                         stack.damageItem(1, player);
 
                         if (flagAmmo) {
-                            entityarrow.canBePickedUp = EntityArrowExplosive.PickupStatus.CREATIVE_ONLY;
+                            entityarrow.pickupStatus = EntityArrowExplosive.PickupStatus.CREATIVE_ONLY;
                         }
 
-                        world.spawnEntityInWorld(entityarrow);
+                        world.spawnEntity(entityarrow);
                     }
 
-                    world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.entity_arrow_shoot, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                    world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
                     if (!flagAmmo) {
-                        --ammoStack.stackSize;
+                        ammoStack.shrink(1);
 
-                        if (ammoStack.stackSize == 0) {
+                        if (ammoStack.isEmpty()) {
                             player.inventory.deleteStack(ammoStack);
                         }
                     }
@@ -109,8 +110,8 @@ public class ItemMonthusBlast extends ItemAtumBaseBow {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack stack) {
+    @Nonnull
+    public EnumRarity getRarity(@Nonnull ItemStack stack) {
         return EnumRarity.RARE;
     }
 

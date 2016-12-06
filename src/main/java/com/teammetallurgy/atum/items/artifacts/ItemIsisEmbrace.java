@@ -19,7 +19,7 @@ public class ItemIsisEmbrace extends ItemTexturedArmor {
 
     public ItemIsisEmbrace(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
         super(material, renderIndex, slot);
-        this.setRepairItem(Items.diamond);
+        this.setRepairItem(Items.DIAMOND);
     }
 
     @Override

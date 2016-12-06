@@ -12,20 +12,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public abstract class BlockLimestoneSlab extends BlockSlab {
     public static final PropertyEnum<BlockLimestoneSlab.EnumType> VARIANT = PropertyEnum.create("variant", BlockLimestoneSlab.EnumType.class);
 
     public BlockLimestoneSlab() {
-        super(Material.rock);
+        super(Material.ROCK);
 
         IBlockState state = this.blockState.getBaseState();
 
@@ -40,38 +41,44 @@ public abstract class BlockLimestoneSlab extends BlockSlab {
     }
 
     @Override
+    @Nonnull
     public MapColor getMapColor(IBlockState state) {
         return (state.getValue(VARIANT)).getMapColor();
     }
 
     @Override
+    @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Item.getItemFromBlock(AtumBlocks.LIMESTONE_SLAB);
     }
 
     @Override
+    @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(AtumBlocks.LIMESTONE_SLAB) == new ItemStack(this) ? new ItemStack(this) : (new ItemStack(this) == new ItemStack(AtumBlocks.LIMESTONE_DOUBLE_SLAB) ? new ItemStack(AtumBlocks.LIMESTONE_SLAB) : new ItemStack(AtumBlocks.LIMESTONE_SLAB));
     }
 
     @Override
+    @Nonnull
     public String getUnlocalizedName(int meta) {
         return super.getUnlocalizedName() + "." + EnumType.byMetadata(meta).getUnlocalizedName();
     }
 
     @Override
+    @Nonnull
     public IProperty<?> getVariantProperty() {
         return VARIANT;
     }
 
     @Override
-    public Comparable<?> getTypeForItem(ItemStack stack) {
+    @Nonnull
+    public Comparable<?> getTypeForItem(@Nonnull ItemStack stack) {
         return EnumType.byMetadata(stack.getMetadata() & 7);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         if (item != Item.getItemFromBlock(AtumBlocks.LIMESTONE_DOUBLE_SLAB)) {
             for (EnumType enumType : EnumType.values()) {
                 list.add(new ItemStack(item, 1, enumType.getMetadata()));
@@ -80,6 +87,7 @@ public abstract class BlockLimestoneSlab extends BlockSlab {
     }
 
     @Override
+    @Nonnull
     public IBlockState getStateFromMeta(int meta) {
         IBlockState state = this.getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta & 7));
 
@@ -102,6 +110,7 @@ public abstract class BlockLimestoneSlab extends BlockSlab {
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState() {
         return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
     }
@@ -112,11 +121,11 @@ public abstract class BlockLimestoneSlab extends BlockSlab {
     }
 
     public static enum EnumType implements IStringSerializable {
-        SMOOTH(0, MapColor.sandColor, "smooth"),
-        CRACKED(1, MapColor.sandColor, "cracked"),
-        SMALL(2, MapColor.sandColor, "small"),
-        LARGE(3, MapColor.sandColor, "large"),
-        CHISELED(4, MapColor.sandColor, "chiseled");
+        SMOOTH(0, MapColor.SAND, "smooth"),
+        CRACKED(1, MapColor.SAND, "cracked"),
+        SMALL(2, MapColor.SAND, "small"),
+        LARGE(3, MapColor.SAND, "large"),
+        CHISELED(4, MapColor.SAND, "chiseled");
 
         private static final BlockLimestoneSlab.EnumType[] META_LOOKUP = new BlockLimestoneSlab.EnumType[values().length];
         private final int meta;
@@ -157,6 +166,7 @@ public abstract class BlockLimestoneSlab extends BlockSlab {
         }
 
         @Override
+        @Nonnull
         public String getName() {
             return this.name;
         }

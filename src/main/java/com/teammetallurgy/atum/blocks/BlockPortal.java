@@ -12,7 +12,6 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -29,13 +28,14 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch over to having a sub-class with the size
     protected static final AxisAlignedBB PORTAL_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
 
     public BlockPortal() {
-        super(Material.portal, true);
+        super(Material.PORTAL, true);
         this.setTickRandomly(true);
         this.setHardness(-1.0F);
     }
@@ -46,7 +46,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World world, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
         return NULL_AABB;
     }
 
@@ -68,7 +68,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
             }
 
             if (i > 0 && !world.getBlockState(blockpos.up()).isNormalCube()) {
-                Entity entity = ItemMonsterPlacer.spawnCreature(world, EntityList.getEntityStringFromClass(EntityPigZombie.class), (double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 1.1D, (double) blockpos.getZ() + 0.5D);
+                Entity entity = ItemMonsterPlacer.spawnCreature(world, EntityList.getKey(EntityPigZombie.class), (double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 1.1D, (double) blockpos.getZ() + 0.5D);
 
                 if (entity != null) {
                     entity.timeUntilPortal = entity.getPortalCooldown();
@@ -78,12 +78,12 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) { //TODO
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos) { //TODO
         for (int x = -1; x < 2; x++) {
             for (int z = -1; z < 2; z++) {
                 for (int y = -1; y < 1; y++) {
                     IBlockState blockState = world.getBlockState(pos.add(x, y, z));
-                    if (blockState != Blocks.sandstone.getDefaultState() && blockState != this && blockState != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE)) {
+                    if (blockState != Blocks.SANDSTONE.getDefaultState() && blockState != this && blockState != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE)) {
                         world.setBlockToAir(pos);
                     }
                 }
@@ -145,7 +145,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) { //TODO
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) { //TODO
         if (!entity.isRiding() && !entity.isBeingRidden() && entity.isNonBoss() && entity instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) entity;
             if (entity.timeUntilPortal == 0) {
@@ -178,14 +178,9 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return null;
-    }
-
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

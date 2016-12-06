@@ -7,6 +7,7 @@ import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 public class AtumWeightedLootSet {
@@ -22,8 +23,8 @@ public class AtumWeightedLootSet {
         totalWeight = 0;
     }
 
-    public void addLoot(ItemStack stack, int weight, int min, int max) {
-        if (weight <= 0 || stack == null)
+    public void addLoot(@Nonnull ItemStack stack, int weight, int min, int max) {
+        if (weight <= 0 || stack.isEmpty())
             return;
 
         loot.put(totalWeight + weight, stack);
@@ -32,11 +33,12 @@ public class AtumWeightedLootSet {
         totalWeight += weight;
     }
 
+    @Nonnull
     public ItemStack getRandomLoot() {
         Random rand = new Random();
         int weight = rand.nextInt(totalWeight);
 
-        ItemStack stack = null;
+        ItemStack stack = ItemStack.EMPTY;
 
         Set<Integer> keySet = loot.keySet();
         Integer[] keys = keySet.toArray(new Integer[keySet.size()]);
@@ -48,10 +50,10 @@ public class AtumWeightedLootSet {
                 int min = lootMin.get(key);
                 int max = lootMax.get(key);
                 int amount = rand.nextInt(max - min + 1) + min;
-                stack.stackSize = amount;
-                if (stack.getItem() == Items.enchanted_book) {
-                    Enchantment enchantment = Enchantment.enchantmentRegistry.getRandomObject(rand);
-                    int l = MathHelper.getRandomIntegerInRange(rand, enchantment.getMinLevel(), enchantment.getMaxLevel());
+                stack.setCount(amount);
+                if (stack.getItem() == Items.ENCHANTED_BOOK) {
+                    Enchantment enchantment = Enchantment.REGISTRY.getRandomObject(rand);
+                    int l = MathHelper.getInt(rand, enchantment.getMinLevel(), enchantment.getMaxLevel());
                     ((ItemEnchantedBook) stack.getItem()).addEnchantment(stack, new EnchantmentData(enchantment, l));
                 }
                 break;

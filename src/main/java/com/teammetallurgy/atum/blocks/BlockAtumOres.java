@@ -23,7 +23,7 @@ public class BlockAtumOres extends BlockOre {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return this == AtumBlocks.COAL_ORE ? Items.coal : (this == AtumBlocks.DIAMOND_ORE ? Items.diamond : (this == AtumBlocks.LAPIS_ORE ? Items.dye : Item.getItemFromBlock(this)));
+        return this == AtumBlocks.COAL_ORE ? Items.COAL : (this == AtumBlocks.DIAMOND_ORE ? Items.DIAMOND : (this == AtumBlocks.LAPIS_ORE ? Items.DYE : Item.getItemFromBlock(this)));
     }
 
     @Override
@@ -38,11 +38,11 @@ public class BlockAtumOres extends BlockOre {
             int xp = 0;
 
             if (this == AtumBlocks.COAL_ORE) {
-                xp = MathHelper.getRandomIntegerInRange(rand, 0, 2);
+                xp = MathHelper.getInt(rand, 0, 2);
             } else if (this == AtumBlocks.DIAMOND_ORE) {
-                xp = MathHelper.getRandomIntegerInRange(rand, 3, 7);
+                xp = MathHelper.getInt(rand, 3, 7);
             } else if (this == AtumBlocks.LAPIS_ORE) {
-                xp = MathHelper.getRandomIntegerInRange(rand, 3, 7);
+                xp = MathHelper.getInt(rand, 3, 7);
             }
             return xp;
         }

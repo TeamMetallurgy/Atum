@@ -14,18 +14,18 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import java.util.Random;
 
 public class WorldGenPalm extends WorldGenAbstractTree {
-    private static final IBlockState blockLog = AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.PALM);
-    private static final IBlockState blockLeaves = AtumBlocks.LEAVES.getDefaultState().withProperty(BlockLeave.VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(BlockLeave.CHECK_DECAY, Boolean.valueOf(false));
+    private static final IBlockState BLOCK_LOG = AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.PALM);
+    private static final IBlockState BLOCK_LEAVES = AtumBlocks.LEAVES.getDefaultState().withProperty(BlockLeave.VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(BlockLeave.CHECK_DECAY, Boolean.valueOf(false));
     private final int minTreeHeight;
     private final IBlockState metaWood;
     private final IBlockState metaLeaves;
 
     public WorldGenPalm(boolean notify) {
-        this(notify, 5, blockLog, blockLeaves);
+        this(notify, 5, BLOCK_LOG, BLOCK_LEAVES);
     }
 
     public WorldGenPalm(boolean notify, int minTreeHeight) {
-        this(notify, minTreeHeight, blockLog, blockLeaves);
+        this(notify, minTreeHeight, BLOCK_LOG, BLOCK_LEAVES);
     }
 
     public WorldGenPalm(boolean notify, int minTreeHeight, IBlockState wood, IBlockState leaves) {
@@ -40,7 +40,7 @@ public class WorldGenPalm extends WorldGenAbstractTree {
         int i = random.nextInt(3) + this.minTreeHeight;
         boolean flag = true;
         Block blocks = world.getBlockState(pos.down()).getBlock();
-        if ((blocks == AtumBlocks.SAND || blocks == AtumBlocks.FERTILE_SOIL || blocks == Blocks.dirt) && pos.getY() >= 1 && pos.getY() + i + 1 <= 256) {
+        if ((blocks == AtumBlocks.SAND || blocks == AtumBlocks.FERTILE_SOIL || blocks == Blocks.DIRT) && pos.getY() >= 1 && pos.getY() + i + 1 <= 256) {
             for (int j = pos.getY(); j <= pos.getY() + 1 + i; ++j) {
 
                 int k = 1;
@@ -57,7 +57,7 @@ public class WorldGenPalm extends WorldGenAbstractTree {
                 for (int l = pos.getX() - k; l <= pos.getX() + k && flag; ++l) {
                     for (int i1 = pos.getZ() - k; i1 <= pos.getZ() + k && flag; ++i1) {
                         if (j >= 0 && j < 256) {
-                            if (!this.isReplaceable(world, mutableBlockPos.set(l, j, i1))) {
+                            if (!this.isReplaceable(world, mutableBlockPos.setPos(l, j, i1))) {
                                 flag = false;
                             }
                         } else {

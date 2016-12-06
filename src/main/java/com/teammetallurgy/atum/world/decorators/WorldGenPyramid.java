@@ -167,7 +167,7 @@ public class WorldGenPyramid extends WorldGenerator { //TODO What is this based 
         }
 
         for (int i = 0; i < height; i++) {
-            world.setBlockState(pos.up(i), Blocks.ladder.getStateFromMeta(meta), 0);
+            world.setBlockState(pos.up(i), Blocks.LADDER.getStateFromMeta(meta), 0);
         }
     }
 

@@ -6,13 +6,14 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class ItemLoot extends Item {
@@ -74,8 +75,8 @@ public class ItemLoot extends Item {
 
     @Override
     public boolean onEntityItemUpdate(EntityItem entityItem) {
-        Block block = entityItem.worldObj.getBlockState(new BlockPos(MathHelper.floor_double(entityItem.posX), MathHelper.floor_double(entityItem.posY), MathHelper.floor_double(entityItem.posZ))).getBlock();
-        if (block == Blocks.water || block == Blocks.flowing_water) {
+        Block block = entityItem.world.getBlockState(new BlockPos(MathHelper.floor(entityItem.posX), MathHelper.floor(entityItem.posY), MathHelper.floor(entityItem.posZ))).getBlock();
+        if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
             ItemStack item = entityItem.getEntityItem();
             int damage = item.getItemDamage() >> 1;
             int quality = damage & 15;
@@ -93,7 +94,7 @@ public class ItemLoot extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> subItems) {
+    public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (int type = 0; type < typeArray.length; ++type) {
             subItems.add(new ItemStack(item, 1, type << 5 | 1));
 
@@ -101,6 +102,5 @@ public class ItemLoot extends Item {
                 subItems.add(new ItemStack(item, 1, type << 5 | quality << 1));
             }
         }
-
     }
 }

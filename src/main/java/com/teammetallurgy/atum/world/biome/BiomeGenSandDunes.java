@@ -2,7 +2,7 @@ package com.teammetallurgy.atum.world.biome;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 
-public class BiomeGenSandDunes extends AtumBiomeGenBase {
+public class BiomeGenSandDunes extends AtumBiome {
 
     public BiomeGenSandDunes(BiomeProperties properties) {
         super(properties);

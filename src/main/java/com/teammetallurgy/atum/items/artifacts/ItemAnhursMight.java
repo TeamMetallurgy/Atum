@@ -16,6 +16,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemAnhursMight extends ItemSword {
@@ -31,33 +33,33 @@ public class ItemAnhursMight extends ItemSword {
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, @Nullable EntityLivingBase attacker) {
         if (Math.random() > 0.5D) {
-            target.addPotionEffect(new PotionEffect(MobEffects.healthBoost, 80, 1));
-            target.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 80, 6));
+            target.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST, 80, 1));
+            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 80, 6));
         }
         return super.hitEntity(stack, target, attacker);
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+    public void onUpdate(@Nonnull ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
-            if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == this) {
-                player.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 2, 0, true, true));
+            if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == this) {
+                player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 2, 0, true, true));
             }
         }
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @Nonnull
     public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
@@ -67,7 +69,7 @@ public class ItemAnhursMight extends ItemSword {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+    public boolean getIsRepairable(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
+        return repair.getItem() == Items.DIAMOND;
     }
 }

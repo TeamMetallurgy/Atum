@@ -37,8 +37,8 @@ public class ItemPtahsDecadence extends ItemPickaxe {
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
         Item dropItem = state.getBlock().getItemDropped(world.getBlockState(pos), new Random(), 0);
-        if (dropItem == Items.diamond && EnchantmentHelper.getEnchantmentLevel(Enchantments.silkTouch, stack) <= 0) {
-            state.getBlock().dropBlockAsItem(world, pos, Blocks.diamond_ore.getDefaultState(), 0);
+        if (dropItem == Items.DIAMOND && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) <= 0) {
+            state.getBlock().dropBlockAsItem(world, pos, Blocks.DIAMOND_ORE.getDefaultState(), 0);
         }
         return super.onBlockDestroyed(stack, world, state, pos, entityLiving);
     }
@@ -62,6 +62,6 @@ public class ItemPtahsDecadence extends ItemPickaxe {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 }

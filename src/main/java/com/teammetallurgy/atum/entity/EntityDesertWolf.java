@@ -66,8 +66,8 @@ public class EntityDesertWolf extends EntityWolf { //TODO
         if (pos.getY() <= 62) {
             return false;
         } else {
-            return this.worldObj.getBlockState(pos.down()) == AtumBlocks.SAND.getDefaultState() && this.worldObj.getLight(pos) > 8 && this.getBlockPathWeight(pos) >= 0.0F && this.worldObj.canBlockSeeSky(pos) &&
-                    this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox()) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
+            return this.world.getBlockState(pos.down()) == AtumBlocks.SAND.getDefaultState() && this.world.getLight(pos) > 8 && this.getBlockPathWeight(pos) >= 0.0F && this.world.canBlockSeeSky(pos) &&
+                    this.world.checkNoEntityCollision(this.getEntityBoundingBox()) && this.world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.world.containsAnyLiquid(this.getEntityBoundingBox());
         }
     }
 
@@ -81,7 +81,7 @@ public class EntityDesertWolf extends EntityWolf { //TODO
 
     @Override
     public EntityDesertWolf createChild(EntityAgeable ageable) {
-        EntityDesertWolf entityDesertWolf = new EntityDesertWolf(this.worldObj);
+        EntityDesertWolf entityDesertWolf = new EntityDesertWolf(this.world);
         UUID uuid = this.getOwnerId();
 
         if (uuid != null) {

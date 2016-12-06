@@ -1,6 +1,5 @@
 package com.teammetallurgy.atum.world;
 
-import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.world.biome.AtumBiomeProvider;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -19,12 +18,12 @@ public class WorldProviderAtum extends WorldProvider {
 
     @Override
     protected void createBiomeProvider() {
-         this.biomeProvider = new AtumBiomeProvider(worldObj.getWorldInfo());
+         this.biomeProvider = new AtumBiomeProvider(world.getWorldInfo());
     }
 
     @Override
     public IChunkGenerator createChunkGenerator() {
-        return new ChunkProviderAtum(worldObj, worldObj.getSeed(), true, worldObj.getWorldInfo().getGeneratorOptions());
+        return new ChunkProviderAtum(world, world.getSeed(), true, world.getWorldInfo().getGeneratorOptions());
     }
 
     @Override

@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemAmunetsHomecoming extends Item {
@@ -31,7 +32,8 @@ public class ItemAmunetsHomecoming extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {// TODO FIX
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {// TODO FIX
+        ItemStack stack = player.getHeldItem(hand);
         BlockPos spawn = player.getBedLocation(player.dimension);
         if (spawn == null) {
             spawn = world.getSpawnPoint();

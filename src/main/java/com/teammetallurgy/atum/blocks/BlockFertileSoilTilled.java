@@ -29,7 +29,7 @@ public class BlockFertileSoilTilled extends Block {
     protected static final AxisAlignedBB TILLED_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
 
     public BlockFertileSoilTilled() {
-        super(Material.ground);
+        super(Material.GROUND);
         this.setHardness(0.5F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(MOISTURE, Integer.valueOf(0)));
         this.setTickRandomly(true);
@@ -42,7 +42,7 @@ public class BlockFertileSoilTilled extends Block {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World world, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
         return FULL_BLOCK_AABB;
     }
 
@@ -79,7 +79,7 @@ public class BlockFertileSoilTilled extends Block {
                 world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
             }
         } else if (i < 7) {
-            world.setBlockState(pos, state.withProperty(MOISTURE, Integer.valueOf(7)), 2);
+            world.setBlockState(pos, state.withProperty(MOISTURE, 7), 2);
         }
 
         Block blockUp = world.getBlockState(pos.up()).getBlock();
@@ -106,7 +106,7 @@ public class BlockFertileSoilTilled extends Block {
 
     private boolean hasWater(World world, BlockPos pos) {
         for (BlockPos.MutableBlockPos mutableBlockPos : BlockPos.getAllInBoxMutable(pos.add(-4, 0, -4), pos.add(4, 1, 4))) {
-            if (world.getBlockState(mutableBlockPos).getMaterial() == Material.water) {
+            if (world.getBlockState(mutableBlockPos).getMaterial() == Material.WATER) {
                 return true;
             }
         }
@@ -114,8 +114,8 @@ public class BlockFertileSoilTilled extends Block {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-        super.onNeighborBlockChange(world, pos, state, neighborBlock);
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos) {
+        super.neighborChanged(state, world, pos, neighborBlock, neighborPos);
 
         if (world.getBlockState(pos.up()).getMaterial().isSolid()) {
             world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
@@ -148,7 +148,7 @@ public class BlockFertileSoilTilled extends Block {
             case EAST:
                 IBlockState stateSide = world.getBlockState(pos.offset(side));
                 Block block = stateSide.getBlock();
-                return !stateSide.isOpaqueCube() && block != AtumBlocks.FERTILE_SOIL && block != Blocks.grass_path;
+                return !stateSide.isOpaqueCube() && block != AtumBlocks.FERTILE_SOIL && block != Blocks.GRASS_PATH;
             default:
                 return super.shouldSideBeRendered(state, world, pos, side);
         }

@@ -6,7 +6,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
-public class BiomeGenLimestoneMountains extends AtumBiomeGenBase {
+public class BiomeGenLimestoneMountains extends AtumBiome {
 
     public BiomeGenLimestoneMountains(BiomeProperties properties) {
         super(properties);

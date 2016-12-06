@@ -11,16 +11,17 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
+import javax.annotation.Nonnull;
 
 public class BlockAtumPlank extends Block {
     public static final PropertyEnum<BlockAtumPlank.EnumType> VARIANT = PropertyEnum.create("variant", BlockAtumPlank.EnumType.class);
 
     public BlockAtumPlank() {
-        super(Material.wood);
+        super(Material.WOOD);
         this.setHardness(2.0F);
         this.setResistance(5.0F);
         this.setSoundType(SoundType.WOOD);
@@ -40,13 +41,14 @@ public class BlockAtumPlank extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
             list.add(new ItemStack(item, 1, enumType.getMetadata()));
         }
     }
 
     @Override
+    @Nonnull
     public MapColor getMapColor(IBlockState state) {
         return (state.getValue(VARIANT)).getMapColor();
     }
@@ -57,13 +59,14 @@ public class BlockAtumPlank extends Block {
     }
 
     @Override
+    @Nonnull
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT);
     }
 
     public enum EnumType implements IStringSerializable {
-        PALM(0, "palm", MapColor.woodColor),
-        DEADWOOD(1, "deadwood", MapColor.obsidianColor);
+        PALM(0, "palm", MapColor.WOOD),
+        DEADWOOD(1, "deadwood", MapColor.OBSIDIAN);
 
         private static final BlockAtumPlank.EnumType[] META_LOOKUP = new BlockAtumPlank.EnumType[values().length];
         private final int meta;
@@ -97,6 +100,7 @@ public class BlockAtumPlank extends Block {
         }
 
         @Override
+        @Nonnull
         public String getName() {
             return this.unlocalizedName;
         }

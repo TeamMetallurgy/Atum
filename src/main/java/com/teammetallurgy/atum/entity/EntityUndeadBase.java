@@ -30,7 +30,7 @@ public class EntityUndeadBase extends EntityMob {
 
     @Override
     public boolean getCanSpawnHere() {
-        int i = MathHelper.floor_double(this.getEntityBoundingBox().minY);
+        int i = MathHelper.floor(this.getEntityBoundingBox().minY);
         if (i <= 62) {
             return false;
         } else {

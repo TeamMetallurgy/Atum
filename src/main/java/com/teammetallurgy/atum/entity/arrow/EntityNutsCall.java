@@ -30,7 +30,7 @@ public class EntityNutsCall extends CustomArrow {
 
         Vec3d vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
         Vec3d vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-        RayTraceResult raytraceresult = this.worldObj.rayTraceBlocks(vec3d1, vec3d, false, true, false);
+        RayTraceResult raytraceresult = this.world.rayTraceBlocks(vec3d1, vec3d, false, true, false);
         vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
         vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -38,7 +38,7 @@ public class EntityNutsCall extends CustomArrow {
             vec3d = new Vec3d(raytraceresult.hitVec.xCoord, raytraceresult.hitVec.yCoord, raytraceresult.hitVec.zCoord);
         }
 
-        Entity entity = this.func_184551_a(vec3d1, vec3d);
+        Entity entity = this.findEntityOnPath(vec3d1, vec3d);
 
         if (entity != null) {
             raytraceresult = new RayTraceResult(entity);
@@ -53,11 +53,11 @@ public class EntityNutsCall extends CustomArrow {
         }
 
         if (raytraceresult != null) {
-            this.func_184549_a(raytraceresult);
+            this.onHit(raytraceresult);
 
             /* Adds lightning strike 50% of the time, when Nuts call hits something. */
             if (Math.random() > 0.5) {
-                worldObj.addWeatherEffect(new EntityLightningBolt(worldObj, posX, posY, posZ, false));
+                world.addWeatherEffect(new EntityLightningBolt(world, posX, posY, posZ, false));
             }
         }
     }
@@ -77,6 +77,6 @@ public class EntityNutsCall extends CustomArrow {
         super.readEntityFromNBT(tagCompound);
 
         NBTTagCompound stackTag = tagCompound.getCompoundTag("stack");
-        stack = ItemStack.loadItemStackFromNBT(stackTag);
+        stack = new ItemStack(stackTag);
     }
 }

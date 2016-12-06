@@ -82,12 +82,12 @@ public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
     }
 
     public void setCombatTask() {
-        if (this.worldObj != null && !this.worldObj.isRemote) {
+        if (this.world != null && !this.world.isRemote) {
             this.tasks.removeTask(this.aiAttackOnCollide);
             this.tasks.removeTask(this.aiArrowAttack);
-            ItemStack itemstack = this.getHeldItemMainhand();
+            ItemStack heldStack = this.getHeldItemMainhand();
 
-            if (itemstack != null && itemstack.getItem() == AtumItems.SHORT_BOW) {
+            if (!heldStack.isEmpty() && heldStack.getItem() == AtumItems.SHORT_BOW) {
                 this.tasks.addTask(4, this.aiArrowAttack);
             } else {
                 this.tasks.addTask(4, this.aiAttackOnCollide);
@@ -97,15 +97,15 @@ public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float damage) {
-        EntityArrow entityarrow = new EntityTippedArrow(this.worldObj, this);
+        EntityArrow entityarrow = new EntityTippedArrow(this.world, this);
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - entityarrow.posY;
         double d2 = target.posZ - this.posZ;
-        double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-        entityarrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
-        int i = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.power, this);
-        int j = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.punch, this);
-        entityarrow.setDamage((double) (damage * 2.0F) + this.rand.nextGaussian() * 0.25D + (double) ((float) this.worldObj.getDifficulty().getDifficultyId() * 0.11F));
+        double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
+        entityarrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getDifficultyId() * 4));
+        int i = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.POWER, this);
+        int j = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.PUNCH, this);
+        entityarrow.setDamage((double) (damage * 2.0F) + this.rand.nextGaussian() * 0.25D + (double) ((float) this.world.getDifficulty().getDifficultyId() * 0.11F));
 
         if (i > 0) {
             entityarrow.setDamage(entityarrow.getDamage() + (double) i * 0.5D + 0.5D);
@@ -115,12 +115,12 @@ public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
             entityarrow.setKnockbackStrength(j);
         }
 
-        if (EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.flame, this) > 0) {
+        if (EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.FLAME, this) > 0) {
             entityarrow.setFire(100);
         }
 
-        this.playSound(SoundEvents.entity_arrow_shoot, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(entityarrow);
+        this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.world.spawnEntity(entityarrow);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
     public void setItemStackToSlot(EntityEquipmentSlot slot, ItemStack stack) {
         super.setItemStackToSlot(slot, stack);
 
-        if (!this.worldObj.isRemote && slot == EntityEquipmentSlot.MAINHAND) {
+        if (!this.world.isRemote && slot == EntityEquipmentSlot.MAINHAND) {
             this.setCombatTask();
         }
     }
@@ -163,12 +163,12 @@ public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
 
         if (rand.nextInt(10) == 0) {
             int amount = rand.nextInt(2) + 1;
-            this.dropItem(Items.gold_nugget, amount);
+            this.dropItem(Items.GOLD_NUGGET, amount);
         }
 
         if (rand.nextInt(4) == 0) {
             int amount = rand.nextInt(3) + 1;
-            this.dropItem(Items.arrow, amount);
+            this.dropItem(Items.ARROW, amount);
         }
     }
 }

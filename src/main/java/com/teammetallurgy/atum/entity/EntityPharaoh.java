@@ -132,17 +132,17 @@ public class EntityPharaoh extends EntityMob {
 
         if (source.damageType.equals("player")) {
             EntityPlayer slayer = (EntityPlayer) source.getEntity();
-            if (!worldObj.isRemote) {
-                List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
+            if (!world.isRemote) {
+                List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
                 for (EntityPlayer player : players) {
-                    player.addChatMessage(new TextComponentString(this.getName() + " " + I18n.translateToLocal("chat.atum.killPharaoh") + " " + slayer.getGameProfile().getName()));
+                    player.sendMessage(new TextComponentString(this.getName() + " " + I18n.translateToLocal("chat.atum.killPharaoh") + " " + slayer.getGameProfile().getName()));
                 }
             }
         }
 
         BlockPos chestPos = this.dataManager.get(CHEST_POS);
 
-        TileEntity te = worldObj.getTileEntity(chestPos);
+        TileEntity te = world.getTileEntity(chestPos);
         if (te != null) {
             if (te instanceof TileEntityPharaohChest) {
                 TileEntityPharaohChest tepc = (TileEntityPharaohChest) te;
@@ -173,7 +173,7 @@ public class EntityPharaoh extends EntityMob {
     @Override
     public void knockBack(Entity entity, float par2, double par3, double par5) {
         this.isAirBorne = true;
-        float f = MathHelper.sqrt_double(par3 * par3 + par5 * par5);
+        float f = MathHelper.sqrt(par3 * par3 + par5 * par5);
         float f1 = 0.3F;
         this.motionX /= 2.0D;
         this.motionY /= 2.0D;
@@ -225,12 +225,12 @@ public class EntityPharaoh extends EntityMob {
     }
 
     private boolean destroyBlocksInAABB(AxisAlignedBB axisAlignedBB) {
-        int minX = MathHelper.floor_double(axisAlignedBB.minX);
-        int minY = MathHelper.floor_double(axisAlignedBB.minY);
-        int minZ = MathHelper.floor_double(axisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(axisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(axisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(axisAlignedBB.maxZ);
+        int minX = MathHelper.floor(axisAlignedBB.minX);
+        int minY = MathHelper.floor(axisAlignedBB.minY);
+        int minZ = MathHelper.floor(axisAlignedBB.minZ);
+        int maxX = MathHelper.floor(axisAlignedBB.maxX);
+        int maxY = MathHelper.floor(axisAlignedBB.maxY);
+        int maxZ = MathHelper.floor(axisAlignedBB.maxZ);
         boolean flag = false;
         boolean flag1 = false;
 
@@ -238,12 +238,12 @@ public class EntityPharaoh extends EntityMob {
             for (int y = minY; y <= maxY; ++y) {
                 for (int z = minZ; z <= maxZ; ++z) {
                     BlockPos pos = new BlockPos(x, y, z);
-                    IBlockState state = worldObj.getBlockState(pos);
+                    IBlockState state = world.getBlockState(pos);
 
                     if (state != null) {
-                        if (state != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE) && state != AtumBlocks.PHARAOH_CHEST.getDefaultState() && state != Blocks.bedrock.getDefaultState() && state.getMaterial().isSolid()) {
-                            state.getBlock().dropBlockAsItem(worldObj, pos, state, 0);
-                            flag1 = this.worldObj.setBlockToAir(pos) || flag1;
+                        if (state != AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE) && state != AtumBlocks.PHARAOH_CHEST.getDefaultState() && state != Blocks.BEDROCK.getDefaultState() && state.getMaterial().isSolid()) {
+                            state.getBlock().dropBlockAsItem(world, pos, state, 0);
+                            flag1 = this.world.setBlockToAir(pos) || flag1;
                         }
 
                         flag = true;
@@ -256,7 +256,7 @@ public class EntityPharaoh extends EntityMob {
             double d0 = axisAlignedBB.minX + (axisAlignedBB.maxX - axisAlignedBB.minX) * (double) this.rand.nextFloat();
             double d1 = axisAlignedBB.minY + (axisAlignedBB.maxY - axisAlignedBB.minY) * (double) this.rand.nextFloat();
             double d2 = axisAlignedBB.minZ + (axisAlignedBB.maxZ - axisAlignedBB.minZ) * (double) this.rand.nextFloat();
-            worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + Math.random(), d1 + 1.2D, d2 + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
+            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + Math.random(), d1 + 1.2D, d2 + Math.random(), 0.0D, 0.0D, 0.0D);
 
         }
 
@@ -317,11 +317,11 @@ public class EntityPharaoh extends EntityMob {
     }
 
     private boolean trySpawnMummy(int x, int y, int z) {
-        EntityMummy entityMummy = new EntityMummy(worldObj);
+        EntityMummy entityMummy = new EntityMummy(world);
         entityMummy.setPosition(x, y, z);
         if (entityMummy.getCanSpawnHere()) {
-            if (!worldObj.isRemote) {
-                worldObj.spawnEntityInWorld(entityMummy);
+            if (!world.isRemote) {
+                world.spawnEntity(entityMummy);
             }
             entityMummy.spawnExplosionParticle();
             return true;
@@ -356,8 +356,8 @@ public class EntityPharaoh extends EntityMob {
     public void onUpdate() {
         super.onUpdate();
 
-        if (!this.worldObj.isRemote && this.worldObj.getDifficulty().getDifficultyId() == 0) {
-            TileEntity te = worldObj.getTileEntity(this.dataManager.get(LINKED_POS));
+        if (!this.world.isRemote && this.world.getDifficulty().getDifficultyId() == 0) {
+            TileEntity te = world.getTileEntity(this.dataManager.get(LINKED_POS));
             if (te instanceof TileEntityPharaohChest) {
                 ((TileEntityPharaohChest) te).setPharaohDespawned();
             }
@@ -374,14 +374,14 @@ public class EntityPharaoh extends EntityMob {
 
         super.onLivingUpdate();
 
-        if (!worldObj.isRemote)
+        if (!world.isRemote)
             this.destroyBlocksInAABB(this.getEntityBoundingBox().expand(0.1, 0, 0.1));
     }
 
     @Override
     protected void dropFewItems(boolean recentlyHit, int looting) {
         int amount = rand.nextInt(2) + 1;
-        this.dropItem(Items.gold_ingot, amount);
+        this.dropItem(Items.GOLD_INGOT, amount);
 
         this.entityDropItem(AtumLoot.getRandomArtifact(), 0.0F);
     }

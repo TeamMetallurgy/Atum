@@ -39,20 +39,20 @@ public class EntityArrowExplosive extends CustomArrow {
         super.onUpdate();
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
-            float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.prevRotationYaw = this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
             this.prevRotationPitch = this.rotationPitch = (float) (MathHelper.atan2(this.motionY, (double) f) * (180D / Math.PI));
         }
 
         BlockPos blockpos = new BlockPos(this.xTile, this.yTile, this.zTile);
-        IBlockState state = this.worldObj.getBlockState(blockpos);
+        IBlockState state = this.world.getBlockState(blockpos);
         Block block = state.getBlock();
 
-        if (state.getMaterial() != Material.air) {
-            AxisAlignedBB axisalignedbb = state.getCollisionBoundingBox(this.worldObj, blockpos);
+        if (state.getMaterial() != Material.AIR) {
+            AxisAlignedBB axisalignedbb = state.getCollisionBoundingBox(this.world, blockpos);
 
             if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(blockpos).isVecInside(new Vec3d(this.posX, this.posY, this.posZ))) {
-                this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 2.0F, this.isBurning(), true);
+                this.world.newExplosion(this, this.posX, this.posY, this.posZ, 2.0F, this.isBurning(), true);
                 this.inGround = true;
             }
         }
@@ -79,13 +79,13 @@ public class EntityArrowExplosive extends CustomArrow {
                 ticksInAir = 0;
             }
 
-            ++this.field_184552_b;
+            ++this.timeInGround;
         } else {
-            this.field_184552_b = 0;
+            this.timeInGround = 0;
             ++this.ticksInAir;
             Vec3d vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
             Vec3d vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            RayTraceResult raytraceresult = this.worldObj.rayTraceBlocks(vec3d1, vec3d, false, true, false);
+            RayTraceResult raytraceresult = this.world.rayTraceBlocks(vec3d1, vec3d, false, true, false);
             vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
             vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -93,7 +93,7 @@ public class EntityArrowExplosive extends CustomArrow {
                 vec3d = new Vec3d(raytraceresult.hitVec.xCoord, raytraceresult.hitVec.yCoord, raytraceresult.hitVec.zCoord);
             }
 
-            Entity entity = this.func_184551_a(vec3d1, vec3d);
+            Entity entity = this.findEntityOnPath(vec3d1, vec3d);
 
             if (entity != null) {
                 raytraceresult = new RayTraceResult(entity);
@@ -108,21 +108,21 @@ public class EntityArrowExplosive extends CustomArrow {
             }
 
             if (raytraceresult != null) {
-                this.func_184549_a(raytraceresult);
-                this.worldObj.createExplosion(this, raytraceresult.hitVec.xCoord, raytraceresult.hitVec.yCoord, raytraceresult.hitVec.zCoord, 2.0F, true);
-                this.worldObj.createExplosion(this, entity.posX, entity.posY, entity.posZ, 2.0F, true); //TODO
+                this.onHit(raytraceresult);
+                this.world.createExplosion(this, raytraceresult.hitVec.xCoord, raytraceresult.hitVec.yCoord, raytraceresult.hitVec.zCoord, 2.0F, true);
+                this.world.createExplosion(this, entity.posX, entity.posY, entity.posZ, 2.0F, true); //TODO
             }
 
             if (this.getIsCritical()) {
                 for (int k = 0; k < 4; ++k) {
-                    this.worldObj.spawnParticle(EnumParticleTypes.CRIT, this.posX + this.motionX * (double) k / 4.0D, this.posY + this.motionY * (double) k / 4.0D, this.posZ + this.motionZ * (double) k / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ, new int[0]);
+                    this.world.spawnParticle(EnumParticleTypes.CRIT, this.posX + this.motionX * (double) k / 4.0D, this.posY + this.motionY * (double) k / 4.0D, this.posZ + this.motionZ * (double) k / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ, new int[0]);
                 }
             }
 
             this.posX += this.motionX;
             this.posY += this.motionY;
             this.posZ += this.motionZ;
-            float f4 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            float f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 
             for (this.rotationPitch = (float) (MathHelper.atan2(this.motionY, (double) f4) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
@@ -148,7 +148,7 @@ public class EntityArrowExplosive extends CustomArrow {
             if (this.isInWater()) {
                 for (int i = 0; i < 4; ++i) {
                     float f3 = 0.25F;
-                    this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double) f3, this.posY - this.motionY * (double) f3, this.posZ - this.motionZ * (double) f3, this.motionX, this.motionY, this.motionZ, new int[0]);
+                    this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double) f3, this.posY - this.motionY * (double) f3, this.posZ - this.motionZ * (double) f3, this.motionX, this.motionY, this.motionZ, new int[0]);
                 }
 
                 f1 = 0.6F;

@@ -27,7 +27,7 @@ public class BlockSands extends BlockFalling {
     protected static final AxisAlignedBB[] SAND_AABB = new AxisAlignedBB[]{new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.625D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)};
 
     public BlockSands() {
-        super(Material.sand);
+        super(Material.SAND);
         this.setDefaultState(this.blockState.getBaseState().withProperty(LAYERS, 1));
         this.setTickRandomly(true);
         this.setSoundType(SoundType.SAND);
@@ -56,7 +56,7 @@ public class BlockSands extends BlockFalling {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         int i = state.getValue(LAYERS) - 1;
         float f = 0.125F;
         AxisAlignedBB axisalignedbb = state.getBoundingBox(world, pos);
@@ -78,20 +78,6 @@ public class BlockSands extends BlockFalling {
         IBlockState state = world.getBlockState(pos.down());
         Block block = state.getBlock();
         return block != null && ((block == this) || (block == this && state.getValue(LAYERS) >= 7 || (!(state.getBlock().isLeaves(state, world, pos.down()) && !state.isOpaqueCube()) && state.getMaterial().blocksMovement())));
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-        this.checkAndDropBlock(world, pos, state);
-    }
-
-    private boolean checkAndDropBlock(World world, BlockPos pos, IBlockState state) {
-        if (!this.canPlaceBlockAt(world, pos)) {
-            world.setBlockToAir(pos);
-            return false;
-        } else {
-            return true;
-        }
     }
 
     @Override
@@ -127,6 +113,12 @@ public class BlockSands extends BlockFalling {
             IBlockState stateOffset = blockAccess.getBlockState(pos.offset(side));
             return stateOffset.getBlock() == this && stateOffset.getValue(LAYERS) >= state.getValue(LAYERS) || super.shouldSideBeRendered(state, blockAccess, pos, side);
         }
+    }
+
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return getMetaFromState(state);
     }
 
     @Override

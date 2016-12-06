@@ -7,7 +7,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-public class BiomeGenRuinedCity extends AtumBiomeGenBase {
+public class BiomeGenRuinedCity extends AtumBiome {
 
     protected final WorldGenerator genRuins;
 

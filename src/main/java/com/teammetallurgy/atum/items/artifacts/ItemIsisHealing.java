@@ -13,6 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemIsisHealing extends Item {
@@ -24,29 +25,29 @@ public class ItemIsisHealing extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack) {
+    public boolean hasEffect(@Nonnull ItemStack stack) {
         return true;
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+    public void onUpdate(@Nonnull ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
-            if (isSelected && player.onGround && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == this) {
+            if (isSelected && player.onGround && !player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == this) {
                 this.doEffect(player, stack);
             }
         }
     }
 
-    public void doEffect(EntityPlayer player, ItemStack item) {
+    private void doEffect(EntityPlayer player, @Nonnull ItemStack stack) {
         if (Math.random() <= 0.05D) {
             if (player.getHealth() < player.getMaxHealth()) {
                 player.heal(1);
                 if (!player.capabilities.isCreativeMode) {
-                    if (item.getItemDamage() == 1) {
-                        item.damageItem(1, player);
+                    if (stack.getItemDamage() == 1) {
+                        stack.damageItem(1, player);
                     } else {
-                        item.setItemDamage(item.getItemDamage() + 1);
+                        stack.setItemDamage(stack.getItemDamage() + 1);
                     }
                 }
             }
@@ -54,13 +55,14 @@ public class ItemIsisHealing extends Item {
     }
 
     @Override
-    public EnumRarity getRarity(ItemStack stack) {
+    @Nonnull
+    public EnumRarity getRarity(@Nonnull ItemStack stack) {
         return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
@@ -70,7 +72,7 @@ public class ItemIsisHealing extends Item {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+    public boolean getIsRepairable(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
+        return repair.getItem() == Items.DIAMOND;
     }
 }

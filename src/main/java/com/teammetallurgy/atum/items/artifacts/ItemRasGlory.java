@@ -37,7 +37,7 @@ public class ItemRasGlory extends ItemTexturedArmor {
             return;
 
         if (world.getTotalWorldTime() % 10L == 0L) {
-            player.addPotionEffect(new PotionEffect(MobEffects.nightVision, 220, 0, true, true));
+            player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 220, 0, true, true));
         }
     }
 
@@ -60,6 +60,6 @@ public class ItemRasGlory extends ItemTexturedArmor {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 }

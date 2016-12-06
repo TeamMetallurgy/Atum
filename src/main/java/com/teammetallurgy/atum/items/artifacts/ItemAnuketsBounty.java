@@ -1,6 +1,5 @@
 package com.teammetallurgy.atum.items.artifacts;
 
-import com.teammetallurgy.atum.entity.arrow.EntityAtumFishHook;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -18,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemAnuketsBounty extends Item {
@@ -53,17 +53,19 @@ public class ItemAnuketsBounty extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
         if (player.fishEntity != null) {
             int i = player.fishEntity.handleHookRetraction();
             stack.damageItem(i, player);
             player.swingArm(hand);
         } else {
-            world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.entity_bobber_throw, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+            world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_BOBBER_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-            if (!world.isRemote) {
-                world.spawnEntityInWorld(new EntityAtumFishHook(world, player));
-            }
+           /* if (!world.isRemote) { //TODO
+                world.spawnEntity(new EntityAtumFishHook(world, player));
+            }*/
 
             player.swingArm(hand);
             player.addStat(StatList.getObjectUseStats(this));
@@ -73,8 +75,8 @@ public class ItemAnuketsBounty extends Item {
     }
 
     @Override
-    public boolean isItemTool(ItemStack stack) {
-        return super.isItemTool(stack);
+    public boolean isEnchantable(@Nonnull ItemStack stack) {
+        return super.isEnchantable(stack);
     }
 
     @Override
@@ -83,14 +85,14 @@ public class ItemAnuketsBounty extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack stack) {
+    @Nonnull
+    public EnumRarity getRarity(@Nonnull ItemStack stack) {
         return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
@@ -104,7 +106,7 @@ public class ItemAnuketsBounty extends Item {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+    public boolean getIsRepairable(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
+        return repair.getItem() == Items.DIAMOND;
     }
 }

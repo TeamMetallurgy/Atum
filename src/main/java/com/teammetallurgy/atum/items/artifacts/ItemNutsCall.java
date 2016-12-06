@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemNutsCall extends Item {
@@ -29,17 +30,18 @@ public class ItemNutsCall extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack) {
+    public boolean hasEffect(@Nonnull ItemStack stack) {
         return true;
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack stack) {
+    public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
         return 7200;
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
+    @Nonnull
+    public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
         return EnumAction.BOW;
     }
 
@@ -50,7 +52,7 @@ public class ItemNutsCall extends Item {
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
+    public void onPlayerStoppedUsing(@Nonnull ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
         if (entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityLiving;
             int j = this.getMaxItemUseDuration(stack) - timeLeft;
@@ -59,36 +61,36 @@ public class ItemNutsCall extends Item {
             }
 
             if (!world.isRemote) {
-
                 EntityNutsCall spear = new EntityNutsCall(world, player);
-                spear.func_184547_a(player, player.rotationPitch, player.rotationYaw, 0.0F, (float) j / 25.0F + 0.25F, 1.0F);
+                spear.setAim(player, player.rotationPitch, player.rotationYaw, 0.0F, (float) j / 25.0F + 0.25F, 1.0F);
                 spear.setDamage(spear.getDamage() * 2.0D);
                 spear.setStack(stack);
 
-                world.spawnEntityInWorld(spear);
+                world.spawnEntity(spear);
                 world.updateEntity(spear);
 
                 stack.damageItem(4, player);
             }
-            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+            player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
         }
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         player.setActiveHand(hand);
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+        return new ActionResult<ItemStack>(EnumActionResult.PASS, player.getHeldItem(hand));
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack stack) {
+    @Nonnull
+    public EnumRarity getRarity(@Nonnull ItemStack stack) {
         return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));

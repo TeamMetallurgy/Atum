@@ -26,7 +26,7 @@ public class BlockBurningTrap extends BlockDispenser {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) { //TODO (TODO figure out why this TODO is here)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) { //TODO (TODO figure out why this TODO is here)
         return true;
     }
 
