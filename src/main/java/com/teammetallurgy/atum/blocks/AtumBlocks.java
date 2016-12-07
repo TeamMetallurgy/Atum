@@ -133,16 +133,16 @@ public class AtumBlocks {
         register(PALM_STAIRS, "palm_stairs");
         register(DEADWOOD_STAIRS, "deadwood_stairs");
 
-        /*register(CRYSTAL_STAINED_GLASS, new ItemCloth(CRYSTAL_STAINED_GLASS), "crystal_stained_glass");
-        register(FRAMED_STAINED_GLASS, new ItemCloth(FRAMED_STAINED_GLASS), "framed_stained_glass");
-        register(THIN_CRYSTAL_STAINED_GLASS, new ItemCloth(THIN_CRYSTAL_STAINED_GLASS), "thin_crystal_stained_glass");
-        register(THIN_FRAMED_STAINED_GLASS, new ItemCloth(THIN_FRAMED_STAINED_GLASS), "thin_framed_stained_glass");
-        register(LIMESTONEBRICK, new ItemMultiTexture(LIMESTONEBRICK, LIMESTONEBRICK, new ItemMultiTexture.Mapper() {
-            @Override
-            public String apply(ItemStack input) {
-                return BlockLimestoneBricks.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
-            }
-        }), "limestonebrick");*/
+        //Limestone
+        register(LIMESTONEBRICK, "limestonebrick");
+        register(WALL, "walls");
+
+        //Glass
+        register(CRYSTAL_STAINED_GLASS, "crystal_stained_glass");
+        register(FRAMED_STAINED_GLASS, "framed_stained_glass");
+        register(THIN_CRYSTAL_STAINED_GLASS, "thin_crystal_stained_glass");
+        register(THIN_FRAMED_STAINED_GLASS, "thin_framed_stained_glass");
+
         // Slabs
         register(LIMESTONE_SLAB, "limestone_slab");
         register(LIMESTONE_DOUBLE_SLAB, "limestone_double_slab", null);
@@ -151,36 +151,11 @@ public class AtumBlocks {
         register(WOOD_DOUBLE_SLAB, "wood_double_slab", null);
         AtumItems.WOOD_SLAB = AtumItems.register(new ItemSlab(WOOD_SLAB, (BlockSlab) WOOD_SLAB, (BlockSlab) WOOD_DOUBLE_SLAB), "wood_slab");
 
-       /* register(WALL, new ItemMultiTexture(WALL, WALL, new ItemMultiTexture.Mapper() {
-            @Override
-            public String apply(ItemStack input) {
-                return BlockLimestoneBricks.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
-            }
-        }), "walls");*/
-        /*register(PLANKS, new ItemMultiTexture(PLANKS, PLANKS, new ItemMultiTexture.Mapper() {
-            @Override
-            public String apply(ItemStack input) {
-                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
-            }
-        }), "planks");
-        register(LOG, new ItemMultiTexture(LOG, LOG, new ItemMultiTexture.Mapper() {
-            @Override
-            public String apply(ItemStack input) {
-                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
-            }
-        }), "log");*/
-        /*register(LEAVES, new ItemMultiTexture(LEAVES, LEAVES, new ItemMultiTexture.Mapper() {
-            @Override
-            public String apply(ItemStack input) {
-                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
-            }
-        }), "leave");
-        register(SAPLING, new ItemMultiTexture(SAPLING, SAPLING, new ItemMultiTexture.Mapper() {
-            @Override
-            public String apply(ItemStack input) {
-                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
-            }
-        }), "sapling");*/
+        // Wood
+        register(PLANKS, "planks");
+        register(LOG, "log");
+        register(LEAVES, "leave");
+        register(SAPLING, "sapling");
         register(CRATE, "crate");
 
         //ForgeHooks.canToolHarvestBlock(SAND, 0, new ItemStack(Items.iron_shovel)); //TODO
@@ -207,7 +182,7 @@ public class AtumBlocks {
         GameRegistry.registerTileEntity(TileEntityLimestoneFurnace.class, "limestone_furnace");
         GameRegistry.registerTileEntity(TileEntityCrate.class, "crate");
 
-        //OreDictionary.registerOre("blockLimestone", STONE); //TODO
+        OreDictionary.registerOre("blockLimestone", LIMESTONE);
 
         OreDictionary.registerOre("logWood", LOG);
         OreDictionary.registerOre("plankWood", PLANKS);
@@ -271,7 +246,7 @@ public class AtumBlocks {
         try {
             Item itemBlock = itemBlockClass != null ? itemBlockClass.getConstructor(Block.class).newInstance(block) : Items.AIR;
             ResourceLocation location = new ResourceLocation(Constants.MODID, blockName);
-            System.out.println("BOOP: " + location.toString());
+            System.out.println("Block Name: " + location.toString());
 
             GameRegistry.register(block, location);
             if (itemBlock != Items.AIR) GameRegistry.register(itemBlock, location);

@@ -207,10 +207,7 @@ public class WorldGenPyramid extends WorldGenerator { //TODO What is this based 
 
         @Override
         public boolean equals(Object p) {
-            if (p instanceof Pair)
-                return ((Pair) p).x == x && ((Pair) p).y == y;
-            else
-                return false;
+            return p instanceof Pair && ((Pair) p).x == x && ((Pair) p).y == y;
         }
     }
 }
