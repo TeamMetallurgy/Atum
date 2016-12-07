@@ -11,7 +11,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class TileEntityPharaohChest extends TileEntityChest implements IInventory {

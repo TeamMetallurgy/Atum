@@ -255,8 +255,6 @@ public class AtumBlocks {
             block.setCreativeTab(tab);
         }
 
-        Item blockItem = Item.getItemFromBlock(block);
-
         if (block instanceof IAtumBlock) {
             IAtumBlock atumBlock = (IAtumBlock) block;
 
@@ -264,7 +262,7 @@ public class AtumBlocks {
             Atum.proxy.registerBlockSided(block);
         } else {
             registerBlockWithItem(block, name, ItemBlock.class);
-            Atum.proxy.registerItemVariantModel(blockItem, name, 0);
+            Atum.proxy.registerItemVariantModel(Item.getItemFromBlock(block), name, 0);
         }
         return block;
     }
