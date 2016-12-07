@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
@@ -22,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public abstract class BlockLimestoneSlab extends BlockSlab {
+public abstract class BlockLimestoneSlab extends BlockSlab implements IAtumBlock {
     public static final PropertyEnum<BlockLimestoneSlab.EnumType> VARIANT = PropertyEnum.create("variant", BlockLimestoneSlab.EnumType.class);
 
     public BlockLimestoneSlab() {
@@ -38,6 +39,21 @@ public abstract class BlockLimestoneSlab extends BlockSlab {
         this.setDefaultState(state.withProperty(VARIANT, EnumType.SMOOTH));
 
         this.setHardness(2.0F);
+    }
+
+    @Override
+    public Class<? extends ItemBlock> getItemClass() {
+        return null;
+    }
+
+    @Override
+    public IProperty[] getNonRenderingProperties() {
+        return null;
+    }
+
+    @Override
+    public String getStateName(IBlockState state) {
+        return BlockLimestoneSlab.EnumType.byMetadata(state.getBlock().getMetaFromState(state)).getUnlocalizedName();
     }
 
     @Override

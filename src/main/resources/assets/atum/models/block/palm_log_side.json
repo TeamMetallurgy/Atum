@@ -1,7 +1,0 @@
-{
-  "parent": "block/column_side",
-  "textures": {
-    "end": "atum:blocks/palm_log_top",
-    "side": "atum:blocks/palm_log"
-  }
-}

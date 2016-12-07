@@ -50,11 +50,11 @@ public class ItemAtensFury extends ItemAtumBaseBow {
             ItemStack ammoStack = this.findAmmo(player);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            i = ForgeEventFactory.onArrowLoose(stack, world, (EntityPlayer) entityLiving, i, ammoStack != null || flag);
+            i = ForgeEventFactory.onArrowLoose(stack, world, (EntityPlayer) entityLiving, i, !ammoStack.isEmpty() || flag);
             if (i < 0) return;
 
-            if (ammoStack != null || flag) {
-                if (ammoStack == null) {
+            if (!ammoStack.isEmpty() || flag) {
+                if (ammoStack.isEmpty()) {
                     ammoStack = new ItemStack(Items.ARROW);
                 }
 

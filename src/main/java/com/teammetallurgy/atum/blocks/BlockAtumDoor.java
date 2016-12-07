@@ -4,10 +4,12 @@ import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -16,13 +18,28 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public class BlockAtumDoor extends BlockDoor {
+public class BlockAtumDoor extends BlockDoor implements IAtumBlock {
     private Item doorItem;
 
     protected BlockAtumDoor() {
         super(Material.WOOD);
         this.disableStats();
         this.setSoundType(SoundType.WOOD);
+    }
+
+    @Override
+    public Class<? extends ItemBlock> getItemClass() {
+        return null;
+    }
+
+    @Override
+    public IProperty[] getNonRenderingProperties() {
+        return new IProperty[]{POWERED};
+    }
+
+    @Override
+    public String getStateName(IBlockState state) {
+        return "";
     }
 
     public void setDoorItem(Item doorItem) {

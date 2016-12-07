@@ -94,6 +94,9 @@ public class AtumItems {
     public static final Item STICK = new ItemAtumStick();
     public static final Item DEADWOOD_BEETLE = new ItemDeadwoodBeetle();
 
+    public static Item LIMESTONE_SLAB = new Item();
+    public static Item WOOD_SLAB = new Item();
+
     public static void registerItems() {
         register(SCRAP, "cloth_scrap");
         register(LINEN, "linen");

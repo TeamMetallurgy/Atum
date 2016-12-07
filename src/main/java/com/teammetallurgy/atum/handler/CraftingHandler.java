@@ -22,13 +22,13 @@ public class CraftingHandler {
     private static void addRecipes() {
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()), new ItemStack(AtumBlocks.LIMESTONEBRICK));
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()), new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()));
-        GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LARGE_STONE_STAIRS_BREAKABLE), new ItemStack(AtumBlocks.LARGE_STONE_STAIRS)); //TODO
+        GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LARGE_STONE_STAIRS), new ItemStack(AtumBlocks.LARGE_STONE_STAIRS_UNBREAKABLE)); //TODO
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AtumBlocks.LIMESTONEBRICK, 4, BlockLimestoneBricks.EnumType.LARGE.getMetadata()), "XX", "XX", 'X', AtumBlocks.LIMESTONE));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AtumBlocks.LIMESTONEBRICK, 4, BlockLimestoneBricks.EnumType.SMALL.getMetadata()), "XX", "XX", 'X', AtumBlocks.LIMESTONE_CRACKED));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.CHISELED.getMetadata()), AtumBlocks.LIMESTONE));
         GameRegistry.addRecipe(new ItemStack(AtumBlocks.SMOOTH_STAIRS, 4), "X  ", "XX ", "XXX", 'X', AtumBlocks.LIMESTONE);
-        GameRegistry.addRecipe(new ItemStack(AtumBlocks.COBBLE_STAIRS, 4), "X  ", "XX ", "XXX", 'X', AtumBlocks.LIMESTONE_CRACKED);
-        GameRegistry.addRecipe(new ItemStack(AtumBlocks.LARGE_STONE_STAIRS_BREAKABLE, 4), "X  ", "XX ", "XXX", 'X', new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()));
+        GameRegistry.addRecipe(new ItemStack(AtumBlocks.CRACKED_STAIRS, 4), "X  ", "XX ", "XXX", 'X', AtumBlocks.LIMESTONE_CRACKED);
+        GameRegistry.addRecipe(new ItemStack(AtumBlocks.LARGE_STONE_STAIRS, 4), "X  ", "XX ", "XXX", 'X', new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()));
         GameRegistry.addRecipe(new ItemStack(AtumBlocks.SMALL_STONE_STAIRS, 4), "X  ", "XX ", "XXX", 'X', new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.SMALL.getMetadata()));
         GameRegistry.addRecipe(new ItemStack(AtumBlocks.LIMESTONE_SLAB, 6, 0), "XXX", 'X', AtumBlocks.LIMESTONE);
         GameRegistry.addRecipe(new ItemStack(AtumBlocks.LIMESTONE_SLAB, 6, 1), "XXX", 'X', AtumBlocks.LIMESTONE_CRACKED);
