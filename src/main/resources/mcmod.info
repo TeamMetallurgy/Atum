@@ -7,8 +7,8 @@
   "mcversion": "${mcversion}",
   "url": "http://minecraft.curseforge.com/projects/atum",
   "updateUrl": "",
-  "authorList": ["Shadowclaimer", "lclc98", "RebelKeithy"],
-  "credits": "KanonBaum, Logomaster256, and DragonChef",
+  "authorList": ["Shadowclaimer", "Glassmaker"],
+  "credits": "Girafi, lclc98, RebelKeithy, KanonBaum, Logomaster256, and DragonChef",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
