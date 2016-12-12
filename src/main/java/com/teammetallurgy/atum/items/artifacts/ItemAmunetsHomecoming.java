@@ -1,20 +1,18 @@
 package com.teammetallurgy.atum.items.artifacts;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -26,81 +24,54 @@ public class ItemAmunetsHomecoming extends Item {
         this.setMaxDamage(20);
     }
 
-    public static ChunkCoordinates verifyRespawnCoordinates(World par0World, ChunkCoordinates par1ChunkCoordinates, boolean par2) {
-        if (!par0World.isRemote) {
-            IChunkProvider c = par0World.getChunkProvider();
-            c.loadChunk(par1ChunkCoordinates.posX - 3 >> 4, par1ChunkCoordinates.posZ - 3 >> 4);
-            c.loadChunk(par1ChunkCoordinates.posX + 3 >> 4, par1ChunkCoordinates.posZ - 3 >> 4);
-            c.loadChunk(par1ChunkCoordinates.posX - 3 >> 4, par1ChunkCoordinates.posZ + 3 >> 4);
-            c.loadChunk(par1ChunkCoordinates.posX + 3 >> 4, par1ChunkCoordinates.posZ + 3 >> 4);
-        }
-
-        Block block = par0World.getBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ);
-        if (block != null && block.isBed(par0World, par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ, (EntityLiving) null)) {
-            ChunkCoordinates material1 = block.getBedSpawnPosition(par0World, par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ, (EntityPlayer) null);
-            return material1;
-        } else {
-            Material material = par0World.getBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ).getMaterial();
-            Material material1 = par0World.getBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY + 1, par1ChunkCoordinates.posZ).getMaterial();
-            boolean flag1 = !material.isSolid() && !material.isLiquid();
-            boolean flag2 = !material1.isSolid() && !material1.isLiquid();
-            return par2 && flag1 && flag2 ? par1ChunkCoordinates : null;
-        }
-    }
-
     @Override
-    public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack) {
         return true;
     }
 
     @Override
-    // TODO FIX
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par3World, EntityPlayer par2EntityPlayer) {
-        ChunkCoordinates spawn = par2EntityPlayer.getBedLocation(par2EntityPlayer.dimension);
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {// TODO FIX
+        BlockPos spawn = player.getBedLocation(player.dimension);
         if (spawn == null) {
-            spawn = par3World.getSpawnPoint();
+            spawn = world.getSpawnPoint();
         }
 
         if (spawn == null) {
-            spawn = par3World.getSpawnPoint();
+            spawn = world.getSpawnPoint();
         }
 
-        spawn = verifyRespawnCoordinates(par3World, spawn, false);
+        spawn = EntityPlayer.getBedSpawnLocation(world, spawn, false);
         if (spawn == null) {
-            spawn = par3World.getSpawnPoint();
+            spawn = world.getSpawnPoint();
         }
 
-        par2EntityPlayer.rotationPitch = 0.0F;
-        par2EntityPlayer.rotationYaw = 0.0F;
-        par2EntityPlayer.setPositionAndUpdate((double) spawn.posX + 0.5D, (double) spawn.posY + 0.1D, (double) spawn.posZ);
+        player.rotationPitch = 0.0F;
+        player.rotationYaw = 0.0F;
+        player.setPositionAndUpdate((double) spawn.getX() + 0.5D, (double) spawn.getY() + 0.1D, (double) spawn.getZ());
 
-        while (!par3World.getCollidingBoundingBoxes(par2EntityPlayer, par2EntityPlayer.boundingBox).isEmpty()) {
-            par2EntityPlayer.setPosition(par2EntityPlayer.posX, par2EntityPlayer.posY + 1.0D, par2EntityPlayer.posZ);
+        while (!world.getCollisionBoxes(player, player.getEntityBoundingBox()).isEmpty()) {
+            player.setPosition(player.posX, player.posY + 1.0D, player.posZ);
         }
 
-        par1ItemStack.damageItem(1, par2EntityPlayer);
-        return par1ItemStack;
+        stack.damageItem(1, player);
+        return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack) {
-        return EnumRarity.rare;
+    public EnumRarity getRarity(ItemStack stack) {
+        return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            par3List.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(I18n.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + TextFormatting.DARK_GRAY + "[SHIFT]");
         }
-    }
-
-    @Override
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.itemIcon = par1IIconRegister.registerIcon("atum:AmunetsHomecoming");
     }
 }

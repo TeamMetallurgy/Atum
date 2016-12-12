@@ -1,13 +1,16 @@
 package com.teammetallurgy.atum.blocks;
 
-import net.minecraft.block.Block;
+import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.block.BlockDeadBush;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class BlockShrub extends BlockDeadBush {
@@ -15,28 +18,21 @@ public class BlockShrub extends BlockDeadBush {
     protected BlockShrub() {
         super();
         this.setHardness(0.0F);
-        this.setStepSound(Block.soundTypeGrass);
+        this.setSoundType(SoundType.PLANT);
     }
 
     @Override
-    public boolean canPlaceBlockOn(Block par1) {
-        return par1 == AtumBlocks.BLOCK_SAND;
+    public boolean canSustainBush(IBlockState state) {
+        return state.getBlock() == AtumBlocks.SAND;
     }
 
     @Override
-    public Item getItemDropped(int par1, Random par2Random, int par3) {
-        return null;
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return new ItemStack(AtumItems.STICK, 1, BlockAtumPlank.EnumType.DEADWOOD.getMetadata()).getItem();
     }
 
     @Override
-    public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {
-        if (!par1World.isRemote && par2EntityPlayer.getCurrentEquippedItem() != null && par2EntityPlayer.getCurrentEquippedItem().getItem() == Items.shears) {
-            //par2EntityPlayer.addStat(StatList.mineBlockStatArray[this], 1);
-            this.dropBlockAsItem(par1World, par3, par4, par5, new ItemStack(AtumBlocks.BLOCK_SHRUB, 1, par6));
-        } else {
-            super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
-        }
-
+    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+        return Collections.singletonList(new ItemStack(AtumBlocks.SHRUB));
     }
-
 }

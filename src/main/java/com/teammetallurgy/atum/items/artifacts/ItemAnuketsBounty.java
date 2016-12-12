@@ -1,39 +1,42 @@
 package com.teammetallurgy.atum.items.artifacts;
 
 import com.teammetallurgy.atum.entity.arrow.EntityAtumFishHook;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.*;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
 public class ItemAnuketsBounty extends Item {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon theIcon;
-
     public ItemAnuketsBounty() {
-        super();
         this.setMaxDamage(64);
         this.setMaxStackSize(1);
-        this.setCreativeTab(CreativeTabs.tabTools);
+
+        this.addPropertyOverride(new ResourceLocation("cast"), new IItemPropertyGetter() {
+            @SideOnly(Side.CLIENT)
+            public float apply(ItemStack stack, World worldIn, EntityLivingBase entityIn) {
+                return entityIn == null ? 0.0F : (entityIn.getHeldItemMainhand() == stack && entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).fishEntity != null ? 1.0F : 0.0F);
+            }
+        });
     }
 
     @Override
-    public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack) {
         return true;
     }
 
@@ -50,51 +53,58 @@ public class ItemAnuketsBounty extends Item {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        if (par3EntityPlayer.fishEntity != null) {
-            int i = par3EntityPlayer.fishEntity.func_146034_e();
-            par1ItemStack.damageItem(i, par3EntityPlayer);
-            par3EntityPlayer.swingItem();
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+        if (player.fishEntity != null) {
+            int i = player.fishEntity.handleHookRetraction();
+            stack.damageItem(i, player);
+            player.swingArm(hand);
         } else {
-            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 0.5F, 0.4F / (Item.itemRand.nextFloat() * 0.4F + 0.8F));
-            if (!par2World.isRemote) {
-                par2World.spawnEntityInWorld(new EntityAtumFishHook(par2World, par3EntityPlayer));
+            world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.entity_bobber_throw, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+
+            if (!world.isRemote) {
+                world.spawnEntityInWorld(new EntityAtumFishHook(world, player));
             }
-            par3EntityPlayer.swingItem();
+
+            player.swingArm(hand);
+            player.addStat(StatList.getObjectUseStats(this));
         }
 
-        return par1ItemStack;
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.itemIcon = par1IIconRegister.registerIcon("atum:AnuketsBounty");
-        this.theIcon = par1IIconRegister.registerIcon("fishing_rod_cast");
+    public boolean isItemTool(ItemStack stack) {
+        return super.isItemTool(stack);
+    }
+
+    @Override
+    public int getItemEnchantability() {
+        return 1;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack) {
-        return EnumRarity.rare;
+    public EnumRarity getRarity(ItemStack stack) {
+        return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            par3List.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(I18n.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + TextFormatting.DARK_GRAY + "[SHIFT]");
         }
 
-        int remaining = par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage();
-        String localizedRemaining = StatCollector.translateToLocalFormatted("tooltip.atum.usesRemaining", remaining);
-        par3List.add(localizedRemaining);
+        int remaining = stack.getMaxDamage() - stack.getItemDamage();
+        String localizedRemaining = I18n.translateToLocalFormatted("tooltip.atum.usesRemaining", remaining);
+        tooltip.add(localizedRemaining);
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.getItem() == Items.diamond;
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return repair.getItem() == Items.diamond;
     }
 }

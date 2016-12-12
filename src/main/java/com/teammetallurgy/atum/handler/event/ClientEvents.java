@@ -1,37 +1,38 @@
 package com.teammetallurgy.atum.handler.event;
 
-import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.items.AtumItems;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.Random;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class ClientEvents {
-    private boolean raining;
+    //private boolean raining; //TODO Not beeing initialized?
 
     @SubscribeEvent
     public void onRender(TickEvent.RenderTickEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-        if (player != null && player.getCurrentArmor(3) != null) {
-            if (player.getCurrentArmor(3).getItem() == AtumItems.mummyHelmet) {
-                ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-                int par1 = scaledresolution.getScaledWidth();
-                int par2 = scaledresolution.getScaledHeight();
+        if (player != null && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null) {
+            if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == AtumItems.MUMMY_HELMET) {
+                ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
+                int width = scaledResolution.getScaledWidth();
+                int height = scaledResolution.getScaledHeight();
 
                 Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("atum", "textures/hud/mummyblur.png"));
-                Tessellator tessellator = Tessellator.instance;
-                tessellator.startDrawingQuads();
-                tessellator.addVertexWithUV(0.0D, par2, -100, 0.0D, 1.0D);
-                tessellator.addVertexWithUV(par1, par2, -100, 1.0D, 1.0D);
-                tessellator.addVertexWithUV(par1, 0.0D, -100, 1.0D, 0.0D);
-                tessellator.addVertexWithUV(0.0D, 0.0D, -100, 0.0D, 0.0D);
+                Tessellator tessellator = Tessellator.getInstance();
+                VertexBuffer vertexBuffer = tessellator.getBuffer();
+                vertexBuffer.begin(7, DefaultVertexFormats.POSITION);
+                vertexBuffer.pos(0.0D, height, -100).tex(0.0D, 1.0D).endVertex();
+                vertexBuffer.pos(width, height, -100).tex(1.0D, 1.0D).endVertex();
+                vertexBuffer.pos(width, 0.0D, -100).tex(1.0D, 0.0D).endVertex();
+                vertexBuffer.pos(0.0D, 0.0D, -100).tex(0.0D, 0.0D).endVertex();
                 tessellator.draw();
             }
         }
@@ -39,11 +40,11 @@ public class ClientEvents {
 
     @SubscribeEvent
     public void onUpdate(TickEvent.PlayerTickEvent event) {
-        EntityPlayer player = event.player;
+        /*EntityPlayer player = event.player;
 
-        if (player.dimension == AtumConfig.DIMENSION_ID) {
+        if (player.dimension == AtumConfig.DIMENSION_ID) { //TODO Fix
             if (player.worldObj.isRaining()) {
-                raining = true;
+                //raining = true;
 
                 Random random = new Random();
                 int particlesPerTick = (3 - Minecraft.getMinecraft().gameSettings.particleSetting) * 6;
@@ -55,9 +56,9 @@ public class ClientEvents {
                     float vx = 0.1F + random.nextFloat() * 0.1F;
                     float vz = 0.1F + random.nextFloat() * 0.1F;
 
-                    player.worldObj.spawnParticle("sand", player.posX + x, player.posY + y, player.posZ + z, vx + player.motionX, 0.0D, vz + player.motionZ);
+                    player.worldObj.spawnParticle(EnumParticleTypes.BLOCK_DUST, player.posX + x, player.posY + y, player.posZ + z, vx + player.motionX, 0.0D, vz + player.motionZ);
                 }
             }
-        }
+        }*/
     }
 }

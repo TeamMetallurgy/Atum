@@ -1,29 +1,28 @@
 package com.teammetallurgy.atum.items;
 
+import com.teammetallurgy.atum.utils.Constants;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class ItemTexturedArmor extends ItemArmor {
-
     private String textureFile;
     private Item repairItem = null;
-    private IIcon[] armour;
 
-    public ItemTexturedArmor(ArmorMaterial par2ArmorMaterial, int par3, int par4) {
-        super(par2ArmorMaterial, par3, par4);
+    public ItemTexturedArmor(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
+        super(material, renderIndex, slot);
     }
 
-    public ItemTexturedArmor setRepairItem(Item item) {
+    protected ItemTexturedArmor setRepairItem(Item item) {
         this.repairItem = item;
         return this;
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.getItem() == this.repairItem;
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return repair.getItem() == this.repairItem;
     }
 
     public ItemTexturedArmor setTextureFile(String filename) {
@@ -32,8 +31,7 @@ public class ItemTexturedArmor extends ItemArmor {
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        return "atum:textures/armor/" + this.textureFile + ".png";
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+        return Constants.MODID + ":" + "textures/armor/" + this.textureFile + ".png";
     }
-
 }

@@ -1,25 +1,16 @@
 package com.teammetallurgy.atum.world.biome;
 
-import java.util.List;
-import java.util.Random;
-
-import com.google.common.collect.Lists;
-import com.teammetallurgy.atum.handler.AtumConfig;
-
-import net.minecraft.util.WeightedRandom;
-import net.minecraft.world.biome.BiomeGenBase;
-//import net.minecraft.world.gen.NoiseGeneratorSimplex;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
-import net.minecraftforge.common.BiomeManager.BiomeEntry;
 
 public class GenLayerAtumRiver extends GenLayer {
 
-	public GenLayerAtumRiver(long scale, GenLayer parent) {
+    public GenLayerAtumRiver(long scale, GenLayer parent) {
         super(scale);
         super.parent = parent;
     }
 
+    @Override
     public int[] getInts(int x, int z, int width, int length) {
         int xx = x - 1;
         int zz = z - 1;
@@ -28,8 +19,8 @@ public class GenLayerAtumRiver extends GenLayer {
         int[] pInts = this.parent.getInts(xx, zz, ww, ll);
         int[] cache = IntCache.getIntCache(width * length);
 
-        final int riverId = AtumConfig.BiomeConfig.DRIED_RIVER.getID();
-        
+        final int riverId = AtumBiomes.BiomeType.DRIED_RIVER.getID();
+
         for (int i2 = 0; i2 < length; ++i2) {
             for (int j2 = 0; j2 < width; ++j2) {
                 int k2 = this.constrain(pInts[j2 + 0 + (i2 + 1) * ww]);
@@ -45,12 +36,10 @@ public class GenLayerAtumRiver extends GenLayer {
                 }
             }
         }
-
         return cache;
     }
 
     private int constrain(int val) {
         return val >= 2 ? 2 + (val & 1) : val;
     }
-
 }

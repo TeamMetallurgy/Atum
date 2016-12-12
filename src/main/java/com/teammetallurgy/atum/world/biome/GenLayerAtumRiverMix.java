@@ -1,10 +1,8 @@
 package com.teammetallurgy.atum.world.biome;
 
-import com.teammetallurgy.atum.handler.AtumConfig;
-
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+import static com.teammetallurgy.atum.world.biome.AtumBiomes.BiomeType;
 
 public class GenLayerAtumRiverMix extends GenLayer {
     private GenLayer biomePatternGeneratorChain;
@@ -22,16 +20,16 @@ public class GenLayerAtumRiverMix extends GenLayer {
         super.initWorldGenSeed(seed);
     }
 
-	@Override
-	public int[] getInts(int x, int z, int width, int length) {
+    @Override
+    public int[] getInts(int x, int z, int width, int length) {
         int[] bInts = this.biomePatternGeneratorChain.getInts(x, z, width, length);
         int[] rInts = this.riverPatternGeneratorChain.getInts(x, z, width, length);
         int[] cache = IntCache.getIntCache(width * length);
-        
-        final int badId_1 = AtumConfig.BiomeConfig.SAND_DUNES.getID();
-        final int badId_2 = AtumConfig.BiomeConfig.SAND_HILLS.getID();
-        final int badId_3 = AtumConfig.BiomeConfig.LIMESTONE_MOUNTAINS.getID();
-        final int riverId = AtumConfig.BiomeConfig.DRIED_RIVER.getID();
+
+        final int badId_1 = BiomeType.SAND_DUNES.getID();
+        final int badId_2 = BiomeType.SAND_HILLS.getID();
+        final int badId_3 = BiomeType.LIMESTONE_MOUNTAINS.getID();
+        final int riverId = BiomeType.DRIED_RIVER.getID();
 
         for (int idx = 0; idx < width * length; ++idx) {
             if (rInts[idx] == riverId && bInts[idx] != badId_1 && bInts[idx] != badId_2 && bInts[idx] != badId_3) {
@@ -43,5 +41,4 @@ public class GenLayerAtumRiverMix extends GenLayer {
 
         return cache;
     }
-
 }

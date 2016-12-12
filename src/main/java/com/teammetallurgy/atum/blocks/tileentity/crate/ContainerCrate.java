@@ -1,71 +1,65 @@
 package com.teammetallurgy.atum.blocks.tileentity.crate;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerCrate extends Container {
+    private IInventory crateInventory;
+    private int numRows = 3;
 
-    private TileEntityCrate tileEntity;
-    public ContainerCrate(InventoryPlayer playerInventory, TileEntityCrate crateTe) {
-        
-        tileEntity = crateTe;
-        
-        for (int j = 0; j < 3; ++j)
-        {
-            for (int k = 0; k < 9; ++k)
-            {
-                this.addSlotToContainer(new Slot(tileEntity, k + j * 9, 8 + k * 18, 18 + j * 18));
+    public ContainerCrate(IInventory playerInventory, IInventory chestInventory) {
+        this.crateInventory = chestInventory;
+        this.numRows = chestInventory.getSizeInventory() / 9;
+        int i = (this.numRows - 4) * 18;
+
+        for (int j = 0; j < this.numRows; ++j) {
+            for (int k = 0; k < 9; ++k) {
+                this.addSlotToContainer(new Slot(chestInventory, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
 
-        for (int j = 0; j < 3; ++j)
-        {
-            for (int k = 0; k < 9; ++k)
-            {
-                this.addSlotToContainer(new Slot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 - 18));
+        for (int l = 0; l < 3; ++l) {
+            for (int j1 = 0; j1 < 9; ++j1) {
+                this.addSlotToContainer(new Slot(playerInventory, j1 + l * 9 + 9, 8 + j1 * 18, 103 + l * 18 + i));
             }
         }
 
-        for (int j = 0; j < 9; ++j)
-        {
-            this.addSlotToContainer(new Slot(playerInventory, j, 8 + j * 18, 161 - 18));
+        for (int i1 = 0; i1 < 9; ++i1) {
+            this.addSlotToContainer(new Slot(playerInventory, i1, 8 + i1 * 18, 161 + i));
         }
     }
-    
+
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return tileEntity.isUseableByPlayer(player);
+        return crateInventory.isUseableByPlayer(player);
     }
-    
+
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotId) {
-        ItemStack transferedStack = null;
-        
-        Slot slot = (Slot)inventorySlots.get(slotId);
-        
-        if (slot == null || !slot.getHasStack())
-            return null;
-        
-        ItemStack slotStack = slot.getStack();
-        transferedStack = slotStack.copy();
-        
-        if (slotId < 27) {
-            if(!mergeItemStack(slotStack, 27, inventorySlots.size(), true)) {
+    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+        ItemStack slotStack = null;
+        Slot slot = this.inventorySlots.get(index);
+
+        if (slot != null && slot.getHasStack()) {
+            ItemStack stack = slot.getStack();
+            slotStack = stack.copy();
+
+            if (index < this.numRows * 9) {
+                if (!this.mergeItemStack(stack, this.numRows * 9, this.inventorySlots.size(), true)) {
+                    return null;
+                }
+            } else if (!this.mergeItemStack(stack, 0, this.numRows * 9, false)) {
                 return null;
             }
-        } else if (!mergeItemStack(slotStack, 0, 27, false)) {
-            return null;
+
+            if (stack.stackSize == 0) {
+                slot.putStack(null);
+            } else {
+                slot.onSlotChanged();
+            }
         }
-        
-        if (slotStack.stackSize <= 0) {
-            slot.putStack((ItemStack)null);
-        } else {
-            slot.onSlotChanged();
-        }
-        
-        return transferedStack;
+        return slotStack;
     }
 }

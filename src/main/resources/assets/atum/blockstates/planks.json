@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "variant=palm": { "model": "atum:palm_planks" },
+    "variant=deadwood": { "model": "atum:deadwood_planks" }
+  }
+}

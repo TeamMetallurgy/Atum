@@ -1,74 +1,63 @@
 package com.teammetallurgy.atum.items.artifacts;
 
 import com.teammetallurgy.atum.entity.EntityPharaoh;
-import com.teammetallurgy.atum.entity.EntityStoneSoldier;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import com.teammetallurgy.atum.entity.EntityStoneguard;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
 public class ItemSobeksRage extends ItemAxe {
 
-    public ItemSobeksRage(ToolMaterial par2ToolMaterial) {
-        super(par2ToolMaterial);
-
+    public ItemSobeksRage(ToolMaterial material) {
+        super(material);
     }
 
     @Override
-    public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack) {
         return true;
     }
 
-    // @Override
-    // public float getDamageVsEntity(Entity entity, ItemStack stack) {
-    // return 4 + super.toolMaterial.getDamageVsEntity();
-    // }
-
     @Override
-    public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase mob, EntityLivingBase player) {
-        if (!(mob instanceof EntityStoneSoldier) && !(mob instanceof EntityPharaoh)) {
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+        if (!(target instanceof EntityStoneguard) && !(target instanceof EntityPharaoh)) {
             float j = 4.0F;
-            mob.addVelocity((double) (-MathHelper.sin(player.rotationYaw * 3.1415927F / 180.0F) * j * 0.5F), 0.1D, (double) (MathHelper.cos(player.rotationYaw * 3.1415927F / 180.0F) * j * 0.5F));
+            target.addVelocity((double) (-MathHelper.sin(attacker.rotationYaw * 3.1415927F / 180.0F) * j * 0.5F), 0.1D, (double) (MathHelper.cos(attacker.rotationYaw * 3.1415927F / 180.0F) * j * 0.5F));
         }
 
-        return super.hitEntity(par1ItemStack, mob, player);
+        return super.hitEntity(stack, target, attacker);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack) {
-        return EnumRarity.rare;
+    public EnumRarity getRarity(ItemStack stack) {
+        return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            par3List.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(I18n.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + TextFormatting.DARK_GRAY + "[SHIFT]");
         }
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.getItem() == Items.diamond;
-    }
-
-    @Override
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.itemIcon = par1IIconRegister.registerIcon("atum:SobeksRage");
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return repair.getItem() == Items.diamond;
     }
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "atum:block/portal_cube",
+  "textures": {
+    "particle": "atum:blocks/portal",
+    "portal": "atum:blocks/portal"
+  }
+}

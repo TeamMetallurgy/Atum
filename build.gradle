@@ -1,104 +1,53 @@
 buildscript {
     repositories {
-        mavenCentral()
-           mavenLocal()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 repositories {
-    maven {
-        name = "Team Metallurgy Maven"
-        url = "http://mc.aesireanempire.com/maven"
-    }
-
-    maven {
-        name = "ChickenBones"
-        url = "http://chickenbones.net/maven"
-    }
+  maven {
+    url "http://dvs1.progwml6.com/files/maven"
+  }
 }
 
-apply plugin: 'forge'
-
-version = "0.6"
-group= "com.teammetallurgy.atum" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = "${minecraft_version}-${mod_version}"
+group= "com.teammetallurgy.atum"
 archivesBaseName = "Atum"
 
-ext.configFile = file "build.properties"
-
-configFile.withReader {
-    def prop = new Properties()
-    prop.load(it)
-    project.ext.config = new ConfigSlurper().parse prop
-}
-
 minecraft {
-    version = config.minecraft_version + "-" + config.forge_version
+    version = "${minecraft_version}-${forge_version}"
+    mappings = "${mappings_version}"
+    useDepAts = true
+    runDir = "run"
 }
 
 dependencies {
-    compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.cclib_version}:dev"
-    compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.ccc_version}:dev"
-    compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.nei_version}:dev"
+    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
 }
 
-task buildInfo() {
-    def cmd = "git rev-parse --short HEAD"
-    def proc = cmd.execute()
-    proc.waitFor()
-    if (proc.exitValue() == 0) {
-        ext.revision = "DEV." + proc.text.trim()
-    } else {
-        ext.revision = "GITBORK"
-    }
-
-    if (System.getenv().BUILD_NUMBER != null) {
-        ext.buildNum = "${System.getenv().BUILD_NUMBER}"
-    } else {
-        ext.buildNum = "${project.buildInfo.revision}"
-    }
-}
-
-ext.artifact_version = 'NFG'
-if (System.getenv().ARTIFACT_VERSION == null) {
-    artifact_version = "${config.mod_version}.${project.buildInfo.buildNum}"
-}
-
-if(System.getenv().ARTIFACT_VERSION != null) {
-    artifact_version = "${system.getenv().ARTIFACT_VERSION}"
-}
-
-version = "${config.minecraft_version}-${artifact_version}"
-
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.artifact_version
+processResources {
+    inputs.property "version", project.mod_version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.artifact_version, 'mcversion':project.minecraft.version
+        include '**/*.info'
+        include '**/*.properties'
+        expand 'version': project.mod_version, 'mcversion': project.minecraft.version
     }
-        
-    // copy everything else, thats not the mcmod.info
+
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude '**/*.info'
+        exclude '**/*.properties'
     }
-}
+} 
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
@@ -107,12 +56,4 @@ task deobfJar(type: Jar) {
 
 artifacts {
     archives deobfJar
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url : "file:///var/www/html/maven")
-        }
-    }
 }

@@ -1,13 +1,13 @@
 package com.teammetallurgy.atum.blocks;
 
-import com.teammetallurgy.atum.Atum;
-
 import net.minecraft.block.BlockLadder;
+import net.minecraft.block.SoundType;
 
 public class BlockAtumLadder extends BlockLadder {
 
     public BlockAtumLadder() {
         super();
-        this.setCreativeTab(Atum.creativeTab);
+        this.setHardness(0.4F);
+        this.setSoundType(SoundType.LADDER);
     }
 }

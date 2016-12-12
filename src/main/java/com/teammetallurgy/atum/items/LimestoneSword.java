@@ -2,23 +2,17 @@ package com.teammetallurgy.atum.items;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
 public class LimestoneSword extends ItemSword {
 
-    public LimestoneSword(ToolMaterial par2ToolMaterial) {
-        super(par2ToolMaterial);
+    public LimestoneSword(ToolMaterial material) {
+        super(material);
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return Block.getBlockFromItem(par2ItemStack.getItem()) == AtumBlocks.BLOCK_LIMESTONECOBBLE;
-    }
-
-    @Override
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.itemIcon = par1IIconRegister.registerIcon("atum:LimestoneSword");
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return Block.getBlockFromItem(repair.getItem()) == AtumBlocks.LIMESTONE_CRACKED;
     }
 }

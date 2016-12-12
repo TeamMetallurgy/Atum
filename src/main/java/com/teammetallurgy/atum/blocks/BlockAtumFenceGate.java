@@ -1,23 +1,14 @@
 package com.teammetallurgy.atum.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
-import net.minecraft.util.IIcon;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.SoundType;
 
 public class BlockAtumFenceGate extends BlockFenceGate {
 
-    private Block baseBlock;
-    public BlockAtumFenceGate(Block block) {
-        super();
-        this.baseBlock = block;
-    }
-    
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return this.baseBlock.getBlockTextureFromSide(side);
+    public BlockAtumFenceGate() {
+        super(BlockPlanks.EnumType.OAK); //TODO
+        this.setHardness(2.0F).setResistance(5.0F);
+        this.setSoundType(SoundType.WOOD);
     }
 }

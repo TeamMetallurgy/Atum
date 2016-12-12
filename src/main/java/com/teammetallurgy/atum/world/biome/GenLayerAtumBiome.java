@@ -1,29 +1,27 @@
 package com.teammetallurgy.atum.world.biome;
 
-import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.Lists;
-
 import net.minecraft.util.WeightedRandom;
-//import net.minecraft.world.gen.NoiseGeneratorSimplex;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import net.minecraftforge.common.BiomeManager.BiomeEntry;
 
-public class GenLayerAtumBiome extends GenLayer {
+import java.util.List;
 
+//import net.minecraft.world.gen.NoiseGeneratorSimplex;
+
+public class GenLayerAtumBiome extends GenLayer {
 	//private List<BiomeEntry> lBiomes = Lists.newArrayList();
 	//private List<BiomeEntry> hBiomes = Lists.newArrayList();
 	private List<BiomeEntry> biomes = Lists.newArrayList();
-	
+
 	//private final NoiseGeneratorSimplex noise;
-	
+
 	public GenLayerAtumBiome(long seed) {
 		super(seed);
 		//noise = new NoiseGeneratorSimplex(new Random(seed));
-		
-		for(AtumBiomeGenBase biome : AtumBiomes.biomes ) {
+
+		for (AtumBiomeGenBase biome : AtumBiomes.biomeRegistry) {
 			final BiomeEntry entry = new BiomeEntry(biome, biome.getWeight());
 			//if( biome.rootHeight >= 0.25F ) {
 			//	hBiomes.add(entry);
@@ -37,14 +35,14 @@ public class GenLayerAtumBiome extends GenLayer {
 	@Override
 	public int[] getInts(int x, int z, int width, int length) {
 		int[] cache = IntCache.getIntCache(width * length);
-		
+
 		//final int lWeight = WeightedRandom.getTotalWeight(lBiomes);
 		//final int hWeight = WeightedRandom.getTotalWeight(hBiomes);
 		final int totalWeight = WeightedRandom.getTotalWeight(biomes);
-		
-		for( int i = 0; i < length; ++i ) {
-			for( int j = 0; j < width; ++j ) {
-				this.initChunkSeed((long)(j + x), (long)(i + z));
+
+		for (int i = 0; i < length; ++i) {
+			for (int j = 0; j < width; ++j) {
+				this.initChunkSeed((long) (j + x), (long) (i + z));
 				//final double elevationType = noise.func_151605_a(x,z);
 				final BiomeEntry biome;
 				//if( elevationType <= 0.25 ) {
@@ -52,11 +50,10 @@ public class GenLayerAtumBiome extends GenLayer {
 				//} else {
 				//	biome = ((BiomeEntry)WeightedRandom.getItem(lBiomes, nextInt(lWeight)));
 				//}
-				biome = ((BiomeEntry)WeightedRandom.getItem(biomes, nextInt(totalWeight)));
-				cache[j + i * width] = biome.biome.biomeID;
+				biome = ((BiomeEntry) WeightedRandom.getRandomItem(biomes, nextInt(totalWeight)));
+				cache[j + i * width] = AtumBiomeGenBase.getIdForBiome(biome.biome);
 			}
 		}
-		
 		return cache;
 	}
 }

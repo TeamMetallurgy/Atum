@@ -1,0 +1,7 @@
+{
+  "parent": "block/column_side",
+  "textures": {
+    "end": "atum:blocks/deadwood_log_top",
+    "side": "atum:blocks/deadwood_log"
+  }
+}

@@ -1,66 +1,55 @@
 package com.teammetallurgy.atum.client.render.entity.arrow;
 
-import com.teammetallurgy.atum.entity.arrow.CustomArrow;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
+import com.teammetallurgy.atum.entity.arrow.EntityNutsCall;
+import com.teammetallurgy.atum.items.AtumItems;
+import com.teammetallurgy.atum.utils.Constants;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
-public class RenderNutsCall extends Render {
+public class RenderNutsCall extends Render<EntityNutsCall> {
 
-    public void renderArrow(CustomArrow par1EntityFireSpearCombined, double par2, double par4, double par6, float par8, float par9) {
-        this.bindEntityTexture(par1EntityFireSpearCombined);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-        GL11.glRotatef(par1EntityFireSpearCombined.prevRotationYaw + (par1EntityFireSpearCombined.rotationYaw - par1EntityFireSpearCombined.prevRotationYaw) * par9 - 90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(par1EntityFireSpearCombined.prevRotationPitch + (par1EntityFireSpearCombined.rotationPitch - par1EntityFireSpearCombined.prevRotationPitch) * par9, 0.0F, 0.0F, 1.0F);
-        Tessellator tessellator = Tessellator.instance;
-        byte b0 = 0;
-        float f2 = 0.0F;
-        float f3 = 0.5F;
-        float f4 = (float) (0 + b0 * 10) / 32.0F;
-        float f5 = (float) (5 + b0 * 10) / 32.0F;
-        float f6 = 0.0F;
-        float f7 = 0.15625F;
-        float f8 = (float) (5 + b0 * 10) / 32.0F;
-        float f9 = (float) (10 + b0 * 10) / 32.0F;
-        float f10 = 0.15625F;
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        float f11 = (float) par1EntityFireSpearCombined.arrowShake - par9;
-
-        if (f11 > 0.0F) {
-            float f12 = -MathHelper.sin(f11 * 3.0F) * f11;
-            GL11.glRotatef(f12, 0.0F, 0.0F, 1.0F);
-        }
-
-        GL11.glScalef(2f, 1.5f, 1.5f);
-        GL11.glTranslatef(-0.85F, 0.0F, 0.0F);
-        GL11.glNormal3f(f10, 0.0F, 0.0F);
-
-        ItemRenderer.renderItemIn2D(tessellator, -1f, -10 / 32.0f, -5 / 32.0f, 12 / 32.0f, 32, 32 * 32, 0.0625F);
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
-    }
-
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then handing it off to a worker function which does the actual work. In all
-     * probabilty, the class Render is generic (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1, double d2, float f, float f1). But JAD is pre
-     * 1.5 so doesn't do that.
-     */
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        this.renderArrow((CustomArrow) par1Entity, par2, par4, par6, par8, par9);
+    public RenderNutsCall(RenderManager renderManager) {
+        super(renderManager);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return new ResourceLocation("Atum:textures/projectiles/nutscall.png");
+    public void doRender(EntityNutsCall nutsCall, double x, double y, double z, float entityYaw, float partialTicks) { //TODO
+        this.bindEntityTexture(nutsCall);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x, (float) y, (float) z);
+        GlStateManager.rotate(nutsCall.prevRotationYaw + (nutsCall.rotationYaw - nutsCall.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(nutsCall.prevRotationPitch + (nutsCall.rotationPitch - nutsCall.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
+        float f = 0.15625F;
+        GlStateManager.enableRescaleNormal();
+        float f1 = nutsCall.arrowShake - partialTicks;
+
+        if (f1 > 0.0F) {
+            float f2 = -MathHelper.sin(f1 * 3.0F) * f1;
+            GL11.glRotatef(f2, 0.0F, 0.0F, 1.0F);
+        }
+
+        GlStateManager.scale(2F, 1.5F, 1.5F);
+        GlStateManager.translate(-0.85F, 0.0F, 0.0F);
+        GL11.glNormal3f(f, 0.0F, 0.0F);
+
+        Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(AtumItems.NUTS_CALL), ItemCameraTransforms.TransformType.GROUND); //TODO Fix rotation etc.
+
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
+    }
+
+    @Override
+    protected ResourceLocation getEntityTexture(EntityNutsCall nutsCall) {
+        return new ResourceLocation(Constants.MODID + ":" + "textures/projectiles/nutscall.png");
     }
 }

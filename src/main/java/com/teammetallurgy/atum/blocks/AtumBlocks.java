@@ -1,242 +1,266 @@
 package com.teammetallurgy.atum.blocks;
 
+import com.google.common.base.Function;
 import com.teammetallurgy.atum.Atum;
 import com.teammetallurgy.atum.blocks.tileentity.TileEntityBurningTrap;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityChestSpawner;
 import com.teammetallurgy.atum.blocks.tileentity.chests.TileEntityPharaohChest;
 import com.teammetallurgy.atum.blocks.tileentity.crate.TileEntityCrate;
 import com.teammetallurgy.atum.blocks.tileentity.furnace.TileEntityLimestoneFurnace;
-import com.teammetallurgy.atum.items.ItemBlockBricks;
-import com.teammetallurgy.atum.items.ItemBlockCrate;
-import com.teammetallurgy.atum.items.ItemBlockStainedGlass;
+import com.teammetallurgy.atum.utils.AtumUtils;
 import com.teammetallurgy.atum.utils.Constants;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
+import net.minecraft.item.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class AtumBlocks {
-    public static BlockPortal BLOCK_PORTAL = new BlockPortal();
-    public static Block BLOCK_CURSEDCHEST = new BlockChestSpawner();
-    public static Block BLOCK_SAND = new BlockSands();
-    public static Block BLOCK_LIMESTONEGRAVEL = new BlockGravel().setHardness(0.6F).setStepSound(Block.soundTypeGravel).setBlockName("limestoneGravel").setBlockTextureName("atum:AtumLimestoneGravel");
-    public static Block BLOCK_STONE = new BlockAtumStone();
-    public static Block BLOCK_WALL = new BlockWalls(BLOCK_STONE);
-    public static Block BLOCK_LIMESTONECOBBLE = new BlockAtum("cobble").setBlockTextureName("atum:AtumCobble");
-    public static Block BLOCK_LARGEBRICK = new BlockAtumBricks("largeBrick").setBlockTextureName("atum:AtumBrickLarge");
-    public static Block BLOCK_SMALLBRICK = new BlockAtum("smallBrick").setBlockTextureName("atum:AtumBrickSmall");
-    public static Block BLOCK_CARVEDBRICK = new BlockAtum("carvedBrick").setBlockTextureName("atum:AtumBrickCarved");
-    public static BlockSlab BLOCK_SLABS = new BlockAtumSlab(false);
-    public static BlockSlab BLOCK_DOUBLESLAB = new BlockAtumSlab(true);
-    public static Block BLOCK_SMOOTHSTAIRS = new BlockAtumStairs(BLOCK_STONE, 0).setBlockName("smoothStairs");
-    public static Block BLOCK_COBBLESTAIRS = new BlockAtumStairs(BLOCK_LIMESTONECOBBLE, 0).setBlockName("cobbleStairs");
-    public static Block BLOCK_LARGESTONESTAIRS = new BlockAtumStairs(BLOCK_LARGEBRICK, 0).setBlockName("largeStairs");
-    public static Block BLOCK_LARGESTONESTAIRSBREAKABLE = new BlockAtumStairs(BLOCK_LARGEBRICK, 2).setBlockName("largeStairsBreakable").setHardness(2.0F).setResistance(10.0F);
-    public static Block BLOCK_SMALLSTONESTAIRS = new BlockAtumStairs(BLOCK_SMALLBRICK, 0).setBlockName("smallStairs");
-    public static Block BLOCK_SANDLAYERED = new BlockSandLayered();
-    public static Block BLOCK_CRACKEDLARGEBRICK = new BlockAtum("crackedLargeBrick").setBlockTextureName("atum:AtumCrackedLargeBrick");
-    public static Block BLOCK_CRYSTALGLASS = new BlockAtumGlass("atum:AtumCrystalGlass").setBlockName("crystalGlass");
-    public static Block BLOCK_CRYSTALSTAINEDGLASS = new BlockAtumGlassStained("atum:AtumCrystalGlass").setBlockName("crystalStainedGlass");
-    public static Block BLOCK_FRAMEDGLASS = new BlockAtumGlass("atum:AtumFramedGlass").setBlockName("framedGlass");
-    public static Block BLOCK_FRAMEDSTAINEDGLASS = new BlockAtumGlassStained("atum:AtumFramedGlass").setBlockName("framedStainedGlass");
-    public static Block BLOCK_PALMSAPLING = new BlockPalmSapling();
-    public static Block BLOCK_DATEBLOCK = new BlockDate();
-    public static Block BLOCK_SHRUB = new BlockShrub().setBlockName("shrub").setBlockTextureName("atum:Shrub");
-    public static Block BLOCK_WEED = new BlockShrub().setBlockName("weed").setBlockTextureName("atum:DeadBush");
-    public static Block BLOCK_PAPYRUS = new BlockPapyrus();
-    public static Block BLOCK_FLAX = new BlockFlax();
-    public static Block BLOCK_FERTILESOIL = new BlockFertileSoil();
-    public static Block BLOCK_FERTILESOILTILLED = new BlockFertileSoilTilled();
-    public static Block BLOCK_LOG = new BlockPalmLog();
-    public static Block BLOCK_LEAVES = new BlockLeave();
-    public static Block BLOCK_PLANKS = new BlockAtumPlank();
-    public static Block BLOCK_PALM_DOOR = new BlockAtumDoor().setHardness(3.0F).setStepSound(Block.soundTypeWood).setBlockName("palmDoor").setBlockTextureName("atum:palm_door");
-    public static Block BLOCK_PALM_FENCE = new BlockAtumFence("atum:Planks", Material.wood).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood).setBlockName("palmFence");
-    public static Block BLOCK_PALM_FENCE_GATE = new BlockAtumFenceGate(BLOCK_PALM_FENCE).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood).setBlockName("palmFenceGate");;
-    public static Block BLOCK_PALM_HATCH = new BlockAtumTrapDoor(Material.wood).setBlockName("palmHatch").setHardness(3.0F).setBlockTextureName("atum:palm_hatch").setStepSound(Block.soundTypeWood);
-    public static Block BLOCK_PALM_LADDER = new BlockAtumLadder().setBlockName("palmLadder").setHardness(0.4F).setBlockTextureName("atum:palm_ladder").setStepSound(Block.soundTypeLadder);
-    public static Block BLOCK_THINCRYSTALGLASS = new BlockAtumPane("atum:AtumCrystalGlass", "atum:thinglass_top").setBlockName("thinCrystalGlass");
-    public static Block BLOCK_THINCRYSTALSTAINEDGLASS = new BlockAtumPaneStained("atum:AtumCrystalGlass", "atum:thinglass_top").setBlockName("thinCrystalStainedGlass");
-    public static Block BLOCK_THINFRAMEDGLASS = new BlockAtumPane("atum:AtumFramedGlass", "atum:thinglass_top").setBlockName("thinFramedGlass");
-    public static Block BLOCK_THINFRAMEDSTAINEDGLASS = new BlockAtumPaneStained("atum:AtumFramedGlass", "atum:thinglass_top").setBlockName("thinFramedStainedGlass");
-    public static Block BLOCK_TRAPARROW = new BlockBurningTrap();
-    public static Block BLOCK_PHARAOHCHEST = new BlockPharaohChest();
-    public static Block BLOCK_REDSTONEORE = new BlockAtumRedstone();
-    public static Block BLOCK_COALORE = new BlockAtumOres().setBlockName("coalOre").setBlockTextureName("atum:AtumCoal");
-    public static Block BLOCK_IRONORE = new BlockAtumOres().setBlockName("ironOre").setBlockTextureName("atum:AtumIron");
-    public static Block BLOCK_GOLDORE = new BlockAtumOres().setBlockName("goldOre").setBlockTextureName("atum:AtumGold");
-    public static Block BLOCK_LAPISORE = new BlockAtumOres().setBlockName("lapisOre").setBlockTextureName("atum:AtumLapis");
-    public static Block BLOCK_DIAMONDORE = new BlockAtumOres().setBlockName("diamondOre").setBlockTextureName("atum:AtumDiamond");
-    public static Block BLOCK_FURNACEIDLE = new BlockLimeStoneFurnace(false).setBlockName("furnaceIdle");
-    public static Block BLOCK_FURNACEBURNING = new BlockLimeStoneFurnace(true).setBlockName("furnaceBurning");
-    public static Block BLOCK_DEADWOOD_LOG = new BlockDeadwoodLog();
-    public static Block BLOCK_DEADWOOD_PLANK = new BlockAtumPlank().setBlockName("deadwoodPlank").setBlockTextureName("atum:deadwood_plank");
-    public static Block BLOCK_DEADWOOD_DOOR = new BlockAtumDoor().setHardness(3.0F).setStepSound(Block.soundTypeWood).setBlockName("deadwoodDoor").setBlockTextureName("atum:deadwood_door");
-    public static Block BLOCK_DEADWOOD_FENCE = new BlockAtumFence("atum:deadwood_plank", Material.wood).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood).setBlockName("deadwoodFence");
-    public static Block BLOCK_DEADWOOD_FENCE_GATE = new BlockAtumFenceGate(BLOCK_DEADWOOD_FENCE).setHardness(2.0F).setResistance(5.0F).setStepSound(Block.soundTypeWood).setBlockName("deadwoodFenceGate");;
-    public static Block BLOCK_DEADWOOD_HATCH = new BlockAtumTrapDoor(Material.wood).setBlockName("deadwoodHatch").setHardness(3.0F).setBlockTextureName("atum:deadwood_hatch").setStepSound(Block.soundTypeWood);
-    public static Block BLOCK_DEADWOOD_LADDER = new BlockAtumLadder().setBlockName("deadwoodLadder").setHardness(0.4F).setBlockTextureName("atum:deadwood_ladder").setStepSound(Block.soundTypeLadder);
-    public static BlockAtumWoodSlab BLOCK_WOOD_SLAB = new BlockAtumWoodSlab(false);
-    public static BlockAtumWoodSlab BLOCK_WOOD_DOUBLESLAB = new BlockAtumWoodSlab(true);
-    public static Block BLOCK_PALM_STAIRS = new  BlockAtumStairs(BLOCK_PLANKS, 0).setBlockName("palmStairs");
-    public static Block BLOCK_DEADWOOD_STAIRS = new  BlockAtumStairs(BLOCK_DEADWOOD_PLANK, 0).setBlockName("deadwoodStairs");
-    public static Block BLOCK_CRATE = new BlockCrate();
+    public static final BlockPortal PORTAL = new BlockPortal();
+    public static final Block CURSED_CHEST = new BlockChestSpawner();
+    public static final Block SAND = new BlockSands().setHardness(0.5F);
+    public static final Block LIMESTONE_GRAVEL = new BlockGravel().setHardness(0.6F)/*.setSoundType(SoundType.GROUND)*/;
+    public static final Block LIMESTONE = new Block(Material.rock).setHardness(1.5F).setResistance(10.0F)/*.setSoundType(SoundType.STONE)*/;
+    public static final Block LIMESTONE_CRACKED = new BlockAtum();
+    public static final Block LIMESTONEBRICK = new BlockLimestoneBricks();
+    public static final Block WALL = new BlockWalls(LIMESTONE);
+    public static final BlockSlab LIMESTONE_SLAB = new BlockLimestoneHalfSlab();
+    public static final BlockSlab LIMESTONE_DOUBLE_SLAB = new BlockLimestoneDoubleSlab();
+    public static final BlockAtumStairs SMOOTH_STAIRS = new BlockAtumStairs(LIMESTONE.getDefaultState());
+    public static final BlockAtumStairs COBBLE_STAIRS = new BlockAtumStairs(LIMESTONE_CRACKED.getDefaultState());
+    public static final BlockAtumStairs LARGE_STONE_STAIRS = new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE));
+    public static final Block LARGE_STONE_STAIRS_BREAKABLE = (new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE))).setHardness(2.0F).setResistance(10.0F);
+    public static final Block SMALL_STONE_STAIRS = new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.SMALL));
+    public static final Block SAND_LAYERED = new BlockSands().setHardness(0.1F).setLightOpacity(0);
+    public static final Block CRYSTAL_GLASS = new BlockAtumGlass(Material.glass);
+    public static final BlockAtumGlassStained CRYSTAL_STAINED_GLASS = new BlockAtumGlassStained();
+    public static final Block FRAMED_GLASS = new BlockAtumGlass(Material.glass);
+    public static final BlockAtumGlassStained FRAMED_STAINED_GLASS = new BlockAtumGlassStained();
+    public static final Block SAPLING = new BlockAtumSapling();
+    public static final Block DATE_BLOCK = new BlockDate();
+    public static final BlockShrub SHRUB = new BlockShrub();
+    public static final BlockShrub WEED = new BlockShrub();
+    public static final Block PAPYRUS = new BlockPapyrus();
+    public static final Block FLAX = new BlockFlax();
+    public static final Block FERTILE_SOIL = new BlockFertileSoil();
+    public static final Block FERTILE_SOIL_TILLED = new BlockFertileSoilTilled();
+    public static final Block PLANKS = new BlockAtumPlank();
+    public static final Block LOG = new BlockAtumLog();
+    public static final BlockLeaves LEAVES = new BlockLeave();
+    public static final Block PALM_DOOR = new BlockAtumDoor().setHardness(3.0F);
+    public static final Block PALM_FENCE = new BlockAtumFence(BlockAtumPlank.EnumType.PALM.getMapColor());
+    public static final Block PALM_FENCE_GATE = new BlockAtumFenceGate();
+    public static final Block PALM_HATCH = new BlockAtumTrapDoor();
+    public static final Block PALM_LADDER = new BlockAtumLadder();
+    public static final Block THIN_CRYSTAL_GLASS = new BlockAtumPane();
+    public static final Block THIN_CRYSTAL_STAINED_GLASS = new BlockAtumPaneStained();
+    public static final Block THIN_FRAMED_GLASS = new BlockAtumPane();
+    public static final Block THIN_FRAMED_STAINED_GLASS = new BlockAtumPaneStained();
+    public static final Block BURNING_TRAP = new BlockBurningTrap();
+    public static final Block PHARAOH_CHEST = new BlockPharaohChest();
+    public static final Block GOLD_ORE = new BlockAtumOres();
+    public static final Block IRON_ORE = new BlockAtumOres();
+    public static final Block COAL_ORE = new BlockAtumOres();
+    public static final Block LAPIS_ORE = new BlockAtumOres();
+    public static final Block DIAMOND_ORE = new BlockAtumOres();
+    public static final Block REDSTONE_ORE = new BlockAtumRedstoneOre(false);
+    public static final Block LIT_REDSTONE_ORE = new BlockAtumRedstoneOre(true);
+    public static final Block LIMESTONE_FURNACE = new BlockLimestoneFurnace(false);
+    public static final Block LIMESTONE_FURNACE_LIT = new BlockLimestoneFurnace(true);
+    public static final Block DEADWOOD_DOOR = new BlockAtumDoor().setHardness(3.0F);
+    public static final Block DEADWOOD_FENCE = new BlockAtumFence(BlockAtumPlank.EnumType.DEADWOOD.getMapColor());
+    public static final Block DEADWOOD_FENCE_GATE = new BlockAtumFenceGate();
+    public static final Block DEADWOOD_HATCH = new BlockAtumTrapDoor();
+    public static final Block DEADWOOD_LADDER = new BlockAtumLadder();
+    public static final BlockSlab WOOD_SLAB = new BlockAtumHalfWoodSlab();
+    public static final BlockSlab WOOD_DOUBLE_SLAB = new BlockAtumDoubleWoodSlab();
+    public static final Block PALM_STAIRS = new BlockAtumStairs(PLANKS.getDefaultState().withProperty(BlockAtumPlank.VARIANT, BlockAtumPlank.EnumType.PALM));
+    public static final Block DEADWOOD_STAIRS = new BlockAtumStairs(PLANKS.getDefaultState().withProperty(BlockAtumPlank.VARIANT, BlockAtumPlank.EnumType.DEADWOOD));
+    public static final Block CRATE = new BlockCrate();
 
-    public AtumBlocks() {
-        registerBlocks();
-    }
+    public static void registerBlocks() {
+        register(PORTAL, "portal", null);
+        register(CURSED_CHEST, "chest_spawner");
+        register(SAND, "sand");
+        register(LIMESTONE_GRAVEL, "limestone_gravel");
+        register(LIMESTONE, "limestone");
+        register(LIMESTONE_CRACKED, "limestone_cracked");
+        register(SMOOTH_STAIRS, "smooth_stairs");
+        register(COBBLE_STAIRS, "cobble_stairs");
+        register(LARGE_STONE_STAIRS, "large_stairs_unbreakable");
+        register(LARGE_STONE_STAIRS_BREAKABLE, "large_stairs");
+        register(SMALL_STONE_STAIRS, "small_stairs");
+        register(SAND_LAYERED, "sand_layer");
+        register(CRYSTAL_GLASS, "crystal_glass");
+        register(FRAMED_GLASS, "framed_glass");
+        register(DATE_BLOCK, "date_block", null); //TODO name
+        register(SHRUB, "shrub");
+        register(WEED, "weed");
+        register(PAPYRUS, "papyrus");
+        register(FLAX, "flax_block", null); //TODO Name
+        register(FERTILE_SOIL, "fertile_soil");
+        register(FERTILE_SOIL_TILLED, "fertile_soil_tilled");
+        register(PALM_DOOR, "palm_door");
+        register(PALM_FENCE, "palm_fence");
+        register(PALM_FENCE_GATE, "palm_fence_gate");
+        register(PALM_HATCH, "palm_hatch");
+        register(PALM_LADDER, "palm_ladder");
+        register(THIN_CRYSTAL_GLASS, "thin_crystal_glass");
+        register(THIN_FRAMED_GLASS, "thin_framed_glass");
+        register(BURNING_TRAP, "burning_trap");
+        register(PHARAOH_CHEST, "pharaoh_chest");
+        register(GOLD_ORE, "gold_ore");
+        register(IRON_ORE, "iron_ore");
+        register(COAL_ORE, "coal_ore");
+        register(LAPIS_ORE, "lapis_ore");
+        register(DIAMOND_ORE, "diamond_ore");
+        register(REDSTONE_ORE, "redstone_ore");
+        register(LIT_REDSTONE_ORE, "lit_redstone_ore", null);
+        register(LIMESTONE_FURNACE, "limestone_furnace");
+        register(LIMESTONE_FURNACE_LIT, "limestone_furnace_lit", null);
+        register(DEADWOOD_DOOR, "deadwood_door");
+        register(DEADWOOD_FENCE, "deadwood_fence");
+        register(DEADWOOD_FENCE_GATE, "deadwood_fence_gate");
+        register(DEADWOOD_HATCH, "deadwood_hatch");
+        register(DEADWOOD_LADDER, "deadwood_ladder");
+        register(PALM_STAIRS, "palm_stairs");
+        register(DEADWOOD_STAIRS, "deadwood_stairs");
 
-    public void registerBlocks() {
-        this.register(BLOCK_PORTAL);
-        this.register(BLOCK_CURSEDCHEST);
-        this.register(BLOCK_SAND);
-        this.register(BLOCK_LIMESTONEGRAVEL);
-        this.register(BLOCK_STONE);
-        this.register(BLOCK_LIMESTONECOBBLE);
-        this.register(BLOCK_SMALLBRICK);
-        this.register(BLOCK_CARVEDBRICK);
-        this.register(BLOCK_SMOOTHSTAIRS);
-        this.register(BLOCK_COBBLESTAIRS);
-        this.register(BLOCK_LARGESTONESTAIRS);
-        this.register(BLOCK_LARGESTONESTAIRSBREAKABLE);
-        this.register(BLOCK_SMALLSTONESTAIRS);
-        this.register(BLOCK_SANDLAYERED);
-        this.register(BLOCK_CRACKEDLARGEBRICK);
-        this.register(BLOCK_CRYSTALGLASS);
-        this.register(BLOCK_FRAMEDGLASS);
-        this.register(BLOCK_PALMSAPLING);
-        this.register(BLOCK_DATEBLOCK);
-        this.register(BLOCK_SHRUB);
-        this.register(BLOCK_WEED);
-        this.register(BLOCK_PAPYRUS);
-        this.register(BLOCK_FLAX);
-        this.register(BLOCK_FERTILESOIL);
-        this.register(BLOCK_FERTILESOILTILLED);
-        this.register(BLOCK_LOG);
-        this.register(BLOCK_LEAVES);
-        this.register(BLOCK_PLANKS);
-        this.register(BLOCK_PALM_DOOR);
-        this.register(BLOCK_PALM_FENCE);
-        this.register(BLOCK_PALM_FENCE_GATE);
-        this.register(BLOCK_PALM_HATCH);
-        this.register(BLOCK_PALM_LADDER);
-        this.register(BLOCK_THINCRYSTALGLASS);
-        this.register(BLOCK_THINFRAMEDGLASS);
-        this.register(BLOCK_TRAPARROW);
-        this.register(BLOCK_PHARAOHCHEST);
-        this.register(BLOCK_REDSTONEORE);
-        this.register(BLOCK_COALORE);
-        this.register(BLOCK_IRONORE);
-        this.register(BLOCK_GOLDORE);
-        this.register(BLOCK_LAPISORE);
-        this.register(BLOCK_DIAMONDORE);
-        this.register(BLOCK_FURNACEIDLE);
-        this.register(BLOCK_FURNACEBURNING);
-        this.register(BLOCK_DEADWOOD_LOG);
-        this.register(BLOCK_DEADWOOD_PLANK);
-        this.register(BLOCK_DEADWOOD_DOOR);
-        this.register(BLOCK_DEADWOOD_FENCE);
-        this.register(BLOCK_DEADWOOD_FENCE_GATE);
-        this.register(BLOCK_DEADWOOD_HATCH);
-        this.register(BLOCK_DEADWOOD_LADDER);
-        this.register(BLOCK_PALM_STAIRS);
-        this.register(BLOCK_DEADWOOD_STAIRS);
+        register(CRYSTAL_STAINED_GLASS, new ItemCloth(CRYSTAL_STAINED_GLASS), "crystal_stained_glass");
+        register(FRAMED_STAINED_GLASS, new ItemCloth(FRAMED_STAINED_GLASS), "framed_stained_glass");
+        register(THIN_CRYSTAL_STAINED_GLASS, new ItemCloth(THIN_CRYSTAL_STAINED_GLASS), "thin_crystal_stained_glass");
+        register(THIN_FRAMED_STAINED_GLASS, new ItemCloth(THIN_FRAMED_STAINED_GLASS), "thin_framed_stained_glass");
+        register(LIMESTONEBRICK, new ItemMultiTexture(LIMESTONEBRICK, LIMESTONEBRICK, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockLimestoneBricks.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "limestonebrick");
+        register(LIMESTONE_SLAB, new ItemSlab(LIMESTONE_SLAB, LIMESTONE_SLAB, LIMESTONE_DOUBLE_SLAB), "limestone_slab");
+        register(LIMESTONE_DOUBLE_SLAB, "limestone_double_slab");
+        register(WALL, new ItemMultiTexture(WALL, WALL, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockLimestoneBricks.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "walls");
+        register(PLANKS, new ItemMultiTexture(PLANKS, PLANKS, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "planks");
+        register(LOG, new ItemMultiTexture(LOG, LOG, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "log");
+        register(WOOD_SLAB, new ItemSlab(WOOD_SLAB, WOOD_SLAB, WOOD_DOUBLE_SLAB), "wood_slab");
+        register(WOOD_DOUBLE_SLAB, "wood_double_slab");
+        register(LEAVES, new ItemMultiTexture(LEAVES, LEAVES, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "leave");
+        register(SAPLING, new ItemMultiTexture(SAPLING, SAPLING, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "sapling");
+        register(CRATE, new ItemMultiTexture(CRATE, CRATE, new Function<ItemStack, String>() {
+            @Override
+            public String apply(ItemStack input) {
+                return BlockAtumPlank.EnumType.byMetadata(input.getMetadata()).getUnlocalizedName();
+            }
+        }), "crate");
 
-        GameRegistry.registerBlock(BLOCK_LARGEBRICK, ItemBlockBricks.class, BLOCK_LARGEBRICK.getUnlocalizedName());
-        
-        GameRegistry.registerBlock(BLOCK_CRYSTALSTAINEDGLASS, ItemBlockStainedGlass.class, BLOCK_CRYSTALSTAINEDGLASS.getUnlocalizedName());
-        GameRegistry.registerBlock(BLOCK_FRAMEDSTAINEDGLASS, ItemBlockStainedGlass.class, BLOCK_FRAMEDSTAINEDGLASS.getUnlocalizedName());
+        //ForgeHooks.canToolHarvestBlock(SAND, 0, new ItemStack(Items.iron_shovel)); //TODO
+        SAND.setHarvestLevel("shovel", 0);
+        LIMESTONE_GRAVEL.setHarvestLevel("shovel", 0);
+        COAL_ORE.setHarvestLevel("pickaxe", 0);
+        IRON_ORE.setHarvestLevel("pickaxe", 1);
+        GOLD_ORE.setHarvestLevel("pickaxe", 2);
+        LAPIS_ORE.setHarvestLevel("pickaxe", 1);
+        DIAMOND_ORE.setHarvestLevel("pickaxe", 2);
+        REDSTONE_ORE.setHarvestLevel("pickaxe", 2);
 
-        GameRegistry.registerBlock(BLOCK_THINCRYSTALSTAINEDGLASS, ItemBlockStainedGlass.class, BLOCK_THINCRYSTALSTAINEDGLASS.getUnlocalizedName());
-        GameRegistry.registerBlock(BLOCK_THINFRAMEDSTAINEDGLASS, ItemBlockStainedGlass.class, BLOCK_THINFRAMEDSTAINEDGLASS.getUnlocalizedName());
+        Blocks.fire.setFireInfo(PLANKS, 5, 20);
+        Blocks.fire.setFireInfo(LEAVES, 30, 60);
+        Blocks.fire.setFireInfo(LOG, 5, 5);
+        Blocks.fire.setFireInfo(PALM_FENCE, 5, 20);
+        Blocks.fire.setFireInfo(DEADWOOD_FENCE, 5, 20);
+        Blocks.fire.setFireInfo(WOOD_SLAB, 5, 20);
+        Blocks.fire.setFireInfo(WOOD_DOUBLE_SLAB, 5, 20);
 
-        GameRegistry.registerBlock(BLOCK_SLABS, ItemBlockSlab.class, "tile.slab");
-        GameRegistry.registerBlock(BLOCK_DOUBLESLAB, ItemBlockSlab.class, "tile.doubleSlab");
+        GameRegistry.registerTileEntity(TileEntityChestSpawner.class, "cursed_chest");
+        GameRegistry.registerTileEntity(TileEntityPharaohChest.class, "pharaoh_chest");
+        GameRegistry.registerTileEntity(TileEntityBurningTrap.class, "burning_trap");
+        GameRegistry.registerTileEntity(TileEntityLimestoneFurnace.class, "limestone_furnace");
+        GameRegistry.registerTileEntity(TileEntityCrate.class, "crate");
 
-        GameRegistry.registerBlock(BLOCK_WALL, ItemBlockWall.class, BLOCK_WALL.getUnlocalizedName());
+        //OreDictionary.registerOre("blockLimestone", STONE); //TODO
 
-        GameRegistry.registerBlock(BLOCK_WOOD_SLAB, ItemBlockWoodSlabs.class, "wood_slab", BLOCK_WOOD_SLAB, BLOCK_WOOD_DOUBLESLAB, false);
-        GameRegistry.registerBlock(BLOCK_WOOD_DOUBLESLAB, ItemBlockWoodSlabs.class, "wood_double_slab", BLOCK_WOOD_SLAB, BLOCK_WOOD_DOUBLESLAB, true);
-        
-        GameRegistry.registerBlock(BLOCK_CRATE, ItemBlockCrate.class, "crate");
+        OreDictionary.registerOre("logWood", LOG);
+        OreDictionary.registerOre("plankWood", PLANKS);
+        OreDictionary.registerOre("treeSapling", SAPLING);
+        OreDictionary.registerOre("treeLeaves", LEAVES);
 
-        ForgeHooks.canToolHarvestBlock(BLOCK_SAND, 0, new ItemStack(Items.iron_shovel));
-        BLOCK_SAND.setHarvestLevel("shovel", 0);
-        BLOCK_COALORE.setHarvestLevel("pickaxe", 0);
-        BLOCK_IRONORE.setHarvestLevel("pickaxe", 1);
-        BLOCK_GOLDORE.setHarvestLevel("pickaxe", 2);
-        BLOCK_LAPISORE.setHarvestLevel("pickaxe", 1);
-        BLOCK_DIAMONDORE.setHarvestLevel("pickaxe", 2);
-        BLOCK_REDSTONEORE.setHarvestLevel("pickaxe", 2);
+        OreDictionary.registerOre("oreGold", GOLD_ORE);
+        OreDictionary.registerOre("oreIron", IRON_ORE);
+        OreDictionary.registerOre("oreLapis", LAPIS_ORE);
+        OreDictionary.registerOre("oreDiamond", DIAMOND_ORE);
+        OreDictionary.registerOre("oreRedstone", REDSTONE_ORE);
+        OreDictionary.registerOre("oreCoal", COAL_ORE);
 
-        Blocks.fire.setFireInfo(BLOCK_PLANKS, 5, 20);
-        Blocks.fire.setFireInfo(BLOCK_LEAVES, 30, 60);
-        Blocks.fire.setFireInfo(BLOCK_LOG, 5, 5);
-        Blocks.fire.setFireInfo(BLOCK_DEADWOOD_LOG, 5, 5);
-        Blocks.fire.setFireInfo(BLOCK_PALM_FENCE, 5, 20);
-        Blocks.fire.setFireInfo(BLOCK_DEADWOOD_PLANK, 5, 20);
-        Blocks.fire.setFireInfo(BLOCK_DEADWOOD_FENCE, 5, 20);
-        Blocks.fire.setFireInfo(BLOCK_WOOD_SLAB, 5, 20);
-        Blocks.fire.setFireInfo(BLOCK_WOOD_DOUBLESLAB, 5, 20);
+        OreDictionary.registerOre("blockGlass", CRYSTAL_GLASS);
+        OreDictionary.registerOre("blockGlass", new ItemStack(CRYSTAL_STAINED_GLASS, 1, OreDictionary.WILDCARD_VALUE));
 
-        GameRegistry.registerTileEntity(TileEntityChestSpawner.class, "CursedChest");
-        GameRegistry.registerTileEntity(TileEntityPharaohChest.class, "PharaohChest");
-        GameRegistry.registerTileEntity(TileEntityBurningTrap.class, "BurningTrap");
-        GameRegistry.registerTileEntity(TileEntityLimestoneFurnace.class, "LimestoneFurnace");
-        GameRegistry.registerTileEntity(TileEntityCrate.class, "atum:crate");
-
-        OreDictionary.registerOre("blockLimestone", BLOCK_STONE);
-
-        OreDictionary.registerOre("logWood", BLOCK_LOG);
-        OreDictionary.registerOre("logWood", BLOCK_DEADWOOD_LOG);
-        OreDictionary.registerOre("plankWood", BLOCK_PLANKS);
-        OreDictionary.registerOre("plankWood", BLOCK_DEADWOOD_PLANK);
-        OreDictionary.registerOre("treeSapling", BLOCK_PALMSAPLING);
-        OreDictionary.registerOre("treeLeaves",  BLOCK_LEAVES);
-
-        OreDictionary.registerOre("oreGold", BLOCK_GOLDORE);
-        OreDictionary.registerOre("oreIron", BLOCK_IRONORE);
-        OreDictionary.registerOre("oreLapis", BLOCK_LAPISORE);
-        OreDictionary.registerOre("oreDiamond", BLOCK_DIAMONDORE);
-        OreDictionary.registerOre("oreRedstone", BLOCK_REDSTONEORE);
-        OreDictionary.registerOre("oreCoal", BLOCK_COALORE);
-
-        OreDictionary.registerOre("blockGlass", BLOCK_CRYSTALGLASS);
-        OreDictionary.registerOre("blockGlass", new ItemStack(BLOCK_CRYSTALSTAINEDGLASS, 1, OreDictionary.WILDCARD_VALUE));
-        
-        OreDictionary.registerOre("paneGlassColorless", BLOCK_THINCRYSTALGLASS);
-        OreDictionary.registerOre("paneGlass", BLOCK_THINCRYSTALGLASS);
-        OreDictionary.registerOre("paneGlass", new ItemStack(BLOCK_FRAMEDSTAINEDGLASS, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("paneGlassColorless", THIN_CRYSTAL_GLASS);
+        OreDictionary.registerOre("paneGlass", THIN_CRYSTAL_GLASS);
+        OreDictionary.registerOre("paneGlass", new ItemStack(FRAMED_STAINED_GLASS, 1, OreDictionary.WILDCARD_VALUE));
 
         String[] oreColours = Constants.ORE_DIC_COLOURS;
-
-        for (int i = 0; i < oreColours.length; i++ ){
-
-            ItemStack glass = new ItemStack(BLOCK_CRYSTALSTAINEDGLASS, 1, i);
-            ItemStack pane = new ItemStack(BLOCK_FRAMEDSTAINEDGLASS, 1, i);
+        for (int i = 0; i < oreColours.length; i++) {
+            ItemStack glass = new ItemStack(CRYSTAL_STAINED_GLASS, 1, i);
+            ItemStack pane = new ItemStack(FRAMED_STAINED_GLASS, 1, i);
 
             OreDictionary.registerOre("blockGlass" + oreColours[i], glass);
-            OreDictionary.registerOre("paneGlass"  + oreColours[i], pane);
+            OreDictionary.registerOre("paneGlass" + oreColours[i], pane);
         }
-        
-        // blocks unlocalized name
-        BLOCK_STONE = BLOCK_STONE.setBlockName("limestone");
-        BLOCK_LARGESTONESTAIRS = BLOCK_LARGESTONESTAIRS.setBlockName("largeStairsUnbreakable");
-        BLOCK_LARGESTONESTAIRSBREAKABLE = BLOCK_LARGESTONESTAIRSBREAKABLE.setBlockName("largeStairs");
-
     }
 
-    private void register(Block block) {
-        if (!(block instanceof BlockDate) && !(block instanceof BlockFlax) && !(block instanceof BlockPapyrus) && !(block instanceof BlockPortal) && 
-                !(block instanceof BlockAtumDoor)) {
-            block.setCreativeTab(Atum.creativeTab);
+    protected static Block register(Block block, String name) {
+        return register(block, new ItemBlock(block), name);
+    }
+
+    protected static Block register(Block block, String name, CreativeTabs tab) {
+        return register(block, new ItemBlock(block), name, tab);
+    }
+
+    protected static Block register(Block block, Item itemBlock, String name) {
+        return register(block, itemBlock, name, Atum.creativeTab);
+    }
+
+    protected static Block register(Block block, Item itemBlock, String name, CreativeTabs tab) {
+        if (block.getUnlocalizedName() == null) {
+            block.setUnlocalizedName(Constants.MODID + "." + AtumUtils.toUnlocalizedName(name));
         }
-        GameRegistry.registerBlock(block, block.getUnlocalizedName());
+        block.setCreativeTab(tab);
+
+        GameRegistry.register(block, new ResourceLocation(Constants.MODID, name));
+        GameRegistry.register(itemBlock, new ResourceLocation(Constants.MODID, name));
+
+        Atum.proxy.setBlockResourceLocation(Item.getItemFromBlock(block), name, tab);
+
+        return block;
     }
 }

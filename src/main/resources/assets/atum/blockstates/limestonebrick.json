@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "variant=small": { "model": "atum:limestonebrick_small" },
+    "variant=large": { "model": "atum:limestonebrick_large" },
+    "variant=cracked": { "model": "atum:limestonebrick_cracked" },
+    "variant=chiseled": { "model": "atum:limestonebrick_chiseled" }
+  }
+}

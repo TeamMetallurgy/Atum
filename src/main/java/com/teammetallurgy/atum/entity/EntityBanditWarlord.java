@@ -2,83 +2,81 @@ package com.teammetallurgy.atum.entity;
 
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-public class EntityBanditWarlord extends EntityMob {
+public class EntityBanditWarlord extends EntityBanditBase {
 
-    public EntityBanditWarlord(World par1World) {
-        super(par1World);
+    public EntityBanditWarlord(World world) {
+        super(world);
         this.experienceValue = 16;
-
-        this.setCurrentItemOrArmor(0, new ItemStack(AtumItems.ITEM_SCIMITAR));
-        EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), 5 + this.worldObj.difficultySetting.getDifficultyId() * this.rand.nextInt(6));
-
-        for (int i = 0; i < this.equipmentDropChances.length; ++i) {
-            this.equipmentDropChances[i] = 0.05F;
-        }
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(250.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.53000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(250.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.53000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(10.0D);
     }
 
     @Override
-    protected void addRandomArmor() {
+    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        super.setEquipmentBasedOnDifficulty(difficulty);
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(AtumItems.SCIMITAR));
     }
 
-    /**
-     * Checks if the entity's current position is a valid location to spawn this
-     * entity.
-     */
     @Override
-    public boolean getCanSpawnHere() {
-        return this.worldObj.checkNoEntityCollision(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
+    protected void setEnchantmentBasedOnDifficulty(DifficultyInstance difficulty) {
+        float f = difficulty.getClampedAdditionalDifficulty();
+
+        if (this.getHeldItemMainhand() != null && this.rand.nextFloat() < 0.25F * f) {
+            EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItemMainhand(), (int) (5.0F + f * (float) this.rand.nextInt(6)), false);
+        }
+
+        for (EntityEquipmentSlot entityequipmentslot : EntityEquipmentSlot.values()) {
+            if (entityequipmentslot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+                ItemStack itemstack = this.getItemStackFromSlot(entityequipmentslot);
+
+                if (itemstack != null && this.rand.nextFloat() < 0.5F * f) {
+                    EnchantmentHelper.addRandomEnchantment(this.rand, itemstack, (int) (5.0F + f * (float) this.rand.nextInt(18)), false);
+                }
+            }
+        }
     }
 
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+
+        this.setEquipmentBasedOnDifficulty(difficulty);
+        this.setEnchantmentBasedOnDifficulty(difficulty);
+
+        for (int i = 0; i < this.inventoryArmorDropChances.length; ++i) {
+            this.inventoryArmorDropChances[i] = 0.05F;
+        }
+
+        this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
+
+        return livingdata;
+    }
+
     @Override
     public int getMaxSpawnedInChunk() {
         return 1;
     }
 
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
     @Override
-    protected boolean isValidLightLevel() {
-        return true;
-    }
-
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
-    @Override
-    public EnumCreatureAttribute getCreatureAttribute() {
-        return EnumCreatureAttribute.UNDEFINED;
-    }
-
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity
-     * has recently been hit by a player. @param par2 - Level of Looting used to
-     * kill this mob.
-     */
-    @Override
-    protected void dropFewItems(boolean par1, int par2) {
+    protected void dropFewItems(boolean recentlyHit, int looting) {
         if (rand.nextInt(20) == 0) {
-            int damage = (int) (AtumItems.ITEM_SCIMITAR.getMaxDamage() - rand.nextInt(AtumItems.ITEM_SCIMITAR.getMaxDamage()) * 0.5 + 20);
-            this.entityDropItem(new ItemStack(AtumItems.ITEM_SCIMITAR, 1, damage), 0.0F);
+            int damage = (int) (AtumItems.SCIMITAR.getMaxDamage() - rand.nextInt(AtumItems.SCIMITAR.getMaxDamage()) * 0.5 + 20);
+            this.entityDropItem(new ItemStack(AtumItems.SCIMITAR, 1, damage), 0.0F);
         }
 
         if (rand.nextInt(4) == 0) {
@@ -89,13 +87,13 @@ public class EntityBanditWarlord extends EntityMob {
         if (rand.nextInt(4) == 0) {
             int choice = rand.nextInt(4);
             if (choice == 0) {
-                this.dropItem(AtumItems.wandererHelmet, 1);
+                this.dropItem(AtumItems.WANDERER_HELMET, 1);
             } else if (choice == 1) {
-                this.dropItem(AtumItems.wandererChest, 1);
+                this.dropItem(AtumItems.WANDERER_CHEST, 1);
             } else if (choice == 2) {
-                this.dropItem(AtumItems.wandererLegs, 1);
+                this.dropItem(AtumItems.WANDERER_LEGS, 1);
             } else if (choice == 3) {
-                this.dropItem(AtumItems.wandererBoots, 1);
+                this.dropItem(AtumItems.WANDERER_BOOTS, 1);
             }
         }
     }

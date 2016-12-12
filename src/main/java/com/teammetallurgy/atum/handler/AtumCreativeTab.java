@@ -12,6 +12,6 @@ public class AtumCreativeTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return AtumItems.ITEM_SCARAB;
+        return AtumItems.SCARAB;
     }
 }

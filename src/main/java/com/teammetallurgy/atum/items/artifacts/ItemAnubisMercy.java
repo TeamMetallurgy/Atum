@@ -1,24 +1,18 @@
 package com.teammetallurgy.atum.items.artifacts;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -30,37 +24,16 @@ public class ItemAnubisMercy extends Item {
         this.setMaxDamage(20);
     }
 
-    public static ChunkCoordinates verifyRespawnCoordinates(World par0World, ChunkCoordinates par1ChunkCoordinates, boolean par2) {
-        if (!par0World.isRemote) {
-            IChunkProvider c = par0World.getChunkProvider();
-            c.loadChunk(par1ChunkCoordinates.posX - 3 >> 4, par1ChunkCoordinates.posZ - 3 >> 4);
-            c.loadChunk(par1ChunkCoordinates.posX + 3 >> 4, par1ChunkCoordinates.posZ - 3 >> 4);
-            c.loadChunk(par1ChunkCoordinates.posX - 3 >> 4, par1ChunkCoordinates.posZ + 3 >> 4);
-            c.loadChunk(par1ChunkCoordinates.posX + 3 >> 4, par1ChunkCoordinates.posZ + 3 >> 4);
-        }
-
-        Block block = par0World.getBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ);
-        if (block != null && block.isBed(par0World, par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ, (EntityLiving) null)) {
-            ChunkCoordinates material1 = block.getBedSpawnPosition(par0World, par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ, (EntityPlayer) null);
-            return material1;
-        } else {
-            Material material = par0World.getBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ).getMaterial();
-            Material material1 = par0World.getBlock(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY + 1, par1ChunkCoordinates.posZ).getMaterial();
-            boolean flag1 = !material.isSolid() && !material.isLiquid();
-            boolean flag2 = !material1.isSolid() && !material1.isLiquid();
-            return par2 && flag1 && flag2 ? par1ChunkCoordinates : null;
-        }
-    }
-
     @Override
-    public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack) {
         return true;
     }
 
     @SubscribeEvent
     public void onDamage(LivingHurtEvent event) {
-        if (event.entityLiving instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.entityLiving;
+        if (event.getEntity() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
             ItemStack stack = null;
             ItemStack[] damageAmount = player.inventory.mainInventory;
             int resistance = damageAmount.length;
@@ -77,23 +50,22 @@ public class ItemAnubisMercy extends Item {
                 return;
             }
 
-            float var8 = event.ammount;
-            if (!event.source.isUnblockable()) {
-                var8 = (event.ammount * (25 - player.getTotalArmorValue()) + player.getAbsorptionAmount()) / 25.0F;
+            float amount = event.getAmount();
+            if (!event.getSource().isUnblockable()) {
+                amount = (event.getAmount() * (25 - player.getTotalArmorValue()) + player.getAbsorptionAmount()) / 25.0F;
             }
 
-            if (player.isPotionActive(Potion.resistance)) {
-                resistance = 25 - (player.getActivePotionEffect(Potion.resistance).getAmplifier() + 1) * 5;
-                var8 = var8 * (float) resistance / 25.0F;
+            if (player.isPotionActive(MobEffects.resistance)) {
+                resistance = 25 - (player.getActivePotionEffect(MobEffects.resistance).getAmplifier() + 1) * 5;
+                amount = amount * (float) resistance / 25.0F;
             }
 
-            if (Math.ceil((double) var8) >= (double) player.getHealth()) {
+            if (Math.ceil((double) amount) >= (double) player.getHealth()) {
                 event.setCanceled(true);
-                this.respawnPlayer(event.entityLiving.worldObj, player);
+                this.respawnPlayer(event.getEntityLiving().worldObj, player);
                 player.setHealth(player.getMaxHealth());
                 player.getFoodStats().setFoodLevel(20);
                 player.getFoodStats().setFoodSaturationLevel(20.0F);
-                // player.spawnExplosionParticle();
                 stack.damageItem(1, player);
                 if (stack.getItemDamage() >= 20) {
                     stack = null;
@@ -103,54 +75,48 @@ public class ItemAnubisMercy extends Item {
 
     }
 
-    public void respawnPlayer(World par3World, EntityPlayer par2EntityPlayer) {
-        ChunkCoordinates spawn = par2EntityPlayer.getBedLocation(par2EntityPlayer.dimension);
+    private void respawnPlayer(World world, EntityPlayer player) {
+        BlockPos spawn = player.getBedLocation(player.dimension);
         if (spawn == null) {
-            spawn = par3World.getSpawnPoint();
+            spawn = world.getSpawnPoint();
         }
 
         if (spawn == null) {
-            spawn = par3World.getSpawnPoint();
+            spawn = world.getSpawnPoint();
         }
 
-        spawn = verifyRespawnCoordinates(par3World, spawn, false);
+        spawn = EntityPlayer.getBedSpawnLocation(world, spawn, false);
         if (spawn == null) {
-            spawn = par3World.getSpawnPoint();
+            spawn = world.getSpawnPoint();
         }
 
-        par2EntityPlayer.rotationPitch = 0.0F;
-        par2EntityPlayer.rotationYaw = 0.0F;
-        par2EntityPlayer.setPositionAndUpdate((double) spawn.posX + 0.5D, (double) spawn.posY + 0.1D, (double) spawn.posZ);
+        player.rotationPitch = 0.0F;
+        player.rotationYaw = 0.0F;
+        player.setPositionAndUpdate((double) spawn.getX() + 0.5D, (double) spawn.getY() + 0.1D, (double) spawn.getZ());
 
-        while (!par3World.getCollidingBoundingBoxes(par2EntityPlayer, par2EntityPlayer.boundingBox).isEmpty()) {
-            par2EntityPlayer.setPosition(par2EntityPlayer.posX, par2EntityPlayer.posY + 1.0D, par2EntityPlayer.posZ);
+        while (!world.getCollisionBoxes(player, player.getEntityBoundingBox()).isEmpty()) {
+            player.setPosition(player.posX, player.posY + 1.0D, player.posZ);
         }
-
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack) {
-        return EnumRarity.rare;
+    public EnumRarity getRarity(ItemStack stack) {
+        return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line1"));
-            par3List.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal(this.getUnlocalizedName() + ".line2"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
         } else {
-            par3List.add(StatCollector.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + EnumChatFormatting.DARK_GRAY + "[SHIFT]");
+            tooltip.add(I18n.translateToLocal(this.getUnlocalizedName() + ".line3") + " " + TextFormatting.DARK_GRAY + "[SHIFT]");
         }
-        
-        int remaining = par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage();
-        String localizedRemaining = StatCollector.translateToLocalFormatted("tooltip.atum.usesRemaining", remaining);
-        par3List.add(localizedRemaining);
-    }
 
-    @Override
-    public void registerIcons(IIconRegister par1IIconRegister) {
-        this.itemIcon = par1IIconRegister.registerIcon("atum:AnubisMercy");
+        int remaining = stack.getMaxDamage() - stack.getItemDamage();
+        String localizedRemaining = I18n.translateToLocalFormatted("tooltip.atum.usesRemaining", remaining);
+        tooltip.add(localizedRemaining);
     }
 }

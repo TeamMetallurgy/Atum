@@ -1,53 +1,59 @@
 package com.teammetallurgy.atum.blocks.tileentity.furnace;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiLimestoneFurnace extends GuiContainer {
-    private TileEntityLimestoneFurnace furnaceInventory;
+    private final InventoryPlayer playerInventory;
+    private IInventory tileLimestoneFurnace;
 
-    public GuiLimestoneFurnace(InventoryPlayer par1InventoryPlayer, TileEntity par2TileEntityLimestoneFurnace) {
-        super(new ContainerLimestoneFurnace(par1InventoryPlayer, par2TileEntityLimestoneFurnace));
-        this.furnaceInventory = (TileEntityLimestoneFurnace) par2TileEntityLimestoneFurnace;
+    public GuiLimestoneFurnace(InventoryPlayer playerInv, IInventory furnaceInv) {
+        super(new ContainerLimestoneFurnace(playerInv, furnaceInv));
+        this.playerInventory = playerInv;
+        this.tileLimestoneFurnace = furnaceInv;
     }
 
-    /**
-     * Draw the foreground layer for the GuiContainer (everything in front of
-     * the items)
-     */
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        String s = StatCollector.translateToLocal(this.furnaceInventory.getInventoryName());
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        String s = this.tileLimestoneFurnace.getDisplayName().getUnformattedText();
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
 
-    /**
-     * Draw the background layer for the GuiContainer (everything behind the
-     * items)
-     */
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(new ResourceLocation("textures/gui/container/furnace.png"));
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        int i1;
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/furnace.png"));
+        int i = (this.width - this.xSize) / 2;
+        int j = (this.height - this.ySize) / 2;
+        this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
 
-        if (this.furnaceInventory.isBurning()) {
-            i1 = this.furnaceInventory.getBurnTimeRemainingScaled(12);
-            this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 2);
+        if (TileEntityLimestoneFurnace.isBurning(this.tileLimestoneFurnace)) {
+            int k = this.getBurnLeftScaled(13);
+            this.drawTexturedModalRect(i + 56, j + 36 + 12 - k, 176, 12 - k, 14, k + 1);
         }
+        int l = this.getCookProgressScaled(24);
+        this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
+    }
 
-        i1 = this.furnaceInventory.getCookProgressScaled(24);
-        this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
+    private int getCookProgressScaled(int pixels) {
+        int i = this.tileLimestoneFurnace.getField(2);
+        int j = this.tileLimestoneFurnace.getField(3);
+        return j != 0 && i != 0 ? i * pixels / j : 0;
+    }
+
+    private int getBurnLeftScaled(int pixels) {
+        int i = this.tileLimestoneFurnace.getField(1);
+
+        if (i == 0) {
+            i = 200;
+        }
+        return this.tileLimestoneFurnace.getField(0) * pixels / i;
     }
 }

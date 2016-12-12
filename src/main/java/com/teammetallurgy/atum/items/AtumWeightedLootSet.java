@@ -5,7 +5,7 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.*;
 
@@ -50,14 +50,13 @@ public class AtumWeightedLootSet {
                 int amount = rand.nextInt(max - min + 1) + min;
                 stack.stackSize = amount;
                 if (stack.getItem() == Items.enchanted_book) {
-                    Enchantment enchantment = Enchantment.enchantmentsBookList[rand.nextInt(Enchantment.enchantmentsBookList.length)];
+                    Enchantment enchantment = Enchantment.enchantmentRegistry.getRandomObject(rand);
                     int l = MathHelper.getRandomIntegerInRange(rand, enchantment.getMinLevel(), enchantment.getMaxLevel());
                     ((ItemEnchantedBook) stack.getItem()).addEnchantment(stack, new EnchantmentData(enchantment, l));
                 }
                 break;
             }
         }
-
         return stack;
     }
 }
