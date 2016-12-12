@@ -2,6 +2,7 @@ package com.teammetallurgy.atum.world.biome;
 
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+
 import static com.teammetallurgy.atum.world.biome.AtumBiomes.BiomeType;
 
 public class GenLayerAtumRiverMix extends GenLayer {

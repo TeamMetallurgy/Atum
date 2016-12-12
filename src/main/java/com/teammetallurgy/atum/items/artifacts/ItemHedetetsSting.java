@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemHedetetsSting extends ItemSword {
@@ -31,7 +32,7 @@ public class ItemHedetetsSting extends ItemSword {
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         if (super.hitEntity(stack, target, attacker)) {
-            target.addPotionEffect(new PotionEffect(MobEffects.poison, 140, 2));
+            target.addPotionEffect(new PotionEffect(MobEffects.POISON, 140, 2));
             return true;
         } else {
             return false;
@@ -39,14 +40,14 @@ public class ItemHedetetsSting extends ItemSword {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @Nonnull
     public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));
@@ -57,6 +58,6 @@ public class ItemHedetetsSting extends ItemSword {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 }

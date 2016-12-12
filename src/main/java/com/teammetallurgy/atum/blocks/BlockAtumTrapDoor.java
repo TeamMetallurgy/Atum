@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 public class BlockAtumTrapDoor extends BlockTrapDoor {
 
     public BlockAtumTrapDoor() {
-        super(Material.wood);
+        super(Material.WOOD);
         this.setHardness(3.0F);
         this.setSoundType(SoundType.WOOD);
         this.disableStats();

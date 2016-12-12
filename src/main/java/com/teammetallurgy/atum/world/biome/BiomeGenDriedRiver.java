@@ -2,7 +2,7 @@ package com.teammetallurgy.atum.world.biome;
 
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 
-public class BiomeGenDriedRiver extends AtumBiomeGenBase {
+public class BiomeGenDriedRiver extends AtumBiome {
 
 	public BiomeGenDriedRiver(BiomeProperties properties) {
 		super(properties);

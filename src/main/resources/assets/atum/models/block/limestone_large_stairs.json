@@ -1,0 +1,8 @@
+{
+  "parent": "block/stairs",
+  "textures": {
+    "bottom": "atum:blocks/limestonebrick_large",
+    "top": "atum:blocks/limestonebrick_large",
+    "side": "atum:blocks/limestonebrick_large"
+  }
+}

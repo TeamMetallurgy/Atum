@@ -31,7 +31,7 @@ public class Atum {
     @SidedProxy(clientSide = Constants.CLIENT, serverSide = Constants.SERVER)
     public static CommonProxy proxy;
 
-    public static CreativeTabs creativeTab = new AtumCreativeTab();
+    public static final CreativeTabs CREATIVE_TAB = new AtumCreativeTab();
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -76,6 +76,5 @@ public class Atum {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-
     }
 }

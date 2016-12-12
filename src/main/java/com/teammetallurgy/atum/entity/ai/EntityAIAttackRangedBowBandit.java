@@ -100,7 +100,7 @@ public class EntityAIAttackRangedBowBandit extends EntityAIBase {
                     this.field_188506_h = true;
                 }
 
-                this.bandit.getMoveHelper().func_188488_a(this.field_188506_h ? -0.5F : 0.5F, this.field_188505_g ? 0.5F : -0.5F);
+                this.bandit.getMoveHelper().strafe(this.field_188506_h ? -0.5F : 0.5F, this.field_188505_g ? 0.5F : -0.5F);
                 this.bandit.faceEntity(entitylivingbase, 30.0F, 30.0F);
             } else {
                 this.bandit.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);

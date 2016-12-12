@@ -13,11 +13,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class ClientEvents {
-    //private boolean raining; //TODO Not beeing initialized?
 
     @SubscribeEvent
     public void onRender(TickEvent.RenderTickEvent event) {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayer player = Minecraft.getMinecraft().player;
 
         if (player != null && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null) {
             if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == AtumItems.MUMMY_HELMET) {
@@ -43,7 +42,7 @@ public class ClientEvents {
         /*EntityPlayer player = event.player;
 
         if (player.dimension == AtumConfig.DIMENSION_ID) { //TODO Fix
-            if (player.worldObj.isRaining()) {
+            if (player.world.isRaining()) {
                 //raining = true;
 
                 Random random = new Random();
@@ -56,7 +55,7 @@ public class ClientEvents {
                     float vx = 0.1F + random.nextFloat() * 0.1F;
                     float vz = 0.1F + random.nextFloat() * 0.1F;
 
-                    player.worldObj.spawnParticle(EnumParticleTypes.BLOCK_DUST, player.posX + x, player.posY + y, player.posZ + z, vx + player.motionX, 0.0D, vz + player.motionZ);
+                    player.world.spawnParticle(EnumParticleTypes.BLOCK_DUST, player.posX + x, player.posY + y, player.posZ + z, vx + player.motionX, 0.0D, vz + player.motionZ);
                 }
             }
         }*/

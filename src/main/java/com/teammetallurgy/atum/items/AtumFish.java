@@ -9,7 +9,7 @@ public class AtumFish {
     static {
         fish = new AtumWeightedLootSet();
 
-        AtumFish.addFish(new ItemStack(Items.fish, 1, 0), 100);
+        AtumFish.addFish(new ItemStack(Items.FISH, 1, 0), 100);
         AtumFish.addFish(new ItemStack(AtumItems.FISH, 1, 0), 30);
         AtumFish.addFish(new ItemStack(AtumItems.FISH, 1, 1), 5);
         AtumFish.addFish(new ItemStack(AtumItems.FISH, 1, 2), 50);

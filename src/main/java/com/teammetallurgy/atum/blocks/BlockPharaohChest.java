@@ -32,7 +32,7 @@ public class BlockPharaohChest extends BlockChest {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(Blocks.chest);
+        return Item.getItemFromBlock(Blocks.CHEST);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BlockPharaohChest extends BlockChest {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileEntityPharaohChest) {
             TileEntityPharaohChest pharaohChest = (TileEntityPharaohChest) te;

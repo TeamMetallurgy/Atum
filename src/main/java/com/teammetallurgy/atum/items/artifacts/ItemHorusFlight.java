@@ -40,7 +40,7 @@ public class ItemHorusFlight extends ItemTexturedArmor {
         if (world.isRemote || stack == null || stack.getItem() != this) {
             return;
         }
-        player.addPotionEffect(new PotionEffect(MobEffects.jump, 40, 1, true, true));
+        player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 40, 1, true, true));
     }
 
     @SubscribeEvent
@@ -79,6 +79,6 @@ public class ItemHorusFlight extends ItemTexturedArmor {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 }

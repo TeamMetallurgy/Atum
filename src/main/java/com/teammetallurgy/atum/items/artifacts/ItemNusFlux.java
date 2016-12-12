@@ -9,8 +9,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,7 +32,7 @@ public class ItemNusFlux extends ItemSword {
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        if (!attacker.worldObj.isRemote && Math.random() > 0.75D && !(target instanceof EntityStoneguard)) {
+        if (!attacker.world.isRemote && Math.random() > 0.75D && !(target instanceof EntityStoneguard)) {
             double dx = target.posX - attacker.posX;
             double dz = target.posZ - attacker.posZ;
             double magnitude = Math.sqrt(dx * dx + dz * dz);
@@ -46,7 +46,7 @@ public class ItemNusFlux extends ItemSword {
 
             // entity.attackEntityFrom(DamageSource.generic,
             // this.getDamageVsEntity(entity, par1ItemStack));
-            if (attacker.worldObj.isRemote) {
+            if (attacker.world.isRemote) {
                 this.spawnParticle(target);
             }
         }
@@ -77,6 +77,6 @@ public class ItemNusFlux extends ItemSword {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 }

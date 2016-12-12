@@ -11,7 +11,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class TileEntityPharaohChest extends TileEntityChest implements IInventory {
@@ -19,24 +18,26 @@ public class TileEntityPharaohChest extends TileEntityChest implements IInventor
     private boolean isOpenable = false;
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
 
-        this.hasSpawned = tagCompound.getBoolean("spawned");
-        this.isOpenable = tagCompound.getBoolean("openable");
+        this.hasSpawned = compound.getBoolean("spawned");
+        this.isOpenable = compound.getBoolean("openable");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
-        super.writeToNBT(tagCompound);
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
 
-        tagCompound.setBoolean("spawned", this.hasSpawned);
-        tagCompound.setBoolean("openable", this.isOpenable);
+        compound.setBoolean("spawned", this.hasSpawned);
+        compound.setBoolean("openable", this.isOpenable);
+
+        return compound;
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return !this.isOpenable ? false : super.isUseableByPlayer(player);
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return this.isOpenable && super.isUsableByPlayer(player);
     }
 
     public void setOpenable() {
@@ -49,41 +50,39 @@ public class TileEntityPharaohChest extends TileEntityChest implements IInventor
     }
 
     public void spawn(EntityPlayer player) {
-        EntityPharaoh pharaoh = new EntityPharaoh(super.worldObj);
+        EntityPharaoh pharaoh = new EntityPharaoh(super.world);
         pharaoh.setPosition((double) this.pos.getX() + 0.5D, (double) (this.pos.getX() + 1), (double) this.pos.getX() + 0.5D);
         pharaoh.link(this.pos);
-        if (!super.worldObj.isRemote) {
-            super.worldObj.spawnEntityInWorld(pharaoh);
+        if (!super.world.isRemote) {
+            super.world.spawnEntity(pharaoh);
         }
 
         pharaoh.spawnExplosionParticle();
         this.hasSpawned = true;
-        EntityMummy mummy1 = new EntityMummy(super.worldObj);
+        EntityMummy mummy1 = new EntityMummy(super.world);
         mummy1.setPosition((double) this.pos.getX() + 0.5D, (double) this.pos.getX(), (double) this.pos.getX() - 0.5D);
-        if (!super.worldObj.isRemote) {
-            super.worldObj.spawnEntityInWorld(mummy1);
+        if (!super.world.isRemote) {
+            super.world.spawnEntity(mummy1);
         }
 
         mummy1.spawnExplosionParticle();
-        EntityMummy mummy2 = new EntityMummy(super.worldObj);
+        EntityMummy mummy2 = new EntityMummy(super.world);
         mummy2.setPosition((double) this.pos.getX() + 0.5D, (double) this.pos.getX(), (double) this.pos.getX() + 1.5D);
-        if (!super.worldObj.isRemote) {
-            super.worldObj.spawnEntityInWorld(mummy2);
+        if (!super.world.isRemote) {
+            super.world.spawnEntity(mummy2);
         }
 
         mummy2.spawnExplosionParticle();
-        if (!super.worldObj.isRemote) {
-            List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
-            Iterator<EntityPlayerMP> i = players.iterator();
+        if (!super.world.isRemote) {
+            List<EntityPlayerMP> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
 
-            while (i.hasNext()) {
-                EntityPlayer p = i.next();
-                p.addChatMessage(new TextComponentString(pharaoh.getName() + " " + I18n.translateToLocal("chat.atum.summonPharaoh") + " " + player.getGameProfile().getName()));
+            for (EntityPlayerMP p : players) {
+                p.sendMessage(new TextComponentString(pharaoh.getName() + " " + I18n.translateToLocal("chat.atum.summonPharaoh") + " " + player.getGameProfile().getName()));
             }
         }
 
-        if (!super.worldObj.isRemote) {
-            //super.worldObj.playSound(pharaoh, "Atum.pharaohspawn", 1.0F, 1.0F); //TODO Fix custom sound
+        if (!super.world.isRemote) {
+            //super.world.playSound(pharaoh, "Atum.pharaohspawn", 1.0F, 1.0F); //TODO Fix custom sound
         }
 
     }

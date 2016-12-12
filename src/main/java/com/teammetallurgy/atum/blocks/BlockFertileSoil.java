@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class BlockFertileSoil extends BlockDirt {
@@ -32,7 +33,7 @@ public class BlockFertileSoil extends BlockDirt {
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random) { //TODO Check if it works (Badly ported)
         if (!world.isRemote) {
             if ((world.getLight(pos.up()) < 4) && (world.getBlockLightOpacity(pos.up()) > 2)) {
-                world.setBlockState(pos, state.getBlock().getStateFromMeta(1), 2); //world.setBlockMetadataWithNotify(pos, 1, 2);
+                world.setBlockState(pos, state.getBlock().getStateFromMeta(1), 2);
             } else if (world.getLight(pos.up()) >= 9) {
                 for (int l = 0; l < 4; l++) {
                     int i1 = pos.getX() + random.nextInt(3) - 1;
@@ -50,13 +51,13 @@ public class BlockFertileSoil extends BlockDirt {
     }
 
     @Override
-    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
+    public boolean canSustainPlant(@Nonnull IBlockState state, @Nonnull IBlockAccess world, BlockPos pos, @Nonnull EnumFacing direction, IPlantable plantable) {
         EnumPlantType plantType = plantable.getPlantType(world, pos.up());
 
-        boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.water ||
-                world.getBlockState(pos.west()).getMaterial() == Material.water ||
-                world.getBlockState(pos.north()).getMaterial() == Material.water ||
-                world.getBlockState(pos.south()).getMaterial() == Material.water);
+        boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
+                world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
+                world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
+                world.getBlockState(pos.south()).getMaterial() == Material.WATER);
 
         switch (plantType) {
             case Plains:
@@ -69,25 +70,28 @@ public class BlockFertileSoil extends BlockDirt {
     }
 
     @Override
+    @Nonnull
     public MapColor getMapColor(IBlockState state) {
         return super.getMapColor(state);
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-        super.onNeighborBlockChange(world, pos, state, neighborBlock);
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos) {
+        super.neighborChanged(state, world, pos, neighborBlock, neighborPos);
         if (world.getBlockState(pos.up()).getMaterial().isSolid()) {
             world.setBlockState(pos, AtumBlocks.FERTILE_SOIL.getDefaultState());
         }
     }
 
     @Override
+    @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Item.getItemFromBlock(AtumBlocks.SAND);
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    @Nonnull
+    public ItemStack getPickBlock(@Nonnull IBlockState state, RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player) {
         return new ItemStack(this);
     }
 }

@@ -18,7 +18,7 @@ tile.atum.limestoneSlab.small.name=Laje de Tijolos Pequenos de Calcário
 tile.atum.limestoneSlab.large.name=Laje de Tijolos Grandes de Calcário
 tile.atum.doubleSlab.name=Laje de Calcário
 tile.atum.smoothStairs.name=Escadas de Calcário 
-tile.atum.cobbleStairs.name=Escadas de Pedregulho Calcário
+tile.atum.crackedStairs.name=Escadas de Pedregulho Calcário
 tile.atum.largeStairs.name=Escadas de Tijolos Grandes de Calcário
 tile.atum.smallStairs.name=Escadas de Tijolos Pequenos de Calcário
 tile.atum.sandLayer.name=Camada de Areia 
@@ -266,16 +266,16 @@ item.atum.loot.broach.name=Broche
 item.atum.loot.scepter.name=Cetro
 
 # Entity
-entity.atum.mummy.name=Múmia
-entity.atum.brigand.name=Bandido Guerreiro
-entity.atum.nomad.name=Bandido Arqueiro
-entity.atum.pharaoh.name=Faraó
-entity.atum.forsaken.name=Esqueleto Empoeirado
-entity.atum.wraith.name=Fantasma do Deserto
-entity.atum.stoneguard.name=Soldado de Pedra
-entity.atum.desertWolf.name=Chacal
-entity.atum.banditWarlord.name=Banddido Chefe 
-entity.atum.barbarian.name=Bárbaro
+entity.atum:mummy.name=Múmia
+entity.atum:brigand.name=Bandido Guerreiro
+entity.atum:nomad.name=Bandido Arqueiro
+entity.atum:pharaoh.name=Faraó
+entity.atum:forsaken.name=Esqueleto Empoeirado
+entity.atum:wraith.name=Fantasma do Deserto
+entity.atum:stoneguard.name=Soldado de Pedra
+entity.atum:desert_wolf.name=Chacal
+entity.atum:bandit_warlord.name=Banddido Chefe
+entity.atum:barbarian.name=Bárbaro
 
 # Pharaoh Names
 entity.atum.pharaoh.Ama=Ama

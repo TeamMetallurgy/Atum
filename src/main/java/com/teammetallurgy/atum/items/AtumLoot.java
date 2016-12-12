@@ -93,19 +93,19 @@ public class AtumLoot {
 
         // Junk Loot Stuff
         junkLoot.addLoot(new ItemStack(AtumItems.FLAX_SEED), 5, 1, 2);
-        junkLoot.addLoot(new ItemStack(Items.stick), 5, 1, 5);
+        junkLoot.addLoot(new ItemStack(Items.STICK), 5, 1, 5);
         junkLoot.addLoot(new ItemStack(AtumItems.DATE), 5, 1, 2);
-        junkLoot.addLoot(new ItemStack(Items.bone), 10, 1, 3);
+        junkLoot.addLoot(new ItemStack(Items.BONE), 10, 1, 3);
         junkLoot.addLoot(new ItemStack(AtumBlocks.SAND), 12, 1, 64);
         junkLoot.addLoot(new ItemStack(AtumItems.SCIMITAR), 5, 1, 1);
-        junkLoot.addLoot(new ItemStack(Items.leather), 5, 1, 5);
+        junkLoot.addLoot(new ItemStack(Items.LEATHER), 5, 1, 5);
 
         // Good Loot
-        goodLoot.addLoot(new ItemStack(Items.iron_ingot), 5, 1, 3);
-        goodLoot.addLoot(new ItemStack(Items.gold_ingot), 4, 1, 3);
-        goodLoot.addLoot(new ItemStack(Items.diamond), 1, 1, 2);
-        goodLoot.addLoot(new ItemStack(Items.enchanted_book, 1, 1), 5, 1, 1);
-        ItemStack stick = new ItemStack(Items.stick);
+        goodLoot.addLoot(new ItemStack(Items.IRON_INGOT), 5, 1, 3);
+        goodLoot.addLoot(new ItemStack(Items.GOLD_INGOT), 4, 1, 3);
+        goodLoot.addLoot(new ItemStack(Items.DIAMOND), 1, 1, 2);
+        goodLoot.addLoot(new ItemStack(Items.ENCHANTED_BOOK, 1, 1), 5, 1, 1);
+        ItemStack stick = new ItemStack(Items.STICK);
         stick.setStackDisplayName("Amazing Stick");
         goodLoot.addLoot(stick, 1, 1, 1);
     }

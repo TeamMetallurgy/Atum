@@ -37,35 +37,30 @@ public class EntityBanditBase extends EntityMob {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.entity_player_breath;
+        return SoundEvents.ENTITY_PLAYER_BREATH;
     }
 
     @Override
     protected SoundEvent getHurtSound() {
-        return SoundEvents.entity_player_hurt;
+        return SoundEvents.ENTITY_PLAYER_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.entity_player_death;
+        return SoundEvents.ENTITY_PLAYER_DEATH;
     }
 
     @Override
     public boolean getCanSpawnHere() {
         BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        if (pos.getY() <= 62) {
-            return false;
-        } else {
-            return this.worldObj.canBlockSeeSky(pos) && this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() &&
-                    this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox()) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
-        }
+        return pos.getY() > 62 && this.world.canBlockSeeSky(pos) && this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && this.world.checkNoEntityCollision(this.getEntityBoundingBox()) && this.world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.world.containsAnyLiquid(this.getEntityBoundingBox());
     }
 
     @Override
     protected boolean isValidLightLevel() {
         BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        int bl = this.worldObj.getLightFor(EnumSkyBlock.BLOCK, pos);
-        int light = this.worldObj.getLight(pos);
+        int bl = this.world.getLightFor(EnumSkyBlock.BLOCK, pos);
+        int light = this.world.getLight(pos);
 
         if (bl >= 7) {
             return false;

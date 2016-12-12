@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemGebsSolidarity extends ItemTexturedArmor {
@@ -37,11 +38,11 @@ public class ItemGebsSolidarity extends ItemTexturedArmor {
             return;
         }
 
-        player.addPotionEffect(new PotionEffect(MobEffects.moveSlowdown, 20, 1, true, true));
+        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20, 1, true, true));
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @Nonnull
     public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.RARE;
     }
@@ -59,6 +60,6 @@ public class ItemGebsSolidarity extends ItemTexturedArmor {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 }

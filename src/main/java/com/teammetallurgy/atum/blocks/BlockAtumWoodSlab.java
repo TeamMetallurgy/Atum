@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -20,11 +21,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public abstract class BlockAtumWoodSlab extends BlockSlab {
+public abstract class BlockAtumWoodSlab extends BlockSlab implements IAtumBlock {
     public static final PropertyEnum<BlockAtumPlank.EnumType> VARIANT = PropertyEnum.create("variant", BlockAtumPlank.EnumType.class);
 
     public BlockAtumWoodSlab() {
-        super(Material.wood);
+        super(Material.WOOD);
 
         IBlockState state = this.blockState.getBaseState();
 
@@ -39,6 +40,20 @@ public abstract class BlockAtumWoodSlab extends BlockSlab {
         this.useNeighborBrightness = true;
     }
 
+    @Override
+    public Class<? extends ItemBlock> getItemClass() {
+        return null;
+    }
+
+    @Override
+    public IProperty[] getNonRenderingProperties() {
+        return new IProperty[] {HALF};
+    }
+
+    @Override
+    public String getStateName(IBlockState state) {
+        return BlockAtumPlank.EnumType.byMetadata(state.getBlock().getMetaFromState(state)).getUnlocalizedName();
+    }
 
     @Override
     public MapColor getMapColor(IBlockState state) {

@@ -21,7 +21,7 @@ tile.atum.limestoneSlab.small.name=石灰岩小石砖台阶
 tile.atum.limestoneSlab.large.name=石灰岩大石砖台阶
 tile.atum.doubleSlab.name=石灰岩台阶
 tile.atum.smoothStairs.name=石灰岩楼梯
-tile.atum.cobbleStairs.name=石灰岩圆石楼梯
+tile.atum.crackedStairs.name=石灰岩圆石楼梯
 tile.atum.largeStairs.name=石灰岩大石砖楼梯
 tile.atum.smallStairs.name=石灰岩小石砖楼梯
 tile.atum.sandLayer.name=砂层
@@ -377,17 +377,17 @@ item.atum.loot.gold.broach.name=黄金胸针
 item.atum.loot.gold.scepter.name=黄金权杖
 
 # Entity
-entity.atum.mummy.name=木乃伊
-entity.atum.brigand.name=强盗战士
-entity.atum.nomad.name=强盗射手
-entity.atum.pharaoh.name=法老
-entity.atum.forsaken.name=尘灰骷髅
-entity.atum.wraith.name=沙漠幽灵
-entity.atum.stoneguard.name=石头士兵
-entity.atum.desertWolf.name=沙漠幽狼
-entity.atum.banditWarlord.name=强盗军阀
-entity.atum.barbarian.name=野蛮人
-entity.atum.bonestorm.name=Bonestorm
+entity.atum:mummy.name=木乃伊
+entity.atum:brigand.name=强盗战士
+entity.atum:nomad.name=强盗射手
+entity.atum:pharaoh.name=法老
+entity.atum:forsaken.name=尘灰骷髅
+entity.atum:wraith.name=沙漠幽灵
+entity.atum:stoneguard.name=石头士兵
+entity.atum:desert_wolf.name=沙漠幽狼
+entity.atum:bandit_warlord.name=强盗军阀
+entity.atum:barbarian.name=野蛮人
+entity.atum:bonestorm.name=Bonestorm
 
 # Pharaoh Names
 entity.atum.pharaoh.Ama=Ama'

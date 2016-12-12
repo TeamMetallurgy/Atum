@@ -11,7 +11,7 @@ import net.minecraft.world.IBlockAccess;
 public class BlockAtumFence extends BlockFence {
 
     public BlockAtumFence(MapColor mapColor) {
-        super(Material.wood, mapColor);
+        super(Material.WOOD, mapColor);
         this.setHardness(2.0F);
         this.setResistance(5.0F);
         this.setSoundType(SoundType.WOOD);
@@ -20,7 +20,7 @@ public class BlockAtumFence extends BlockFence {
     @Override
     public boolean canConnectTo(IBlockAccess world, BlockPos pos) {
         Block block = world.getBlockState(pos).getBlock();
-        return !canBlockConnect(block) ? super.canConnectTo(world, pos) : true;
+        return canBlockConnect(block) || super.canConnectTo(world, pos);
     }
 
     private boolean canBlockConnect(Block block) {

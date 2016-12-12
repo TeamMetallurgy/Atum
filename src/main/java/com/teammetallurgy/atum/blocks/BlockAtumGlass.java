@@ -16,7 +16,7 @@ import java.util.Random;
 public class BlockAtumGlass extends BlockBreakable {
 
     public BlockAtumGlass(Material material) {
-        super(Material.glass, false, material.getMaterialMapColor());
+        super(Material.GLASS, false, material.getMaterialMapColor());
         this.setSoundType(SoundType.GLASS);
         this.setHardness(0.3F);
     }

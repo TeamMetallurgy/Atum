@@ -43,12 +43,12 @@ public class EntityMummy extends EntityUndeadBase {
         boolean flag = super.attackEntityAsMob(entity);
 
         if (flag) {
-            if (this.isBurning() && this.rand.nextFloat() < (float) this.worldObj.getDifficulty().getDifficultyId() * 0.4F) {
-                entity.setFire(2 * this.worldObj.getDifficulty().getDifficultyId());
+            if (this.isBurning() && this.rand.nextFloat() < (float) this.world.getDifficulty().getDifficultyId() * 0.4F) {
+                entity.setFire(2 * this.world.getDifficulty().getDifficultyId());
             }
             if (entity instanceof EntityLivingBase) {
                 EntityLivingBase base = (EntityLivingBase) entity;
-                base.addPotionEffect(new PotionEffect(MobEffects.wither, 40, 1));
+                base.addPotionEffect(new PotionEffect(MobEffects.WITHER, 40, 1));
             }
         }
 
@@ -58,7 +58,7 @@ public class EntityMummy extends EntityUndeadBase {
     @Override
     protected void dropFewItems(boolean recentlyHit, int looting) {
         if (rand.nextInt(4) == 0) {
-            this.dropItem(Items.rotten_flesh, 1);
+            this.dropItem(Items.ROTTEN_FLESH, 1);
         }
         if (rand.nextInt(4) == 0) {
             int amount = rand.nextInt(2) + 1;

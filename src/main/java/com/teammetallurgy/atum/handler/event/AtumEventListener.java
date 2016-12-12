@@ -60,7 +60,7 @@ public class AtumEventListener {
 
     @SubscribeEvent
     public void onFishEvent(EntityJoinWorldEvent event) {
-        if (event.getEntity().worldObj.provider.getDimension() == AtumConfig.DIMENSION_ID && event.getEntity() instanceof EntityFishHook) {
+        if (event.getEntity().world.provider.getDimension() == AtumConfig.DIMENSION_ID && event.getEntity() instanceof EntityFishHook) {
             event.setCanceled(true);
         }
     }
@@ -76,12 +76,12 @@ public class AtumEventListener {
 
             event.getWorld().setBlockState(event.getPos(), AtumBlocks.FERTILE_SOIL_TILLED.getStateFromMeta(block2), 2);
             event.setResult(Event.Result.ALLOW);
-            event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), SoundEvents.item_hoe_till, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
             return true;
-        } else if ((block == Blocks.dirt || block == Blocks.grass) && event.getCurrent().getItem() == AtumItems.GEBS_BLESSING) {
+        } else if ((block == Blocks.DIRT || block == Blocks.GRASS) && event.getCurrent().getItem() == AtumItems.GEBS_BLESSING) {
             event.getWorld().setBlockState(event.getPos(), AtumBlocks.FERTILE_SOIL_TILLED.getStateFromMeta(12), 2);
             event.setResult(Event.Result.ALLOW);
-            event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), SoundEvents.item_hoe_till, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            event.getWorld().playSound(event.getEntityPlayer(), event.getPos(), SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
             return true;
         }
         return false;
@@ -90,7 +90,7 @@ public class AtumEventListener {
     @SubscribeEvent
     public void onPickup(EntityItemPickupEvent pickupEvent) {
         if (pickupEvent.getItem().getEntityItem().isItemEqual(new ItemStack(AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.PALM).getBlock())) || pickupEvent.getItem().getEntityItem().isItemEqual(new ItemStack(AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.DEADWOOD).getBlock()))) {
-            pickupEvent.getEntityPlayer().addStat(AchievementList.mineWood);
+            pickupEvent.getEntityPlayer().addStat(AchievementList.MINE_WOOD);
         }
     }
 }

@@ -17,7 +17,7 @@ import java.util.Random;
 public class BlockDate extends Block {
 
     public BlockDate() {
-        super(Material.plants);
+        super(Material.PLANTS);
         this.setHardness(0.5F);
     }
 
@@ -32,7 +32,7 @@ public class BlockDate extends Block {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos) {
         if (world.getBlockState(pos.up()).getBlock() != AtumBlocks.LEAVES && !world.isRemote) {
             EntityItem entityItem = new EntityItem(world, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), new ItemStack(AtumItems.DATE, 0, this.quantityDropped(new Random())));
             entityItem.dropItem(AtumItems.DATE, this.quantityDropped(new Random()));

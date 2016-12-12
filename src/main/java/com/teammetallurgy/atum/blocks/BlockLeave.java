@@ -14,12 +14,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,13 +38,15 @@ public class BlockLeave extends BlockLeaves {
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true));
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         list.add(new ItemStack(item, 1, BlockAtumPlank.EnumType.PALM.getMetadata())); //Only add Palm Leaves atm.
     }
 
     @Override
-    protected ItemStack createStackedBlock(IBlockState state) {
+    @Nonnull
+    protected ItemStack getSilkTouchDrop(IBlockState state) {
         return new ItemStack(Item.getItemFromBlock(this), 1, (state.getValue(VARIANT)).getMetadata());
     }
 
@@ -82,8 +86,8 @@ public class BlockLeave extends BlockLeaves {
     }
 
     @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
-        if (!world.isRemote && stack != null && stack.getItem() == Items.shears) {
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, @Nonnull ItemStack stack) {
+        if (!world.isRemote && !stack.isEmpty() && stack.getItem() == Items.SHEARS) {
             player.addStat(StatList.getBlockStats(this));
         } else {
             super.harvestBlock(world, player, pos, state, te, stack);

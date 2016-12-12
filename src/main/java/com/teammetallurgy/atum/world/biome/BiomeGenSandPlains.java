@@ -1,6 +1,6 @@
 package com.teammetallurgy.atum.world.biome;
 
-public class BiomeGenSandPlains extends AtumBiomeGenBase {
+public class BiomeGenSandPlains extends AtumBiome {
 
     public BiomeGenSandPlains(BiomeProperties properties) {
         super(properties);

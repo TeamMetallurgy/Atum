@@ -24,7 +24,7 @@ public class EntitySmallBone extends EntityBone {
 
     @Override
     protected void onImpact(RayTraceResult result) {
-        if (!this.worldObj.isRemote) {
+        if (!this.world.isRemote) {
             if (result.entityHit != null) {
                 boolean flag = result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), 2.0F);
 

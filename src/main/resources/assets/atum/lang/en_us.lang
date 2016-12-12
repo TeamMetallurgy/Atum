@@ -21,7 +21,7 @@ tile.atum.limestoneSlab.large.name=Large Limestone Bricks Slab
 tile.atum.limestoneSlab.chiseled.name=Chiseled Limestone Bricks Slab
 tile.atum.doubleSlab.name=Limestone Slab
 tile.atum.smoothStairs.name=Limestone Stairs
-tile.atum.cobbleStairs.name=Limestone Cobble Stairs
+tile.atum.crackedStairs.name=Cracked Limestone Stairs
 tile.atum.largeStairsUnbreakable.name=Limestone Large Brick Stairs (Unbreakable)
 tile.atum.largeStairs.name=Limestone Large Brick Stairs
 tile.atum.smallStairs.name=Limestone Small Brick Stairs
@@ -376,17 +376,17 @@ item.atum.loot.gold.broach.name=Golden Broach
 item.atum.loot.gold.scepter.name=Golden Scepter
 
 # Entity
-entity.atum.mummy.name=Mummy
-entity.atum.brigand.name=Brigand
-entity.atum.nomad.name=Nomad
-entity.atum.pharaoh.name=Pharaoh
-entity.atum.forsaken.name=Forsaken
-entity.atum.wraith.name=Wraith
-entity.atum.stoneguard.name=Stoneguard
-entity.atum.desertWolf.name=Desert Wolf
-entity.atum.banditWarlord.name=Warlord
-entity.atum.barbarian.name=Barbarian
-entity.atum.bonestorm.name=Bonestorm
+entity.atum:mummy.name=Mummy
+entity.atum:brigand.name=Brigand
+entity.atum:nomad.name=Nomad
+entity.atum:pharaoh.name=Pharaoh
+entity.atum:forsaken.name=Forsaken
+entity.atum:wraith.name=Wraith
+entity.atum:stoneguard.name=Stoneguard
+entity.atum:desert_wolf.name=Desert Wolf
+entity.atum:bandit_warlord.name=Warlord
+entity.atum:barbarian.name=Barbarian
+entity.atum:bonestorm.name=Bonestorm
 
 # Pharaoh Names
 entity.atum.pharaoh.Ama=Ama'

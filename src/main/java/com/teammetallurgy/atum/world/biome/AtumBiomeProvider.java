@@ -1,7 +1,7 @@
 package com.teammetallurgy.atum.world.biome;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.*;
 import net.minecraft.world.storage.WorldInfo;
@@ -47,7 +47,7 @@ public class AtumBiomeProvider extends BiomeProvider {
 
         for (int k = 0; k < length * width; ++k) {
             // NB: reference wraps this in a try/catch with crash reporting
-            final float rain = BiomeGenBase.getBiome(cache[k]).getRainfall() / 65536.0F;
+            final float rain = Biome.getBiome(cache[k]).getRainfall() / 65536.0F;
             listToReuse[k] = (rain > 1.0F ? 1.0F : rain);
         }
 
@@ -55,16 +55,16 @@ public class AtumBiomeProvider extends BiomeProvider {
     }*/
 
     @Override
-    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomes, int x, int z, int width, int height) {
+    public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height) {
         if (biomes == null || biomes.length < width * height) {
-            biomes = new BiomeGenBase[width * height];
+            biomes = new Biome[width * height];
         }
 
         final int[] cache = biomeIndexLayer.getInts(x, z, width, height);
 
         // NB: reference wraps this in a try/catch with crash reporting
         for (int k = 0; k < height * width; ++k) {
-            biomes[k] = BiomeGenBase.getBiome(cache[k]);
+            biomes[k] = Biome.getBiome(cache[k]);
         }
 
         return biomes;
@@ -72,18 +72,18 @@ public class AtumBiomeProvider extends BiomeProvider {
 
 
     @Override
-    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] listToReuse, int x, int z, int width, int length, boolean cacheFlag) {
+    public Biome[] getBiomes(Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag) {
         IntCache.resetIntCache();
 
         if (listToReuse == null || listToReuse.length < width * length) {
-            listToReuse = new BiomeGenBase[width * length];
+            listToReuse = new Biome[width * length];
         }
 
     	/*
     	 * Irritating scope on biomeCache, have to do it hard way :(
     	 * 
         if (checkCache && width == 16 && length == 16 && (x & 15) == 0 && (z & 15) == 0) {
-            BiomeGenBase[] abiomegenbase1 = this.biomeCache.getCachedBiomes(x, z);
+            Biome[] abiomegenbase1 = this.biomeCache.getCachedBiomes(x, z);
             System.arraycopy(abiomegenbase1, 0, list, 0, width * length);
             return list;
         } else {
@@ -91,7 +91,7 @@ public class AtumBiomeProvider extends BiomeProvider {
         int[] cache = this.biomeIndexLayer.getInts(x, z, width, length);
 
         for (int k = 0; k < width * length; ++k) {
-            listToReuse[k] = BiomeGenBase.getBiome(cache[k]);
+            listToReuse[k] = Biome.getBiome(cache[k]);
         }
 
         return listToReuse;
@@ -99,7 +99,7 @@ public class AtumBiomeProvider extends BiomeProvider {
     }
 
     @Override
-    public BlockPos findBiomePosition(int x, int z, int range, List<BiomeGenBase> biomes, Random random) {
+    public BlockPos findBiomePosition(int x, int z, int range, List<Biome> biomes, Random random) {
         IntCache.resetIntCache();
         int i = x - range >> 2;
         int j = z - range >> 2;
@@ -114,7 +114,7 @@ public class AtumBiomeProvider extends BiomeProvider {
         for (int l1 = 0; l1 < i1 * j1; ++l1) {
             int i2 = i + l1 % i1 << 2;
             int j2 = j + l1 / i1 << 2;
-            BiomeGenBase biomeGenBase = BiomeGenBase.getBiome(aint[l1]);
+            Biome biomeGenBase = Biome.getBiome(aint[l1]);
             if (biomes.contains(biomeGenBase) && (pos == null || random.nextInt(k1 + 1) == 0)) {
                 pos = new BlockPos(i2, 0, j2);
                 ++k1;
@@ -125,7 +125,7 @@ public class AtumBiomeProvider extends BiomeProvider {
     }
 
     @Override
-    public boolean areBiomesViable(int x, int z, int range, List<BiomeGenBase> biomes) {
+    public boolean areBiomesViable(int x, int z, int range, List<Biome> biomes) {
         // TODO: don't be lazy
         return true;
 

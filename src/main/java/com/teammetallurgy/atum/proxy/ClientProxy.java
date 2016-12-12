@@ -1,5 +1,6 @@
 package com.teammetallurgy.atum.proxy;
 
+import com.teammetallurgy.atum.blocks.IAtumBlock;
 import com.teammetallurgy.atum.client.model.entity.ModelDesertWolf;
 import com.teammetallurgy.atum.client.model.entity.ModelDustySkeleton;
 import com.teammetallurgy.atum.client.render.entity.RenderBonestorm;
@@ -9,7 +10,6 @@ import com.teammetallurgy.atum.client.render.entity.arrow.RenderBone;
 import com.teammetallurgy.atum.client.render.entity.arrow.RenderNutsCall;
 import com.teammetallurgy.atum.entity.*;
 import com.teammetallurgy.atum.entity.arrow.CustomArrow;
-import com.teammetallurgy.atum.entity.arrow.EntityAtumFishHook;
 import com.teammetallurgy.atum.entity.arrow.EntityNutsCall;
 import com.teammetallurgy.atum.entity.projectile.EntitySmallBone;
 import com.teammetallurgy.atum.handler.AtumConfig;
@@ -19,22 +19,24 @@ import com.teammetallurgy.atum.items.AtumItems;
 import com.teammetallurgy.atum.items.artifacts.ItemAnuketsBounty;
 import com.teammetallurgy.atum.utils.AtumUtils;
 import com.teammetallurgy.atum.utils.Constants;
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClientProxy extends CommonProxy {
 
@@ -190,29 +192,31 @@ public class ClientProxy extends CommonProxy {
                 return new RenderNutsCall(manager);
             }
         });
-        RenderingRegistry.registerEntityRenderingHandler(EntityAtumFishHook.class, new IRenderFactory<EntityAtumFishHook>() {
+        /*RenderingRegistry.registerEntityRenderingHandler(EntityAtumFishHook.class, new IRenderFactory<EntityAtumFishHook>() {
             @Override
             public Render<? super EntityAtumFishHook> createRenderFor(RenderManager manager) {
                 return new RenderFish(manager);
             }
-        });
+        });*/ //TODO
     }
 
     @Override
-    public void setBlockResourceLocation(Item item, String name, CreativeTabs tab) {
-        if (item != null) {
-            if (item.getHasSubtypes()) {
-                List<ItemStack> subBlocks = new ArrayList<ItemStack>();
-                item.getSubItems(item, tab, subBlocks);
-                for (ItemStack stack : subBlocks) {
-                    String subBlockName = AtumUtils.toRegistryName(AtumUtils.toUnlocalizedName(item.getUnlocalizedName(stack)));
+    public void registerItemVariantModel(Item item, String name, int metadata) {
+        ResourceLocation resourceLocation = new ResourceLocation(Constants.MODID, name);
+        ModelLoader.registerItemVariants(item, resourceLocation);
+        ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(resourceLocation, "inventory"));
+    }
 
-                    ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + subBlockName, "inventory"));
-                    System.out.println("SubBlockName: " + subBlockName);
-                }
-            } else {
-                ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Constants.MODID + ":" + name, "inventory"));
-                System.out.println("BlockName: " + name);
+    @Override
+    public void registerBlockSided(Block block) {
+        if (block instanceof IAtumBlock) {
+            IAtumBlock atumBlock = (IAtumBlock) block;
+
+            IProperty[] nonRenderingProperties = atumBlock.getNonRenderingProperties();
+
+            if (nonRenderingProperties != null) {
+                IStateMapper custom_mapper = (new StateMap.Builder()).ignore(nonRenderingProperties).build();
+                ModelLoader.setCustomStateMapper(block, custom_mapper);
             }
         }
     }
@@ -220,11 +224,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void setItemResourceLocation(Item item, String name, CreativeTabs tab) {
         if (item.getHasSubtypes()) {
-            List<ItemStack> subItems = new ArrayList<ItemStack>();
+            NonNullList<ItemStack> subItems = NonNullList.create();
             item.getSubItems(item, tab, subItems);
             for (ItemStack stack : subItems) {
                 String subItemName = AtumUtils.toRegistryName(AtumUtils.toUnlocalizedName(item.getUnlocalizedName(stack)));
-
                 ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + subItemName, "inventory"));
             }
         } else if (item instanceof ItemBow) {

@@ -5,6 +5,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemAnubisMercy extends Item {
@@ -34,19 +36,19 @@ public class ItemAnubisMercy extends Item {
     public void onDamage(LivingHurtEvent event) {
         if (event.getEntity() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            ItemStack stack = null;
-            ItemStack[] damageAmount = player.inventory.mainInventory;
-            int resistance = damageAmount.length;
+            ItemStack stack = ItemStack.EMPTY;
+            NonNullList<ItemStack> damageAmount = player.inventory.mainInventory;
+            int resistance = damageAmount.size();
 
             for (int i = 0; i < resistance; ++i) {
-                ItemStack currStack = damageAmount[i];
-                if (currStack != null && currStack.getItem() == this) {
+                ItemStack currStack = damageAmount.get(i);
+                if (!currStack.isEmpty() && currStack.getItem() == this) {
                     stack = currStack;
                     break;
                 }
             }
 
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 return;
             }
 
@@ -55,20 +57,20 @@ public class ItemAnubisMercy extends Item {
                 amount = (event.getAmount() * (25 - player.getTotalArmorValue()) + player.getAbsorptionAmount()) / 25.0F;
             }
 
-            if (player.isPotionActive(MobEffects.resistance)) {
-                resistance = 25 - (player.getActivePotionEffect(MobEffects.resistance).getAmplifier() + 1) * 5;
+            if (player.isPotionActive(MobEffects.RESISTANCE)) {
+                resistance = 25 - (player.getActivePotionEffect(MobEffects.RESISTANCE).getAmplifier() + 1) * 5;
                 amount = amount * (float) resistance / 25.0F;
             }
 
             if (Math.ceil((double) amount) >= (double) player.getHealth()) {
                 event.setCanceled(true);
-                this.respawnPlayer(event.getEntityLiving().worldObj, player);
+                this.respawnPlayer(event.getEntityLiving().world, player);
                 player.setHealth(player.getMaxHealth());
                 player.getFoodStats().setFoodLevel(20);
                 player.getFoodStats().setFoodSaturationLevel(20.0F);
                 stack.damageItem(1, player);
                 if (stack.getItemDamage() >= 20) {
-                    stack = null;
+                    stack = ItemStack.EMPTY;
                 }
             }
         }
@@ -100,14 +102,14 @@ public class ItemAnubisMercy extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @Nonnull
     public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.RARE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (Keyboard.isKeyDown(42)) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));

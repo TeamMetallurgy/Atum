@@ -2,10 +2,12 @@ package com.teammetallurgy.atum.blocks;
 
 import com.teammetallurgy.atum.Atum;
 import com.teammetallurgy.atum.blocks.tileentity.crate.TileEntityCrate;
+import com.teammetallurgy.atum.items.AtumItemBlock;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -15,35 +17,52 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
+import javax.annotation.Nonnull;
 
-public class BlockCrate extends BlockContainer { //TODO Fix custom inventory name
+public class BlockCrate extends BlockContainer implements IAtumBlock {
     public static final PropertyEnum<BlockAtumPlank.EnumType> VARIANT = PropertyEnum.create("variant", BlockAtumPlank.EnumType.class);
 
     protected BlockCrate() {
-        super(Material.wood);
+        super(Material.WOOD);
         this.setHardness(3.0F);
         this.setSoundType(SoundType.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockAtumPlank.EnumType.PALM));
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public Class<? extends ItemBlock> getItemClass() {
+        return AtumItemBlock.class;
+    }
+
+    @Override
+    public IProperty[] getNonRenderingProperties() {
+        return null;
+    }
+
+    @Override
+    public String getStateName(IBlockState state) {
+        return BlockAtumPlank.EnumType.byMetadata(state.getBlock().getMetaFromState(state)).getUnlocalizedName();
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(@Nonnull World world, int meta) {
         return new TileEntityCrate();
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote)
             return true;
 
@@ -68,6 +87,7 @@ public class BlockCrate extends BlockContainer { //TODO Fix custom inventory nam
     }
 
     @Override
+    @Nonnull
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
@@ -84,7 +104,7 @@ public class BlockCrate extends BlockContainer { //TODO Fix custom inventory nam
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
             list.add(new ItemStack(item, 1, enumType.getMetadata()));
         }

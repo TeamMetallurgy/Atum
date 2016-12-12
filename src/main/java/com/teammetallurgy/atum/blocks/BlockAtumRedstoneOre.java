@@ -19,13 +19,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class BlockAtumRedstoneOre extends Block {
     private final boolean isLit;
 
     public BlockAtumRedstoneOre(boolean isLit) {
-        super(Material.rock);
+        super(Material.ROCK);
         this.isLit = isLit;
         this.setHardness(3.0F);
         this.setResistance(5.0F);
@@ -49,15 +50,15 @@ public class BlockAtumRedstoneOre extends Block {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         this.activate(world, pos);
-        super.onEntityCollidedWithBlock(world, pos, entity);
+        super.onEntityCollidedWithBlock(world, pos, state, entity);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         this.activate(world, pos);
-        return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+        return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
     }
 
     private void activate(World world, BlockPos pos) {
@@ -76,12 +77,13 @@ public class BlockAtumRedstoneOre extends Block {
     }
 
     @Override
+    @Nonnull
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Items.redstone;
+        return Items.REDSTONE;
     }
 
     @Override
-    public int quantityDroppedWithBonus(int fortune, Random random) {
+    public int quantityDroppedWithBonus(int fortune, @Nonnull Random random) {
         return this.quantityDropped(random) + random.nextInt(fortune + 1);
     }
 
@@ -91,7 +93,7 @@ public class BlockAtumRedstoneOre extends Block {
     }
 
     @Override
-    public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
+    public void dropBlockAsItemWithChance(World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, float chance, int fortune) {
         super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
     }
 
@@ -151,11 +153,13 @@ public class BlockAtumRedstoneOre extends Block {
     }
 
     @Override
-    protected ItemStack createStackedBlock(IBlockState state) {
+    @Nonnull
+    protected ItemStack getSilkTouchDrop(IBlockState state) {
         return new ItemStack(AtumBlocks.REDSTONE_ORE);
     }
 
     @Override
+    @Nonnull
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         return new ItemStack(AtumBlocks.REDSTONE_ORE, 1, this.damageDropped(state));
     }

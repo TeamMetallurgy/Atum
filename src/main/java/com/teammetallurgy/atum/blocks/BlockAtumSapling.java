@@ -51,7 +51,7 @@ public class BlockAtumSapling extends BlockBush implements IGrowable {
 
     @Override
     protected boolean canSustainBush(IBlockState state) {
-        return state.getBlock() == AtumBlocks.SAND || state.getBlock() == Blocks.grass || state.getBlock() == Blocks.dirt;
+        return state.getBlock() == AtumBlocks.SAND || state.getBlock() == Blocks.GRASS || state.getBlock() == Blocks.DIRT;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class BlockAtumSapling extends BlockBush implements IGrowable {
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
         Block blockDown = world.getBlockState(pos.down()).getBlock();
-        return blockDown == AtumBlocks.SAND || blockDown == Blocks.grass || blockDown == Blocks.dirt;
+        return blockDown == AtumBlocks.SAND || blockDown == Blocks.GRASS || blockDown == Blocks.DIRT;
     }
 
     public void generateTree(World world, BlockPos pos, IBlockState state, Random rand) {
@@ -94,7 +94,7 @@ public class BlockAtumSapling extends BlockBush implements IGrowable {
                 break;
         }
 
-        IBlockState stateAir = Blocks.air.getDefaultState();
+        IBlockState stateAir = Blocks.AIR.getDefaultState();
 
         if (flag) {
             world.setBlockState(pos.add(i, 0, j), stateAir, 4);

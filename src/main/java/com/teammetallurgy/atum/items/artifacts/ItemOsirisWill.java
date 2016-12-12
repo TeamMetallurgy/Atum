@@ -55,6 +55,6 @@ public class ItemOsirisWill extends ItemSword {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 }

@@ -39,7 +39,7 @@ public abstract class EntityBone extends Entity {
         this.setSize(1.0F, 1.0F);
         this.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
         this.setPosition(x, y, z);
-        double d0 = (double) MathHelper.sqrt_double(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        double d0 = (double) MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.1D;
         this.accelerationY = accelY / d0 * 0.1D;
         this.accelerationZ = accelZ / d0 * 0.1D;
@@ -55,7 +55,7 @@ public abstract class EntityBone extends Entity {
         accelX = accelX + this.rand.nextGaussian() * 0.4D;
         accelY = accelY + this.rand.nextGaussian() * 0.4D;
         accelZ = accelZ + this.rand.nextGaussian() * 0.4D;
-        double d0 = (double) MathHelper.sqrt_double(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        double d0 = (double) MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.1D;
         this.accelerationY = accelY / d0 * 0.1D;
         this.accelerationZ = accelZ / d0 * 0.1D;
@@ -80,11 +80,11 @@ public abstract class EntityBone extends Entity {
 
     @Override
     public void onUpdate() {
-        if (this.worldObj.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.worldObj.isBlockLoaded(new BlockPos(this))) {
+        if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
             super.onUpdate();
 
             if (this.inGround) {
-                if (this.worldObj.getBlockState(new BlockPos(this.xTile, this.yTile, this.zTile)).getBlock() == this.inTile) {
+                if (this.world.getBlockState(new BlockPos(this.xTile, this.yTile, this.zTile)).getBlock() == this.inTile) {
                     ++this.ticksAlive;
 
                     if (this.ticksAlive == 600) {
@@ -105,7 +105,7 @@ public abstract class EntityBone extends Entity {
                 ++this.ticksInAir;
             }
 
-            RayTraceResult rayTraceResult = ProjectileHelper.func_188802_a(this, true, this.ticksInAir >= 25, this.shootingEntity);
+            RayTraceResult rayTraceResult = ProjectileHelper.forwardsRaycast(this, true, this.ticksInAir >= 25, this.shootingEntity);
 
             if (rayTraceResult != null) {
                 this.onImpact(rayTraceResult);
@@ -114,7 +114,7 @@ public abstract class EntityBone extends Entity {
             this.posX += this.motionX;
             this.posY += this.motionY;
             this.posZ += this.motionZ;
-            ProjectileHelper.func_188803_a(this, 0.2F);
+            ProjectileHelper.rotateTowardsMovement(this, 0.2F);
             float f = this.getMotionFactor();
 
             this.motionX += this.accelerationX;
@@ -140,7 +140,7 @@ public abstract class EntityBone extends Entity {
         compound.setInteger("xTile", this.xTile);
         compound.setInteger("yTile", this.yTile);
         compound.setInteger("zTile", this.zTile);
-        ResourceLocation resourceLocation = Block.blockRegistry.getNameForObject(this.inTile);
+        ResourceLocation resourceLocation = Block.REGISTRY.getNameForObject(this.inTile);
         compound.setString("inTile", resourceLocation == null ? "" : resourceLocation.toString());
         compound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
         compound.setTag("direction", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));

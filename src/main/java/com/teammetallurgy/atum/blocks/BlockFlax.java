@@ -13,6 +13,8 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class BlockFlax extends BlockCrops {
     @SideOnly(Side.CLIENT)
 
@@ -21,6 +23,7 @@ public class BlockFlax extends BlockCrops {
     }
 
     @Override
+    @Nonnull
     public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
         return EnumPlantType.Crop;
     }
@@ -31,13 +34,13 @@ public class BlockFlax extends BlockCrops {
             return world.getBlockState(pos.down()).getBlock() == AtumBlocks.FERTILE_SOIL;
         } else {
             Block soil = world.getBlockState(pos.down()).getBlock();
-            return (world.getLight(pos) >= 8 || world.canSeeSky(pos)) && soil != null && soil.canSustainPlant(state, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+            return (world.getLight(pos) >= 8 || world.canSeeSky(pos)) && soil.canSustainPlant(state, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
         }
     }
 
     @Override
     protected boolean canSustainBush(IBlockState state) {
-        return state.getBlock() == Blocks.farmland || state.getBlock() == AtumBlocks.FERTILE_SOIL_TILLED;
+        return state.getBlock() == Blocks.FARMLAND || state.getBlock() == AtumBlocks.FERTILE_SOIL_TILLED;
     }
 
     @Override

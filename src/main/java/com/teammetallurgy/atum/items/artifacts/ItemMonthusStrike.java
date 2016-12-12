@@ -24,6 +24,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemMonthusStrike extends ItemAxe {
@@ -82,9 +83,10 @@ public class ItemMonthusStrike extends ItemAxe {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player, EnumHand hand) {
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
         player.setActiveHand(hand);
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+        return new ActionResult<ItemStack>(EnumActionResult.PASS, player.getHeldItem(hand));
     }
 
     @Override
@@ -106,6 +108,6 @@ public class ItemMonthusStrike extends ItemAxe {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == Items.diamond;
+        return repair.getItem() == Items.DIAMOND;
     }
 }

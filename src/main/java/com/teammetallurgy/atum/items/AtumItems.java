@@ -18,9 +18,9 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class AtumItems {
-    private static final ArmorMaterial mummyEnum = EnumHelper.addArmorMaterial("Mummy", "", 5, new int[]{1, 3, 2, 1}, 15, SoundEvents.item_armor_equip_generic); //TODO TextureName
-    private static final ArmorMaterial wandererEnum = EnumHelper.addArmorMaterial("Wanderer", "", 10, new int[]{2, 3, 3, 2}, 15, SoundEvents.item_armor_equip_generic); //TODO TextureName
-    private static final ArmorMaterial desertEnum = EnumHelper.addArmorMaterial("Desert", "", 20, new int[]{3, 6, 5, 3}, 15, SoundEvents.item_armor_equip_generic); //TODO TextureName
+    private static final ArmorMaterial MUMMY_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("MUMMY", "mummy", 5, new int[]{1, 3, 2, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
+    private static final ArmorMaterial WANDERER_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("WANDERER", "wanderer", 10, new int[]{2, 3, 3, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
+    private static final ArmorMaterial DESERT_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("DESERT", "desert", 20, new int[]{3, 6, 5, 3}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
 
     public static final Item SCRAP = new Item();
     public static final Item LINEN = new Item();
@@ -39,10 +39,10 @@ public class AtumItems {
     public static final Item AKERS_TOIL = new ItemAkersToil(ToolMaterial.DIAMOND);
     public static final Item GEBS_BLESSING = new ItemGebsBlessing(ToolMaterial.DIAMOND);
     public static final Item ATENS_FURY = new ItemAtensFury();
-    public static final Item RAS_GLORY = new ItemRasGlory(ArmorMaterial.DIAMOND, 0, EntityEquipmentSlot.HEAD).setTextureFile("EgyptianArmor_1");
-    public static final Item SEKHMETS_WRATH = new ItemSekhmetsWrath(1, EntityEquipmentSlot.CHEST).setTextureFile("EgyptianArmor_1");
-    public static final Item NUTS_AGILITY = new ItemNutsAgility(ArmorMaterial.DIAMOND, 2, EntityEquipmentSlot.LEGS).setTextureFile("EgyptianArmor_2");
-    public static final Item HORUS_FLIGHT = new ItemHorusFlight(ArmorMaterial.DIAMOND, 3, EntityEquipmentSlot.FEET).setTextureFile("EgyptianArmor_1");
+    public static final Item RAS_GLORY = new ItemRasGlory(ArmorMaterial.DIAMOND, 0, EntityEquipmentSlot.HEAD).setTextureFile("egyptian_armor_1");
+    public static final Item SEKHMETS_WRATH = new ItemSekhmetsWrath(1, EntityEquipmentSlot.CHEST).setTextureFile("egyptian_armor_1");
+    public static final Item NUTS_AGILITY = new ItemNutsAgility(ArmorMaterial.DIAMOND, 2, EntityEquipmentSlot.LEGS).setTextureFile("egyptian_armor_2");
+    public static final Item HORUS_FLIGHT = new ItemHorusFlight(ArmorMaterial.DIAMOND, 3, EntityEquipmentSlot.FEET).setTextureFile("egyptian_armor_1");
     public static final Item MONTHUS_STRIKE = new ItemMonthusStrike(ToolMaterial.DIAMOND);
     public static final Item ANHURS_MIGHT = new ItemAnhursMight(ToolMaterial.DIAMOND);
     public static final Item HEDETETS_STING = new ItemHedetetsSting(ToolMaterial.DIAMOND);
@@ -51,11 +51,11 @@ public class AtumItems {
     public static final Item PTAHS_DESTRUCTION = new ItemPtahsDestruction(ToolMaterial.DIAMOND);
     public static final Item MONTHUS_BLAST = new ItemMonthusBlast();
     public static final Item NUS_FLUX = new ItemNusFlux(ToolMaterial.DIAMOND);
-    public static final Item MNEVIS_HORNS = new ItemMnevisHorns(ArmorMaterial.DIAMOND, 0, EntityEquipmentSlot.HEAD).setTextureFile("RubyArtifactArmor_1");
-    public static final Item ISIS_EMBRACE = new ItemIsisEmbrace(ArmorMaterial.DIAMOND, 1, EntityEquipmentSlot.CHEST).setTextureFile("RubyArtifactArmor_1");
-    public static final Item MAATS_BALANCE = new ItemMaatsBalance(ArmorMaterial.DIAMOND, 2, EntityEquipmentSlot.LEGS).setTextureFile("RubyArtifactArmor_2");
+    public static final Item MNEVIS_HORNS = new ItemMnevisHorns(ArmorMaterial.DIAMOND, 0, EntityEquipmentSlot.HEAD).setTextureFile("ruby_artifact_armor_1");
+    public static final Item ISIS_EMBRACE = new ItemIsisEmbrace(ArmorMaterial.DIAMOND, 1, EntityEquipmentSlot.CHEST).setTextureFile("ruby_artifact_armor_1");
+    public static final Item MAATS_BALANCE = new ItemMaatsBalance(ArmorMaterial.DIAMOND, 2, EntityEquipmentSlot.LEGS).setTextureFile("ruby_artifact_armor_2");
     public static final Item HEDETETS_VENOM = new ItemHedetetsVenom();
-    public static final Item GEBS_SOLIDARITY = new ItemGebsSolidarity(ArmorMaterial.DIAMOND, 3, EntityEquipmentSlot.FEET).setTextureFile("RubyArtifactArmor_1");
+    public static final Item GEBS_SOLIDARITY = new ItemGebsSolidarity(ArmorMaterial.DIAMOND, 3, EntityEquipmentSlot.FEET).setTextureFile("ruby_artifact_armor_1");
     public static final Item NUTS_CALL = new ItemNutsCall();
     public static final Item ANUKETS_BOUNTY = new ItemAnuketsBounty();
     public static final Item MAFDETS_QUICKNESS = new ItemMafdetsQuickness();
@@ -67,18 +67,18 @@ public class AtumItems {
     public static final Item LIMESTONE_AXE = new LimestoneAxe(ToolMaterial.STONE);
     public static final Item LIMESTONE_SWORD = new LimestoneSword(ToolMaterial.STONE);
     public static final Item LIMESTONE_HOE = new LimestoneHoe(ToolMaterial.STONE);
-    public static final Item MUMMY_HELMET = new ItemTexturedArmor(mummyEnum, 0, EntityEquipmentSlot.HEAD).setRepairItem(SCRAP).setTextureFile("MummyArmor_1");
-    public static final Item MUMMY_CHEST = new ItemTexturedArmor(mummyEnum, 0, EntityEquipmentSlot.CHEST).setRepairItem(SCRAP).setTextureFile("MummyArmor_1");
-    public static final Item MUMMY_LEGS = new ItemTexturedArmor(mummyEnum, 0, EntityEquipmentSlot.LEGS).setRepairItem(SCRAP).setTextureFile("MummyArmor_2");
-    public static final Item MUMMY_BOOTS = new ItemTexturedArmor(mummyEnum, 0, EntityEquipmentSlot.FEET).setRepairItem(SCRAP).setTextureFile("MummyArmor_1");
-    public static final Item WANDERER_HELMET = new ItemTexturedArmor(wandererEnum, 0, EntityEquipmentSlot.HEAD).setRepairItem(LINEN).setTextureFile("WandererArmor_1");
-    public static final Item WANDERER_CHEST = new ItemTexturedArmor(wandererEnum, 0, EntityEquipmentSlot.CHEST).setRepairItem(LINEN).setTextureFile("WandererArmor_1");
-    public static final Item WANDERER_LEGS = new ItemTexturedArmor(wandererEnum, 0, EntityEquipmentSlot.LEGS).setRepairItem(LINEN).setTextureFile("WandererArmor_2");
-    public static final Item WANDERER_BOOTS = new ItemTexturedArmor(wandererEnum, 0, EntityEquipmentSlot.FEET).setRepairItem(LINEN).setTextureFile("WandererArmor_1");
-    public static final Item DESERT_HELMET = new ItemTexturedArmor(desertEnum, 0, EntityEquipmentSlot.HEAD).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_1");
-    public static final Item DESERT_CHEST = new ItemTexturedArmor(desertEnum, 0, EntityEquipmentSlot.CHEST).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_1");
-    public static final Item DESERT_LEGS = new ItemTexturedArmor(desertEnum, 0, EntityEquipmentSlot.LEGS).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_2");
-    public static final Item DESERT_BOOTS = new ItemTexturedArmor(desertEnum, 0, EntityEquipmentSlot.FEET).setRepairItem(Items.iron_ingot).setTextureFile("DesertArmor_1");
+    public static final Item MUMMY_HELMET = new ItemTexturedArmor(ArmorMaterial.CHAIN, 0, EntityEquipmentSlot.HEAD).setRepairItem(SCRAP).setTextureFile("mummy_armor_1");
+    public static final Item MUMMY_CHEST = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.CHEST).setRepairItem(SCRAP).setTextureFile("mummy_armor_1");
+    public static final Item MUMMY_LEGS = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.LEGS).setRepairItem(SCRAP).setTextureFile("mummy_armor_2");
+    public static final Item MUMMY_BOOTS = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.FEET).setRepairItem(SCRAP).setTextureFile("mummy_armor_1");
+    public static final Item WANDERER_HELMET = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.HEAD).setRepairItem(LINEN).setTextureFile("wanderer_armor_1");
+    public static final Item WANDERER_CHEST = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.CHEST).setRepairItem(LINEN).setTextureFile("wanderer_armor_1");
+    public static final Item WANDERER_LEGS = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.LEGS).setRepairItem(LINEN).setTextureFile("wanderer_armor_2");
+    public static final Item WANDERER_BOOTS = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.FEET).setRepairItem(LINEN).setTextureFile("wanderer_armor_1");
+    public static final Item DESERT_HELMET = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.HEAD).setRepairItem(Items.IRON_INGOT).setTextureFile("desert_armor_1");
+    public static final Item DESERT_CHEST = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.CHEST).setRepairItem(Items.IRON_INGOT).setTextureFile("desert_armor_1");
+    public static final Item DESERT_LEGS = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.LEGS).setRepairItem(Items.IRON_INGOT).setTextureFile("desert_armor_2");
+    public static final Item DESERT_BOOTS = new ItemTexturedArmor(MUMMY_ARMOR_MATERIAL, 0, EntityEquipmentSlot.FEET).setRepairItem(Items.IRON_INGOT).setTextureFile("desert_armor_1");
     public static final Item PAPYRUS_PLANT = new ItemBlockSpecial(AtumBlocks.PAPYRUS);
     public static final Item ECTOPLASM = new Item();
     public static final Item DUSTY_BONE = new Item();
@@ -86,13 +86,16 @@ public class AtumItems {
     public static final Item SCROLL = new Item();
     public static final Item WOLF_PELT = new Item();
     public static final Item FLAX = new Item();
-    public static final Item FLAX_SEED = new ItemSeeds(AtumBlocks.FLAX, Blocks.farmland);
+    public static final Item FLAX_SEED = new ItemSeeds(AtumBlocks.FLAX, Blocks.FARMLAND);
     public static final Item FISH = new ItemFish();
     public static final Item NEITHS_AUDACITY = new ItemNeithsAudacity();
     public static final Item PALM_DOOR = new ItemAtumDoor();
     public static final Item DEADWOOD_DOOR = new ItemAtumDoor();
     public static final Item STICK = new ItemAtumStick();
     public static final Item DEADWOOD_BEETLE = new ItemDeadwoodBeetle();
+
+    public static Item LIMESTONE_SLAB = new Item();
+    public static Item WOOD_SLAB = new Item();
 
     public static void registerItems() {
         register(SCRAP, "cloth_scrap");
@@ -162,14 +165,12 @@ public class AtumItems {
         register(FLAX_SEED, "flax_seeds");
         register(FISH, "fish");
         register(NEITHS_AUDACITY, "neiths_audacity");
-        register(PALM_DOOR, "palm_item_door"); //TODO
-        register(DEADWOOD_DOOR, "deadwood_item_door"); //TODO
         register(STICK, "stick");
         register(DEADWOOD_BEETLE, "deadwood_beetle");
     }
 
     public static Item register(Item item, String name) {
-        return register(item, name, Atum.creativeTab);
+        return register(item, name, Atum.CREATIVE_TAB);
     }
 
     private static Item register(Item item, String name, CreativeTabs tab) {

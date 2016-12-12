@@ -11,6 +11,8 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IThrowableEntity;
 
+import javax.annotation.Nonnull;
+
 public class CustomArrow extends EntityArrow implements IThrowableEntity {
     protected static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(CustomArrow.class, DataSerializers.BYTE);
 
@@ -31,8 +33,9 @@ public class CustomArrow extends EntityArrow implements IThrowableEntity {
     }
 
     @Override
+    @Nonnull
     protected ItemStack getArrowStack() {
-        return new ItemStack(Items.arrow);
+        return new ItemStack(Items.ARROW);
     }
 
     @Override

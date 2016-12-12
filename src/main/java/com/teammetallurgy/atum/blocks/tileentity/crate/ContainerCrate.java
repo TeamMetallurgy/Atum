@@ -6,6 +6,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class ContainerCrate extends Container {
     private IInventory crateInventory;
     private int numRows = 3;
@@ -33,13 +35,14 @@ public class ContainerCrate extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
-        return crateInventory.isUseableByPlayer(player);
+    public boolean canInteractWith(@Nonnull EntityPlayer player) {
+        return crateInventory.isUsableByPlayer(player);
     }
 
     @Override
+    @Nonnull
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-        ItemStack slotStack = null;
+        ItemStack slotStack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
@@ -48,14 +51,14 @@ public class ContainerCrate extends Container {
 
             if (index < this.numRows * 9) {
                 if (!this.mergeItemStack(stack, this.numRows * 9, this.inventorySlots.size(), true)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (!this.mergeItemStack(stack, 0, this.numRows * 9, false)) {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (stack.stackSize == 0) {
-                slot.putStack(null);
+            if (stack.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }

@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 public class BlockAtumPane extends BlockPane {
 
     protected BlockAtumPane() {
-        super(Material.glass, false);
+        super(Material.GLASS, false);
         this.setHardness(0.3F);
         this.setSoundType(SoundType.GLASS);
     }

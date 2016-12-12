@@ -27,7 +27,7 @@ public class BlockChestSpawner extends BlockChest {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(Blocks.chest);
+        return Item.getItemFromBlock(Blocks.CHEST);
     }
 
     @Override
