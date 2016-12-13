@@ -31,6 +31,34 @@ dependencies {
 	runtime "mezz.jei:jei_${minecraft_version}:${jei_version}"
 }
 
+task buildInfo() {
+    def cmd = "git rev-parse --short HEAD"
+    def proc = cmd.execute()
+    proc.waitFor()
+    if (proc.exitValue() == 0) {
+        ext.revision = "DEV." + proc.text.trim()
+    } else {
+        ext.revision = "GITBORK"
+    }
+
+    if (System.getenv().BUILD_NUMBER != null) {
+        ext.buildNum = "${System.getenv().BUILD_NUMBER}"
+    } else {
+        ext.buildNum = "${project.buildInfo.revision}"
+    }
+}
+
+ext.artifact_version = 'NFG'
+if (System.getenv().ARTIFACT_VERSION == null) {
+    artifact_version = "${mod_version}.${project.buildInfo.buildNum}"
+}
+
+if(System.getenv().ARTIFACT_VERSION != null) {
+    artifact_version = "${system.getenv().ARTIFACT_VERSION}"
+}
+
+version = "${minecraft_version}-${artifact_version}"
+
 processResources {
     inputs.property "version", project.mod_version
     inputs.property "mcversion", project.minecraft.version
