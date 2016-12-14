@@ -2,11 +2,13 @@ package com.teammetallurgy.atum.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
@@ -15,7 +17,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
-public class BlockLimestoneBricks extends Block {
+import com.teammetallurgy.atum.items.AtumItemBlock;
+
+public class BlockLimestoneBricks extends Block implements IAtumBlock {
     public static final PropertyEnum<BlockLimestoneBricks.EnumType> VARIANT = PropertyEnum.create("variant", BlockLimestoneBricks.EnumType.class);
 
     public BlockLimestoneBricks() {
@@ -23,6 +27,21 @@ public class BlockLimestoneBricks extends Block {
         //this.setResistance(200000.0F); //TODO?
         this.setBlockUnbreakable();
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.SMALL));
+    }
+    
+    @Override
+    public Class<? extends ItemBlock> getItemClass() {
+        return AtumItemBlock.class;
+    }
+
+    @Override
+    public IProperty[] getNonRenderingProperties() {
+        return null;
+    }
+
+    @Override
+    public String getStateName(IBlockState state) {
+        return BlockLimestoneBricks.EnumType.byMetadata(state.getBlock().getMetaFromState(state)).getUnlocalizedName();
     }
 
     @Override

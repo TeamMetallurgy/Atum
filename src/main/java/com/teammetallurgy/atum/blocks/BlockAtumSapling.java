@@ -1,10 +1,12 @@
 package com.teammetallurgy.atum.blocks;
 
+import com.teammetallurgy.atum.items.AtumItemBlock;
 import com.teammetallurgy.atum.world.decorators.WorldGenPalm;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -12,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockAtumSapling extends BlockBush implements IGrowable {
+public class BlockAtumSapling extends BlockBush implements IGrowable, IAtumBlock {
     public static final PropertyEnum<BlockAtumPlank.EnumType> TYPE = PropertyEnum.create("type", BlockAtumPlank.EnumType.class);
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
     protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
@@ -37,6 +40,21 @@ public class BlockAtumSapling extends BlockBush implements IGrowable {
         this.setHardness(0.0F);
         this.setSoundType(SoundType.GROUND);
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, BlockAtumPlank.EnumType.PALM).withProperty(STAGE, 0));
+    }
+    
+    @Override
+    public Class<? extends ItemBlock> getItemClass() {
+        return AtumItemBlock.class;
+    }
+
+    @Override
+    public IProperty[] getNonRenderingProperties() {
+        return null;
+    }
+
+    @Override
+    public String getStateName(IBlockState state) {
+        return BlockAtumPlank.EnumType.byMetadata(state.getBlock().getMetaFromState(state)).getUnlocalizedName();
     }
 
     @Override

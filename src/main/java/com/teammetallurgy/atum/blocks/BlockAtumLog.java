@@ -1,6 +1,7 @@
 package com.teammetallurgy.atum.blocks;
 
 import com.google.common.base.Predicate;
+import com.teammetallurgy.atum.items.AtumItemBlock;
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.MapColor;
@@ -10,6 +11,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockAtumLog extends BlockLog {
+public class BlockAtumLog extends BlockLog implements IAtumBlock {
     public static final PropertyEnum<BlockAtumPlank.EnumType> VARIANT = PropertyEnum.create("variant", BlockAtumPlank.EnumType.class, new Predicate<BlockAtumPlank.EnumType>() {
         @Override
         public boolean apply(BlockAtumPlank.EnumType enumType) {
@@ -33,6 +35,21 @@ public class BlockAtumLog extends BlockLog {
     public BlockAtumLog() {
         super();
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
+    }
+
+    @Override
+    public Class<? extends ItemBlock> getItemClass() {
+        return AtumItemBlock.class;
+    }
+
+    @Override
+    public IProperty[] getNonRenderingProperties() {
+        return null;
+    }
+
+    @Override
+    public String getStateName(IBlockState state) {
+        return BlockAtumPlank.EnumType.byMetadata(state.getBlock().getMetaFromState(state)).getUnlocalizedName();
     }
 
     @Override
