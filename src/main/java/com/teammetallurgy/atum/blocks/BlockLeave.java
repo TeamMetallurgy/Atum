@@ -1,6 +1,8 @@
 package com.teammetallurgy.atum.blocks;
 
 import com.google.common.base.Predicate;
+import com.teammetallurgy.atum.items.AtumItemBlock;
+
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.IProperty;
@@ -11,6 +13,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BlockLeave extends BlockLeaves {
+public class BlockLeave extends BlockLeaves implements IAtumBlock {
     public static final PropertyEnum<BlockAtumPlank.EnumType> VARIANT = PropertyEnum.create("variant", BlockAtumPlank.EnumType.class, new Predicate<BlockAtumPlank.EnumType>() {
         @Override
         public boolean apply(BlockAtumPlank.EnumType enumType) {
@@ -36,6 +39,21 @@ public class BlockLeave extends BlockLeaves {
 
     public BlockLeave() {
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockAtumPlank.EnumType.PALM).withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true));
+    }
+    
+    @Override
+    public Class<? extends ItemBlock> getItemClass() {
+        return AtumItemBlock.class;
+    }
+
+    @Override
+    public IProperty[] getNonRenderingProperties() {
+        return new IProperty[]{CHECK_DECAY, DECAYABLE};
+    }
+
+    @Override
+    public String getStateName(IBlockState state) {
+        return BlockAtumPlank.EnumType.byMetadata(state.getBlock().getMetaFromState(state)).getUnlocalizedName();
     }
 
     @Override
