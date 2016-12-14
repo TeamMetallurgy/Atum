@@ -1,0 +1,36 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "all": "atum:blocks/crystal_glass_white"
+        },
+        "model": "cube_all",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory": [{
+
+        }],
+        "color":{
+        	"white":{"textures": {"all": "atum:blocks/crystal_glass_white"}},
+        	"orange":{"textures": {"all": "atum:blocks/crystal_glass_orange"}},
+        	"magenta":{"textures": {"all": "atum:blocks/crystal_glass_magenta"}},
+        	"light_blue":{"textures": {"all": "atum:blocks/crystal_glass_lightblue"}},
+        	"yellow":{"textures": {"all": "atum:blocks/crystal_glass_yellow"}},
+        	"lime":{"textures": {"all": "atum:blocks/crystal_glass_lime"}},
+        	"pink":{"textures": {"all": "atum:blocks/crystal_glass_pink"}},
+        	"gray":{"textures": {"all": "atum:blocks/crystal_glass_gray"}},
+        	"silver":{"textures": {"all": "atum:blocks/crystal_glass_silver"}},
+        	"cyan":{"textures": {"all": "atum:blocks/crystal_glass_cyan"}},
+        	"purple":{"textures": {"all": "atum:blocks/crystal_glass_purple"}},
+        	"blue":{"textures": {"all": "atum:blocks/crystal_glass_blue"}},
+        	"brown":{"textures": {"all": "atum:blocks/crystal_glass_brown"}},
+        	"green":{"textures": {"all": "atum:blocks/crystal_glass_green"}},
+        	"red":{"textures": {"all": "atum:blocks/crystal_glass_red"}},
+        	"black":{"textures": {"all": "atum:blocks/crystal_glass_black"}}
+        }
+    }
+}

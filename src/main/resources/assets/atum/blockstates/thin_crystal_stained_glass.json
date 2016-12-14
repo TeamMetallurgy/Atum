@@ -1,0 +1,53 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "pane": "atum:blocks/crystal_glass_white",
+            "edge": "atum:blocks/thinglass_top"
+        },
+        "model": "pane_post",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory": [{
+
+        }],
+        "color":{
+        	"white":{"textures": {"pane": "atum:blocks/crystal_glass_white","edge": "atum:blocks/thinglass_top"}},
+        	"orange":{"textures": {"pane": "atum:blocks/crystal_glass_orange","edge": "atum:blocks/thinglass_top"}},
+        	"magenta":{"textures": {"pane": "atum:blocks/crystal_glass_magenta","edge": "atum:blocks/thinglass_top"}},
+        	"light_blue":{"textures": {"pane": "atum:blocks/crystal_glass_lightblue","edge": "atum:blocks/thinglass_top"}},
+        	"yellow":{"textures": {"pane": "atum:blocks/crystal_glass_yellow","edge": "atum:blocks/thinglass_top"}},
+        	"lime":{"textures": {"pane": "atum:blocks/crystal_glass_lime","edge": "atum:blocks/thinglass_top"}},
+        	"pink":{"textures": {"pane": "atum:blocks/crystal_glass_pink","edge": "atum:blocks/thinglass_top"}},
+        	"gray":{"textures": {"pane": "atum:blocks/crystal_glass_gray","edge": "atum:blocks/thinglass_top"}},
+        	"silver":{"textures": {"pane": "atum:blocks/crystal_glass_silver","edge": "atum:blocks/thinglass_top"}},
+        	"cyan":{"textures": {"pane": "atum:blocks/crystal_glass_cyan","edge": "atum:blocks/thinglass_top"}},
+        	"purple":{"textures": {"pane": "atum:blocks/crystal_glass_purple","edge": "atum:blocks/thinglass_top"}},
+        	"blue":{"textures": {"pane": "atum:blocks/crystal_glass_blue","edge": "atum:blocks/thinglass_top"}},
+        	"brown":{"textures": {"pane": "atum:blocks/crystal_glass_brown","edge": "atum:blocks/thinglass_top"}},
+        	"green":{"textures": {"pane": "atum:blocks/crystal_glass_green","edge": "atum:blocks/thinglass_top"}},
+        	"red":{"textures": {"pane": "atum:blocks/crystal_glass_red","edge": "atum:blocks/thinglass_top"}},
+        	"black":{"textures": {"pane": "atum:blocks/crystal_glass_black","edge": "atum:blocks/thinglass_top"}}
+        },
+        "north":{
+        	"true":{"submodel":{"north_submodel":{"model":"pane_side"}}},
+        	"false":{"submodel":{"north_submodel":{"model":"pane_noside"}}}
+        },
+        "east":{
+        	"true":{"submodel":{"east_submodel":{"model":"pane_side", "y": 90}}},
+        	"false":{"submodel":{"east_submodel":{"model":"pane_noside_alt"}}}
+        },
+        "south":{
+        	"true":{"submodel":{"south_submodel":{"model":"pane_side_alt"}}},
+        	"false":{"submodel":{"south_submodel":{"model":"pane_noside_alt", "y": 90}}}
+        },
+        "west":{
+        	"true":{"submodel":{"west_submodel":{"model":"pane_side_alt", "y": 90}}},
+        	"false":{"submodel":{"west_submodel":{"model":"pane_noside", "y": 270}}}
+        }
+    }
+}
