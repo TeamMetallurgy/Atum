@@ -1,0 +1,68 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "wall": "atum:blocks/limestone"
+        },
+        "model": "wall_post",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory": [{
+        	"model": "wall_inventory"
+        }],
+        "atum_variant":{
+        	"smooth":{"textures": {"wall": "atum:blocks/limestone"}},
+        	"cracked":{"textures": {"wall": "atum:blocks/limestonebrick_cracked"}},
+        	"large_brick":{"textures": {"wall": "atum:blocks/limestonebrick_large"}},
+        	"small_brick":{"textures": {"wall": "atum:blocks/limestonebrick_small"}}
+        },
+        "up":{
+        	"true":{"submodel":{"up_model":{"model":"wall_post"}}},
+        	"false":{}
+        },
+        "north":{
+        	"true":{"submodel":{"north_model":{"model":"wall_side"}}},
+        	"false":{}
+        },
+        "east":{
+        	"true":{"submodel":{"east_model":{"model":"wall_side", "y": 90}}},
+        	"false":{}
+    	},
+        "south":{
+        	"true":{"submodel":{"south_model":{"model":"wall_side", "y": 180}}},
+        	"false":{}
+    	},
+        "west":{
+        	"true":{"submodel":{"west_model":{"model":"wall_side", "y": 270}}},
+        	"false":{}
+    	},
+    	"atum_variant=smooth,east=false,north=true,south=true,up=false,west=false":{
+    		"model":null
+    	},
+    	"atum_variant=smooth,east=true,north=false,south=false,up=false,west=true":{
+    		"model":null
+    	},
+    	"atum_variant=cracked,east=false,north=true,south=true,up=false,west=false":{
+    		"model":null
+    	},
+    	"atum_variant=cracked,east=true,north=false,south=false,up=false,west=true":{
+    		"model":null
+    	},
+    	"atum_variant=large_brick,east=false,north=true,south=true,up=false,west=false":{
+    		"model":null
+    	},
+    	"atum_variant=large_brick,east=true,north=false,south=false,up=false,west=true":{
+    		"model":null
+    	},
+    	"atum_variant=small_brick,east=false,north=true,south=true,up=false,west=false":{
+    		"model":null
+    	},
+    	"atum_variant=small_brick,east=true,north=false,south=false,up=false,west=true":{
+    		"model":null
+    	}
+    }
+}
