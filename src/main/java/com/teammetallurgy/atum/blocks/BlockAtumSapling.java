@@ -38,7 +38,7 @@ public class BlockAtumSapling extends BlockBush implements IGrowable, IAtumBlock
     public BlockAtumSapling() {
         super();
         this.setHardness(0.0F);
-        this.setSoundType(SoundType.GROUND);
+        this.setSoundType(SoundType.PLANT);
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, BlockAtumPlank.EnumType.PALM).withProperty(STAGE, 0));
     }
     
@@ -49,7 +49,7 @@ public class BlockAtumSapling extends BlockBush implements IGrowable, IAtumBlock
 
     @Override
     public IProperty[] getNonRenderingProperties() {
-        return null;
+        return new IProperty[]{STAGE};
     }
 
     @Override
