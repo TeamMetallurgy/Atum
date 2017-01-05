@@ -20,10 +20,10 @@ import net.minecraftforge.common.IPlantable;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public class BlockFertileSoil extends BlockDirt {
+public class BlockFertileSoil extends Block {
 
     public BlockFertileSoil() {
-        super();
+        super(Material.GROUND);
         this.setHardness(0.5F);
         this.setSoundType(SoundType.GROUND);
         this.setTickRandomly(true);
