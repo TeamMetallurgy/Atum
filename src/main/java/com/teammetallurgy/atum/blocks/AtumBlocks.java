@@ -215,7 +215,7 @@ public class AtumBlocks {
 
     private static Block registerDoor(BlockAtumDoor door_block, String name, Item door_item) {
         Block block = register(door_block, name + "_block", null);
-        door_item = AtumItems.register(new ItemDoor(block), name);
+        door_item = AtumItems.register(door_item, name);
         door_block.setDoorItem(door_item);
         return block;
     }
