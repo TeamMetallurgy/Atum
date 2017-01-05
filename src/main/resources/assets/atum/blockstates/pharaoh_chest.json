@@ -1,0 +1,30 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "oak_planks",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory": [{
+
+        }],
+        "facing":{
+            "north":{
+    
+            },
+            "east":{
+    
+            },
+            "south":{
+    
+            },
+            "west":{
+    
+            }
+        }
+        
+    }
+}
