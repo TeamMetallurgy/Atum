@@ -179,7 +179,6 @@ public class AtumItems {
 
         GameRegistry.register(item, new ResourceLocation(Constants.MODID, name));
         Atum.proxy.setItemResourceLocation(item, name, tab);
-        System.out.println("ItemName: " + name);
 
         return item;
     }

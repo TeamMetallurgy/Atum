@@ -246,7 +246,6 @@ public class AtumBlocks {
         try {
             Item itemBlock = itemBlockClass != null ? itemBlockClass.getConstructor(Block.class).newInstance(block) : Items.AIR;
             ResourceLocation location = new ResourceLocation(Constants.MODID, blockName);
-            System.out.println("Block Name: " + location.toString());
 
             GameRegistry.register(block, location);
             if (itemBlock != Items.AIR) GameRegistry.register(itemBlock, location);
