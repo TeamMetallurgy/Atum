@@ -17,7 +17,7 @@ public class WorldProviderAtum extends WorldProvider {
     }
 
     @Override
-    protected void createBiomeProvider() {
+    protected void init() {
          this.biomeProvider = new AtumBiomeProvider(world.getWorldInfo());
     }
 

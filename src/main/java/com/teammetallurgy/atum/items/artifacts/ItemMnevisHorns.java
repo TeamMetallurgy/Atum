@@ -34,7 +34,7 @@ public class ItemMnevisHorns extends ItemTexturedArmor {
         if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null && event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == this && event.getSource() instanceof EntityDamageSource) {
             EntityDamageSource source = (EntityDamageSource) event.getSource();
             if (source.getEntity() != null) {
-                source.getEntity().attackEntityFrom(DamageSource.generic, (int) ((double) event.getAmount() / 2.0D));
+                source.getEntity().attackEntityFrom(DamageSource.GENERIC, (int) ((double) event.getAmount() / 2.0D));
             }
         }
 
