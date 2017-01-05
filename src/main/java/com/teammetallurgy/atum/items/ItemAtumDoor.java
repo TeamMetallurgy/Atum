@@ -40,7 +40,7 @@ public class ItemAtumDoor extends Item {
             pos = pos.offset(facing);
         }
 
-        if (player.canPlayerEdit(pos, facing, stack) && block.canPlaceBlockAt(world, pos) && block.canPlaceBlockAt(world, pos.up())) {
+        if (player.canPlayerEdit(pos, facing, stack) && block.canPlaceBlockAt(world, pos)) {
             EnumFacing enumfacing = EnumFacing.fromAngle((double) player.rotationYaw);
             int i = enumfacing.getFrontOffsetX();
             int j = enumfacing.getFrontOffsetZ();
