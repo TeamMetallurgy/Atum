@@ -98,13 +98,6 @@ public class BlockSands extends BlockFalling {
     }
 
     @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        if (world.getLightFor(EnumSkyBlock.BLOCK, pos) > 11) {
-            world.setBlockToAir(pos);
-        }
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         if (side == EnumFacing.UP) {
