@@ -37,18 +37,18 @@ public class WorldGenPalm extends WorldGenAbstractTree {
 
     @Override
     public boolean generate(World world, Random random, BlockPos pos) {
-        int i = random.nextInt(3) + this.minTreeHeight;
+        int treeHeight = random.nextInt(3) + this.minTreeHeight;
         boolean flag = true;
         Block blocks = world.getBlockState(pos.down()).getBlock();
-        if ((blocks == AtumBlocks.SAND || blocks == AtumBlocks.FERTILE_SOIL || blocks == Blocks.DIRT) && pos.getY() >= 1 && pos.getY() + i + 1 <= 256) {
-            for (int j = pos.getY(); j <= pos.getY() + 1 + i; ++j) {
+        if ((blocks == AtumBlocks.SAND || blocks == AtumBlocks.FERTILE_SOIL || blocks == Blocks.DIRT) && pos.getY() >= 1 && pos.getY() + treeHeight + 1 <= 256) {
+            for (int j = pos.getY(); j <= pos.getY() + 1 + treeHeight; ++j) {
 
                 int k = 1;
                 if (j == pos.getY()) {
                     k = 0;
                 }
 
-                if (j >= pos.getY() + 1 + i - 2) {
+                if (j >= pos.getY() + 1 + treeHeight - 2) {
                     k = 2;
                 }
 
@@ -73,96 +73,57 @@ public class WorldGenPalm extends WorldGenAbstractTree {
                 BlockPos down = pos.down();
                 IBlockState stateDown = world.getBlockState(down);
 
-                if (pos.getY() < 256 - i - 1) {
+                if (pos.getY() >= 256 - treeHeight - 1) {
                     return false;
                 } else {
                     stateDown.getBlock().onPlantGrow(stateDown, world, down, pos);
                     int i3 = pos.getX();
                     int j1 = pos.getZ();
-                    int k1 = 0;
+                    int k1 = pos.getY() + treeHeight;
 
                     BlockPos pos1 = new BlockPos(i3, k1, j1);
+                    
 
-                    for (int j3 = -3; j3 <= 3; ++j3) {
-                        for (int i4 = -3; i4 <= 3; ++i4) {
-                            if (Math.abs(j3) != 3 || Math.abs(i4) != 3) {
-                                this.spawnLeaf(world, pos1.add(j3, 0, i4));
-                            }
-                        }
-                    }
-
-                    pos1 = pos1.up();
-
-                    for (int k3 = -1; k3 <= 1; ++k3) {
-                        for (int j4 = -1; j4 <= 1; ++j4) {
-                            this.spawnLeaf(world, pos1.add(k3, 0, j4));
-                        }
-                    }
-
-                    this.spawnLeaf(world, pos1.east(2));
-                    this.spawnLeaf(world, pos1.west(2));
-                    this.spawnLeaf(world, pos1.south(2));
-                    this.spawnLeaf(world, pos1.north(2));
-
-                    if (k1 > 0) {
-                        BlockPos blockpos3 = new BlockPos(i3, k1, j1);
-
-                        for (int i5 = -2; i5 <= 2; ++i5) {
-                            for (int k5 = -2; k5 <= 2; ++k5) {
-                                if (Math.abs(i5) != 2 || Math.abs(k5) != 2) {
-                                    this.spawnLeaf(world, blockpos3.add(i5, 0, k5));
-                                }
-                            }
-                        }
-
-                        blockpos3 = blockpos3.up();
-
-                        for (int j5 = -1; j5 <= 1; ++j5) {
-                            for (int l5 = -1; l5 <= 1; ++l5) {
-                                this.spawnLeaf(world, blockpos3.add(j5, 0, l5));
-                            }
-                        }
-                    } //TODO Test
-
-                    /*this.spawnLeaf(world, par3, par4 + i + 1, par5);
+                    this.spawnLeaf(world, pos1.add(0, 1, 0));
 
                     for (int block = -1; block <= 1; ++block) {
                         for (int z = -1; z <= 1; ++z) {
                             if (block != 0 || z != 0) {
-                                this.spawnLeaf(world, par3 + block, par4 + l, par5 + z);
+                                this.spawnLeaf(world, pos1.add(block,0,z));
                             }
                         }
                     }
 
-                    this.spawnLeaf(world, par3 + 2, par4 + l, par5);
-                    this.spawnLeaf(world, par3 - 2, par4 + l, par5);
-                    this.spawnLeaf(world, par3, par4 + l, par5 + 2);
-                    this.spawnLeaf(world, par3, par4 + l, par5 - 2);
-                    this.spawnLeaf(world, par3, par4 + l - 1, par5 - 2);
-                    this.spawnLeaf(world, par3, par4 + l - 1, par5 + 2);
-                    this.spawnLeaf(world, par3 + 2, par4 + l - 1, par5);
-                    this.spawnLeaf(world, par3 - 2, par4 + l - 1, par5);
-                    this.spawnLeaf(world, par3, par4 + l - 1, par5 - 3);
-                    this.spawnLeaf(world, par3, par4 + l - 1, par5 + 3);
-                    this.spawnLeaf(world, par3 + 3, par4 + l - 1, par5);
-                    this.spawnLeaf(world, par3 - 3, par4 + l - 1, par5);
+                    this.spawnLeaf(world, pos1.add(2, 0, 0));
+                    this.spawnLeaf(world, pos1.add(-2, 0, 0));
+                    this.spawnLeaf(world, pos1.add(0, 0, 2));
+                    this.spawnLeaf(world, pos1.add(0, 0, -2));
+                    this.spawnLeaf(world, pos1.add(0, -1, -2));
+                    this.spawnLeaf(world, pos1.add(0, -1, 2));
+                    this.spawnLeaf(world, pos1.add(2, -1, 0));
+                    this.spawnLeaf(world, pos1.add(-2, -1, 0));
+                    this.spawnLeaf(world, pos1.add(0, -1, -3));
+                    this.spawnLeaf(world, pos1.add(0, -1, 3));
+                    this.spawnLeaf(world, pos1.add(3, -1, 0));
+                    this.spawnLeaf(world, pos1.add(-3, -1, 0));
                     if (random.nextInt(100) < 15) {
-                        world.setBlock(par3 + 1, par4 + l - 1, par5, AtumBlocks.DATEBLOCK, 0, 2);
+                        world.setBlockState(pos1.add(1, -1, 0), AtumBlocks.DATE_BLOCK.getDefaultState(), 2);
                     }
 
                     if (random.nextInt(100) < 15) {
-                        world.setBlock(par3 - 1, par4 + l - 1, par5, AtumBlocks.DATEBLOCK, 0, 2);
+                        world.setBlockState(pos1.add(-1, -1, 0), AtumBlocks.DATE_BLOCK.getDefaultState(), 2);
                     }
 
                     if (random.nextInt(100) < 15) {
-                        world.setBlock(par3, par4 + l - 1, par5 + 1, AtumBlocks.DATEBLOCK, 0, 2);
+                        world.setBlockState(pos1.add(0, -1, 1), AtumBlocks.DATE_BLOCK.getDefaultState(), 2);
                     }
 
                     if (random.nextInt(100) < 15) {
-                        world.setBlock(par3, par4 + l - 1, par5 - 1, AtumBlocks.DATEBLOCK, 0, 2);*/ //TODO Proper solution for leaves and dates
+                        world.setBlockState(pos1.add(0, -1, -1), AtumBlocks.DATE_BLOCK.getDefaultState(), 2);
+                    }
                 }
 
-                for (int j3 = 0; j3 < i; ++j3) {
+                for (int j3 = 0; j3 < treeHeight; ++j3) {
                     BlockPos upN = pos.up(j3);
                     IBlockState stateUpN = world.getBlockState(upN);
 

@@ -42,6 +42,8 @@ public class AtumEventListener {
         }
     }
 
+    // TODO: check if needed
+    /*
     @SubscribeEvent
     public boolean onBonemeal(BonemealEvent event) {
         if (!event.getWorld().isRemote) {
@@ -57,6 +59,7 @@ public class AtumEventListener {
         }
         return true;
     }
+    */
 
     @SubscribeEvent
     public void onFishEvent(EntityJoinWorldEvent event) {
