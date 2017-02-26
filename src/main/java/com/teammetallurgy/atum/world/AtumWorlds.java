@@ -8,7 +8,7 @@ public class AtumWorlds {
     public static DimensionType ATUM;
 
     public static void register() {
-        ATUM = DimensionType.register("Atum", "_atum", AtumConfig.DIMENSION_ID, WorldProviderAtum.class, true);
+        ATUM = DimensionType.register("Atum", "_atum", AtumConfig.DIMENSION_ID, WorldProviderAtum.class, false);
         DimensionManager.registerDimension(AtumConfig.DIMENSION_ID, ATUM);
     }
 }
