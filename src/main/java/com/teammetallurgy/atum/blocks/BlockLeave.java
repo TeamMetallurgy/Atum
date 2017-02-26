@@ -19,7 +19,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -129,5 +131,62 @@ public class BlockLeave extends BlockLeaves implements IAtumBlock {
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return Blocks.LEAVES.isOpaqueCube(Blocks.LEAVES.getDefaultState());
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos,
+            EnumFacing side) {
+
+        if (!(Blocks.LEAVES.getBlockLayer() == BlockRenderLayer.CUTOUT_MIPPED) && blockAccess.getBlockState(pos.offset(side)).getBlock() == this) {
+            return false;
+        }
+
+        AxisAlignedBB boundingBox = blockState.getBoundingBox(blockAccess, pos);
+
+        switch (side) {
+             case DOWN:
+
+                 if (boundingBox.minY > 0.0D){
+                     return true;
+                 }
+
+                 break;
+             case UP:
+
+                 if (boundingBox.maxY < 1.0D){
+                     return true;
+                 }
+
+                 break;
+             case NORTH:
+
+                 if (boundingBox.minZ > 0.0D){
+                     return true;
+                 }
+
+                 break;
+             case SOUTH:
+
+                 if (boundingBox.maxZ < 1.0D){
+                     return true;
+                 }
+
+                 break;
+             case WEST:
+
+                 if (boundingBox.minX > 0.0D){
+                     return true;
+                 }
+
+                 break;
+             case EAST:
+
+                 if (boundingBox.maxX < 1.0D){
+                     return true;
+                 }
+         }
+
+         return !blockAccess.getBlockState(pos.offset(side)).doesSideBlockRendering(blockAccess, pos.offset(side), side.getOpposite());
     }
 }
