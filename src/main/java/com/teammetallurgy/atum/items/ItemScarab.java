@@ -13,8 +13,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,15 +41,15 @@ public class ItemScarab extends Item {
             int x = pos.getX();
             int y = pos.getY();
             int z = pos.getZ();
-            IBlockState temp = null;
+            IBlockState portalStuctureBlockState = null;
             if (state == Blocks.SANDSTONE.getDefaultState() || state == AtumBlocks.LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE)) {
-                temp = state;
+                portalStuctureBlockState = state;
             }
-            if (temp != null) {
+            if (portalStuctureBlockState != null) {
                 for (int x1 = -1; x1 < 1; x1++) {
                     for (int z1 = -1; z1 < 1; z1++) {
                         if (world.getBlockState(new BlockPos(x1 + x, y + 1, z1 + z)).getMaterial() == Material.WATER) {
-                            if (AtumBlocks.PORTAL.tryToCreatePortal(world, new BlockPos(x1 + x, y, z1 + z), temp)) {
+                            if (AtumBlocks.PORTAL.tryToCreatePortal(world, new BlockPos(x1 + x, y, z1 + z), portalStuctureBlockState)) {
                                 player.getHeldItem(hand).shrink(1);
                                 return EnumActionResult.SUCCESS;
                             }
@@ -62,7 +61,7 @@ public class ItemScarab extends Item {
                     for (int x1 = -2; x1 < 3; x1++) {
                         for (int z1 = -2; z1 < 3; z1++) {
                             for (int y1 = 0; y1 < 2; y1++) {
-                                world.setBlockState(new BlockPos(x + x1, y + y1, z + z1), temp);
+                                world.setBlockState(new BlockPos(x + x1, y + y1, z + z1), portalStuctureBlockState);
                             }
                         }
                     }
@@ -74,16 +73,16 @@ public class ItemScarab extends Item {
                     }
 
                     for (int y1 = 2; y1 < 4; y1++) {
-                        world.setBlockState(new BlockPos(x - 2, y + y1, z - 2), temp);
-                        world.setBlockState(new BlockPos(x + 2, y + y1, z - 2), temp);
-                        world.setBlockState(new BlockPos(x - 2, y + y1, z + 2), temp);
-                        world.setBlockState(new BlockPos(x + 2, y + y1, z + 2), temp);
+                        world.setBlockState(new BlockPos(x - 2, y + y1, z - 2), portalStuctureBlockState);
+                        world.setBlockState(new BlockPos(x + 2, y + y1, z - 2), portalStuctureBlockState);
+                        world.setBlockState(new BlockPos(x - 2, y + y1, z + 2), portalStuctureBlockState);
+                        world.setBlockState(new BlockPos(x + 2, y + y1, z + 2), portalStuctureBlockState);
                     }
-                    AtumBlocks.PORTAL.tryToCreatePortal(world, pos, temp);
+                    AtumBlocks.PORTAL.tryToCreatePortal(world, pos, portalStuctureBlockState);
                 }
             }
         } else {
-            player.sendMessage(new TextComponentString(I18n.translateToLocal("chat.atum.disabled")));
+            player.sendMessage(new TextComponentTranslation("chat.atum.disabled"));
         }
         return EnumActionResult.PASS;
     }

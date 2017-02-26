@@ -97,7 +97,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
         int z = pos.getZ();
         for (int x1 = -2; x1 < 3; x1++) {
             for (int z1 = -2; z1 < 3; z1++) {
-                if (world.getBlockState(pos.add(x + x1, y, z + z1)) != state) {
+                if (world.getBlockState(pos.add(x1, 0, z1)) != state) {
                     return false;
                 }
             }
@@ -105,7 +105,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
         for (int x1 = -2; x1 < 3; x1++) {
             for (int z1 = -2; z1 < 3; z1++) {
                 if (x1 + x == x + 2 || z1 + z == z + 2 || x1 + x == x - 2 || z1 + z == z - 2) {
-                    if (world.getBlockState(pos.add(x + x1, y + 1, z + z1)) != state) {
+                    if (world.getBlockState(pos.add(x1, 1, z1)) != state) {
                         return false;
                     }
                 }
@@ -115,7 +115,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
             for (int x1 = -2; x1 < 3; x1++) {
                 for (int z1 = -2; z1 < 3; z1++) {
                     if ((x1 + x == x + 2 && z1 + z == z + 2) || (x1 + x == x - 2 && z1 + z == z + 2) || (x1 + x == x + 2 && z1 + z == z - 2) || (x1 + x == x - 2 && z1 + z == z - 2)) {
-                        if (world.getBlockState(pos.add(x + x1, y + y1, z + z1)) != state) {
+                        if (world.getBlockState(pos.add(x1, y1, z1)) != state) {
                             return false;
                         }
                     }
@@ -124,7 +124,7 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
         }
         for (int x1 = -1; x1 < 2; x1++) {
             for (int z1 = -1; z1 < 2; z1++) {
-                world.setBlockState(pos.add(x + x1, y + 1, z + z1), AtumBlocks.PORTAL.getDefaultState(), 2);
+                world.setBlockState(pos.add(x1, 1, z1), AtumBlocks.PORTAL.getDefaultState(), 2);
             }
         }
         return true;
