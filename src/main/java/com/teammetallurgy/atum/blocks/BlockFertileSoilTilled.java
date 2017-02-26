@@ -42,11 +42,6 @@ public class BlockFertileSoilTilled extends Block {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
-        return FULL_BLOCK_AABB;
-    }
-
-    @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
