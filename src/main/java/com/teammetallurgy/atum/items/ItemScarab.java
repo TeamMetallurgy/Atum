@@ -3,6 +3,8 @@ package com.teammetallurgy.atum.items;
 import com.teammetallurgy.atum.blocks.AtumBlocks;
 import com.teammetallurgy.atum.blocks.BlockLimestoneBricks;
 import com.teammetallurgy.atum.handler.AtumConfig;
+
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,7 +50,8 @@ public class ItemScarab extends Item {
             if (portalStuctureBlockState != null) {
                 for (int x1 = -1; x1 < 1; x1++) {
                     for (int z1 = -1; z1 < 1; z1++) {
-                        if (world.getBlockState(new BlockPos(x1 + x, y + 1, z1 + z)).getMaterial() == Material.WATER) {
+                        IBlockState testWaterBlockState = world.getBlockState(new BlockPos(x1 + x, y + 1, z1 + z));
+                        if (testWaterBlockState.getBlock() == Blocks.WATER && testWaterBlockState.getValue(BlockLiquid.LEVEL) == 0) {
                             if (AtumBlocks.PORTAL.tryToCreatePortal(world, new BlockPos(x1 + x, y, z1 + z), portalStuctureBlockState)) {
                                 player.getHeldItem(hand).shrink(1);
                                 return EnumActionResult.SUCCESS;
