@@ -4,6 +4,7 @@ import com.teammetallurgy.atum.handler.AtumConfig;
 import com.teammetallurgy.atum.world.AtumTeleporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -38,6 +39,8 @@ public class BlockPortal extends BlockBreakable { //TODO Redo for 1.9. Switch ov
         super(Material.PORTAL, true);
         this.setTickRandomly(true);
         this.setHardness(-1.0F);
+        this.setSoundType(SoundType.GLASS);
+        this.setLightLevel(0.75F);
     }
 
     @Override
