@@ -24,7 +24,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class AtumBlocks {
     public static final BlockPortal PORTAL = new BlockPortal();
     public static final Block CURSED_CHEST = new BlockChestSpawner();
-    public static final Block SAND = new BlockSandLayers().setHardness(0.5F);
+    public static final Block SAND = new BlockStrangeSand().setHardness(0.5F);
     public static final Block LIMESTONE_GRAVEL = new BlockGravel().setHardness(0.6F)/*.setSoundType(SoundType.GROUND)*/;
     public static final Block LIMESTONE = new Block(Material.ROCK).setHardness(1.5F).setResistance(10.0F)/*.setSoundType(SoundType.STONE)*/;
     public static final Block LIMESTONE_CRACKED = new Block(Material.ROCK).setHardness(2.0F).setResistance(10.0F);
