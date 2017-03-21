@@ -24,7 +24,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class AtumBlocks {
     public static final BlockPortal PORTAL = new BlockPortal();
     public static final Block CURSED_CHEST = new BlockChestSpawner();
-    public static final Block SAND = new BlockSands().setHardness(0.5F);
+    public static final Block SAND = new BlockSandLayers().setHardness(0.5F);
     public static final Block LIMESTONE_GRAVEL = new BlockGravel().setHardness(0.6F)/*.setSoundType(SoundType.GROUND)*/;
     public static final Block LIMESTONE = new Block(Material.ROCK).setHardness(1.5F).setResistance(10.0F)/*.setSoundType(SoundType.STONE)*/;
     public static final Block LIMESTONE_CRACKED = new Block(Material.ROCK).setHardness(2.0F).setResistance(10.0F);
@@ -38,7 +38,7 @@ public class AtumBlocks {
     public static final Block LARGE_STONE_STAIRS_UNBREAKABLE = new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE)).setBlockUnbreakable();
     public static final Block LARGE_STONE_STAIRS = (new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.LARGE))).setHardness(2.0F).setResistance(10.0F);
     public static final Block SMALL_STONE_STAIRS = new BlockAtumStairs(LIMESTONEBRICK.getDefaultState().withProperty(BlockLimestoneBricks.VARIANT, BlockLimestoneBricks.EnumType.SMALL));
-    public static final Block SAND_LAYERED = new BlockSands().setHardness(0.1F).setLightOpacity(0);
+    public static final Block SAND_LAYERED = new BlockSandLayers().setHardness(0.1F).setLightOpacity(0);
     public static final Block CRYSTAL_GLASS = new BlockAtumGlass(Material.GLASS);
     public static final BlockAtumGlassStained CRYSTAL_STAINED_GLASS = new BlockAtumGlassStained();
     public static final Block FRAMED_GLASS = new BlockAtumGlass(Material.GLASS);
