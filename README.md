@@ -1,4 +1,4 @@
-#[Atum](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1288464-atum-journey-into-the-sands)
+# [Atum](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1288464-atum-journey-into-the-sands)
 [![Downloads](http://cf.way2muchnoise.eu/full_atum_downloads.svg)](https://mods.curse.com/mc-mods/minecraft/atum)
 [![Minecraft Support](http://cf.way2muchnoise.eu/versions/atum_all.svg)](https://mods.curse.com/mc-mods/minecraft/atum)
 
