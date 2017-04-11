@@ -11,6 +11,7 @@ public class AtumGuiFactory implements IModGuiFactory {
     public void initialize(Minecraft minecraftInstance) {
     }
 
+    @Deprecated
     @Override
     public Class<? extends GuiScreen> mainConfigGuiClass() {
         return AtumConfigGui.class;
@@ -24,5 +25,15 @@ public class AtumGuiFactory implements IModGuiFactory {
     @Override
     public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
         return null;
+    }
+
+    @Override
+    public boolean hasConfigGui() {
+        return true;
+    }
+
+    @Override
+    public GuiScreen createConfigGui(GuiScreen parentScreen) {
+        return new AtumConfigGui(parentScreen) ;
     }
 }
