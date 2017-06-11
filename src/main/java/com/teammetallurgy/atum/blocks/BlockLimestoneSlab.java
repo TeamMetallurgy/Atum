@@ -16,6 +16,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -58,7 +59,7 @@ public abstract class BlockLimestoneSlab extends BlockSlab implements IAtumBlock
 
     @Override
     @Nonnull
-    public MapColor getMapColor(IBlockState state) {
+    public MapColor getMapColor(IBlockState state,IBlockAccess blockAccess, BlockPos blockPos) {
         return (state.getValue(VARIANT)).getMapColor();
     }
 
@@ -94,11 +95,10 @@ public abstract class BlockLimestoneSlab extends BlockSlab implements IAtumBlock
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        if (item != Item.getItemFromBlock(AtumBlocks.LIMESTONE_DOUBLE_SLAB)) {
-            for (EnumType enumType : EnumType.values()) {
-                list.add(new ItemStack(item, 1, enumType.getMetadata()));
-            }
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+    	// Fixme: allow only single slab in creative
+        for (EnumType enumType : EnumType.values()) {
+            list.add(new ItemStack(this, 1, enumType.getMetadata()));
         }
     }
 

@@ -29,7 +29,7 @@ public class RenderDesertWolf extends RenderLiving<EntityDesertWolf> {
     @Override
     public void doRender(EntityDesertWolf entityDesertWolf, double x, double y, double z, float entityYaw, float partialTicks) {
         if (entityDesertWolf.isWolfWet()) {
-            float f = entityDesertWolf.getBrightness(partialTicks) * entityDesertWolf.getShadingWhileWet(partialTicks);
+            float f = entityDesertWolf.getBrightness() * entityDesertWolf.getShadingWhileWet(partialTicks);
             GlStateManager.color(f, f, f);
         }
 

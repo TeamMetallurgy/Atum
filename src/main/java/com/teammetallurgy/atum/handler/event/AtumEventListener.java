@@ -12,7 +12,6 @@ import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -93,7 +92,8 @@ public class AtumEventListener {
     @SubscribeEvent
     public void onPickup(EntityItemPickupEvent pickupEvent) {
         if (pickupEvent.getItem().getEntityItem().isItemEqual(new ItemStack(AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.PALM).getBlock())) || pickupEvent.getItem().getEntityItem().isItemEqual(new ItemStack(AtumBlocks.LOG.getDefaultState().withProperty(BlockAtumLog.VARIANT, BlockAtumPlank.EnumType.DEADWOOD).getBlock()))) {
-            pickupEvent.getEntityPlayer().addStat(AchievementList.MINE_WOOD);
+        	//Fixme: find a way to add logs into the collecting wood advancement
+            //pickupEvent.getEntityPlayer().addStat(AchievementList.MINE_WOOD);
         }
     }
 }

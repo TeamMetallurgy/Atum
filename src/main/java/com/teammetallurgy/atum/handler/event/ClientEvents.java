@@ -3,8 +3,8 @@ package com.teammetallurgy.atum.handler.event;
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -26,12 +26,12 @@ public class ClientEvents {
 
                 Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("atum", "textures/hud/mummyblur.png"));
                 Tessellator tessellator = Tessellator.getInstance();
-                VertexBuffer vertexBuffer = tessellator.getBuffer();
-                vertexBuffer.begin(7, DefaultVertexFormats.POSITION);
-                vertexBuffer.pos(0.0D, height, -100).tex(0.0D, 1.0D).endVertex();
-                vertexBuffer.pos(width, height, -100).tex(1.0D, 1.0D).endVertex();
-                vertexBuffer.pos(width, 0.0D, -100).tex(1.0D, 0.0D).endVertex();
-                vertexBuffer.pos(0.0D, 0.0D, -100).tex(0.0D, 0.0D).endVertex();
+                BufferBuilder bufferBuilder = tessellator.getBuffer();
+                bufferBuilder.begin(7, DefaultVertexFormats.POSITION);
+                bufferBuilder.pos(0.0D, height, -100).tex(0.0D, 1.0D).endVertex();
+                bufferBuilder.pos(width, height, -100).tex(1.0D, 1.0D).endVertex();
+                bufferBuilder.pos(width, 0.0D, -100).tex(1.0D, 0.0D).endVertex();
+                bufferBuilder.pos(0.0D, 0.0D, -100).tex(0.0D, 0.0D).endVertex();
                 tessellator.draw();
             }
         }

@@ -13,7 +13,6 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -41,7 +40,7 @@ public class ChunkProviderAtum implements IChunkGenerator {
     private final WorldType terrainType;
     private final double[] heightMap;
     private final float[] biomeWeights;
-    private ChunkProviderSettings settings;
+    private ChunkGeneratorSettings settings;
     private double[] depthBuffer = new double[256];
     private MapGenBase caveGenerator = new MapGenCaves();
     private MapGenBase ravineGenerator = new MapGenRavine();
@@ -78,7 +77,7 @@ public class ChunkProviderAtum implements IChunkGenerator {
         }
 
         if (generatorOptions != null) {
-            this.settings = ChunkProviderSettings.Factory.jsonToFactory(generatorOptions).build();
+            this.settings = ChunkGeneratorSettings.Factory.jsonToFactory(generatorOptions).build();
         }
 
         InitNoiseGensEvent.ContextOverworld ctx = new InitNoiseGensEvent.ContextOverworld(minLimitPerlinNoise, maxLimitPerlinNoise, mainPerlinNoise, surfaceNoise, scaleNoise, depthNoise, forestNoise);
@@ -340,4 +339,10 @@ public class ChunkProviderAtum implements IChunkGenerator {
     @Override
     public void recreateStructures(@Nonnull Chunk chunk, int x, int z) { //TODO Recreate Atum structures here
     }
+
+	@Override
+	public boolean func_193414_a(World p_193414_1_, String p_193414_2_, BlockPos p_193414_3_) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

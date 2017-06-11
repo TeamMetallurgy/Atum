@@ -62,7 +62,7 @@ public class BlockAtumLog extends BlockLog implements IAtumBlock {
     }
 
     @Override
-    public MapColor getMapColor(IBlockState state) {
+    public MapColor getMapColor(IBlockState state, IBlockAccess blockAccess, BlockPos blockPos) {
         BlockAtumPlank.EnumType enumType = state.getValue(VARIANT);
 
         switch (state.getValue(LOG_AXIS)) {
@@ -85,9 +85,9 @@ public class BlockAtumLog extends BlockLog implements IAtumBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        list.add(new ItemStack(item, 1, BlockAtumPlank.EnumType.PALM.getMetadata()));
-        list.add(new ItemStack(item, 1, BlockAtumPlank.EnumType.DEADWOOD.getMetadata()));
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+        list.add(new ItemStack(this, 1, BlockAtumPlank.EnumType.PALM.getMetadata()));
+        list.add(new ItemStack(this, 1, BlockAtumPlank.EnumType.DEADWOOD.getMetadata()));
     }
 
     @Override

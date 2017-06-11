@@ -52,9 +52,9 @@ public class BlockLimestoneBricks extends Block implements IAtumBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         for (BlockLimestoneBricks.EnumType enumType : BlockLimestoneBricks.EnumType.values()) {
-            list.add(new ItemStack(item, 1, enumType.getMetadata()));
+            list.add(new ItemStack(this, 1, enumType.getMetadata()));
         }
     }
 

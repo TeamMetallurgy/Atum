@@ -62,8 +62,8 @@ public class BlockLeave extends BlockLeaves implements IAtumBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        list.add(new ItemStack(item, 1, BlockAtumPlank.EnumType.PALM.getMetadata())); //Only add Palm Leaves atm.
+    public void getSubBlocks( CreativeTabs tab, NonNullList<ItemStack> list) {
+        list.add(new ItemStack(this, 1, BlockAtumPlank.EnumType.PALM.getMetadata())); //Only add Palm Leaves atm.
     }
 
     @Override

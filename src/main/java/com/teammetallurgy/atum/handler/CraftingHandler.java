@@ -20,6 +20,8 @@ public class CraftingHandler {
     }
 
     private static void addRecipes() {
+    	//Fixme: Change into JSON
+    	/*
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()), new ItemStack(AtumBlocks.LIMESTONEBRICK));
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()), new ItemStack(AtumBlocks.LIMESTONEBRICK, 1, BlockLimestoneBricks.EnumType.LARGE.getMetadata()));
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.LARGE_STONE_STAIRS), new ItemStack(AtumBlocks.LARGE_STONE_STAIRS_UNBREAKABLE)); //TODO
@@ -94,6 +96,7 @@ public class CraftingHandler {
 
             GameRegistry.addRecipe(new ItemStack(AtumBlocks.FRAMED_STAINED_GLASS, 1, i), " S ", "SGS", " S ", 'S', Items.STICK, 'G', new ItemStack(AtumBlocks.CRYSTAL_STAINED_GLASS, 1, i));
         }
+        */
     }
 
     private static void addSmeltingRecipes() {
@@ -110,6 +113,8 @@ public class CraftingHandler {
     }
 
     private static void addShapelessRecipes() {
+    	//Fixme: Change into JSON
+    	/*
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.PLANKS, 4, BlockAtumPlank.EnumType.PALM.getMetadata()), new ItemStack(AtumBlocks.LOG, 1, BlockAtumPlank.EnumType.PALM.getMetadata()));
         GameRegistry.addShapelessRecipe(new ItemStack(AtumItems.DESERT_HELMET), AtumItems.WANDERER_HELMET, Items.IRON_HELMET);
         GameRegistry.addShapelessRecipe(new ItemStack(AtumItems.DESERT_CHEST), AtumItems.WANDERER_CHEST, Items.IRON_CHESTPLATE);
@@ -118,5 +123,6 @@ public class CraftingHandler {
         GameRegistry.addShapelessRecipe(new ItemStack(Blocks.SAND), AtumBlocks.SAND);
         GameRegistry.addShapelessRecipe(new ItemStack(Items.STRING, 3), AtumItems.FLAX);
         GameRegistry.addShapelessRecipe(new ItemStack(AtumBlocks.PLANKS, 4, BlockAtumPlank.EnumType.DEADWOOD.getMetadata()), new ItemStack(AtumBlocks.LOG, 1, BlockAtumPlank.EnumType.DEADWOOD.getMetadata()));
+        */
     }
 }

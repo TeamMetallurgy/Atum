@@ -94,12 +94,12 @@ public class ItemLoot extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (int type = 0; type < typeArray.length; ++type) {
-            subItems.add(new ItemStack(item, 1, type << 5 | 1));
+            subItems.add(new ItemStack(this, 1, type << 5 | 1));
 
             for (int quality = 1; quality < qualityArray.length; ++quality) {
-                subItems.add(new ItemStack(item, 1, type << 5 | quality << 1));
+                subItems.add(new ItemStack(this, 1, type << 5 | quality << 1));
             }
         }
     }

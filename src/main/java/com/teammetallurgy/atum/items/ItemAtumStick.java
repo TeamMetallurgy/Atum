@@ -25,9 +25,9 @@ public class ItemAtumStick extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
-            subItems.add(new ItemStack(item, 1, enumType.getMetadata()));
+            subItems.add(new ItemStack(this, 1, enumType.getMetadata()));
         }
     }
 }

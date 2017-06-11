@@ -225,7 +225,7 @@ public class ClientProxy extends CommonProxy {
     public void setItemResourceLocation(Item item, String name, CreativeTabs tab) {
         if (item.getHasSubtypes()) {
             NonNullList<ItemStack> subItems = NonNullList.create();
-            item.getSubItems(item, tab, subItems);
+            item.getSubItems(tab, subItems);
             for (ItemStack stack : subItems) {
                 String subItemName = AtumUtils.toRegistryName(AtumUtils.toUnlocalizedName(item.getUnlocalizedName(stack)));
                 ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(Constants.MODID + ":" + subItemName, "inventory"));

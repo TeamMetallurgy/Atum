@@ -3,9 +3,9 @@ package com.teammetallurgy.atum.client.render.entity.arrow;
 import com.teammetallurgy.atum.entity.projectile.EntityBone;
 import com.teammetallurgy.atum.items.AtumItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -33,7 +33,7 @@ public class RenderBone extends Render<EntityBone> {
         GlStateManager.scale(this.scale, this.scale, this.scale);
         TextureAtlasSprite dustyBoneSprite = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(AtumItems.DUSTY_BONE);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
         float f = dustyBoneSprite.getMinU();
         float f1 = dustyBoneSprite.getMaxU();
         float f2 = dustyBoneSprite.getMinV();
@@ -46,11 +46,11 @@ public class RenderBone extends Render<EntityBone> {
             GlStateManager.enableOutlineMode(this.getTeamColor(entityBone));
         }
 
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
-        vertexbuffer.pos(-0.5D, -0.25D, 0.0D).tex((double) f, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(0.5D, -0.25D, 0.0D).tex((double) f1, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(0.5D, 0.75D, 0.0D).tex((double) f1, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
-        vertexbuffer.pos(-0.5D, 0.75D, 0.0D).tex((double) f, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
+        bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+        bufferBuilder.pos(-0.5D, -0.25D, 0.0D).tex((double) f, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
+        bufferBuilder.pos(0.5D, -0.25D, 0.0D).tex((double) f1, (double) f3).normal(0.0F, 1.0F, 0.0F).endVertex();
+        bufferBuilder.pos(0.5D, 0.75D, 0.0D).tex((double) f1, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
+        bufferBuilder.pos(-0.5D, 0.75D, 0.0D).tex((double) f, (double) f2).normal(0.0F, 1.0F, 0.0F).endVertex();
         tessellator.draw();
 
         if (this.renderOutlines) {

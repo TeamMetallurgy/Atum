@@ -1,6 +1,7 @@
 package com.teammetallurgy.atum.items.artifacts;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +22,8 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 import java.util.Random;
+
+import javax.annotation.Nullable;
 
 public class ItemPtahsDecadence extends ItemPickaxe {
 
@@ -45,7 +48,7 @@ public class ItemPtahsDecadence extends ItemPickaxe {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag tooltipType) {
         if (Keyboard.isKeyDown(42)) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line1"));
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal(this.getUnlocalizedName() + ".line2"));

@@ -89,12 +89,6 @@ public class BlockFertileSoil extends Block {
     }
 
     @Override
-    @Nonnull
-    public MapColor getMapColor(IBlockState state) {
-        return super.getMapColor(state);
-    }
-
-    @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos) {
         super.neighborChanged(state, world, pos, neighborBlock, neighborPos);
         if (world.getBlockState(pos.up()).getMaterial().isSolid()) {

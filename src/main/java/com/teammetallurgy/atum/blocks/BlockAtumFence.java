@@ -5,6 +5,7 @@ import net.minecraft.block.BlockFence;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
@@ -18,9 +19,9 @@ public class BlockAtumFence extends BlockFence {
     }
 
     @Override
-    public boolean canConnectTo(IBlockAccess world, BlockPos pos) {
+    public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
         Block block = world.getBlockState(pos).getBlock();
-        return canBlockConnect(block) || super.canConnectTo(world, pos);
+        return canBlockConnect(block) || super.canConnectTo(world, pos, facing);
     }
 
     private boolean canBlockConnect(Block block) {

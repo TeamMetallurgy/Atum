@@ -130,7 +130,7 @@ public class EntityWraith extends EntityUndeadBase {
 
         @Override
         public boolean continueExecuting() {
-            float f = this.attacker.getBrightness(1.0F);
+            float f = this.attacker.getBrightness();
 
             if (f >= 0.5F && this.attacker.getRNG().nextInt(100) == 0) {
                 this.attacker.setAttackTarget(null);
@@ -153,7 +153,7 @@ public class EntityWraith extends EntityUndeadBase {
 
         @Override
         public boolean shouldExecute() {
-            float f = this.taskOwner.getBrightness(1.0F);
+            float f = this.taskOwner.getBrightness();
             return f < 0.5F && super.shouldExecute();
         }
     }

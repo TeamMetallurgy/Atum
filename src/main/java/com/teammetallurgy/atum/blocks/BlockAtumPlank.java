@@ -14,6 +14,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -60,15 +62,15 @@ public class BlockAtumPlank extends Block implements IAtumBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         for (BlockAtumPlank.EnumType enumType : BlockAtumPlank.EnumType.values()) {
-            list.add(new ItemStack(item, 1, enumType.getMetadata()));
+            list.add(new ItemStack(this, 1, enumType.getMetadata()));
         }
     }
 
     @Override
     @Nonnull
-    public MapColor getMapColor(IBlockState state) {
+    public MapColor getMapColor(IBlockState state, IBlockAccess blockAccess, BlockPos blockPos) {
         return (state.getValue(VARIANT)).getMapColor();
     }
 

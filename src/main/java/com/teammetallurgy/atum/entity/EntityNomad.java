@@ -171,4 +171,10 @@ public class EntityNomad extends EntityBanditBase implements IRangedAttackMob {
             this.dropItem(Items.ARROW, amount);
         }
     }
+
+	@Override
+	public void setSwingingArms(boolean swingingArms) {
+		// TODO Auto-generated method stub
+		
+	}
 }
